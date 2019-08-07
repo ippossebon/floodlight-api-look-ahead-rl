@@ -16,22 +16,22 @@ class LoohAheadRLApp(object):
         # 1. Consome topologia floodlight
         response = requests.get('{host}/wm/core/controller/switches/json'.format(host=CONTROLLER_HOST))
 
-        print(response)
+        print(response.json())
         # 2. Monta grafo da rede
         nodes = []
         links = []
 
-        node0 = Node(id='S0', index=0)
+        node0 = Node(id='S0')
         nodes.append(node0)
-        node1 = Node(id='S1', index=1)
+        node1 = Node(id='S1')
         nodes.append(node1)
-        node2 = Node(id='S2', index=2)
+        node2 = Node(id='S2')
         nodes.append(node2)
-        node3 = Node(id='S3', index=3)
+        node3 = Node(id='S3')
         nodes.append(node3)
-        node4 = Node(id='S4', index=4)
+        node4 = Node(id='S4')
         nodes.append(node4)
-        node5 = Node(id='S5', index=5)
+        node5 = Node(id='S5')
         nodes.append(node5)
 
         link01 = Link(node0, node1, 500)

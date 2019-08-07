@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class Flow(object):
     def __init__(self, source, target, bandwidth):
         self.source = source
@@ -7,4 +9,3 @@ class Flow(object):
 
     def setPath(self, path):
         self.path = path
-    

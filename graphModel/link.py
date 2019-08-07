@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class Link(object):
     def __init__(self, node1, node2, weight):
         self.node1 = node1

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from graphModel.flow import Flow
 from graphModel.graph import Graph
 from graphModel.link import Link

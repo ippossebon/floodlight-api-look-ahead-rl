@@ -5,6 +5,8 @@ from graphModel.graph import Graph
 from graphModel.link import Link
 from graphModel.node import Node
 
+from routing.binPacking import BinPackingRouting
+
 from operator import attrgetter
 
 import requests

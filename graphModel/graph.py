@@ -3,7 +3,7 @@
 from .link import Link
 from .node import Node
 
-NO_LINK = -1
+NO_LINK = 999999
 
 class Graph(object):
     def __init__(self, links = [], nodes = []):
@@ -61,28 +61,25 @@ class Graph(object):
         new_distances = self.createDistancesDict()
 
 
-    def getMinimumCostPath(self, flow):
+    def getMinimumCostPath(self, source_switch_id, target_switch_id):
         # Calcula caminho de custo mínimo, onde o custo de cada caminho é o recíproco
         # da sua capacidade disponível (1/capacidade). Após associar um par de
         # switches a um caminho, atualiza o custo de cada link.
-        print('-> Get mininum cost path [Dijkstra] from {0} to {1}\n'.format(
-            flow.source.id, flow.target.id))
+        print('-> Get mininum cost path [Dijkstra] from switch {0} to switch {1}\n'.format(
+            source_switch_id, target_switch_id))
 
-        min_cost_path = self.dijsktra(flow.source, flow.target)
-        print(' - Path found: {0}\n'.format(min_cost_path))
-
-        self.updatePathCostMatrix(min_cost_path, flow.bandwidth)
+        min_cost_path = self.dijsktra(source_switch_id, target_switch_id)
 
         return min_cost_path
 
-    def dijsktra(self, source, target):
+    def dijsktra(self, source_switch_id, target_switch_id):
         # shortest paths is a dict of nodes whose value is a tuple of (previous node, weight)
-        shortest_paths = {source.id: (None, 0)}
-        current_node = source.id
-        distances = self.createDistancesDict()
+        shortest_paths = {source_switch_id: (None, 0)}
+        current_node = source_switch_id
+        distances = dict(self.cost)
         visited = set()
 
-        while current_node != target.id:
+        while current_node != target_switch_id:
             visited.add(current_node)
             destinations = distances[current_node]
             weight_to_current_node = shortest_paths[current_node][1]
@@ -116,7 +113,7 @@ class Graph(object):
     def printCostMatrix(self):
         print('-> Cost matrix:')
         for item in self.cost:
-            print('{0} = {1}'.format(item, self.cost[item]))
+            print('{0} => {1}'.format(item, self.cost[item]))
         print('\n')
 
     def printGraph(self):

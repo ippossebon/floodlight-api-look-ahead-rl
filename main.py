@@ -87,8 +87,18 @@ class LookAheadRLApp(object):
         for flow in ordered_flows:
             min_cost_path = self.network.getMinimumCostPath(flow)
 
+    def run(self):
+        self.initializeNetworkGraph()
+
+        # Procura caminho de custo mínimo entre dois switches
+        min_cost_path = self.networkGraph.getMinimumCostPath(
+            source_switch_id='00:00:00:00:00:00:00:01',
+            target_switch_id='00:00:00:00:00:00:00:04'
+        )
+        print('caminho de custo minimo entre 1 e 4:', min_cost_path)
+
 
 
 if __name__ == '__main__':
     app = LookAheadRLApp()
-    app.initializeNetworkGraph()
+    app.run()

@@ -3,7 +3,7 @@
 from .link import Link
 from .node import Node
 
-INVALID_VALUE = -1
+NO_LINK = -1
 
 class Graph(object):
     def __init__(self, links = [], nodes = []):
@@ -60,8 +60,8 @@ class Graph(object):
                 del self.links[link_index]
 
                 # TODO: Remover da matriz de adjacencia  === Colocar valor inválido
-                self.cost[link.node1.id][link.node2.id] = INVALID_VALUE
-                self.cost[link.node2.id][link.node1.id] = INVALID_VALUE
+                self.cost[link.node1.id][link.node2.id] = NO_LINK
+                self.cost[link.node2.id][link.node1.id] = NO_LINK
 
     def addNode(self, node_id):
         node = Node(node_id)
@@ -91,6 +91,7 @@ class Graph(object):
             for node_id in nodes_id:
                 if node_id not in self.cost.keys():
                     self.cost[node_id] = {}
+                    self.cost[node_id][node_id] = NO_LINK
 
             # Seta custo bidirecional
             self.cost[link.node1.id][link.node2.id] = 1 / link.weight

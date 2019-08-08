@@ -75,7 +75,7 @@ class LookAheadRLApp(object):
 
         # List static flows for a switch or all switches
         response = requests.get('{host}/wm/staticflowpusher/list/00:00:00:00:00:00:00:01/json '.format(host=CONTROLLER_HOST))
-        response_data = switches_response.json()
+        response_data = response.json()
 
         return response_data
 

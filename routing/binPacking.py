@@ -8,11 +8,11 @@ from graphModel.node import Node
 from operator import attrgetter
 
 class BinPackingRouting(object):
-    def __init__(self, graphNetwork = None):
-        self.graphNetwork = graphNetwork
+    def __init__(self, networkGraph = None):
+        self.networkGraph = networkGraph
 
-    def setGraphNetwork(self, graphNetwork):
-        self.graphNetwork = graphNetwork
+    def setNetworkGraph(self, networkGraph):
+        self.networkGraph = networkGraph
 
     def findPaths(self, flows_running_on_network):
         # Ordena pares de switches de forma decrescente em relação ao volume de
@@ -33,7 +33,7 @@ class BinPackingRouting(object):
         # switches a um caminho, atualiza o custo de cada link.
         path_per_flow = {}
         for flow in ordered_flows:
-            min_cost_path = self.graphNetwork.getMinimumCostPath(
+            min_cost_path = self.networkGraph.getMinimumCostPath(
                 source_switch_id = flow.source.id,
                 target_switch_id = flow.target.id
             )
@@ -45,15 +45,15 @@ if __name__ == '__main__':
     nodes = []
     links = []
 
-    routingModel = BinPackingRouting(graphNetwork)
+    routingModel = BinPackingRouting(networkGraph)
 
     flow05 = Flow(node0, node5, 200)
     flow13 = Flow(node1, node3, 50)
     flow25 = Flow(node2, node5, 100)
 
     # custo = 1 / capacidade_atual
-    min_cost_path = graphNetwork.getMinimumCostPath(flow25)
-    min_cost_path = graphNetwork.getMinimumCostPath(flow13)
+    min_cost_path = networkGraph.getMinimumCostPath(flow25)
+    min_cost_path = networkGraph.getMinimumCostPath(flow13)
 
     # flows = []
     # flows.append(flow05)

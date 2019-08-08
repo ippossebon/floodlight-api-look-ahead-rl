@@ -90,7 +90,7 @@ class LookAheadRLApp(object):
 
     def run(self):
         self.initializeNetworkGraph()
-        self.routingModel.setGraphNetwork(self.graphNetwork)
+        self.routingModel.setNetworkGraph(self.networkGraph)
 
         # Testando caminho de custo mínimo
         source_switch_id = '00:00:00:00:00:00:00:01'

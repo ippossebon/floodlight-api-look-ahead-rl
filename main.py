@@ -20,9 +20,9 @@ class LoohAheadRLApp(object):
         switches = []
         for item in switches_response_data:
             switch_node = Node(
-                id=item.switchDPID,
-                inetAddress=item.inetAddress,
-                connectedSince=item.connectedSince
+                id=item['switchDPID'],
+                inetAddress=item['inetAddress'],
+                connectedSince=item['connectedSince']
             )
             switches.append(switch_node)
 

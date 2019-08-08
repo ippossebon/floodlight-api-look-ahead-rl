@@ -14,45 +14,50 @@ CONTROLLER_HOST = 'http://0.0.0.0:8080'
 class LoohAheadRLApp(object):
     def initializeNetworkGraph(self):
         # 1. Consome topologia floodlight
-        response = requests.get('{host}/wm/core/controller/switches/json'.format(host=CONTROLLER_HOST))
+        switches_response = requests.get('{host}/wm/core/controller/switches/json'.format(host=CONTROLLER_HOST))
+        switches_response_data = switches_response.json()
 
-        print(response.json())
+        switches = []
+        for item in switches_response_data:
+            switch_node = Node(
+                id=item.switchDPID,
+                inetAddress=item.inetAddress,
+                connectedSince=item.connectedSince
+            )
+            switches.append(switch_node)
+
+        for switch in switches:
+            switch.printInfo()
+        # [
+        # {u'inetAddress': u'/127.0.0.1:38951', u'connectedSince': 1565172781116, u'switchDPID': u'00:00:00:00:00:00:00:02'},
+        # {u'inetAddress': u'/127.0.0.1:38947', u'connectedSince': 1565172781462, u'switchDPID': u'00:00:00:00:00:00:00:06'},
+        # {u'inetAddress': u'/127.0.0.1:38949', u'connectedSince': 1565172781349, u'switchDPID': u'00:00:00:00:00:00:00:03'},
+        # {u'inetAddress': u'/127.0.0.1:38948', u'connectedSince': 1565172781444, u'switchDPID': u'00:00:00:00:00:00:00:04'},
+        # {u'inetAddress': u'/127.0.0.1:38950', u'connectedSince': 1565172781344, u'switchDPID': u'00:00:00:00:00:00:00:05'},
+        # {u'inetAddress': u'/127.0.0.1:38946', u'connectedSince': 1565172781109, u'switchDPID': u'00:00:00:00:00:00:00:01'}]
+
         # 2. Monta grafo da rede
-        nodes = []
-        links = []
-
-        node0 = Node(id='S0')
-        nodes.append(node0)
-        node1 = Node(id='S1')
-        nodes.append(node1)
-        node2 = Node(id='S2')
-        nodes.append(node2)
-        node3 = Node(id='S3')
-        nodes.append(node3)
-        node4 = Node(id='S4')
-        nodes.append(node4)
-        node5 = Node(id='S5')
-        nodes.append(node5)
-
-        link01 = Link(node0, node1, 500)
-        links.append(link01)
-        link04 = Link(node0, node4, 500)
-        links.append(link04)
-        link12 = Link(node1, node2, 500)
-        links.append(link12)
-        link14 = Link(node1, node4, 500)
-        links.append(link14)
-        link23 = Link(node2, node3, 500)
-        links.append(link23)
-        link34 = Link(node3, node4, 500)
-        links.append(link34)
-        link35 = Link(node3, node5, 500)
-        links.append(link35)
-        link45 = Link(node4, node5, 500)
-        links.append(link45)
-
-        network = Graph(links=links, nodes=nodes)
-        network.printCostMatrix()
+        #
+        #
+        # link01 = Link(node0, node1, 500)
+        # links.append(link01)
+        # link04 = Link(node0, node4, 500)
+        # links.append(link04)
+        # link12 = Link(node1, node2, 500)
+        # links.append(link12)
+        # link14 = Link(node1, node4, 500)
+        # links.append(link14)
+        # link23 = Link(node2, node3, 500)
+        # links.append(link23)
+        # link34 = Link(node3, node4, 500)
+        # links.append(link34)
+        # link35 = Link(node3, node5, 500)
+        # links.append(link35)
+        # link45 = Link(node4, node5, 500)
+        # links.append(link45)
+        #
+        # network = Graph(links=links, nodes=nodes)
+        # network.printCostMatrix()
 
 
 

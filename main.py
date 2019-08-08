@@ -73,12 +73,11 @@ class LookAheadRLApp(object):
     def getNetworkCurrentFlows(self):
         # TODO: usar API do floodlight para identificar fluxos ativos na rede
 
-        # List static flows for a switch or all switches
-        response = requests.get('{host}/wm/staticflowpusher/list/00:00:00:00:00:00:00:01/json '.format(host=CONTROLLER_HOST))
+        # List static flows for a switch or all switches -- não atende o que queremos!
+        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
         return response_data
-
 
     # Só será utilizado quando tivermos mais de um fluxo na rede (afinal, nosso
     # foco é balanceamento de carga)

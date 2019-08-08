@@ -15,6 +15,7 @@ CONTROLLER_HOST = 'http://0.0.0.0:8080'
 class LookAheadRLApp(object):
     def __init__(self):
         self.networkGraph = Graph()
+        self.routingModel = BinPackingRouting()
 
     def initializeNetworkGraph(self):
         # 1. Consome topologia floodlight
@@ -66,37 +67,42 @@ class LookAheadRLApp(object):
 
         return response_data
 
+    def getNetworkCurrentFlows(self):
+        # TODO: usar API do floodlight para identificar fluxos ativos na rede
 
-    def findPaths(self, flows):
-        # Ordena pares de switches de forma decrescente em relação ao volume de
-        # tráfego
-        flows_copy = list(flows)
-        ordered_flows = []
-        while len(flows_copy) > 0:
-            max_volume_required_item = max(flows_copy, key=attrgetter('bandwidth'))
-            ordered_flows.append(max_volume_required_item)
-            item_index = flows_copy.index(max_volume_required_item)
-            del flows_copy[item_index]
+        # List static flows for a switch or all switches
+        response = requests.get('{host}/wm/staticflowpusher/list/00:00:00:00:00:00:00:01/json '.format(host=CONTROLLER_HOST))
+        response_data = switches_response.json()
 
-        # ordered_flows contém a lista de pares de switches ordenados por volume
-        # de tráfego necessário
+        return response_data
 
-        # Calcula caminho de custo mínimo, onde o custo de cada caminho é o recíproco
-        # da sua capacidade disponível (1/capacidade). Após associar um par de
-        # switches a um caminho, atualiza o custo de cada link.
-        for flow in ordered_flows:
-            min_cost_path = self.network.getMinimumCostPath(flow)
+
+    # Só será utilizado quando tivermos mais de um fluxo na rede (afinal, nosso
+    # foco é balanceamento de carga)
+    def findBinPackingRoutes(self, source, target):
+        flows_running_on_network = self.getNetworkCurrentFlows()
+
+        # Retorna um dicionario do tipo path_per_flow[FLOW_ID] = PATH
+        path_per_flow = self.routingModel.findPaths(flows)
+        return path_per_flow
 
     def run(self):
         self.initializeNetworkGraph()
+        self.routingModel.setGraphNetwork(self.graphNetwork)
 
+        # Testando caminho de custo mínimo
         source_switch_id = '00:00:00:00:00:00:00:01'
         target_switch_id = '00:00:00:00:00:00:00:06'
 
         # Procura caminho de custo mínimo entre dois switches
+        # custo = 1 / capacidade_atual
         min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
         print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
 
+        sleep(10)
+
+        response = self.getNetworkCurrentFlows()
+        print(response)
 
 
 if __name__ == '__main__':

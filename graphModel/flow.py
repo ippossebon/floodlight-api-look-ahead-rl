@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 class Flow(object):
-    def __init__(self, source, target, bandwidth):
+    def __init__(self, id, source, target, bandwidth):
+        self.id = id
         self.source = source
         self.target = target
         self.bandwidth = bandwidth

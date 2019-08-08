@@ -10,6 +10,7 @@ from routing.binPacking import BinPackingRouting
 from operator import attrgetter
 
 import requests
+import time
 
 CONTROLLER_HOST = 'http://0.0.0.0:8080'
 
@@ -101,7 +102,7 @@ class LookAheadRLApp(object):
         min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
         print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
 
-        sleep(10)
+        time.sleep(10)
 
         response = self.getNetworkCurrentFlows()
         print(response)

@@ -89,7 +89,7 @@ class Graph(object):
             # Inicializa dicionario de distancias pra cada node
             nodes_id = [link.node1.id, link.node2.id]
             for node_id in nodes_id:
-                if not self.cost[node_id]:
+                if node_id not in self.cost.keys():
                     self.cost[node_id] = {}
 
             # Seta custo bidirecional

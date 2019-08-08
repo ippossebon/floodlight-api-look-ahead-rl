@@ -85,11 +85,14 @@ class Graph(object):
     def createCostMatrix(self):
         if len(self.links) == 0: return
 
-        # cost is NxN array of 'foo' (which can depend on i and j if you want)
-        self.cost = [[float('inf') for i in range(len(self.nodes))] for j in range(len(self.nodes))]
-
         for link in self.links:
-            # Inicializa custo bidirecional
+            # Inicializa dicionario de distancias pra cada node
+            nodes_id = [link.node1.id, link.node2.id]
+            for node_id in nodes_id:
+                if not self.cost[node_id]:
+                    self.cost[node_id] = {}
+
+            # Seta custo bidirecional
             self.cost[link.node1.id][link.node2.id] = 1 / link.weight
             self.cost[link.node2.id][link.node1.id] = 1 / link.weight
 

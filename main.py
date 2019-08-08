@@ -59,6 +59,9 @@ class LookAheadRLApp(object):
         self.networkGraph.createCostMatrix()
         self.networkGraph.printCostMatrix()
 
+        # self.networkGraph.createDistancesDict()
+        # self.networkGraph.printCostMatrix()
+
 
     def getNetworkSummary(self):
         response = requests.get('{host}/wm/core/controller/summary/json'.format(host=CONTROLLER_HOST))

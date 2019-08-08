@@ -65,7 +65,7 @@ class Graph(object):
         # Calcula caminho de custo mínimo, onde o custo de cada caminho é o recíproco
         # da sua capacidade disponível (1/capacidade). Após associar um par de
         # switches a um caminho, atualiza o custo de cada link.
-        print('-> Get mininum cost path [Dijkstra] from switch {0} to switch {1}\n'.format(
+        print('-> Get mininum cost path [Dijkstra] from switch {0} to switch {1}'.format(
             source_switch_id, target_switch_id))
 
         min_cost_path = self.dijsktra(source_switch_id, target_switch_id)

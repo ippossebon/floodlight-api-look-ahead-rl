@@ -90,12 +90,12 @@ class LookAheadRLApp(object):
     def run(self):
         self.initializeNetworkGraph()
 
+        source_switch_id = '00:00:00:00:00:00:00:01'
+        target_switch_id = '00:00:00:00:00:00:00:06'
+
         # Procura caminho de custo mínimo entre dois switches
-        min_cost_path = self.networkGraph.getMinimumCostPath(
-            source_switch_id='00:00:00:00:00:00:00:01',
-            target_switch_id='00:00:00:00:00:00:00:06'
-        )
-        print('caminho de custo minimo entre 1 e 6:', min_cost_path)
+        min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
+        print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
 
 
 

@@ -11,7 +11,11 @@ import requests
 
 CONTROLLER_HOST = 'http://0.0.0.0:8080'
 
-class LoohAheadRLApp(object):
+
+class LookAheadRLApp(object):
+    def __init__(self):
+        self.networkGraph = Graph()
+
     def initializeNetworkGraph(self):
         # 1. Consome topologia floodlight
         switches_response = requests.get('{host}/wm/core/controller/switches/json'.format(host=CONTROLLER_HOST))
@@ -26,39 +30,41 @@ class LoohAheadRLApp(object):
             )
             switches.append(switch_node)
 
-        for switch in switches:
-            switch.printInfo()
-        # [
-        # {u'inetAddress': u'/127.0.0.1:38951', u'connectedSince': 1565172781116, u'switchDPID': u'00:00:00:00:00:00:00:02'},
-        # {u'inetAddress': u'/127.0.0.1:38947', u'connectedSince': 1565172781462, u'switchDPID': u'00:00:00:00:00:00:00:06'},
-        # {u'inetAddress': u'/127.0.0.1:38949', u'connectedSince': 1565172781349, u'switchDPID': u'00:00:00:00:00:00:00:03'},
-        # {u'inetAddress': u'/127.0.0.1:38948', u'connectedSince': 1565172781444, u'switchDPID': u'00:00:00:00:00:00:00:04'},
-        # {u'inetAddress': u'/127.0.0.1:38950', u'connectedSince': 1565172781344, u'switchDPID': u'00:00:00:00:00:00:00:05'},
-        # {u'inetAddress': u'/127.0.0.1:38946', u'connectedSince': 1565172781109, u'switchDPID': u'00:00:00:00:00:00:00:01'}]
+        self.networkGraph.setNodes(switches)
 
-        # 2. Monta grafo da rede
-        #
-        #
-        # link01 = Link(node0, node1, 500)
-        # links.append(link01)
-        # link04 = Link(node0, node4, 500)
-        # links.append(link04)
-        # link12 = Link(node1, node2, 500)
-        # links.append(link12)
-        # link14 = Link(node1, node4, 500)
-        # links.append(link14)
-        # link23 = Link(node2, node3, 500)
-        # links.append(link23)
-        # link34 = Link(node3, node4, 500)
-        # links.append(link34)
-        # link35 = Link(node3, node5, 500)
-        # links.append(link35)
-        # link45 = Link(node4, node5, 500)
-        # links.append(link45)
-        #
-        # network = Graph(links=links, nodes=nodes)
-        # network.printCostMatrix()
 
+        links_response = requests.get('{host}/wm/topology/links/json'.format(host=CONTROLLER_HOST))
+        links_response_data = links_response.json()
+
+        links = []
+        for item in links_response_data:
+            node1_id = item['src-switch']
+            node1_port = item['src-port']
+            node2_id = item['dst-switch']
+            node2_port = item['dst-port']
+
+            node1 = self.networkGraph.getNodeById(node1_id)
+            node2 = self.networkGraph.getNodeById(node2_id)
+
+            if node1 == None:
+                print('Error finding node {0} on network graph'.format(node1_id))
+            if node2 == None:
+                print('Error finding node {0} on network graph'.format(node2_id))
+
+            link = Link(node1, node2, node1_port, node2_port)
+            links.append(link)
+
+        self.networkGraph.setLinks(links)
+
+        self.networkGraph.createCostMatrix()
+        self.networkGraph.printCostMatrix()
+
+
+    def getNetworkSummary(self):
+        response = requests.get('{host}/wm/core/controller/summary/json'.format(host=CONTROLLER_HOST))
+        response_data = switches_response.json()
+
+        return response_data
 
 
     def findPaths(self, flows):
@@ -84,5 +90,5 @@ class LoohAheadRLApp(object):
 
 
 if __name__ == '__main__':
-    app = LoohAheadRLApp()
+    app = LookAheadRLApp()
     app.initializeNetworkGraph()

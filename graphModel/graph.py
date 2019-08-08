@@ -11,7 +11,20 @@ class Graph(object):
         self.links = links
         self.nodes = nodes
 
-        self.createCostMatrix()
+        # self.createCostMatrix()
+
+    def setLinks(self, links):
+        self.links = links
+
+    def setNodes(self, nodes):
+        self.nodes = nodes
+
+    def getNodeById(self, node_id):
+        for node in self.nodes:
+            if node.id == node_id:
+                return node
+
+        return None
 
     def addLink(self, node_id_1, node_id_2, weight):
         node1 = Node(node_id_1)

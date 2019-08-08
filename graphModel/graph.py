@@ -116,7 +116,7 @@ class Graph(object):
     def printCostMatrix(self):
         print('-> Cost matrix:')
         for item in self.cost:
-            print(item)
+            print('{0} = {1}'.format(item, self.cost[item]))
         print('\n')
 
     def printGraph(self):

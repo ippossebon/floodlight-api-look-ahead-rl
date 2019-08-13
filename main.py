@@ -73,11 +73,19 @@ class LookAheadRLApp(object):
     def getNetworkCurrentFlows(self):
         # TODO: usar API do floodlight para identificar fluxos ativos na rede
 
-        # List static flows for a switch or all switches -- não atende o que queremos!
-        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
+        # List static flows for a switch or all switches
+        response = requests.get('{host}/wm/device'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
         return response_data
+
+    def listNetworkDevices(self):
+        print('Network devices: ')
+        # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
+        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
+
+        return response
 
     # Só será utilizado quando tivermos mais de um fluxo na rede (afinal, nosso
     # foco é balanceamento de carga)
@@ -93,13 +101,15 @@ class LookAheadRLApp(object):
         self.routingModel.setNetworkGraph(self.networkGraph)
 
         # Testando caminho de custo mínimo
-        source_switch_id = '00:00:00:00:00:00:00:01'
-        target_switch_id = '00:00:00:00:00:00:00:06'
+        # source_switch_id = '00:00:00:00:00:00:00:01'
+        # target_switch_id = '00:00:00:00:00:00:00:06'
+        #
+        # # Procura caminho de custo mínimo entre dois switches
+        # # custo = 1 / capacidade_atual
+        # min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
+        # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
 
-        # Procura caminho de custo mínimo entre dois switches
-        # custo = 1 / capacidade_atual
-        min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
-        print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
+        self.listNetworkDevices()
 
         time.sleep(10)
 

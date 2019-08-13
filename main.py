@@ -65,6 +65,7 @@ class LookAheadRLApp(object):
 
 
     def getNetworkSummary(self):
+        print('Network summary: ')
         response = requests.get('{host}/wm/core/controller/summary/json'.format(host=CONTROLLER_HOST))
         response_data = switches_response.json()
 
@@ -109,6 +110,7 @@ class LookAheadRLApp(object):
         # min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
         # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
 
+        self.getNetworkSummary()
         self.listNetworkDevices()
 
         time.sleep(10)

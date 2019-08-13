@@ -67,7 +67,7 @@ class LookAheadRLApp(object):
     def getNetworkSummary(self):
         print('Network summary: ')
         response = requests.get('{host}/wm/core/controller/summary/json'.format(host=CONTROLLER_HOST))
-        response_data = switches_response.json()
+        response_data = response.json()
 
         return response_data
 

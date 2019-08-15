@@ -74,7 +74,7 @@ class LookAheadRLApp(object):
     def getNetworkCurrentFlows(self):
         print('Network current flows (staticEntryPusher): ')
         # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
-        response = requests.get('{host}/wm/staticflowentrypusher/list/00:00:00:00:00:00:00:02/json'.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/staticflowentrypusher/list/6/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
         #curl http://0.0.0.0:8080/wm/core/switch/3/flow/json

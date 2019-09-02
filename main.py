@@ -72,14 +72,11 @@ class LookAheadRLApp(object):
         return response_data
 
     def getNetworkCurrentFlows(self):
-        print('Network current flows (staticEntryPusher): ')
-        time.sleep(10)
+        print('Network current flows: ')
 
         # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
-        response = requests.get('{host}/wm/staticflowentrypusher/list/6/json'.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
-
-        #curl http://0.0.0.0:8080/wm/core/switch/3/flow/json
 
         return response_data
 
@@ -104,17 +101,17 @@ class LookAheadRLApp(object):
         self.initializeNetworkGraph()
         self.routingModel.setNetworkGraph(self.networkGraph)
 
-        # Testando caminho de custo mínimo
-        source_switch_id = '00:00:00:00:00:00:00:01'
-        target_switch_id = '00:00:00:00:00:00:00:06'
-
-        # Procura caminho de custo mínimo entre dois switches
-        # custo = 1 / capacidade_atual
-        min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
-        print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
-
-        self.getNetworkSummary()
-        self.listNetworkDevices()
+        # # Testando caminho de custo mínimo
+        # source_switch_id = '00:00:00:00:00:00:00:01'
+        # target_switch_id = '00:00:00:00:00:00:00:06'
+        #
+        # # Procura caminho de custo mínimo entre dois switches
+        # # custo = 1 / capacidade_atual
+        # min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
+        # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
+        #
+        # self.getNetworkSummary()
+        # self.listNetworkDevices()
 
         # PROBLEMA ATUAL: não consigo pegar os fluxos ativos na rede
         response = self.getNetworkCurrentFlows()

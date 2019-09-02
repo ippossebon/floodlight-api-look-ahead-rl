@@ -80,7 +80,6 @@ class LookAheadRLApp(object):
         response_data = response.json()
 
         for item in response_data:
-            import ipdb; ipdb.set_trace()
             print('item = ', item)
 
         return response_data
@@ -117,7 +116,6 @@ class LookAheadRLApp(object):
         # self.getNetworkSummary()
         # self.listNetworkDevices()
 
-        # PROBLEMA ATUAL: não consigo pegar os fluxos ativos na rede
         response = self.getNetworkCurrentFlows()
         print(response)
 

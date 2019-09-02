@@ -80,7 +80,8 @@ class LookAheadRLApp(object):
         response_data = response.json()
 
         for item in response_data:
-            print('item = ', item)
+            self.current_flows[item] = response_data[item]
+            print('agora ', self.current_flows[item])
 
         return response_data
 
@@ -117,7 +118,7 @@ class LookAheadRLApp(object):
         # self.listNetworkDevices()
 
         response = self.getNetworkCurrentFlows()
-        print(response)
+        # print(response)
 
 
 if __name__ == '__main__':

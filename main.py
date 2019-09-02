@@ -88,6 +88,7 @@ class LookAheadRLApp(object):
         response_data = response.json()
 
         for item in response_data:
+            import ipdb; ipdb.set_trace()
             print('item = ', item)
 
         return response

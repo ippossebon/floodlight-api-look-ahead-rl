@@ -17,8 +17,9 @@ CONTROLLER_HOST = 'http://0.0.0.0:8080'
 
 class LookAheadRLApp(object):
     def __init__(self):
-        self.networkGraph = Graph()
-        self.routingModel = BinPackingRouting()
+        self.network_graph = Graph()
+        self.routing_model = BinPackingRouting()
+        self.current_flows = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
 
     def initializeNetworkGraph(self):
         # 1. Consome topologia floodlight
@@ -34,7 +35,7 @@ class LookAheadRLApp(object):
             )
             switches.append(switch_node)
 
-        self.networkGraph.setNodes(switches)
+        self.network_graph.setNodes(switches)
 
 
         links_response = requests.get('{host}/wm/topology/links/json'.format(host=CONTROLLER_HOST))
@@ -47,8 +48,8 @@ class LookAheadRLApp(object):
             node2_id = item['dst-switch']
             node2_port = item['dst-port']
 
-            node1 = self.networkGraph.getNodeById(node1_id)
-            node2 = self.networkGraph.getNodeById(node2_id)
+            node1 = self.network_graph.getNodeById(node1_id)
+            node2 = self.network_graph.getNodeById(node2_id)
 
             if node1 == None:
                 print('Error finding node {0} on network graph'.format(node1_id))
@@ -58,10 +59,10 @@ class LookAheadRLApp(object):
             link = Link(node1, node2, node1_port, node2_port)
             links.append(link)
 
-        self.networkGraph.setLinks(links)
+        self.network_graph.setLinks(links)
 
-        self.networkGraph.createCostMatrix()
-        self.networkGraph.printCostMatrix()
+        self.network_graph.createCostMatrix()
+        self.network_graph.printCostMatrix()
 
 
     def getNetworkSummary(self):
@@ -86,6 +87,10 @@ class LookAheadRLApp(object):
         response = requests.get('{host}/wm/device'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+        for item in response_data:
+            import ipdb; ipdb.set_trace()
+            print('isadora')
+
         return response
 
     # Só será utilizado quando tivermos mais de um fluxo na rede (afinal, nosso
@@ -94,12 +99,12 @@ class LookAheadRLApp(object):
         flows_running_on_network = self.getNetworkCurrentFlows()
 
         # Retorna um dicionario do tipo path_per_flow[FLOW_ID] = PATH
-        path_per_flow = self.routingModel.findPaths(flows)
+        path_per_flow = self.routing_model.findPaths(flows)
         return path_per_flow
 
     def run(self):
         self.initializeNetworkGraph()
-        self.routingModel.setNetworkGraph(self.networkGraph)
+        self.routing_model.setNetworkGraph(self.network_graph)
 
         # # Testando caminho de custo mínimo
         # source_switch_id = '00:00:00:00:00:00:00:01'
@@ -107,7 +112,7 @@ class LookAheadRLApp(object):
         #
         # # Procura caminho de custo mínimo entre dois switches
         # # custo = 1 / capacidade_atual
-        # min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
+        # min_cost_path = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
         # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
         #
         # self.getNetworkSummary()

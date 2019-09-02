@@ -105,16 +105,16 @@ class LookAheadRLApp(object):
         self.routingModel.setNetworkGraph(self.networkGraph)
 
         # Testando caminho de custo mínimo
-        # source_switch_id = '00:00:00:00:00:00:00:01'
-        # target_switch_id = '00:00:00:00:00:00:00:06'
-        #
-        # # Procura caminho de custo mínimo entre dois switches
-        # # custo = 1 / capacidade_atual
-        # min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
-        # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
+        source_switch_id = '00:00:00:00:00:00:00:01'
+        target_switch_id = '00:00:00:00:00:00:00:06'
 
-        # self.getNetworkSummary()
-        # self.listNetworkDevices()
+        # Procura caminho de custo mínimo entre dois switches
+        # custo = 1 / capacidade_atual
+        min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
+        print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
+
+        self.getNetworkSummary()
+        self.listNetworkDevices()
 
         # PROBLEMA ATUAL: não consigo pegar os fluxos ativos na rede
         response = self.getNetworkCurrentFlows()

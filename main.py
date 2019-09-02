@@ -73,6 +73,8 @@ class LookAheadRLApp(object):
 
     def getNetworkCurrentFlows(self):
         print('Network current flows (staticEntryPusher): ')
+        time.sleep(10)
+
         # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
         response = requests.get('{host}/wm/staticflowentrypusher/list/6/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
@@ -111,11 +113,10 @@ class LookAheadRLApp(object):
         # min_cost_path = self.networkGraph.getMinimumCostPath(source_switch_id, target_switch_id)
         # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
 
-        self.getNetworkSummary()
-        self.listNetworkDevices()
+        # self.getNetworkSummary()
+        # self.listNetworkDevices()
 
-        time.sleep(10)
-
+        # PROBLEMA ATUAL: não consigo pegar os fluxos ativos na rede
         response = self.getNetworkCurrentFlows()
         print(response)
 

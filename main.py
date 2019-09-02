@@ -86,6 +86,8 @@ class LookAheadRLApp(object):
         # List static flows for a switch or all switches
         response = requests.get('{host}/wm/device'.format(host=CONTROLLER_HOST))
         response_data = response.json()
+        import ipdb; ipdb.set_trace()
+
 
         for item in response_data:
             import ipdb; ipdb.set_trace()

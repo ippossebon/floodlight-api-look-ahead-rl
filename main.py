@@ -80,7 +80,7 @@ class LookAheadRLApp(object):
         response_data = response.json()
 
         for item in response_data:
-            self.current_flows[item] = response_data[item]['flows']
+            self.current_flows[item] = response_data[item]
             print('agora ', self.current_flows[item])
 
         return response_data

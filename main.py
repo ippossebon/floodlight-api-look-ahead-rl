@@ -79,19 +79,16 @@ class LookAheadRLApp(object):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        return response_data
-
-    def listNetworkDevices(self):
-        print('Network devices: ')
-        # List static flows for a switch or all switches
-        response = requests.get('{host}/wm/device'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
-        import ipdb; ipdb.set_trace()
-
-
         for item in response_data:
             import ipdb; ipdb.set_trace()
             print('item = ', item)
+
+        return response_data
+
+    def listNetworkDevices(self):
+        # List static flows for a switch or all switches
+        response = requests.get('{host}/wm/device'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
 
         return response
 

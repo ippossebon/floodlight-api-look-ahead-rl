@@ -19,7 +19,7 @@ class LookAheadRLApp(object):
     def __init__(self):
         self.network_graph = Graph()
         self.routing_model = BinPackingRouting()
-        self.current_flows = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
+        self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
 
     def initializeNetworkGraph(self):
         # 1. Consome topologia floodlight
@@ -72,18 +72,14 @@ class LookAheadRLApp(object):
 
         return response_data
 
-    def getNetworkCurrentFlows(self):
-        print('Network current flows: ')
-
+    def setSwitchCurrentFlows(self):
         # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
         for item in response_data:
-            self.current_flows[item] = response_data[item]
-            print('agora ', self.current_flows[item])
-
-        return response_data
+            # item é o switch DPID
+            self.switch_info[item] = response_data[item]
 
     def listNetworkDevices(self):
         # List static flows for a switch or all switches
@@ -101,9 +97,40 @@ class LookAheadRLApp(object):
         path_per_flow = self.routing_model.findPaths(flows)
         return path_per_flow
 
+    def enableSwitchStatisticsEndpoit(self):
+        # Enable statistics collection
+        response = requests.post(
+            '{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST),
+            data={}
+        )
+        response_data = response.json()
+
+        return response_data
+
+    def setSwitchStatistics(self):
+        # Get statistics from all switches
+        response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
+
+        for item in response_data:
+            switch_dpid = item["dpid"]
+            # item é um objeto com o formato:
+            #    {
+            #       "bits-per-second-rx" : "0",
+            #       "dpid" : "00:00:00:00:00:00:00:02",
+            #       "updated" : "Mon Sep 02 15:54:17 EDT 2019",
+            #       "link-speed-bits-per-second" : "10000000",
+            #       "port" : "1",
+            #       "bits-per-second-tx" : "6059"
+            #    }
+            self.switch_info[switch_dpid]["statistics"] = item
+
+
     def run(self):
         self.initializeNetworkGraph()
         self.routing_model.setNetworkGraph(self.network_graph)
+
+        self.enableSwitchStatisticsEndpoit()
 
         # # Testando caminho de custo mínimo
         # source_switch_id = '00:00:00:00:00:00:00:01'
@@ -117,8 +144,15 @@ class LookAheadRLApp(object):
         # self.getNetworkSummary()
         # self.listNetworkDevices()
 
-        response = self.getNetworkCurrentFlows()
-        # print(response)
+        # Fluxos correntes e estatítiscas estão aramazenados em self.switch_info
+        self.setNetworkCurrentFlows()
+        self.setSwitchStatistics()
+        sleep(10)
+
+        print(self.switch_info)
+
+        # Usar estatísticas do fluxo para prever o tamanho total dele
+
 
 
 if __name__ == '__main__':

@@ -147,7 +147,7 @@ class LookAheadRLApp(object):
         # Fluxos correntes e estatítiscas estão aramazenados em self.switch_info
         self.setSwitchCurrentFlows()
         self.setSwitchStatistics()
-        sleep(10)
+        time.sleep(10)
 
         print(self.switch_info)
 

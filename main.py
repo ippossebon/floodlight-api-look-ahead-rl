@@ -145,7 +145,7 @@ class LookAheadRLApp(object):
         # self.listNetworkDevices()
 
         # Fluxos correntes e estatítiscas estão aramazenados em self.switch_info
-        self.setNetworkCurrentFlows()
+        self.setSwitchCurrentFlows()
         self.setSwitchStatistics()
         sleep(10)
 

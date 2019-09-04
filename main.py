@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from graphModel.activeFlow import ActiveFlow
 from graphModel.flow import Flow
 from graphModel.graph import Graph
 from graphModel.link import Link
 from graphModel.node import Node
+
+from predictor.flowSizePredictor import FlowSizePredictor
 
 from routing.binPacking import BinPackingRouting
 
@@ -13,13 +16,16 @@ import requests
 import time
 
 CONTROLLER_HOST = 'http://0.0.0.0:8080'
+THRESHOLD = 10
 
 
 class LookAheadRLApp(object):
     def __init__(self):
         self.network_graph = Graph()
         self.routing_model = BinPackingRouting()
+        self.predictor = FlowSizePredictor()
         self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
+        self.active_flows = [] # lista de ActiveFlow
 
     def initializeNetworkGraph(self):
         # 1. Consome topologia floodlight
@@ -72,14 +78,47 @@ class LookAheadRLApp(object):
 
         return response_data
 
-    def setSwitchCurrentFlows(self):
+    def containsFlowAsActive(self, flow):
+        for item in self.active_flows:
+            if flow.id == item.id:
+                return True
+        return False
+
+    def addActiveFlow(self, flow):
+        if not self.containsFlowAsActive(flow):
+            self.active_flows.append(flow)
+
+
+    def getSwitchCurrentFlows(self):
         # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
+        active_flows = []
 
         for item in response_data:
             # item é o switch DPID
             self.switch_info[item] = response_data[item]
+
+        for item in self.switch_info:
+            for flow in item['flows']:
+                active_flow = ActiveFlow(
+                    eth_dst=flow["match"]["eth_dst"],
+                    eth_src=flow["match"]["eth_src"],
+                    ipv4_dst=flow["match"]["ipv4_dst"],
+                    ipv4_src=flow["match"]["ipv4_src"],
+                    eth_type=flow["match"]["eth_type"],
+                    in_port=flow["match"]["in_port"]
+                )
+                # Add features that will be used for prediction
+                active_flow.features.append(flow["hard_timeout_s"])
+                active_flow.features.append(flow["byte_count"])
+                active_flow.features.append(flow["idle_timeout_s"])
+                active_flow.features.append(flow["packet_count"])
+                active_flow.features.append(flow["duration_sec"])
+                active_flows.append(active_flow)
+
+        return active_flows
+
 
     def listNetworkDevices(self):
         # List static flows for a switch or all switches
@@ -125,10 +164,18 @@ class LookAheadRLApp(object):
             #    }
             self.switch_info[switch_dpid]["statistics"] = item
 
+        def shouldReroute(self, predicted_size):
+            if predicted_size > THRESHOLD:
+                return True
+            return False
 
     def run(self):
+        # Create network graph
         self.initializeNetworkGraph()
         self.routing_model.setNetworkGraph(self.network_graph)
+
+        # Train prediction model
+        self.predictor.trainModel()
 
         self.enableSwitchStatisticsEndpoit()
 
@@ -140,15 +187,26 @@ class LookAheadRLApp(object):
         # # custo = 1 / capacidade_atual
         # min_cost_path = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
         # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
-        #
-        # self.getNetworkSummary()
-        # self.listNetworkDevices()
 
-        # Fluxos correntes e estatítiscas estão aramazenados em self.switch_info
-        self.setSwitchCurrentFlows()
-        self.setSwitchStatistics()
 
-        # Usar estatísticas do fluxo para prever o tamanho total dele
+        # Fluxos correntes adicionados as listas a cada 5 segundos
+        while True:
+            # Estatítiscas estão aramazenados em self.switch_info
+            self.setSwitchStatistics()
+
+            flows = self.getSwitchCurrentFlows()
+
+            # Usar estatísticas do fluxo para prever o tamanho total dele
+            for flow in flows:
+                predicted_size = self.predictor.predictFlowSize(flow.features)
+
+                if self.shouldReroute(predicted_size):
+                    source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
+                    target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
+                    new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
+
+            time.sleep(5)
+
 
 
 

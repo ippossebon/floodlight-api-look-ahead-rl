@@ -1,0 +1,86 @@
+{
+  "00:00:00:00:00:00:00:01":
+  {
+    "statistics": {
+      "updated": "Mon Sep 02 16:07:47 EDT 2019",
+      "bits-per-second-tx": "60",
+      "link-speed-bits-per-second": "10000000",
+      "dpid": "00:00:00:00:00:00:00:01",
+      "bits-per-second-rx": "60",
+      "port": "3"
+    },
+    "flows": [
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "294",
+        "idle_timeout_s": "5",
+        "duration_nsec": "608000000",
+        "packet_count": "3",
+        "duration_sec": "3",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199758057472",
+        "match": {
+          "eth_dst": "00:00:00:00:00:02",
+          "ipv4_dst": "10.0.0.2",
+          "ipv4_src": "10.0.0.1",
+          "eth_type": "0x800",
+          "eth_src": "00:00:00:00:00:01",
+          "in_port": "1"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=2"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "392",
+        "idle_timeout_s": "5",
+        "duration_nsec": "598000000",
+        "packet_count": "4",
+        "duration_sec": "3",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199774834688",
+        "match": {
+          "eth_dst": "00:00:00:00:00:01",
+          "ipv4_dst": "10.0.0.1",
+          "ipv4_src": "10.0.0.2",
+          "eth_type": "0x800",
+          "eth_src": "00:00:00:00:00:02",
+          "in_port": "3"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=1"
+          }
+        }
+      },
+      {
+        "priority": "0",
+        "hard_timeout_s": "0",
+        "byte_count": "1165847",
+        "idle_timeout_s": "0",
+        "duration_nsec": "929000000",
+        "packet_count": "6366",
+        "duration_sec": "1299",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "0",
+        "match": {},
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=controller"
+          }
+        }
+      }
+    ]
+  }
+} 

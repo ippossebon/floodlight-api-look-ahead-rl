@@ -6,7 +6,7 @@ from graphModel.graph import Graph
 from graphModel.link import Link
 from graphModel.node import Node
 
-from predictor.flowSizePredictor import FlowSizePredictor
+from prediction.flowSizePredictor import FlowSizePredictor
 
 from routing.binPacking import BinPackingRouting
 

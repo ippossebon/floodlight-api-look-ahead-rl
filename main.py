@@ -177,7 +177,7 @@ class LookAheadRLApp(object):
         # Train prediction model
         self.predictor.trainModel()
 
-        self.enableSwitchStatisticsEndpoit()
+        # self.enableSwitchStatisticsEndpoit()
 
         # # Testando caminho de custo mínimo
         # source_switch_id = '00:00:00:00:00:00:00:01'
@@ -190,22 +190,22 @@ class LookAheadRLApp(object):
 
 
         # Fluxos correntes adicionados as listas a cada 5 segundos
-        while True:
-            # Estatítiscas estão aramazenados em self.switch_info
-            self.setSwitchStatistics()
-
-            flows = self.getSwitchCurrentFlows()
-
-            # Usar estatísticas do fluxo para prever o tamanho total dele
-            for flow in flows:
-                predicted_size = self.predictor.predictFlowSize(flow.features)
-
-                if self.shouldReroute(predicted_size):
-                    source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
-                    target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
-                    new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
-
-            time.sleep(5)
+        # while True:
+        #     # Estatítiscas estão aramazenados em self.switch_info
+        #     self.setSwitchStatistics()
+        #
+        #     flows = self.getSwitchCurrentFlows()
+        #
+        #     # Usar estatísticas do fluxo para prever o tamanho total dele
+        #     for flow in flows:
+        #         predicted_size = self.predictor.predictFlowSize(flow.features)
+        #
+        #         if self.shouldReroute(predicted_size):
+        #             source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
+        #             target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
+        #             new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
+        #
+        #     time.sleep(5)
 
 
 

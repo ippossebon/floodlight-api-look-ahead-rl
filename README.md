@@ -2,7 +2,7 @@
 
 
 
-# FLOW features
+**FLOW features**
 
 Data format for each flow on `/wm/core/switch/all/flow/json`:
 
@@ -33,7 +33,7 @@ Data format for each flow on `/wm/core/switch/all/flow/json`:
 }
 ```
 
-# SWITCH features
+**SWITCH features**
 
 Data format from `/wm/statistics/bandwidth/all/all/json`:
 

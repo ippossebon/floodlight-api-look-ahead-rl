@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from graphModel.activeFlow import ActiveFlow
 from graphModel.flow import Flow
 from graphModel.graph import Graph
@@ -16,7 +14,7 @@ import requests
 import time
 
 CONTROLLER_HOST = 'http://0.0.0.0:8080'
-THRESHOLD = 10
+THRESHOLD = 10 # IDEAFIX uses 10MB or 10 seg
 
 
 class LookAheadRLApp(object):

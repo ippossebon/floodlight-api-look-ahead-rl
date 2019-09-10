@@ -76,3 +76,8 @@ class FlowSizePredictor(object):
         prediction = self.model.predict(data)
 
         return prediction
+
+
+# if __name__ == '__main__':
+#     predictor = FlowSizePredictor()
+#     predictor.trainModel()

@@ -80,8 +80,8 @@ class LookAheadRLApp(object):
         snapshot_count = 0
         snapshots = []
 
-        timeout_minutes = 3
-        timeout = time.time() + 60*timeout_minutes   # 3 minutes from now
+        timeout_minutes = 10
+        timeout = time.time() + 60*timeout_minutes   # 10 minutes from now
         while True:
             # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
             response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))

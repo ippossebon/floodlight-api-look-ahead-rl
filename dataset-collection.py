@@ -123,7 +123,7 @@ class LookAheadRLApp(object):
 
 
         # Escreve no arquivo de snapshots
-        with open('snapshots1.csv', 'w+', newline='') as csvfile:
+        with open('./snapshots1.csv', 'w+', newline='') as csvfile:
             print('vai escrever o arquivo')
             spamwriter = csv.writer(csvfile, delimiter=',')
             for item in snapshots:

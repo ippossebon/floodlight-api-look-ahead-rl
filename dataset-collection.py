@@ -79,6 +79,8 @@ class LookAheadRLApp(object):
         snapshot_count = 0
         snapshots = []
 
+        timeout_minutes = 3
+        timeout = time.time() + 60*timeout_minutes   # 3 minutes from now
         while True:
             # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
             response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
@@ -110,13 +112,22 @@ class LookAheadRLApp(object):
                         ]
                         snapshots.append(snapshot)
             snapshot_count = snapshot_count + 1
+
+            # Coleta snapshots por N minutos
+            test = 0
+            if test == timeout_minutes or time.time() > timeout:
+                break
+            test = test - 1
+
             time.sleep(5)
+
 
         # Escreve no arquivo de snapshots
         with open('snapshots.csv', 'w', newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=',')
             for item in snapshots:
                 spamwriter.writerow(item)
+
 
     def listNetworkDevices(self):
         # List static flows for a switch or all switches

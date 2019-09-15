@@ -183,7 +183,10 @@ class LookAheadRLApp(object):
 
             # Usar estatísticas do fluxo para prever o tamanho total dele
             for flow in self.active_flows:
-                info_line = [flow.id, snapshot_count, flow.features.items()]
+                info_line = list(flow.features)
+                info_line.instert(0, flow_id)
+                info_line.instert(1, snapshot_count)
+
                 print(info_line)
                 # predicted_size = self.predictor.predictFlowSize(flow.features)
 

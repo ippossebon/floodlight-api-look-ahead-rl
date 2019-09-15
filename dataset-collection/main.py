@@ -113,8 +113,8 @@ class LookAheadRLApp(object):
 
                         # considera pacotes sem IPv4 (ex. ARP)
                         contains_ipv4_info = True if "ipv4_dst" in flow['match'].keys() else False
-                        ipv4_dst = flow['match']["ipv4_dst"] if contains_ipv4_info else None 
-                        ipv4_src = flow['match']["ipv4_src"] if contains_ipv4_info else None 
+                        ipv4_dst = flow['match']["ipv4_dst"] if contains_ipv4_info else None
+                        ipv4_src = flow['match']["ipv4_src"] if contains_ipv4_info else None
 
                         new_flow = ActiveFlow(
                             eth_dst=flow['match']["eth_dst"],
@@ -133,7 +133,7 @@ class LookAheadRLApp(object):
                         ]
                         new_flow.features.append(snapshot)
                         self.active_flows.append(new_flow)
-                        
+
 
     def listNetworkDevices(self):
         # List static flows for a switch or all switches
@@ -175,24 +175,26 @@ class LookAheadRLApp(object):
 
 
         # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos
+        snapshot_count = 0
         while True:
             # Estatítiscas estão aramazenados em self.switch_info
             self.setSwitchStatistics()
             self.setFlowsSnapshots()
-        
+
             # Usar estatísticas do fluxo para prever o tamanho total dele
-            print('-------- Time slot -------')
             for flow in self.active_flows:
-                print(flow.features)
+                info_line = [flow.id, snapshot_count, flow.features.items()]
+                print(info_line)
                 # predicted_size = self.predictor.predictFlowSize(flow.features)
-        
+
                 # if self.shouldReroute(predicted_size):
                 #     source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
                 #     target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
                 #     new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
+            snapshot_count = snapshot_count + 1
+            time.sleep(10)
             print('---------------------------------------------')
 
-            time.sleep(10)
 
 
 

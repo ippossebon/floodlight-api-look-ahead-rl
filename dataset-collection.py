@@ -10,6 +10,7 @@ from routing.binPacking import BinPackingRouting
 
 from operator import attrgetter
 
+import csv
 import requests
 import time
 
@@ -75,65 +76,48 @@ class LookAheadRLApp(object):
                 return item
         return None
 
-    def setFlowsSnapshots(self):
-        # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
-        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
+    def collectSnapshots(self):
+        snapshot_count = 0
+        snapshots = []
 
-        # Guarda todos os fluxos relativos a cada switch
-        for item in response_data:
-            # item é o switch DPID
-            self.switch_info[item] = response_data[item]
+        while True:
+            # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
+            response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+            response_data = response.json()
 
-        # Para cada fluxo ativo em cada um dos switches
-        for switch_id in self.switch_info.keys():
-            print('self.switch_info[switch_id] ', self.switch_info[switch_id])
-            for flow in self.switch_info[switch_id]['flows']:
-                if flow['match']: # checa se existem fluxos correntes
-                    flow_id = '{eth_dst}-{eth_src}-{in_port}-{eth_type}'.format(
-                        eth_dst=flow['match']["eth_dst"],
-                        eth_src=flow['match']["eth_src"],
-                        in_port=flow['match']["in_port"],
-                        eth_type=flow['match']["eth_type"]
-                    )
-                    flow_item = self.getFlow(flow_id)
+            # Guarda todos os fluxos relativos a cada switch
+            for item in response_data:
+                # item é o switch DPID
+                self.switch_info[item] = response_data[item]
 
-                    if flow_item:
-                        # Se o fluxo já existe (ou seja, é um fluxo ativo na rede), appenda features
-                        snapshot = [
-                            flow["hard_timeout_s"],
-                            flow["byte_count"],
-                            flow["idle_timeout_s"],
-                            flow["packet_count"],
-                            flow["duration_sec"]
-                        ]
-                        flow_item.features.append(snapshot)
-                    else:
-                        ## É um novo fluxo na rede
-
-                        # considera pacotes sem IPv4 (ex. ARP)
-                        contains_ipv4_info = True if "ipv4_dst" in flow['match'].keys() else False
-                        ipv4_dst = flow['match']["ipv4_dst"] if contains_ipv4_info else None
-                        ipv4_src = flow['match']["ipv4_src"] if contains_ipv4_info else None
-
-                        new_flow = ActiveFlow(
+            # Para cada fluxo ativo em cada um dos switches
+            for switch_id in self.switch_info.keys():
+                for flow in self.switch_info[switch_id]['flows']:
+                    if flow['match']: # checa se existem fluxos correntes
+                        flow_id = '{eth_dst}-{eth_src}-{in_port}-{eth_type}'.format(
                             eth_dst=flow['match']["eth_dst"],
                             eth_src=flow['match']["eth_src"],
-                            ipv4_dst=ipv4_dst,
-                            ipv4_src=ipv4_src,
-                            eth_type=flow['match']["eth_type"],
-                            in_port=flow['match']["in_port"]
+                            in_port=flow['match']["in_port"],
+                            eth_type=flow['match']["eth_type"]
                         )
                         snapshot = [
+                            snapshot_count,
+                            flow_id,
                             flow["hard_timeout_s"],
                             flow["byte_count"],
                             flow["idle_timeout_s"],
                             flow["packet_count"],
                             flow["duration_sec"]
                         ]
-                        new_flow.features.append(snapshot)
-                        self.active_flows.append(new_flow)
+                        snapshots.append(snapshot)
+            snapshot_count = snapshot_count + 1
+            time.sleep(5)
 
+        # Escreve no arquivo de snapshots
+        with open('snapshots.csv', 'w', newline='') as csvfile:
+            spamwriter = csv.writer(csvfile, delimiter=',')
+            for item in snapshots:
+                spamwriter.writerow(item)
 
     def listNetworkDevices(self):
         # List static flows for a switch or all switches
@@ -170,33 +154,34 @@ class LookAheadRLApp(object):
         self.initializeNetworkGraph()
         self.routing_model.setNetworkGraph(self.network_graph)
 
+        self.setSwitchStatistics()
+        self.collectSnapshots()
         # Train prediction model
         # self.predictor.trainModel()
 
 
         # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos
-        snapshot_count = 0
-        while True:
             # Estatítiscas estão aramazenados em self.switch_info
-            self.setSwitchStatistics()
-            self.setFlowsSnapshots()
+
 
             # Usar estatísticas do fluxo para prever o tamanho total dele
-            for flow in self.active_flows:
-                info_line = list(flow.features)
-                info_line.insert(0, flow.id)
-                info_line.insert(1, snapshot_count)
-
-                print(info_line)
-                # predicted_size = self.predictor.predictFlowSize(flow.features)
-
-                # if self.shouldReroute(predicted_size):
-                #     source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
-                #     target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
-                #     new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
-            snapshot_count = snapshot_count + 1
-            time.sleep(10)
-            print('---------------------------------------------')
+            # for flow in self.active_flows:
+            #     info_line = list(flow.features)
+            #     # Features contem todos os snapshots ja coletados... Precisamos pegar apenas um snapshot
+            #
+            #     info_line.insert(0, flow.id)
+            #     info_line.insert(1, snapshot_count)
+            #
+            #     print(info_line)
+            #     # predicted_size = self.predictor.predictFlowSize(flow.features)
+            #
+            #     # if self.shouldReroute(predicted_size):
+            #     #     source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
+            #     #     target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
+            #     #     new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
+            # snapshot_count = snapshot_count + 1
+            # time.sleep(10)
+            # print('---------------------------------------------')
 
 
 

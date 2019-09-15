@@ -80,8 +80,8 @@ class LookAheadRLApp(object):
         snapshot_count = 0
         snapshots = []
 
-        timeout_minutes = 10
-        timeout = time.time() + 60*timeout_minutes   # 10 minutes from now
+        timeout_minutes = 25 # will run for 25 minutes
+        timeout = time.time() + 60*timeout_minutes
         while True:
             # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
             response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
@@ -102,6 +102,7 @@ class LookAheadRLApp(object):
                             in_port=flow['match']["in_port"],
                             eth_type=flow['match']["eth_type"]
                         )
+                        timestamp = datetime.datetime.now()
                         snapshot = [
                             snapshot_count,
                             flow_id,
@@ -109,7 +110,8 @@ class LookAheadRLApp(object):
                             flow["byte_count"],
                             flow["idle_timeout_s"],
                             flow["packet_count"],
-                            flow["duration_sec"]
+                            flow["duration_sec"],
+                            timestamp
                         ]
                         snapshots.append(snapshot)
             snapshot_count = snapshot_count + 1

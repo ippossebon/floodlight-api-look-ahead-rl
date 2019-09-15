@@ -22,7 +22,6 @@ class LookAheadRLApp(object):
     def __init__(self):
         self.network_graph = Graph()
         self.routing_model = BinPackingRouting()
-        self.predictor = FlowSizePredictor()
         self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
         self.active_flows = [] # lista de ActiveFlow
 

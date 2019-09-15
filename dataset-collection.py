@@ -11,6 +11,7 @@ from routing.binPacking import BinPackingRouting
 from operator import attrgetter
 
 import csv
+import datetime
 import requests
 import time
 
@@ -123,8 +124,8 @@ class LookAheadRLApp(object):
 
 
         # Escreve no arquivo de snapshots
-        with open('./snapshots1.csv', 'w+', newline='') as csvfile:
-            print('vai escrever o arquivo')
+        file_name = './snapshot-{0}.csv'.format(datetime.datetime.now())
+        with open(file_name, 'w+', newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=',')
             for item in snapshots:
                 print('.', end = '')

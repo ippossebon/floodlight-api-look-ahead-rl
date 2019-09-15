@@ -80,7 +80,7 @@ class LookAheadRLApp(object):
         snapshot_count = 0
         snapshots = []
 
-        timeout_minutes = 25 # will run for 25 minutes
+        timeout_minutes = 63 # will run for 63 minutes
         timeout = time.time() + 60*timeout_minutes
         while True:
             # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.

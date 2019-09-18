@@ -1,4 +1,4 @@
-**Dataset collection**
+- **Dataset collection**
 
 
 Flows duration (seconds):
@@ -39,7 +39,7 @@ h1 -> h4
 h2 -> h4
 h3 -> h4
 
-**Features collected for each snapshot**
+- **Features collected for each snapshot**
 
 
 snapshot_count,
@@ -53,7 +53,7 @@ timestamp
 
 
 
-**File format**
+- **File format**
 
 
 One instance per line, with the features on the following order:

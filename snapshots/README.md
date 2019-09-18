@@ -1,4 +1,6 @@
-**Dataset collection**
+- **Dataset collection**
+
+
 Flows duration (seconds):
 7
 9
@@ -37,7 +39,9 @@ h1 -> h4
 h2 -> h4
 h3 -> h4
 
-**Features collected for each snapshot**
+- **Features collected for each snapshot**
+
+
 snapshot_count,
 flow_id,
 flow["hard_timeout_s"],
@@ -47,8 +51,14 @@ flow["packet_count"],
 flow["duration_sec"],
 timestamp
 
-* File format
+
+
+- **File format**
+
+
 One instance per line, with the features on the following order:
+
+
 `snapshot_count, flow_id, flow["hard_timeout_s"], flow["byte_count"], flow["idle_timeout_s"], flow["packet_count"], flow["duration_sec"], timestamp`
 
 Each snapshot file corresponds to a flow.

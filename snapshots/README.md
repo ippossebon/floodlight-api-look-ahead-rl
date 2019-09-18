@@ -51,7 +51,9 @@ flow["packet_count"],
 flow["duration_sec"],
 timestamp
 
-* File format
+
+
+**File format**
 
 
 One instance per line, with the features on the following order:

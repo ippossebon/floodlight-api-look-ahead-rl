@@ -80,7 +80,7 @@ class LookAheadRLApp(object):
         snapshot_count = 0
         snapshots = []
 
-        timeout_minutes = 660 # will run for 660 minutes (11 horas)
+        timeout_minutes = 5 # will run for 660 minutes (11 horas)
         timeout = time.time() + 60*timeout_minutes
         while True:
             # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
@@ -91,47 +91,49 @@ class LookAheadRLApp(object):
             for item in response_data:
                 # item é o switch DPID
                 self.switch_info[item] = response_data[item]
+                print(item)
 
-            # Para cada fluxo ativo em cada um dos switches
-            for switch_id in self.switch_info.keys():
-                for flow in self.switch_info[switch_id]['flows']:
-                    if flow['match']: # checa se existem fluxos correntes
-                        flow_id = '{eth_dst}-{eth_src}-{in_port}-{eth_type}'.format(
-                            eth_dst=flow['match']["eth_dst"],
-                            eth_src=flow['match']["eth_src"],
-                            in_port=flow['match']["in_port"],
-                            eth_type=flow['match']["eth_type"]
-                        )
-                        timestamp = datetime.datetime.now()
-                        snapshot = [
-                            snapshot_count,
-                            flow_id,
-                            flow["hard_timeout_s"],
-                            flow["byte_count"],
-                            flow["idle_timeout_s"],
-                            flow["packet_count"],
-                            flow["duration_sec"],
-                            timestamp
-                        ]
-                        snapshots.append(snapshot)
-            snapshot_count = snapshot_count + 1
-
-            # Coleta snapshots por N minutos
-            test = 0
-            if test == timeout_minutes or time.time() > timeout:
-                break
-            test = test - 1
-
+            # # Para cada fluxo ativo em cada um dos switches
+            # for switch_id in self.switch_info.keys():
+            #     for flow in self.switch_info[switch_id]['flows']:
+            #         if flow['match']: # checa se existem fluxos correntes
+            #             flow_id = '{eth_dst}-{eth_src}-{in_port}-{eth_type}'.format(
+            #                 eth_dst=flow['match']["eth_dst"],
+            #                 eth_src=flow['match']["eth_src"],
+            #                 in_port=flow['match']["in_port"],
+            #                 eth_type=flow['match']["eth_type"]
+            #             )
+            #             timestamp = datetime.datetime.now()
+            #             snapshot = [
+            #                 snapshot_count,
+            #                 flow_id,
+            #                 flow["hard_timeout_s"],
+            #                 flow["byte_count"],
+            #                 flow["idle_timeout_s"],
+            #                 flow["packet_count"],
+            #                 flow["duration_sec"],
+            #                 timestamp
+            #             ]
+            #             print(snapshot)
+            #             snapshots.append(snapshot)
+            # snapshot_count = snapshot_count + 1
+            #
+            # # Coleta snapshots por N minutos
+            # test = 0
+            # if test == timeout_minutes or time.time() > timeout:
+            #     break
+            # test = test - 1
+            print('---------------')
             time.sleep(5)
 
 
         # Escreve no arquivo de snapshots
-        file_name = './snapshot-{0}.csv'.format(datetime.datetime.now())
-        with open(file_name, 'w+', newline='') as csvfile:
-            spamwriter = csv.writer(csvfile, delimiter=',')
-            for item in snapshots:
-                print('.', end = '')
-                spamwriter.writerow(item)
+        # file_name = './snapshot-{0}.csv'.format(datetime.datetime.now())
+        # with open(file_name, 'w+', newline='') as csvfile:
+        #     spamwriter = csv.writer(csvfile, delimiter=',')
+        #     for item in snapshots:
+        #         print('.', end = '')
+        #         spamwriter.writerow(item)
 
 
     def listNetworkDevices(self):

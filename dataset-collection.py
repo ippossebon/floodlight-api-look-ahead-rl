@@ -86,12 +86,13 @@ class LookAheadRLApp(object):
             # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
             response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
             response_data = response.json()
+            print(response_data)
 
             # Guarda todos os fluxos relativos a cada switch
             for item in response_data:
                 # item é o switch DPID
                 self.switch_info[item] = response_data[item]
-                print(item)
+                # print(response_data[item])
 
             # # Para cada fluxo ativo em cada um dos switches
             # for switch_id in self.switch_info.keys():

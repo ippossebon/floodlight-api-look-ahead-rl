@@ -81,7 +81,7 @@ class LookAheadRLApp(object):
         snapshot_count = 0
         snapshots = {}
 
-        timeout_minutes = 3 # will run for 660 minutes (11 horas)
+        timeout_minutes = 360 # will run for 660 minutes (11 horas)
         timeout = time.time() + 60*timeout_minutes
 
         while True:

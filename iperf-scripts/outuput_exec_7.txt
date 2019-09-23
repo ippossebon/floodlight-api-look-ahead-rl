@@ -1,0 +1,420 @@
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 36464 connected with 10.0.0.2 port 5001
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 52574 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0- 7.0 sec  6.26 GBytes  7.64 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 48482 connected with 10.0.0.2 port 5001
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 42532 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0- 7.0 sec  3.33 GBytes  4.09 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 37154 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0- 7.0 sec  6.83 GBytes  8.37 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 55392 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0- 9.0 sec  8.78 GBytes  8.38 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 36852 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0- 9.0 sec  7.15 GBytes  6.82 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 53352 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0- 9.0 sec  8.86 GBytes  8.45 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 43476 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-10.0 sec  8.98 GBytes  7.71 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 55088 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-10.0 sec  7.88 GBytes  6.77 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 43470 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-10.0 sec  9.65 GBytes  8.28 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 33038 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-20.0 sec  18.0 GBytes  7.72 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 34362 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-20.0 sec  16.1 GBytes  6.92 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 51072 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-20.0 sec  19.1 GBytes  8.19 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 41016 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-24.0 sec  21.6 GBytes  7.73 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 48900 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-24.0 sec  20.6 GBytes  7.36 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 37444 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-24.0 sec  23.8 GBytes  8.51 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 55530 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-36.0 sec  33.0 GBytes  7.86 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 56888 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-36.0 sec  28.5 GBytes  6.79 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 45516 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-36.0 sec  33.8 GBytes  8.06 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 35640 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-42.0 sec  38.5 GBytes  7.88 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 48094 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-42.0 sec  33.1 GBytes  6.77 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 35996 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-42.0 sec  39.2 GBytes  8.03 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 53962 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-58.0 sec  55.3 GBytes  8.18 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 39062 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-58.0 sec  48.0 GBytes  7.11 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 55790 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-58.0 sec  54.6 GBytes  8.08 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 45262 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-69.0 sec  58.0 GBytes  7.22 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 50004 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-69.0 sec  56.1 GBytes  6.98 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 38906 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-69.0 sec  62.8 GBytes  7.81 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 57252 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-76.0 sec  71.0 GBytes  8.03 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 46982 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-76.0 sec  68.2 GBytes  7.70 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size:  340 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 35982 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-76.0 sec  69.9 GBytes  7.90 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 54188 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-81.0 sec  73.6 GBytes  7.81 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 51534 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-81.0 sec  64.2 GBytes  6.81 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 40054 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-81.0 sec  75.0 GBytes  7.95 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 58136 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-99.0 sec  89.8 GBytes  7.79 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 59182 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-99.0 sec  77.6 GBytes  6.73 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 47810 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-99.0 sec  91.0 GBytes  7.89 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 37952 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-115.0 sec   104 GBytes  7.74 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 41540 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-115.0 sec  88.3 GBytes  6.60 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 58952 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-115.0 sec   109 GBytes  8.11 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 49034 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-120.0 sec   104 GBytes  7.44 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 60970 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-120.0 sec  95.7 GBytes  6.85 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 50082 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-120.0 sec   108 GBytes  7.75 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 40184 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-150.0 sec   136 GBytes  7.80 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 50516 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-150.0 sec   117 GBytes  6.73 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 39378 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-150.0 sec   138 GBytes  7.88 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 57430 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-200.0 sec   182 GBytes  7.81 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 46416 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-200.0 sec   155 GBytes  6.65 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 35098 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-200.0 sec   185 GBytes  7.96 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 52784 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-300.0 sec   276 GBytes  7.90 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 52010 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-300.0 sec   236 GBytes  6.75 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 40758 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-300.0 sec   273 GBytes  7.81 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 59000 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-500.0 sec   448 GBytes  7.69 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 52716 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-500.0 sec   393 GBytes  6.75 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 41434 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-500.0 sec   447 GBytes  7.67 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 59564 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-800.0 sec   651 GBytes  6.99 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.1 port 37496 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-800.0 sec   654 GBytes  7.02 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.3 port 54308 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-800.0 sec   705 GBytes  7.57 Gbits/sec
+------------------------------------------------------------
+Client connecting to 10.0.0.2, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[ 27] local 10.0.0.4 port 44330 connected with 10.0.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-1000.0 sec   885 GBytes  7.60 Gbits/sec
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-1000.0 sec   797 GBytes  6.85 Gbits/sec
+[ ID] Interval       Transfer     Bandwidth
+[ 27]  0.0-1000.0 sec   950 GBytes  8.16 Gbits/sec

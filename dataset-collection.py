@@ -12,6 +12,7 @@ from operator import attrgetter
 
 import csv
 import datetime
+import json
 import requests
 import time
 
@@ -78,20 +79,25 @@ class LookAheadRLApp(object):
 
     def collectSnapshots(self):
         snapshot_count = 0
-        snapshots = []
+        snapshots = {}
 
         timeout_minutes = 5 # will run for 660 minutes (11 horas)
         timeout = time.time() + 60*timeout_minutes
+
         while True:
             # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
             response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
             response_data = response.json()
-            print(response_data)
+            timestamp = datetime.datetime.now()
 
+            snapshot[timestamp] = response_data
+            print(timestamp)
+            print('---------------')
+            time.sleep(5)
             # Guarda todos os fluxos relativos a cada switch
-            for item in response_data:
-                # item é o switch DPID
-                self.switch_info[item] = response_data[item]
+            # for item in response_data:
+            #     # item é o switch DPID
+            #     self.switch_info[item] = response_data[item]
                 # print(response_data[item])
 
             # # Para cada fluxo ativo em cada um dos switches
@@ -119,17 +125,19 @@ class LookAheadRLApp(object):
             #             snapshots.append(snapshot)
             # snapshot_count = snapshot_count + 1
             #
-            # # Coleta snapshots por N minutos
-            # test = 0
-            # if test == timeout_minutes or time.time() > timeout:
-            #     break
-            # test = test - 1
-            print('---------------')
-            time.sleep(5)
+            # Coleta snapshots por N minutos
+            test = 0
+            if test == timeout_minutes or time.time() > timeout:
+                break
+            test = test - 1
+
 
 
         # Escreve no arquivo de snapshots
-        # file_name = './snapshot-{0}.csv'.format(datetime.datetime.now())
+        snapshots_json = json.dumps(snapshots)
+        with open('snahpshots-json.txt', 'w+') as json_file:
+            json.dump(snapshots_json, json_file)
+
         # with open(file_name, 'w+', newline='') as csvfile:
         #     spamwriter = csv.writer(csvfile, delimiter=',')
         #     for item in snapshots:

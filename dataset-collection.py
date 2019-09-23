@@ -90,7 +90,7 @@ class LookAheadRLApp(object):
             response_data = response.json()
             timestamp = datetime.datetime.now()
 
-            snapshot[timestamp] = response_data
+            snapshots[timestamp] = response_data
             print(timestamp)
             print('---------------')
             time.sleep(5)

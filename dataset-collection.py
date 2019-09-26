@@ -92,6 +92,7 @@ class LookAheadRLApp(object):
 
                 # press right key to stop recording and create new file
                 if keyboard.is_pressed('right'):
+                    print('Right key pressed')
                     # stop collecting this snapshot and go to next
                     snapshot_count = 0
                     snapshots = {}
@@ -101,6 +102,7 @@ class LookAheadRLApp(object):
                     filename = './snapshots-json-{0}.txt'.format(timestamp)
                     with open(filename, 'w+') as json_file:
                         json.dump(snapshots_json, json_file)
+                    print('File {0} created. Going to next one.'.format(filename))
 
                 # Coleta snapshots a cada 5 segundos
                 time.sleep(5)

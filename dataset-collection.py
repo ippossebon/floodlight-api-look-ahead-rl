@@ -97,7 +97,7 @@ class LookAheadRLApp(object):
             snapshot_count = 0
             snapshots = {}
 
-            timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+            timestamp = datetime.datetime.now().strftime("%m/%d/%Y-%H:%M:%S")
             snapshots_json = json.dumps(snapshots)
             filename = './snapshots-{0}.txt'.format(timestamp)
             with open(filename, 'w+') as json_file:

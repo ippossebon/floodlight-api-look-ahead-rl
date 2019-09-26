@@ -1,8 +1,8 @@
 import json
 
 data = {}
-with open('snahpshots-json.txt', 'r') as infile, \
-     open('snahpshots-json-formatted.txt', 'w+') as outfile:
+with open('./snapshots-json-20gb.txt', 'r') as infile, \
+     open('./snapshots-json-20gb-formatted.txt', 'w+') as outfile:
     data = infile.read()
     data = data.replace("\\", "")
     outfile.write(data)

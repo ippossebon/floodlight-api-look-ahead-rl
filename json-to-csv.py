@@ -2,7 +2,7 @@ import csv
 import datetime
 import json
 
-with open('./snahpshots-json-formatted.txt', 'r') as jsonfile:
+with open('./snapshots-json-20gb-formatted.txt', 'r') as jsonfile:
     data = json.load(jsonfile)
 
 csv_lines = []
@@ -47,8 +47,8 @@ for timestamp in data.keys():
 
 
 # Cria arquivo CSV de saida
-timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-filename = './snapshots/csv/snapshots-{0}.csv'.format(timestamp)
+# timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+filename = './snapshots/csv/ssnapshots-json-20gb.csv'
 with open(filename, 'w+') as csvfile:
     spamwriter = csv.writer(csvfile, delimiter=';')
     spamwriter.writerow(['timeslot', 'eth_dst', 'eth_src', 'eth_type', 'ipv4_src', 'ipv4_dst', 'in_port', 'packet_count', 'byte_count', 'duration_sec', 'idle_timeout_s', 'hard_timeout_s', 'priority', 'flow_id'])

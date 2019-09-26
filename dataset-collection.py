@@ -10,7 +10,7 @@ from routing.binPacking import BinPackingRouting
 
 from operator import attrgetter
 
-import cv2
+import keyboard
 import csv
 import datetime
 import json
@@ -90,11 +90,8 @@ class LookAheadRLApp(object):
                 timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 snapshots[timestamp] = response_data
 
-                key = cv2.waitKey(1) & 0xFF
-                if key == ord('q'):
-                    # press 'q' to exit
-                    break
-                elif key == ord('s'):
+                # press right key to stop recording and create new file
+                if keyboard.is_pressed('right')
                     # stop collecting this snapshot and go to next
                     snapshot_count = 0
                     snapshots = {}

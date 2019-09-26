@@ -91,7 +91,7 @@ class LookAheadRLApp(object):
                 snapshots[timestamp] = response_data
 
                 # press right key to stop recording and create new file
-                if keyboard.is_pressed('right')
+                if keyboard.is_pressed('right'):
                     # stop collecting this snapshot and go to next
                     snapshot_count = 0
                     snapshots = {}

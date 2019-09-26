@@ -10,6 +10,7 @@ from routing.binPacking import BinPackingRouting
 
 from operator import attrgetter
 
+import cv2
 import csv
 import datetime
 import json
@@ -80,23 +81,34 @@ class LookAheadRLApp(object):
     def collectSnapshots(self):
         snapshot_count = 0
         snapshots = {}
-
         try:
             while True:
                 # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
                 response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
                 response_data = response.json()
+
                 timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 snapshots[timestamp] = response_data
+
+                key = cv2.waitKey(1) & 0xFF
+                if key == ord('q'):
+                    # press 'q' to exit
+                    break
+                elif key == ord('s'):
+                    # stop collecting this snapshot and go to next
+                    snapshot_count = 0
+                    snapshots = {}
+
+                    timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                    snapshots_json = json.dumps(snapshots)
+                    filename = './snapshots-json-{0}.txt'.format(timestamp)
+                    with open(filename, 'w+') as json_file:
+                        json.dump(snapshots_json, json_file)
 
                 # Coleta snapshots a cada 5 segundos
                 time.sleep(5)
         except KeyboardInterrupt:
-            # Escreve no arquivo de snapshots
-            timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-            snapshots_json = json.dumps(snapshots)
-            with open('./snapshots-json-20gb.txt', 'w+') as json_file:
-                json.dump(snapshots_json, json_file)
+            print('Snapshot collectig finished')
 
             # with open(file_name, 'w+', newline='') as csvfile:
             #     spamwriter = csv.writer(csvfile, delimiter=',')

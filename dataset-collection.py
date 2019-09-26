@@ -84,66 +84,29 @@ class LookAheadRLApp(object):
         timeout_minutes = 360 # will run for 660 minutes (11 horas)
         timeout = time.time() + 60*timeout_minutes
 
-        while True:
-            # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
-            response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
-            response_data = response.json()
+        try:
+            while True:
+                # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
+                response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+                response_data = response.json()
+                timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                snapshots[timestamp] = response_data
+
+                # Coleta snapshots a cada 5 segundos
+                time.sleep(5)
+        except KeyboardInterrupt:
+            # Escreve no arquivo de snapshots
             timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+            filename = 'snahpshots-json-{0}.txt'.format(timestamp)
+            snapshots_json = json.dumps(snapshots)
+            with open(filenames, 'w+') as json_file:
+                json.dump(snapshots_json, json_file)
 
-
-            snapshots[timestamp] = response_data
-            print(timestamp)
-            print('---------------')
-            time.sleep(5)
-            # Guarda todos os fluxos relativos a cada switch
-            # for item in response_data:
-            #     # item é o switch DPID
-            #     self.switch_info[item] = response_data[item]
-                # print(response_data[item])
-
-            # # Para cada fluxo ativo em cada um dos switches
-            # for switch_id in self.switch_info.keys():
-            #     for flow in self.switch_info[switch_id]['flows']:
-            #         if flow['match']: # checa se existem fluxos correntes
-            #             flow_id = '{eth_dst}-{eth_src}-{in_port}-{eth_type}'.format(
-            #                 eth_dst=flow['match']["eth_dst"],
-            #                 eth_src=flow['match']["eth_src"],
-            #                 in_port=flow['match']["in_port"],
-            #                 eth_type=flow['match']["eth_type"]
-            #             )
-            #             timestamp = datetime.datetime.now()
-            #             snapshot = [
-            #                 snapshot_count,
-            #                 flow_id,
-            #                 flow["hard_timeout_s"],
-            #                 flow["byte_count"],
-            #                 flow["idle_timeout_s"],
-            #                 flow["packet_count"],
-            #                 flow["duration_sec"],
-            #                 timestamp
-            #             ]
-            #             print(snapshot)
-            #             snapshots.append(snapshot)
-            # snapshot_count = snapshot_count + 1
-            #
-            # Coleta snapshots por N minutos
-            test = 0
-            if test == timeout_minutes or time.time() > timeout:
-                break
-            test = test - 1
-
-
-
-        # Escreve no arquivo de snapshots
-        snapshots_json = json.dumps(snapshots)
-        with open('snahpshots-json.txt', 'w+') as json_file:
-            json.dump(snapshots_json, json_file)
-
-        # with open(file_name, 'w+', newline='') as csvfile:
-        #     spamwriter = csv.writer(csvfile, delimiter=',')
-        #     for item in snapshots:
-        #         print('.', end = '')
-        #         spamwriter.writerow(item)
+            # with open(file_name, 'w+', newline='') as csvfile:
+            #     spamwriter = csv.writer(csvfile, delimiter=',')
+            #     for item in snapshots:
+            #         print('.', end = '')
+            #         spamwriter.writerow(item)
 
 
     def listNetworkDevices(self):

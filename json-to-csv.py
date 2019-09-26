@@ -1,7 +1,8 @@
 import csv
+import datetime
 import json
 
-with open('./snapshots-isadora-teste.json', 'r') as jsonfile:
+with open('./snahpshots-json-formatted.txt', 'r') as jsonfile:
     data = json.load(jsonfile)
 
 csv_lines = []
@@ -25,13 +26,19 @@ for timestamp in data.keys():
                     )
                     instance = [
                         timeslot,
-                        flow_id,
+                        flow_item['match']['eth_dst'],
+                        flow_item['match']['eth_src'],
+                        flow_item['match']['eth_type'],
+                        flow_item['match']['ipv4_src'],
+                        flow_item['match']['ipv4_dst'],
+                        flow_item['match']['in_port'],
                         flow_item['packet_count'],
                         flow_item['byte_count'],
                         flow_item['duration_sec'],
                         flow_item['idle_timeout_s'],
                         flow_item['hard_timeout_s'],
-                        flow_item['priority']
+                        flow_item['priority'],
+                        flow_id
                     ]
                     csv_lines.append(instance)
                     print(instance)
@@ -40,9 +47,11 @@ for timestamp in data.keys():
 
 
 # Cria arquivo CSV de saida
-with open('./snapshots-isadora-teste.csv', 'w+') as csvfile:
+timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+filename = './snapshots/csv/snapshots-{0}.csv'.format(timestamp)
+with open(filename, 'w+') as csvfile:
     spamwriter = csv.writer(csvfile, delimiter=';')
-    spamwriter.writerow(['timeslot', 'flow_id', 'packet_count', 'byte_count', 'duration_sec', 'idle_timeout_s', 'hard_timeout_s', 'priority'])
+    spamwriter.writerow(['timeslot', 'eth_dst', 'eth_src', 'eth_type', 'ipv4_src', 'ipv4_dst', 'in_port', 'packet_count', 'byte_count', 'duration_sec', 'idle_timeout_s', 'hard_timeout_s', 'priority', 'flow_id'])
 
     for item in csv_lines:
         print('.', end = '')

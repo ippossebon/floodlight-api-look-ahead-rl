@@ -94,7 +94,7 @@ class LookAheadRLApp(object):
         except KeyboardInterrupt:
             # Escreve no arquivo de snapshots
             timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-            filename = 'snahpshots-json-{0}.txt'.format(timestamp)
+            filename = "snahpshots-json-{}.txt".format(timestamp)
             snapshots_json = json.dumps(snapshots)
             with open(filenames, 'w+') as json_file:
                 json.dump(snapshots_json, json_file)

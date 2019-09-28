@@ -80,35 +80,28 @@ class LookAheadRLApp(object):
     def collectSnapshots(self):
         snapshot_count = 0
         snapshots = {}
-        while True:
-            try:
+
+        try:
+            while True:
                 # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
                 response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
                 response_data = response.json()
-
                 timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 snapshots[timestamp] = response_data
 
                 # Coleta snapshots a cada 5 segundos
-                time.sleep(5)
-            except KeyboardInterrupt:
-                print('Ctrl + C pressed')
-                # stop collecting this snapshot and go to next
-                snapshot_count = 0
-                snapshots = {}
+                time.sleep(1)
+        except KeyboardInterrupt:
+            # Escreve no arquivo de snapshots
+            snapshots_json = json.dumps(snapshots)
+            with open('./snapshots-json-big-file.txt', 'w+') as json_file:
+                json.dump(snapshots_json, json_file)
 
-                timestamp = datetime.datetime.now().strftime("%m-%d-%Y-----%H:%M:%S")
-                snapshots_json = json.dumps(snapshots)
-                filename = './snapshots-{0}.txt'.format(timestamp)
-                with open(filename, 'w+') as json_file:
-                    json.dump(snapshots_json, json_file)
-                print('File {0} created. Going to next one.'.format(filename))
-                continue
-                # with open(file_name, 'w+', newline='') as csvfile:
-                #     spamwriter = csv.writer(csvfile, delimiter=',')
-                #     for item in snapshots:
-                #         print('.', end = '')
-                #         spamwriter.writerow(item)
+            # with open(file_name, 'w+', newline='') as csvfile:
+            #     spamwriter = csv.writer(csvfile, delimiter=',')
+            #     for item in snapshots:
+            #         print('.', end = '')
+            #         spamwriter.writerow(item)
 
 
     def listNetworkDevices(self):

@@ -84,6 +84,7 @@ class LookAheadRLApp(object):
         try:
             while True:
                 # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
+                # /wm/core/switch/<switchId>/<statType>/json
                 response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
                 response_data = response.json()
                 timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
@@ -94,7 +95,7 @@ class LookAheadRLApp(object):
         except KeyboardInterrupt:
             # Escreve no arquivo de snapshots
             snapshots_json = json.dumps(snapshots)
-            with open('./snapshots-json-big-file.txt', 'w+') as json_file:
+            with open('./snapshots-madrugada-30-set.txt', 'w+') as json_file:
                 json.dump(snapshots_json, json_file)
 
             # with open(file_name, 'w+', newline='') as csvfile:

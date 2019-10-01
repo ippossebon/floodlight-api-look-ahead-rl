@@ -84,35 +84,29 @@ class LookAheadRLApp(object):
         timeout = time.time() + minutes # 5 minutes from now
         test = 0
 
-        while True:
-            # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
-            # /wm/core/switch/<switchId>/<statType>/json
-            response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
-            response_data = response.json()
-            timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-            snapshots[timestamp] = response_data
+        try:
+            while True:
+                # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
+                # /wm/core/switch/<switchId>/<statType>/json
+                response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+                response_data = response.json()
+                timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                snapshots[timestamp] = response_data
 
-            # Coleta snapshots a cada 1 segundo
-            time.sleep(1)
+                # Coleta snapshots a cada 1 segundo
+                time.sleep(1)
 
-            if test == minutes or time.time() > timeout:
-                snapshots_json = json.dumps(snapshots)
-                with open('./snapshots-madrugada-30-set.txt', 'w+') as json_file:
-                    json.dump(snapshots_json, json_file)
-                break
-            test = test - 1
+                if test == minutes or time.time() > timeout:
+                    snapshots_json = json.dumps(snapshots)
+                    with open('./snapshots-madrugada-30-set.txt', 'w+') as json_file:
+                        json.dump(snapshots_json, json_file)
+                    break
+                test = test - 1
 
-
-
-            # with open(file_name, 'w+', newline='') as csvfile:
-            #     spamwriter = csv.writer(csvfile, delimiter=',')
-            #     for item in snapshots:
-            #         print('.', end = '')
-            #         spamwriter.writerow(item)
-
-        snapshots_json = json.dumps(snapshots)
-        with open('./snapshots-madrugada-30-set--fallback.txt', 'w+') as json_file:
-            json.dump(snapshots_json, json_file)
+        except KeyboardInterrupt:
+            snapshots_json = json.dumps(snapshots)
+            with open('./snapshots-madrugada-30-set--fallback.txt', 'w+') as json_file:
+                json.dump(snapshots_json, json_file)
 
 
     def listNetworkDevices(self):

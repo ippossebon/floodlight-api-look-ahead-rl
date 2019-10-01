@@ -80,7 +80,7 @@ class LookAheadRLApp(object):
     def collectSnapshots(self):
         snapshot_count = 0
         snapshots = {}
-        minutes = 60* 600
+        minutes = 6 * 60
         timeout = time.time() + minutes # 5 minutes from now
         test = 0
 
@@ -98,14 +98,14 @@ class LookAheadRLApp(object):
 
                 if test == minutes or time.time() > timeout:
                     snapshots_json = json.dumps(snapshots)
-                    with open('./snapshots-madrugada-30-set.txt', 'w+') as json_file:
+                    with open('./snapshot-h2-client-h4-server.txt', 'w+') as json_file:
                         json.dump(snapshots_json, json_file)
                     break
                 test = test - 1
 
         except KeyboardInterrupt:
             snapshots_json = json.dumps(snapshots)
-            with open('./snapshots-madrugada-30-set--fallback.txt', 'w+') as json_file:
+            with open('./snapshot-h2-client-h4-server--fallback.txt', 'w+') as json_file:
                 json.dump(snapshots_json, json_file)
 
 

@@ -105,7 +105,7 @@ class LookAheadRLApp(object):
 
         except KeyboardInterrupt:
             snapshots_json = json.dumps(snapshots)
-            with open('./snapshot-h3-client-h2-server--fallback.txt', 'w+') as json_file:
+            with open('./snapshot-h4-client-h2-server--fallback.txt', 'w+') as json_file:
                 json.dump(snapshots_json, json_file)
 
 

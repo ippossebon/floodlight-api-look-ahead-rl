@@ -1,48 +1,56 @@
 import csv
 
+# 21 fluxos por arquivo
+
 file_list = [
-    './h4-as-server/snapshot-h3-client-h4-server.csv',
-    './h4-as-server/snapshot-h2-client-h4-server.csv'
+    './h4-as-server/snapshot-h3-client-h4-server--serverless-data.csv',
+    './h4-as-server/snapshot-h2-client-h4-server--serverless-data.csv'
 ]
 
-instances = []
+snapshots = []
 
 for filename in file_list:
     with open(filename, 'r+') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=',')
 
-        count = 0
         for row in reader:
-            if not count == 0:
-                # skip first line (contains features names)
-                instances.append(row)
-            count = count + 1
+            snapshots.append(row)
 
+print('Number of snapshots: ', len(snapshots))
+flows = {}
 
-print('Number of instances: ', len(instances))
+max_byte_count = -1
+total_byte_count = 0
 
+flow_count = 0
+current_flow_id = 'fluxo-{flow_count}'.format(flow_count=flow_count)
+flows[current_flow_id] = {}
+flows[current_flow_id]['features'] = []
 
-flow_id = instances[0][13] # inicializa id do fluxo
+for snapshot in snapshots:
 
-for instance in instances:
-    current_flow_id = instance[13]
-    byte_count = int(instance[8])
+    # preciso adicionar algum threshold para identificação dos fluxos (300mb ?)
+    if int(snapshot['byte_count']) >= max_byte_count + 1024*1024*300:
+        # faz parte do mesmo fluxo atual
+        max_byte_count = int(snapshot['byte_count'])
+        # byte_count vai sendo incrementado por fluxo? ou mostra o total atual? acho que mostra o total atual
+        total_byte_count = int(snapshot['byte_count'])
+        # total_byte_count = total_byte_count + int(snapshot['byte_count'])
 
-    if byte_count >= max_byte_count:
-        # faz parte do mesmo fluxo
-        max_byte_count = byte_count
-        total_byte_count = total_byte_count + byte_count
-        flow_snapshots.append(row)
+        flows[current_flow_id]['features'].append(snapshot)
     else:
-        # print(flows)
         # termina o fluxo atual e vai preparar para o próximo
-        flows[total_byte_count] = flow_snapshots
+        flows[current_flow_id]['total_byte_count'] = total_byte_count
 
         # limpa todas as variaveis
-        flow_snapshots = []
         max_byte_count = -1
         total_byte_count = 0
 
         # inicia novo fluxo
-        flow_id = current_flow_id
-        flow_snapshots = []
+        flow_count = flow_count + 1
+        current_flow_id = 'fluxo-{flow_count}'.format(flow_count=flow_count)
+        flows[current_flow_id] = {}
+        flows[current_flow_id]['features'] = []
+
+import ipdb; ipdb.set_trace()
+print('isadora')

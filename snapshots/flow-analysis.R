@@ -1,6 +1,9 @@
 library(tidyverse)
+library(magrittr) # needs to be run every time you start R and want to use %>%
+library(dplyr)
 
-data <- read_csv('./snapshots-json-big-file-switch-id.csv') %>%
+
+data <- read_csv('./h1-as-server/snapshot-h2-client-h1-server.csv') %>%
   select(timeslot, switch_id, eth_src, eth_dst, everything())
 
 

@@ -1,28 +1,29 @@
 import csv
 
-filename = './snapshots/csv/snapshots-json-big-file--client.csv'
-
+file_list = [
+    './h4-as-server/snapshot-h3-client-h4-server.csv',
+    './h4-as-server/snapshot-h2-client-h4-server.csv'
+]
 
 instances = []
-with open(filename, 'r+') as csvfile:
-    readCSV = csv.reader(csvfile, delimiter=';')
 
-    for row in readCSV:
-        instances.append(row)
+for filename in file_list:
+    with open(filename, 'r+') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=',')
+
+        count = 0
+        for row in reader:
+            if not count == 0:
+                # skip first line (contains features names)
+                instances.append(row)
+            count = count + 1
 
 
-flows = {}
-flow_snapshots = []
-max_byte_count = -1
-total_byte_count = 0
-flows_byte_count = {}
-instances_count = 0
-print('Instances: ', len(instances))
+print('Number of instances: ', len(instances))
 
-# retira lista do nome das features
-del instances[0]
 
 flow_id = instances[0][13] # inicializa id do fluxo
+
 for instance in instances:
     current_flow_id = instance[13]
     byte_count = int(instance[8])
@@ -45,5 +46,3 @@ for instance in instances:
         # inicia novo fluxo
         flow_id = current_flow_id
         flow_snapshots = []
-
-print(flows)

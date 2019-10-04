@@ -28,15 +28,14 @@ flows[current_flow_id]['features'] = []
 
 for snapshot in snapshots:
 
-    # preciso adicionar algum threshold para identificação dos fluxos (300mb ?)
     if int(snapshot['duration_sec']) >= max_duration:
         # faz parte do mesmo fluxo atual
         max_duration = int(snapshot['duration_sec'])
 
-        # byte_count vai sendo incrementado por fluxo? ou mostra o total atual? acho que mostra o total atual
+        # atualiza tamanho total deste fluxo
         total_byte_count = int(snapshot['byte_count'])
-        # total_byte_count = total_byte_count + int(snapshot['byte_count'])
 
+        # adiciona snapshot como parte das features deste fluxo
         flows[current_flow_id]['features'].append(snapshot)
     else:
         # termina o fluxo atual e vai preparar para o próximo
@@ -69,3 +68,8 @@ for flow_id in flows.keys():
     size_gb = total_byte_count/1024/1024/1024
 
     print('{0} --> {1} Mb // {2} Gb'.format(flow_id, size_mb, size_gb))
+
+
+"""
+Gera arquivo CSV final para treinamento da IA
+"""

@@ -4,8 +4,6 @@ from graphModel.graph import Graph
 from graphModel.link import Link
 from graphModel.node import Node
 
-from prediction.flowSizePredictor import FlowSizePredictor
-
 from routing.binPacking import BinPackingRouting
 
 from operator import attrgetter
@@ -14,14 +12,14 @@ import requests
 import time
 
 CONTROLLER_HOST = 'http://0.0.0.0:8080'
-THRESHOLD = 10 # IDEAFIX uses 10MB or 10 seg
 
+THRESHOLD_TIME = 10 # IDEAFIX uses 10 seg
+THRESHOLD_SIZE = 10485760 # 10MB
 
 class LookAheadRLApp(object):
     def __init__(self):
         self.network_graph = Graph()
         self.routing_model = BinPackingRouting()
-        self.predictor = FlowSizePredictor()
         self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
         self.active_flows = [] # lista de ActiveFlow
 
@@ -72,6 +70,31 @@ class LookAheadRLApp(object):
     def getNetworkSummary(self):
         print('Network summary: ')
         response = requests.get('{host}/wm/core/controller/summary/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
+
+        return response_data
+
+    def getPossiblePaths(self, src_dpid, dst_dpid, num_paths):
+        # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
+        # Get an ordered list of paths from the shortest to the longest path
+        response = requests.get('{host}/wm/routing/paths/{src}/{dst}/{num_paths}/json'.format(
+            host=CONTROLLER_HOST,
+            src=src_dpid,
+            dst=dst_dpid,
+            num_paths=num_paths
+        ))
+        response_data = response.json()
+
+        return response_data
+
+    def getPossiblePaths(self, src_dpid, dst_dpid):
+        # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
+        # Get an ordered list of paths from the shortest to the longest path
+        response = requests.get('{host}/wm/routing/paths/{src}/{dst}/json'.format(
+            host=CONTROLLER_HOST,
+            src=src_dpid,
+            dst=dst_dpid
+        ))
         response_data = response.json()
 
         return response_data
@@ -131,8 +154,8 @@ class LookAheadRLApp(object):
 
                         # considera pacotes sem IPv4 (ex. ARP)
                         contains_ipv4_info = True if "ipv4_dst" in flow['match'].keys() else False
-                        ipv4_dst = flow['match']["ipv4_dst"] if contains_ipv4_info else None 
-                        ipv4_src = flow['match']["ipv4_src"] if contains_ipv4_info else None 
+                        ipv4_dst = flow['match']["ipv4_dst"] if contains_ipv4_info else None
+                        ipv4_src = flow['match']["ipv4_src"] if contains_ipv4_info else None
 
                         new_flow = ActiveFlow(
                             eth_dst=flow['match']["eth_dst"],
@@ -151,7 +174,7 @@ class LookAheadRLApp(object):
                         ]
                         new_flow.features.append(snapshot)
                         self.active_flows.append(new_flow)
-                        
+
 
     def listNetworkDevices(self):
         # List static flows for a switch or all switches
@@ -197,8 +220,8 @@ class LookAheadRLApp(object):
             #    }
             self.switch_info[switch_dpid]["statistics"] = item
 
-    def shouldReroute(self, predicted_size):
-        if predicted_size > THRESHOLD:
+    def isElephantFlow(self, flow):
+        if flow.duration_sec > THRESHOLD_TIME and flow.byte_count > THRESHOLD_SIZE:
             return True
         return False
 
@@ -227,17 +250,28 @@ class LookAheadRLApp(object):
             # Estatítiscas estão aramazenados em self.switch_info
             self.setSwitchStatistics()
             self.setFlowsSnapshots()
-        
-            # Usar estatísticas do fluxo para prever o tamanho total dele
+
             print('-------- Time slot -------')
             for flow in self.active_flows:
                 print(flow.features)
-                # predicted_size = self.predictor.predictFlowSize(flow.features)
-        
-                # if self.shouldReroute(predicted_size):
-                #     source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
-                #     target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
-                #     new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
+
+                if self.isElephantFlow(flow):
+                    # Detectou-se que esse fluxo é grande o suficiente para, eventualmente,
+                    # sobrecarregar os links. Por isso, vamos dividir a carga desse fluxo.
+
+                    # current_state = self.getNetworkState()
+                    # best_action = self.rl_agent.chooseBestAction(current_state)
+
+                    # Converte a ação sugerida pelo agente em regras para instalar nos switches
+                    # switch_rules = self.actionToRules(best_action)
+                    # self.installRules(switch_rules)
+
+
+
+
+                    # source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
+                    # target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
+                    # new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
             print('---------------------------------------------')
 
             time.sleep(10)

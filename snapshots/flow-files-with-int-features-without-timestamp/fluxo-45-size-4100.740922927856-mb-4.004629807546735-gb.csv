@@ -1,0 +1,4 @@
+switch_id,eth_dst,eth_src,eth_type,ipv4_src,ipv4_dst,in_port,packet_count,byte_count,duration_sec,idle_timeout_s,hard_timeout_s,priority
+1,1,3,800,3,1,2,75321,4299938514,2,5,0,1
+2,1,3,800,3,1,1,75320,4299938440,4,5,0,1
+1,1,3,800,3,1,2,75321,4299938514,4,5,0,1

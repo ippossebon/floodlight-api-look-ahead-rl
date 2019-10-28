@@ -1,0 +1,440 @@
+{
+  "00:00:00:00:00:00:00:01": {
+    "flows": [
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "490",
+        "idle_timeout_s": "5",
+        "duration_nsec": "243000000",
+        "packet_count": "5",
+        "duration_sec": "5",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199808389120",
+        "match": {
+          "eth_dst": "00:00:00:00:00:02",
+          "ipv4_dst": "10.0.0.2",
+          "ipv4_src": "10.0.0.1",
+          "eth_type": "0x800",
+          "eth_src": "00:00:00:00:00:01",
+          "in_port": "1"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=3"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "588",
+        "idle_timeout_s": "5",
+        "duration_nsec": "240000000",
+        "packet_count": "6",
+        "duration_sec": "5",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199825166336",
+        "match": {
+          "eth_dst": "00:00:00:00:00:01",
+          "ipv4_dst": "10.0.0.1",
+          "ipv4_src": "10.0.0.2",
+          "eth_type": "0x800",
+          "eth_src": "00:00:00:00:00:02",
+          "in_port": "3"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=1"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "42",
+        "idle_timeout_s": "5",
+        "duration_nsec": "230000000",
+        "packet_count": "1",
+        "duration_sec": "0",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199841943552",
+        "match": {
+          "eth_src": "00:00:00:00:00:02",
+          "eth_dst": "00:00:00:00:00:01",
+          "eth_type": "0x806",
+          "in_port": "3"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=1"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "0",
+        "idle_timeout_s": "5",
+        "duration_nsec": "226000000",
+        "packet_count": "0",
+        "duration_sec": "0",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199858720768",
+        "match": {
+          "eth_src": "00:00:00:00:00:01",
+          "eth_dst": "00:00:00:00:00:02",
+          "eth_type": "0x806",
+          "in_port": "1"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=3"
+          }
+        }
+      },
+      {
+        "priority": "0",
+        "hard_timeout_s": "0",
+        "byte_count": "1043702",
+        "idle_timeout_s": "0",
+        "duration_nsec": "363000000",
+        "packet_count": "5722",
+        "duration_sec": "1576",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "0",
+        "match": {},
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=controller"
+          }
+        }
+      }
+    ]
+  },
+  "00:00:00:00:00:00:00:03": {
+    "flows": [
+      {
+        "priority": "0",
+        "hard_timeout_s": "0",
+        "byte_count": "1149199",
+        "idle_timeout_s": "0",
+        "duration_nsec": "412000000",
+        "packet_count": "6293",
+        "duration_sec": "1576",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "0",
+        "match": {},
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=controller"
+          }
+        }
+      }
+    ]
+  },
+  "00:00:00:00:00:00:00:02": {
+    "flows": [
+      {
+        "priority": "0",
+        "hard_timeout_s": "0",
+        "byte_count": "1166465",
+        "idle_timeout_s": "0",
+        "duration_nsec": "379000000",
+        "packet_count": "6454",
+        "duration_sec": "1576",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "0",
+        "match": {},
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=controller"
+          }
+        }
+      }
+    ]
+  },
+  "00:00:00:00:00:00:00:05": {
+    "flows": [
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "588",
+        "idle_timeout_s": "5",
+        "duration_nsec": "248000000",
+        "packet_count": "6",
+        "duration_sec": "5",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199808389120",
+        "match": {
+          "eth_dst": "00:00:00:00:00:02",
+          "ipv4_dst": "10.0.0.2",
+          "ipv4_src": "10.0.0.1",
+          "eth_type": "0x800",
+          "eth_src": "00:00:00:00:00:01",
+          "in_port": "2"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=5"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "490",
+        "idle_timeout_s": "5",
+        "duration_nsec": "243000000",
+        "packet_count": "5",
+        "duration_sec": "5",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199825166336",
+        "match": {
+          "eth_dst": "00:00:00:00:00:01",
+          "ipv4_dst": "10.0.0.1",
+          "ipv4_src": "10.0.0.2",
+          "eth_type": "0x800",
+          "eth_src": "00:00:00:00:00:02",
+          "in_port": "5"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=2"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "42",
+        "idle_timeout_s": "5",
+        "duration_nsec": "232000000",
+        "packet_count": "1",
+        "duration_sec": "0",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199841943552",
+        "match": {
+          "eth_src": "00:00:00:00:00:02",
+          "eth_dst": "00:00:00:00:00:01",
+          "eth_type": "0x806",
+          "in_port": "5"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=2"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "0",
+        "idle_timeout_s": "5",
+        "duration_nsec": "227000000",
+        "packet_count": "0",
+        "duration_sec": "0",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199858720768",
+        "match": {
+          "eth_src": "00:00:00:00:00:01",
+          "eth_dst": "00:00:00:00:00:02",
+          "eth_type": "0x806",
+          "in_port": "2"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=5"
+          }
+        }
+      },
+      {
+        "priority": "0",
+        "hard_timeout_s": "0",
+        "byte_count": "1295244",
+        "idle_timeout_s": "0",
+        "duration_nsec": "394000000",
+        "packet_count": "7203",
+        "duration_sec": "1576",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "0",
+        "match": {},
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=controller"
+          }
+        }
+      }
+    ]
+  },
+  "00:00:00:00:00:00:00:04": {
+    "flows": [
+      {
+        "priority": "0",
+        "hard_timeout_s": "0",
+        "byte_count": "1302115",
+        "idle_timeout_s": "0",
+        "duration_nsec": "390000000",
+        "packet_count": "7142",
+        "duration_sec": "1576",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "0",
+        "match": {},
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=controller"
+          }
+        }
+      }
+    ]
+  },
+  "00:00:00:00:00:00:00:06": {
+    "flows": [
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "588",
+        "idle_timeout_s": "5",
+        "duration_nsec": "260000000",
+        "packet_count": "6",
+        "duration_sec": "5",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199808389120",
+        "match": {
+          "eth_dst": "00:00:00:00:00:02",
+          "ipv4_dst": "10.0.0.2",
+          "ipv4_src": "10.0.0.1",
+          "eth_type": "0x800",
+          "eth_src": "00:00:00:00:00:01",
+          "in_port": "3"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=1"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "490",
+        "idle_timeout_s": "5",
+        "duration_nsec": "248000000",
+        "packet_count": "5",
+        "duration_sec": "5",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199825166336",
+        "match": {
+          "eth_dst": "00:00:00:00:00:01",
+          "ipv4_dst": "10.0.0.1",
+          "ipv4_src": "10.0.0.2",
+          "eth_type": "0x800",
+          "eth_src": "00:00:00:00:00:02",
+          "in_port": "1"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=3"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "0",
+        "idle_timeout_s": "5",
+        "duration_nsec": "238000000",
+        "packet_count": "0",
+        "duration_sec": "0",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199841943552",
+        "match": {
+          "eth_src": "00:00:00:00:00:02",
+          "eth_dst": "00:00:00:00:00:01",
+          "eth_type": "0x806",
+          "in_port": "1"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=3"
+          }
+        }
+      },
+      {
+        "priority": "1",
+        "hard_timeout_s": "0",
+        "byte_count": "42",
+        "idle_timeout_s": "5",
+        "duration_nsec": "231000000",
+        "packet_count": "1",
+        "duration_sec": "0",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "9007199858720768",
+        "match": {
+          "eth_src": "00:00:00:00:00:01",
+          "eth_dst": "00:00:00:00:00:02",
+          "eth_type": "0x806",
+          "in_port": "3"
+        },
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=1"
+          }
+        }
+      },
+      {
+        "priority": "0",
+        "hard_timeout_s": "0",
+        "byte_count": "1148436",
+        "idle_timeout_s": "0",
+        "duration_nsec": "412000000",
+        "packet_count": "6278",
+        "duration_sec": "1576",
+        "version": "OF_13",
+        "table_id": "0x0",
+        "flags": [],
+        "cookie": "0",
+        "match": {},
+        "instructions": {
+          "instruction_apply_actions": {
+            "actions": "output=controller"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -47,6 +47,8 @@ class RLLoadBalancer(object):
         # Starting the SARSA learning
         for episode in range(self.total_episodes):
             t = 0
+
+            # Escolhe uma ação a partir do estado inicial
             state1 = env.reset()
             action1 = self.chooseAction(state1)
 

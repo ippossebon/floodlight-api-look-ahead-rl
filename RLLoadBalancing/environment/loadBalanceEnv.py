@@ -29,7 +29,8 @@ class LoadBalanceEnv(gym.Env):
         # Example when using discrete actions:
         self.action_space = spaces.Discrete(N_DISCRETE_ACTIONS) #interface inidical
 
-        # Actions of the format Buy x%, Sell x%, Hold, etc. ## TODO: não entendi
+        # Actions of the format Buy x%, Sell x%, Hold, etc. ## temos 3 ações disponiveis, por isso o [3, 1]
+        # qual a diferença entre o Box e o Discrete ?
         self.action_space = spaces.Box(low=np.array([0, 0]), high=np.array([3, 1]), dtype=np.float16)
 
 

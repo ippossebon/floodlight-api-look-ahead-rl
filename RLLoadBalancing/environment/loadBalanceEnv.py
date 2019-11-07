@@ -3,7 +3,18 @@ from gym import spaces
 
 # tutorial from: https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e
 
-MAX_REWARD = 100 # avaliar qual é o melhor valor
+
+# reward = 1 / utilizacao_total_rede * (0.1 * num_steps)
+MAX_REWARD = 1000
+
+NUM_LINKS = 8# considerando rede de exemplo
+NUM_FEATURES_PER_LINK = 3
+NUM_FEATURES = 1 + (NUM_LINKS * NUM_FEATURES_PER_LINK)
+NUM_DISCRETE_ACTIONS = 7
+SNAPSHOTS_TO_CONSIDER = 5
+
+INITIAL_NETWORK_USAGE = 0
+
 
 class LoadBalanceEnv(gym.Env):
     """Custom Environment that follows gym interface"""
@@ -11,33 +22,59 @@ class LoadBalanceEnv(gym.Env):
 
     def __init__(self, dataframe):
         super(LoadBalanceEnv, self).__init__()
-        """
-        In the constructor, we first define the type and shape of our action_space,
-        which will contain all of the actions possible for an agent to take in the environment.
-
-        Similarly, we’ll define the observation_space, which contains all of the
-        environment’s data to be observed by the agent.
-
-        Define action and observation space
-        They must be gym.spaces objects
-        """
         # pandas dataframe
+        # serão os snapshots coeltados pela rede
         self.dataframe = dataframe
+
+        # Cada (linha / snapshot) possui 31 features que nos interessam
+        # numero de features = 1 (nro snapshot) + nro_links * 3
+        # considerando rede de exemplo = 1 + (8*3) = 25
+        self.observation_space = spaces.Box(
+            low=0,
+            high=1,
+            shape=(SNAPSHOTS_TO_CONSIDER + 1, NUM_FEATURES), # snaphsots + atual
+            dtype=np.float16
+        )
+
+        # Ações possíveis:
+        # - manter
+        # - dividir entre 2 menores caminhos
+        # - dividir entre 3 menores caminhos
+        # - usar menor caminho
+        # - dividir entre 2 caminhos com menor utilização
+        # - dividir entre 3 caminhos com menor utilização
+        # - usar caminho com menor utilização
+        self.action_space = spaces.Discrete(NUM_DISCRETE_ACTIONS) #interface inidical
 
         self.reward_range = (0, MAX_REWARD)
 
-        # Example when using discrete actions:
-        self.action_space = spaces.Discrete(N_DISCRETE_ACTIONS) #interface inidical
+    def reset(self):
+        """
+         - Reset the state of the environment to an initial state
+        It  will be called to periodically reset the environment to an initial
+        state. This is followed by many steps through the environment, in which
+        an action will be provided by the model and must be executed, and the next
+        observation returned. This is also where rewards are calculated, more on this later.
 
-        # Actions of the format Buy x%, Sell x%, Hold, etc. ## temos 3 ações disponiveis, por isso o [3, 1]
-        # qual a diferença entre o Box e o Discrete ?
-        self.action_space = spaces.Box(low=np.array([0, 0]), high=np.array([3, 1]), dtype=np.float16)
+        - Called any time a new environment is created or to reset an existing environment’s state.
+        """
+        # Reset the state of the environment to an initial state
+        self.network_total_usage = INITIAL_NETWORK_USAGE
+        self.net_worth = INITIAL_NETWORK_USAGE
+        self.max_net_worth = INITIAL_NETWORK_USAGE
 
+        self.shares_held = 0
+        self.cost_basis = 0
+        self.total_shares_sold = 0
+        self.total_sales_value = 0
 
-        # Example for using image as input:
-        self.observation_space = spaces.Box(low=0, high=255, shape=(HEIGHT, WIDTH, N_CHANNELS), dtype=np.uint8) # interface inicial
-        # Prices contains the OHCL values for the last five prices ## TODO: nao entendi
-        self.observation_space = spaces.Box(low=0, high=1, shape=(6, 6), dtype=np.float16)
+        # Set the current step to a random point within the data frame
+        # We set the current step to a random point within the data frame, because
+        # it essentially gives our agent’s more unique experiences from the same data set.
+        # The _next_observation method compiles the stock data for the last five time steps,
+        # appends the agent’s account information, and scales all the values to between 0 and 1
+        self.current_step = random.randint(0, len(self.df.loc[:, 'Open'].values) - 6)
+
 
 
     def step(self, action):
@@ -55,35 +92,6 @@ class LoadBalanceEnv(gym.Env):
         obs = self._next_observation()
 
         return obs, reward, done, {}
-
-
-    def reset(self):
-        """
-         - Reset the state of the environment to an initial state
-        It  will be called to periodically reset the environment to an initial
-        state. This is followed by many steps through the environment, in which
-        an action will be provided by the model and must be executed, and the next
-        observation returned. This is also where rewards are calculated, more on this later.
-
-        - Called any time a new environment is created or to reset an existing environment’s state.
-        """
-        # Reset the state of the environment to an initial state
-        self.balance = INITIAL_ACCOUNT_BALANCE
-        self.net_worth = INITIAL_ACCOUNT_BALANCE
-        self.max_net_worth = INITIAL_ACCOUNT_BALANCE
-        self.shares_held = 0
-        self.cost_basis = 0
-        self.total_shares_sold = 0
-        self.total_sales_value = 0
-
-        # Set the current step to a random point within the data frame
-        # We set the current step to a random point within the data frame, because
-        # it essentially gives our agent’s more unique experiences from the same data set.
-        # The _next_observation method compiles the stock data for the last five time steps,
-        # appends the agent’s account information, and scales all the values to between 0 and 1
-        self.current_step = random.randint(0, len(self.df.loc[:, 'Open'].values) - 6)
-
-        return self._next_observation()
 
 
     def _next_observation(self):
@@ -107,6 +115,41 @@ class LoadBalanceEnv(gym.Env):
         ]], axis=0)
 
         return obs
+
+
+    def _take_action(self, action):
+        # Set the current price to a random price within the time step
+        current_price = random.uniform(
+            self.df.loc[self.current_step, "Open"],
+            self.df.loc[self.current_step, "Close"]
+        )
+        action_type = action[0]
+        amount = action[1]
+
+        if action_type < 1:
+            # Buy amount % of balance in shares
+            total_possible = self.balance / current_price
+            shares_bought = total_possible * amount
+            prev_cost = self.cost_basis * self.shares_held
+            additional_cost = shares_bought * current_price
+            self.balance -= additional_cost
+            self.cost_basis = (prev_cost + additional_cost) / (self.shares_held + shares_bought)
+            self.shares_held += shares_bought
+        elif actionType < 2:
+            # Sell amount % of shares held
+            shares_sold = self.shares_held * amount .
+            self.balance += shares_sold * current_price
+            self.shares_held -= shares_sold
+            self.total_shares_sold += shares_sold
+            self.total_sales_value += shares_sold * current_price
+
+        self.netWorth = self.balance + self.shares_held * current_price
+
+        if self.net_worth > self.max_net_worth:
+            self.max_net_worth = net_worth
+
+        if self.shares_held == 0:
+            self.cost_basis = 0
 
 
 

@@ -79,6 +79,9 @@ class LoadBalanceEnv(gym.Env):
 
     def step(self, action):
         # Execute one time step within the environment
+        # It will take an action variable and will return a list of four things:
+        # the next state, the reward for the current state, a boolean representing
+        # whether the current episode of our model is done and some additional info on our problem.
         self._take_action(action)
         self.current_step += 1
 

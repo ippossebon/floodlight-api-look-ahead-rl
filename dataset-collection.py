@@ -83,26 +83,68 @@ class LookAheadRLApp(object):
         test = 0
 
         dataframe = []
-
+        snapshot_count = 0
         try:
             while True:
                 # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
                 # /wm/core/switch/<switchId>/<statType>/json
-                response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+                response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
                 response_data = response.json()
-                timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-                snapshots[timestamp] = response_data
-                print(response_data)
-                print('-----')
-                # snapshot = []
-                #
-                # for switch_info in response_data:
-                #     for flow in switch_info['flows']:
-                        # if flow['match']:
-                #
 
-                # Coleta snapshots a cada 1 segundo
+                for item in response_data:
+                    if item["dpid"] == "00:00:00:00:00:00:00:01":
+                        if item["port"] == "1":
+                            # link A
+                            link_A_usage = item["bits-per-second-rx"]
+                            link_A_capacity = item["link-speed-bits-per-second"]
+                            link_A_percentage_usage = link_A_usage / link_A_capacity
+
+                    else if item["dpid"] == "00:00:00:00:00:00:00:02":
+                        if item["port"] == "1":
+                            # link B
+                            link_B_usage = item["bits-per-second-rx"]
+                            link_B_capacity = item["link-speed-bits-per-second"]
+                            link_B_percentage_usage = link_B_usage / link_B_capacity
+
+                        else if item["port"] == "2":
+                            # link E
+                            link_E_usage = item["bits-per-second-rx"]
+                            link_E_capacity = item["link-speed-bits-per-second"]
+                            link_E_percentage_usage = link_E_usage / link_E_capacity
+
+                        else if item["port"] == "3":
+                            # link E
+                            link_D_usage = item["bits-per-second-rx"]
+                            link_D_capacity = item["link-speed-bits-per-second"]
+                            link_D_percentage_usage = link_D_usage / link_D_capacity
+
+                    else if item["dpid"] == "00:00:00:00:00:00:00:03":
+                        if item["port"] == "1":
+                            # link C
+                            link_C_usage = item["bits-per-second-rx"]
+                            link_C_capacity = item["link-speed-bits-per-second"]
+                            link_C_percentage_usage = link_C_usage / link_C_capacity
+
+                        else if item["port"] == "3":
+                            # link F
+                            link_F_usage = item["bits-per-second-rx"]
+                            link_F_capacity = item["link-speed-bits-per-second"]
+                            link_F_percentage_usage = link_F_usage / link_F_capacity
+
+                snapshot = [
+                    snapshot_count,
+                    link_A_percentage_usage,
+                    link_B_percentage_usage,
+                    link_C_percentage_usage,
+                    link_D_percentage_usage,
+                    link_E_percentage_usage,
+                    link_F_percentage_usage
+                ]
+
+                dataframe.append(snapshot)
+
                 time.sleep(1)
+                snapshot_count = snapshot_count + 1
 
                 # Roda script por um tempo fixo
                 # if test == minutes or time.time() > timeout:
@@ -113,18 +155,13 @@ class LookAheadRLApp(object):
                 # test = test - 1
 
         except KeyboardInterrupt:
-            snapshots_json = json.dumps(snapshots)
-            with open('./dados-rede.txt', 'w+') as json_file:
-                json.dump(snapshots_json, json_file)
-                print('criou arquivo.')
+            with open('./dados-rede.csv', 'w+' newline='') as csv_file:
+                wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+                for row in dataframe:
+                    wr.writerow(row)
 
+                print('Criou arquivo')
 
-    def listNetworkDevices(self):
-        # List static flows for a switch or all switches
-        response = requests.get('{host}/wm/device'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
-
-        return response
 
     def setSwitchStatistics(self):
         # Get statistics from all switches

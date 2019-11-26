@@ -156,7 +156,18 @@ class LookAheadRLApp(object):
 
         except KeyboardInterrupt:
             with open('./dados-rede.csv', 'w+', newline='') as csv_file:
-                wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+                wr = csv.writer(csv_file)
+                header = [
+                    'snapshot',
+                    'link_A_usage_rate',
+                    'link_B_usage_rate',
+                    'link_C_usage_rate',
+                    'link_D_usage_rate',
+                    'link_E_usage_rate',
+                    'link_F_usage_rate'
+                ]
+                wr.writerow(header)
+                
                 for row in dataframe:
                     wr.writerow(row)
 

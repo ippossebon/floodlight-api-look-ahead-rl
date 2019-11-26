@@ -95,50 +95,50 @@ class LookAheadRLApp(object):
                     if item["dpid"] == "00:00:00:00:00:00:00:01":
                         if item["port"] == "1":
                             # link A
-                            link_A_usage = item["bits-per-second-rx"]
-                            link_A_capacity = item["link-speed-bits-per-second"]
-                            link_A_percentage_usage = link_A_usage / link_A_capacity
+                            link_A_usage = float(item["bits-per-second-rx"])
+                            link_A_capacity = float(item["link-speed-bits-per-second"])
+                            link_A_usage_rate = float(link_A_usage / link_A_capacity)
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:02":
                         if item["port"] == "1":
                             # link B
-                            link_B_usage = item["bits-per-second-rx"]
-                            link_B_capacity = item["link-speed-bits-per-second"]
-                            link_B_percentage_usage = link_B_usage / link_B_capacity
+                            link_B_usage = float(item["bits-per-second-rx"])
+                            link_B_capacity = float(item["link-speed-bits-per-second"])
+                            link_B_usage_rate = float(link_B_usage / link_B_capacity)
 
                         elif item["port"] == "2":
                             # link E
-                            link_E_usage = item["bits-per-second-rx"]
-                            link_E_capacity = item["link-speed-bits-per-second"]
-                            link_E_percentage_usage = link_E_usage / link_E_capacity
+                            link_E_usage = float(item["bits-per-second-rx"])
+                            link_E_capacity = float(item["link-speed-bits-per-second"])
+                            link_E_usage_rate = float(link_E_usage / link_E_capacity)
 
                         elif item["port"] == "3":
                             # link E
-                            link_D_usage = item["bits-per-second-rx"]
-                            link_D_capacity = item["link-speed-bits-per-second"]
-                            link_D_percentage_usage = link_D_usage / link_D_capacity
+                            link_D_usage = float(item["bits-per-second-rx"])
+                            link_D_capacity = float(item["link-speed-bits-per-second"])
+                            link_D_usage_rate = float(link_D_usage / link_D_capacity)
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:03":
                         if item["port"] == "1":
                             # link C
-                            link_C_usage = item["bits-per-second-rx"]
-                            link_C_capacity = item["link-speed-bits-per-second"]
-                            link_C_percentage_usage = link_C_usage / link_C_capacity
+                            link_C_usage = float(item["bits-per-second-rx"])
+                            link_C_capacity = float(item["link-speed-bits-per-second"])
+                            link_C_usage_rate = float(link_C_usage / link_C_capacity)
 
                         elif item["port"] == "3":
                             # link F
-                            link_F_usage = item["bits-per-second-rx"]
-                            link_F_capacity = item["link-speed-bits-per-second"]
-                            link_F_percentage_usage = link_F_usage / link_F_capacity
+                            link_F_usage = float(item["bits-per-second-rx"])
+                            link_F_capacity = float(item["link-speed-bits-per-second"])
+                            link_F_usage_rate = float(link_F_usage / link_F_capacity)
 
                 snapshot = [
                     snapshot_count,
-                    link_A_percentage_usage,
-                    link_B_percentage_usage,
-                    link_C_percentage_usage,
-                    link_D_percentage_usage,
-                    link_E_percentage_usage,
-                    link_F_percentage_usage
+                    link_A_usage_rate,
+                    link_B_usage_rate,
+                    link_C_usage_rate,
+                    link_D_usage_rate,
+                    link_E_usage_rate,
+                    link_F_usage_rate
                 ]
 
                 dataframe.append(snapshot)

@@ -163,24 +163,6 @@ class LookAheadRLApp(object):
                 print('Criou arquivo')
 
 
-    def setSwitchStatistics(self):
-        # Get statistics from all switches
-        response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
-
-        for item in response_data:
-            switch_dpid = item["dpid"]
-            # item é um objeto com o formato:
-            #    {
-            #       "bits-per-second-rx" : "0",
-            #       "dpid" : "00:00:00:00:00:00:00:02",
-            #       "updated" : "Mon Sep 02 15:54:17 EDT 2019",
-            #       "link-speed-bits-per-second" : "10000000",
-            #       "port" : "1",
-            #       "bits-per-second-tx" : "6059"
-            #    }
-            self.switch_info[switch_dpid]["statistics"] = item
-
     def shouldReroute(self, predicted_size):
         if predicted_size > THRESHOLD:
             return True
@@ -191,7 +173,6 @@ class LookAheadRLApp(object):
         self.initializeNetworkGraph()
         self.routing_model.setNetworkGraph(self.network_graph)
 
-        self.setSwitchStatistics()
         self.collectSnapshots()
         # Train prediction model
         # self.predictor.trainModel()

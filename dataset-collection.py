@@ -4,9 +4,7 @@ from graphModel.graph import Graph
 from graphModel.link import Link
 from graphModel.node import Node
 
-from prediction.flowSizePredictor import FlowSizePredictor
-
-from routing.binPacking import BinPackingRouting
+# from routing.binPacking import BinPackingRouting
 
 from operator import attrgetter
 
@@ -23,7 +21,7 @@ THRESHOLD = 10 # IDEAFIX uses 10MB or 10 seg
 class LookAheadRLApp(object):
     def __init__(self):
         self.network_graph = Graph()
-        self.routing_model = BinPackingRouting()
+        # self.routing_model = BinPackingRouting()
         self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
         self.active_flows = [] # lista de ActiveFlow
 

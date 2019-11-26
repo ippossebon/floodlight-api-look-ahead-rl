@@ -23,28 +23,28 @@ class MastersSwitchTopo(Topo):
  	        node2 = s1,
  	        port1 = 1,
  	        port2 = 1,
-            link_id = 'A'
+            params = {'link_id': 'A'}
         )
         self.addLink(
             node1 = h1,
  	        node2 = s2,
  	        port1 = 2,
  	        port2 = 1,
-            link_id = 'B'
+            params = {'link_id': 'B'}
         )
         self.addLink(
             node1 = h2,
             node2 = s3,
             port1 = 1,
             port2 = 3,
-            link_id = 'F'
+            params = {'link_id': 'F'}
         )
         self.addLink(
             node1 = h2,
             node2 = s2,
             port1 = 2,
             port2 = 2,
-            link_id = 'E'
+            params = {'link_id': 'E'}
         )
 
         # Adiciona links entre os switches
@@ -53,14 +53,14 @@ class MastersSwitchTopo(Topo):
             node2 = s3,
             port1 = 2,
             port2 = 1,
-            link_id = 'C'
+            params = {'link_id': 'C'}
         )
         self.addLink(
             node1 = s3,
             node2 = s2,
             port1 = 2,
             port2 = 3,
-            link_id = 'D'
+            params = {'link_id': 'D'}
         )
 
 

@@ -155,7 +155,7 @@ class LookAheadRLApp(object):
                 # test = test - 1
 
         except KeyboardInterrupt:
-            with open('./dados-rede.csv', 'w+' newline='') as csv_file:
+            with open('./dados-rede.csv', 'w+', newline='') as csv_file:
                 wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
                 for row in dataframe:
                     wr.writerow(row)

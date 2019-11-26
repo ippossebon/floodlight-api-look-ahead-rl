@@ -82,6 +82,8 @@ class LookAheadRLApp(object):
         timeout = time.time() + minutes # 5 minutes from now
         test = 0
 
+        dataframe = []
+
         try:
             while True:
                 # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
@@ -91,9 +93,16 @@ class LookAheadRLApp(object):
                 timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 snapshots[timestamp] = response_data
                 print(response_data)
+                print('-----')
+                # snapshot = []
+                #
+                # for switch_info in response_data:
+                #     for flow in switch_info['flows']:
+                        # if flow['match']:
+                #
+
                 # Coleta snapshots a cada 1 segundo
                 time.sleep(1)
-                exit(1)
 
                 # Roda script por um tempo fixo
                 # if test == minutes or time.time() > timeout:

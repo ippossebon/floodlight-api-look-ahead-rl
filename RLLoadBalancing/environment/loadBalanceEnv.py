@@ -5,13 +5,13 @@ from gym import spaces
 
 
 # reward = 1 / utilizacao_total_rede * (0.1 * num_steps)
-MAX_REWARD = 1000
+MAX_REWARD = 1
 
-NUM_LINKS = 8# considerando rede de exemplo
-NUM_FEATURES_PER_LINK = 3
-NUM_FEATURES = 1 + (NUM_LINKS * NUM_FEATURES_PER_LINK)
-NUM_DISCRETE_ACTIONS = 7
-SNAPSHOTS_TO_CONSIDER = 5
+NUM_LINKS = 6 # considerando rede de exemplo
+NUM_FEATURES = 1 + NUM_LINKS
+NUM_DISCRETE_ACTIONS = 3
+
+SNAPSHOTS_TO_CONSIDER = 3 # vamos olhar para os ultimos 5 snapshots antes de tomar uma ação
 
 INITIAL_NETWORK_USAGE = 0
 
@@ -23,12 +23,15 @@ class LoadBalanceEnv(gym.Env):
     def __init__(self, dataframe):
         super(LoadBalanceEnv, self).__init__()
         # pandas dataframe
-        # serão os snapshots coeltados pela rede
+        # Serão os snapshots coletados pela rede. Cada snapshot contém o valor
+        # de M de cada link da rede naquele instante
+        # M = utliação atual do link / capacidade do link
         self.dataframe = dataframe
 
-        # Cada (linha / snapshot) possui 31 features que nos interessam
-        # numero de features = 1 (nro snapshot) + nro_links * 3
+        # Cada (linha / snapshot) possui 6 features que nos interessam
+        # numero de features = 1 (nro snapshot) + 6 (M de cada link) = 7
         # considerando rede de exemplo = 1 + (8*3) = 25
+        # contains all of the input variables we want our agent to consider before making an action
         self.observation_space = spaces.Box(
             low=0,
             high=1,
@@ -37,16 +40,21 @@ class LoadBalanceEnv(gym.Env):
         )
 
         # Ações possíveis:
-        # - manter
-        # - dividir entre 2 menores caminhos
-        # - dividir entre 3 menores caminhos
-        # - usar menor caminho
-        # - dividir entre 2 caminhos com menor utilização
-        # - dividir entre 3 caminhos com menor utilização
-        # - usar caminho com menor utilização
+        # - não faz nada
+        # - enviar todo o fluxo pelo mesmo caminho
+        # - dividir o fluxo entre 2 menores caminhos
         self.action_space = spaces.Discrete(NUM_DISCRETE_ACTIONS) #interface inidical
 
-        self.reward_range = (0, MAX_REWARD)
+
+        # Estado inicial
+        self.M_a = 0
+        self.M_b = 0
+        self.M_c = 0
+        self.M_d = 0
+        self.M_e = 0
+        self.M_f = 0
+
+        self.reward_range = (0, MAX_REWARD) # # TODO: revisitar o valor máximo da recompensa, por enquanto é 1
 
     def reset(self):
         """
@@ -59,14 +67,13 @@ class LoadBalanceEnv(gym.Env):
         - Called any time a new environment is created or to reset an existing environment’s state.
         """
         # Reset the state of the environment to an initial state
-        self.network_total_usage = INITIAL_NETWORK_USAGE
-        self.net_worth = INITIAL_NETWORK_USAGE
-        self.max_net_worth = INITIAL_NETWORK_USAGE
+        self.M_a = 0
+        self.M_b = 0
+        self.M_c = 0
+        self.M_d = 0
+        self.M_e = 0
+        self.M_f = 0
 
-        self.shares_held = 0
-        self.cost_basis = 0
-        self.total_shares_sold = 0
-        self.total_sales_value = 0
 
         # Set the current step to a random point within the data frame
         # We set the current step to a random point within the data frame, because

@@ -96,6 +96,7 @@ class LookAheadRLApp(object):
                 # Coleta snapshots a cada 1 segundo
                 time.sleep(1)
 
+                # Roda script por um tempo fixo
                 # if test == minutes or time.time() > timeout:
                 #     snapshots_json = json.dumps(snapshots)
                 #     with open('./snapshot-h2-client-h4-server.txt', 'w+') as json_file:
@@ -105,7 +106,7 @@ class LookAheadRLApp(object):
 
         except KeyboardInterrupt:
             snapshots_json = json.dumps(snapshots)
-            with open('./snapshot-h4-client-h1-server--fallback.txt', 'w+') as json_file:
+            with open('./dados-rede.txt', 'w+') as json_file:
                 json.dump(snapshots_json, json_file)
 
 

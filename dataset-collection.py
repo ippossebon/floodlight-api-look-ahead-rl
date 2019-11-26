@@ -90,10 +90,10 @@ class LookAheadRLApp(object):
                 response_data = response.json()
                 timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 snapshots[timestamp] = response_data
-
-                import ipdb; ipdb.set_trace()
+                print(response_data)
                 # Coleta snapshots a cada 1 segundo
                 time.sleep(1)
+                exit(1)
 
                 # Roda script por um tempo fixo
                 # if test == minutes or time.time() > timeout:

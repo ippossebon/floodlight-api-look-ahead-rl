@@ -93,6 +93,7 @@ class LookAheadRLApp(object):
                 timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 snapshots[timestamp] = response_data
 
+                import ipdb; ipdb.set_trace()
                 # Coleta snapshots a cada 1 segundo
                 time.sleep(1)
 
@@ -108,6 +109,7 @@ class LookAheadRLApp(object):
             snapshots_json = json.dumps(snapshots)
             with open('./dados-rede.txt', 'w+') as json_file:
                 json.dump(snapshots_json, json_file)
+                print('criou arquivo.')
 
 
     def listNetworkDevices(self):

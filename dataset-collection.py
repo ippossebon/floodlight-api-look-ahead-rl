@@ -82,6 +82,13 @@ class LookAheadRLApp(object):
         timeout = time.time() + minutes # 5 minutes from now
         test = 0
 
+        link_A_usage_rate = -1
+        link_B_usage_rate = -1
+        link_C_usage_rate = -1
+        link_D_usage_rate = -1
+        link_E_usage_rate = -1
+        link_F_usage_rate = -1
+
         dataframe = []
         snapshot_count = 0
         try:
@@ -167,7 +174,7 @@ class LookAheadRLApp(object):
                     'link_F_usage_rate'
                 ]
                 wr.writerow(header)
-                
+
                 for row in dataframe:
                     wr.writerow(row)
 

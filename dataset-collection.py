@@ -99,7 +99,6 @@ class LookAheadRLApp(object):
                 response_data = response.json()
 
                 for item in response_data:
-                    print(item)
                     if item["dpid"] == "00:00:00:00:00:00:00:01":
                         if item["port"] == "1":
                             # link A
@@ -163,7 +162,7 @@ class LookAheadRLApp(object):
                 # test = test - 1
 
         except KeyboardInterrupt:
-            with open('./dados-rede.csv', 'w+', newline='') as csv_file:
+            with open('./dataframe-h1-client-h2-server.csv', 'w+', newline='') as csv_file:
                 wr = csv.writer(csv_file)
                 header = [
                     'snapshot',

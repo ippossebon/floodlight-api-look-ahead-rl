@@ -98,11 +98,10 @@ class LookAheadRLApp(object):
                 response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
                 response_data = response.json()
 
-                import ipdb; ipdb.set_trace()
+                print(type(response_data))
 
 
                 for item in response_data:
-                    import ipdb; ipdb.set_trace()
                     if item["dpid"] == "00:00:00:00:00:00:00:01":
                         if item["port"] == "1":
                             # link A

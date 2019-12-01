@@ -88,17 +88,17 @@ class LookAheadRLApp(object):
         link_D_usage_rate = -1
         link_E_usage_rate = -1
         link_F_usage_rate = -1
-        link_A_usage_rate_bw = -1
-        link_B_usage_rate_bw = -1
-        link_C_usage_rate_bw = -1
-        link_D_usage_rate_bw = -1
-        link_E_usage_rate_bw = -1
-        link_F_usage_rate_bw = -1
+
+        link_A_previous_usage = 0
+        link_B_previous_usage = 0
+        link_C_previous_usage = 0
+        link_D_previous_usage = 0
+        link_E_previous_usage = 0
+        link_F_previous_usage = 0
 
         dataframe = []
         snapshot_count = 0
 
-        link_bandwidth = 10485760
         try:
             while True:
                 # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
@@ -110,47 +110,53 @@ class LookAheadRLApp(object):
                     if item["dpid"] == "00:00:00:00:00:00:00:01":
                         if item["port"] == "1":
                             # link A
-                            link_A_usage = float(item["bits-per-second-rx"])
+                            link_A_usage = float(item["bits-per-second-rx"]) - link_A_previous_usage
+                            link_A_previous_usage = link_A_usage
+
                             link_A_capacity = float(item["link-speed-bits-per-second"])
                             link_A_usage_rate = float(link_A_usage / link_A_capacity)
-                            link_A_usage_rate_bw = float(link_A_usage / link_bandwidth)
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:02":
                         if item["port"] == "1":
                             # link B
-                            link_B_usage = float(item["bits-per-second-rx"])
+                            link_B_usage = float(item["bits-per-second-rx"]) - link_B_previous_usage
+                            link_B_previous_usage = link_B_usage
+
                             link_B_capacity = float(item["link-speed-bits-per-second"])
                             link_B_usage_rate = float(link_B_usage / link_B_capacity)
-                            link_B_usage_rate_bw = float(link_B_usage / link_bandwidth)
 
                         elif item["port"] == "2":
                             # link E
-                            link_E_usage = float(item["bits-per-second-rx"])
+                            link_E_usage = float(item["bits-per-second-rx"]) - link_E_previous_usage
+                            link_E_previous_usage = link_E_usage
+
                             link_E_capacity = float(item["link-speed-bits-per-second"])
                             link_E_usage_rate = float(link_E_usage / link_E_capacity)
-                            link_E_usage_rate_bw = float(link_E_usage / link_bandwidth)
 
                         elif item["port"] == "3":
                             # link E
-                            link_D_usage = float(item["bits-per-second-rx"])
+                            link_D_usage = float(item["bits-per-second-rx"]) - link_D_previous_usage
+                            link_D_previous_usage = link_D_usage
+
                             link_D_capacity = float(item["link-speed-bits-per-second"])
                             link_D_usage_rate = float(link_D_usage / link_D_capacity)
-                            link_D_usage_rate_bw = float(link_D_usage / link_bandwidth)
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:03":
                         if item["port"] == "1":
                             # link C
-                            link_C_usage = float(item["bits-per-second-rx"])
+                            link_C_usage = float(item["bits-per-second-rx"]) - link_C_previous_usage
+                            link_C_previous_usage = link_C_usage
+
                             link_C_capacity = float(item["link-speed-bits-per-second"])
                             link_C_usage_rate = float(link_C_usage / link_C_capacity)
-                            link_C_usage_rate_bw = float(link_C_usage / link_bandwidth)
 
                         elif item["port"] == "3":
                             # link F
-                            link_F_usage = float(item["bits-per-second-rx"])
+                            link_F_usage = float(item["bits-per-second-rx"]) - link_F_previous_usage
+                            link_F_previous_usage = link_F_usage
+
                             link_F_capacity = float(item["link-speed-bits-per-second"])
                             link_F_usage_rate = float(link_F_usage / link_F_capacity)
-                            link_F_usage_rate_bw = float(link_F_usage / link_bandwidth)
 
                 snapshot = [
                     snapshot_count,
@@ -159,13 +165,7 @@ class LookAheadRLApp(object):
                     link_C_usage_rate,
                     link_D_usage_rate,
                     link_E_usage_rate,
-                    link_F_usage_rate,
-                    link_A_usage_rate_bw,
-                    link_B_usage_rate_bw,
-                    link_C_usage_rate_bw,
-                    link_D_usage_rate_bw,
-                    link_E_usage_rate_bw,
-                    link_F_usage_rate_bw
+                    link_F_usage_rate
                 ]
 
                 dataframe.append(snapshot)
@@ -182,7 +182,7 @@ class LookAheadRLApp(object):
                 # test = test - 1
 
         except KeyboardInterrupt:
-            with open('./dataframe-h1-client-h2-server-with-bw.csv', 'w+', newline='') as csv_file:
+            with open('./dataframe-h1-client-h2-server.csv', 'w+', newline='') as csv_file:
                 wr = csv.writer(csv_file)
                 header = [
                     'snapshot',
@@ -191,13 +191,7 @@ class LookAheadRLApp(object):
                     'link_C_usage_rate',
                     'link_D_usage_rate',
                     'link_E_usage_rate',
-                    'link_F_usage_rate',
-                    'link_A_usage_rate_bw',
-                    'link_B_usage_rate_bw',
-                    'link_C_usage_rate_bw',
-                    'link_D_usage_rate_bw',
-                    'link_E_usage_rate_bw',
-                    'link_F_usage_rate_bw'
+                    'link_F_usage_rate'
                 ]
                 wr.writerow(header)
 

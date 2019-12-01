@@ -98,9 +98,6 @@ class LookAheadRLApp(object):
                 response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
                 response_data = response.json()
 
-                # print(response)
-                print(response_data)
-
                 for item in response_data:
                     print(item)
                     if item["dpid"] == "00:00:00:00:00:00:00:01":

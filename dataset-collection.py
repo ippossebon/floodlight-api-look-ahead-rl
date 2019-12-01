@@ -190,11 +190,16 @@ class LookAheadRLApp(object):
             return True
         return False
 
+    def enableStatisticsCollection(self):
+        # curl -X POST -d "" http://0.0.0.0:8080/wm/statistics/config/enable/json
+        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data='')
+
     def run(self):
         # Create network graph
         self.initializeNetworkGraph()
         self.routing_model.setNetworkGraph(self.network_graph)
 
+        self.enableStatisticsCollection()
         self.collectSnapshots()
         # Train prediction model
         # self.predictor.trainModel()

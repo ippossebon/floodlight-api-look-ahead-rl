@@ -110,11 +110,21 @@ class LookAheadRLApp(object):
                     if item["dpid"] == "00:00:00:00:00:00:00:01":
                         if item["port"] == "1":
                             # link A
+                            print('link_A_previous_usage = ', link_A_previous_usage)
+                            print('link_A_value = ', float(item["bits-per-second-rx"]))
+
                             link_A_usage = float(item["bits-per-second-rx"]) - link_A_previous_usage
+                            print('link_A_current_usage = ', link_A_usage)
+
                             link_A_previous_usage = link_A_usage
 
                             link_A_capacity = float(item["link-speed-bits-per-second"])
+
+                            print('link_A_capacity = ', link_A_capacity)
+
                             link_A_usage_rate = float(link_A_usage / link_A_capacity)
+                            print('link_A_usage_rate = ', link_A_usage_rate)
+                            print('-------')
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:02":
                         if item["port"] == "1":

@@ -174,7 +174,7 @@ class LookAheadRLApp(object):
                     'link_F_usage_rate'
                 ]
                 wr.writerow(header)
-
+                import ipdb; ipdb.set_trace()
                 for row in dataframe:
                     wr.writerow(row)
 

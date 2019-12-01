@@ -99,6 +99,7 @@ class LookAheadRLApp(object):
                 response_data = response.json()
 
                 for item in response_data:
+                    import ipdb; ipdb.set_trace()
                     if item["dpid"] == "00:00:00:00:00:00:00:01":
                         if item["port"] == "1":
                             # link A
@@ -174,7 +175,7 @@ class LookAheadRLApp(object):
                     'link_F_usage_rate'
                 ]
                 wr.writerow(header)
-                import ipdb; ipdb.set_trace()
+
                 for row in dataframe:
                     wr.writerow(row)
 

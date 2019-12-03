@@ -110,62 +110,67 @@ class LookAheadRLApp(object):
                     if item["dpid"] == "00:00:00:00:00:00:00:01":
                         if item["port"] == "1":
                             # link A
-                            print('link_A_previous_usage = ', link_A_previous_usage)
-                            print('link_A_value = ', float(item["bits-per-second-rx"]))
+                            link_A_capacity = float(item["link-speed-bits-per-second"])
+                            link_A_usage_current_value = float(item["bits-per-second-rx"])
 
-                            link_A_usage = float(item["bits-per-second-rx"]) - link_A_previous_usage
-                            print('link_A_current_usage = ', link_A_usage)
-
+                            link_A_usage = link_A_usage_current_value - link_A_previous_usage
                             link_A_previous_usage = link_A_usage
 
-                            link_A_capacity = float(item["link-speed-bits-per-second"])
-
-                            print('link_A_capacity = ', link_A_capacity)
-
                             link_A_usage_rate = float(link_A_usage / link_A_capacity)
-                            print('link_A_usage_rate = ', link_A_usage_rate)
-                            print('-------')
+                            print('link_A_usage_current_value = {0}, link_A_usage = {1}, link_A_previous_usage = {2}'.format(
+                                link_A_usage_current_value, link_A_usage, link_A_previous_usage
+                            ))
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:02":
                         if item["port"] == "1":
                             # link B
-                            link_B_usage = float(item["bits-per-second-rx"]) - link_B_previous_usage
+                            link_B_capacity = float(item["link-speed-bits-per-second"])
+                            link_B_usage_current_value = float(item["bits-per-second-rx"])
+
+                            link_B_usage = link_B_usage_current_value - link_B_previous_usage
                             link_B_previous_usage = link_B_usage
 
-                            link_B_capacity = float(item["link-speed-bits-per-second"])
                             link_B_usage_rate = float(link_B_usage / link_B_capacity)
 
                         elif item["port"] == "2":
                             # link E
-                            link_E_usage = float(item["bits-per-second-rx"]) - link_E_previous_usage
+                            link_E_capacity = float(item["link-speed-bits-per-second"])
+                            link_E_usage_current_value = float(item["bits-per-second-rx"])
+
+                            link_E_usage = link_E_usage_current_value - link_E_previous_usage
                             link_E_previous_usage = link_E_usage
 
-                            link_E_capacity = float(item["link-speed-bits-per-second"])
                             link_E_usage_rate = float(link_E_usage / link_E_capacity)
 
                         elif item["port"] == "3":
-                            # link E
-                            link_D_usage = float(item["bits-per-second-rx"]) - link_D_previous_usage
+                            # link D
+                            link_D_capacity = float(item["link-speed-bits-per-second"])
+                            link_D_usage_current_value = float(item["bits-per-second-rx"])
+
+                            link_D_usage = link_D_usage_current_value - link_D_previous_usage
                             link_D_previous_usage = link_D_usage
 
-                            link_D_capacity = float(item["link-speed-bits-per-second"])
                             link_D_usage_rate = float(link_D_usage / link_D_capacity)
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:03":
                         if item["port"] == "1":
                             # link C
-                            link_C_usage = float(item["bits-per-second-rx"]) - link_C_previous_usage
+                            link_C_capacity = float(item["link-speed-bits-per-second"])
+                            link_C_usage_current_value = float(item["bits-per-second-rx"])
+
+                            link_C_usage = link_C_usage_current_value - link_C_previous_usage
                             link_C_previous_usage = link_C_usage
 
-                            link_C_capacity = float(item["link-speed-bits-per-second"])
                             link_C_usage_rate = float(link_C_usage / link_C_capacity)
 
                         elif item["port"] == "3":
                             # link F
-                            link_F_usage = float(item["bits-per-second-rx"]) - link_F_previous_usage
+                            link_F_capacity = float(item["link-speed-bits-per-second"])
+                            link_F_usage_current_value = float(item["bits-per-second-rx"])
+
+                            link_F_usage = link_F_usage_current_value - link_F_previous_usage
                             link_F_previous_usage = link_F_usage
 
-                            link_F_capacity = float(item["link-speed-bits-per-second"])
                             link_F_usage_rate = float(link_F_usage / link_F_capacity)
 
                 snapshot = [

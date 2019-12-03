@@ -96,7 +96,9 @@ class LookAheadRLApp(object):
         link_E_previous_usage = 0
         link_F_previous_usage = 0
 
-        dataframe = []
+        usage_rates_dataframe = []
+        features_dataframe = []
+
         snapshot_count = 0
 
         try:
@@ -112,63 +114,39 @@ class LookAheadRLApp(object):
                             # link A
                             link_A_capacity = float(item["link-speed-bits-per-second"])
                             link_A_usage_current_value = float(item["bits-per-second-rx"])
-
                             link_A_usage_rate = float(link_A_usage_current_value / link_A_capacity)
-                            print('link_A_capacity = {0}, link_A_usage_current_value = {1}, link_A_usage_rate = {2}'.format(
-                                link_A_capacity, link_A_usage_current_value, link_A_usage_rate
-                            ))
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:02":
                         if item["port"] == "1":
                             # link B
                             link_B_capacity = float(item["link-speed-bits-per-second"])
                             link_B_usage_current_value = float(item["bits-per-second-rx"])
-
-                            link_B_usage = link_B_usage_current_value - link_B_previous_usage
-                            link_B_previous_usage = link_B_usage
-
-                            link_B_usage_rate = float(link_B_usage / link_B_capacity)
+                            link_B_usage_rate = float(link_B_usage_current_value / link_B_capacity)
 
                         elif item["port"] == "2":
                             # link E
                             link_E_capacity = float(item["link-speed-bits-per-second"])
                             link_E_usage_current_value = float(item["bits-per-second-rx"])
-
-                            link_E_usage = link_E_usage_current_value - link_E_previous_usage
-                            link_E_previous_usage = link_E_usage
-
-                            link_E_usage_rate = float(link_E_usage / link_E_capacity)
+                            link_E_usage_rate = float(link_E_usage_current_value / link_E_capacity)
 
                         elif item["port"] == "3":
                             # link D
                             link_D_capacity = float(item["link-speed-bits-per-second"])
                             link_D_usage_current_value = float(item["bits-per-second-rx"])
-
-                            link_D_usage = link_D_usage_current_value - link_D_previous_usage
-                            link_D_previous_usage = link_D_usage
-
-                            link_D_usage_rate = float(link_D_usage / link_D_capacity)
+                            link_D_usage_rate = float(link_D_usage_current_value / link_D_capacity)
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:03":
                         if item["port"] == "1":
                             # link C
                             link_C_capacity = float(item["link-speed-bits-per-second"])
                             link_C_usage_current_value = float(item["bits-per-second-rx"])
-
-                            link_C_usage = link_C_usage_current_value - link_C_previous_usage
-                            link_C_previous_usage = link_C_usage
-
-                            link_C_usage_rate = float(link_C_usage / link_C_capacity)
+                            link_C_usage_rate = float(link_C_usage_current_value / link_C_capacity)
 
                         elif item["port"] == "3":
                             # link F
                             link_F_capacity = float(item["link-speed-bits-per-second"])
                             link_F_usage_current_value = float(item["bits-per-second-rx"])
-
-                            link_F_usage = link_F_usage_current_value - link_F_previous_usage
-                            link_F_previous_usage = link_F_usage
-
-                            link_F_usage_rate = float(link_F_usage / link_F_capacity)
+                            link_F_usage_rate = float(link_F_usage_current_value / link_F_capacity)
 
                 snapshot = [
                     snapshot_count,
@@ -180,7 +158,31 @@ class LookAheadRLApp(object):
                     link_F_usage_rate
                 ]
 
-                dataframe.append(snapshot)
+                usage_rates_dataframe.append(snapshot)
+
+                features_snapshot = [
+                    snapshot_count,
+                    link_A_capacity,
+                    link_A_usage_current_value,
+                    link_A_usage_rate,
+                    link_B_capacity,
+                    link_B_usage_current_value,
+                    link_B_usage_rate,
+                    link_C_capacity,
+                    link_C_usage_current_value,
+                    link_C_usage_rate,
+                    link_D_capacity,
+                    link_D_usage_current_value,
+                    link_D_usage_rate,
+                    link_E_capacity,
+                    link_E_usage_current_value,
+                    link_E_usage_rate,
+                    link_F_capacity,
+                    link_F_usage_current_value,
+                    link_F_usage_rate
+                ]
+
+                features_dataframe.append(features_snapshot)
 
                 time.sleep(1)
                 snapshot_count = snapshot_count + 1
@@ -194,7 +196,7 @@ class LookAheadRLApp(object):
                 # test = test - 1
 
         except KeyboardInterrupt:
-            with open('./dataframe-h1-client-h2-server.csv', 'w+', newline='') as csv_file:
+            with open('./dataframe-h1-client-h2-server-usage-rate.csv', 'w+', newline='') as csv_file:
                 wr = csv.writer(csv_file)
                 header = [
                     'snapshot',
@@ -207,10 +209,40 @@ class LookAheadRLApp(object):
                 ]
                 wr.writerow(header)
 
-                for row in dataframe:
+                for row in usage_rates_dataframe:
                     wr.writerow(row)
 
-                print('Criou arquivo')
+                print('Usage rate file created.')
+
+            with open('./dataframe-h1-client-h2-server-features.csv', 'w+', newline='') as csv_file_features:
+                wr = csv.writer(csv_file_features)
+                header = [
+                    'snapshot_count',
+                    'link_A_capacity',
+                    'link_A_usage_current_value',
+                    'link_A_usage_rate',
+                    'link_B_capacity',
+                    'link_B_usage_current_value',
+                    'link_B_usage_rate',
+                    'link_C_capacity',
+                    'link_C_usage_current_value',
+                    'link_C_usage_rate',
+                    'link_D_capacity',
+                    'link_D_usage_current_value',
+                    'link_D_usage_rate',
+                    'link_E_capacity',
+                    'link_E_usage_current_value',
+                    'link_E_usage_rate',
+                    'link_F_capacity',
+                    'link_F_usage_current_value',
+                    'link_F_usage_rate'
+                ]
+                wr.writerow(header)
+
+                for row in usage_rates_dataframe:
+                    wr.writerow(row)
+
+                print('Features file created.')
 
 
     def shouldReroute(self, predicted_size):

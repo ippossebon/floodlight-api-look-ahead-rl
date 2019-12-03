@@ -239,7 +239,7 @@ class LookAheadRLApp(object):
                 ]
                 wr.writerow(header)
 
-                for row in usage_rates_dataframe:
+                for row in features_dataframe:
                     wr.writerow(row)
 
                 print('Features file created.')

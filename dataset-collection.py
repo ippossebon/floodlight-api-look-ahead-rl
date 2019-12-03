@@ -113,12 +113,9 @@ class LookAheadRLApp(object):
                             link_A_capacity = float(item["link-speed-bits-per-second"])
                             link_A_usage_current_value = float(item["bits-per-second-rx"])
 
-                            link_A_usage = link_A_usage_current_value - link_A_previous_usage
-                            link_A_previous_usage = link_A_usage
-
-                            link_A_usage_rate = float(link_A_usage / link_A_capacity)
-                            print('link_A_usage_current_value = {0}, link_A_usage = {1}, link_A_previous_usage = {2}'.format(
-                                link_A_usage_current_value, link_A_usage, link_A_previous_usage
+                            link_A_usage_rate = float(link_A_usage_current_value / link_A_capacity)
+                            print('link_A_capacity = {0}, link_A_usage_current_value = {1}, link_A_usage_rate = {2}'.format(
+                                link_A_capacity, link_A_usage_current_value, link_A_usage_rate
                             ))
 
                     elif item["dpid"] == "00:00:00:00:00:00:00:02":

@@ -4,8 +4,6 @@ from graphModel.graph import Graph
 from graphModel.link import Link
 from graphModel.node import Node
 
-from prediction.flowSizePredictor import FlowSizePredictor
-
 from routing.binPacking import BinPackingRouting
 
 from operator import attrgetter
@@ -84,18 +82,112 @@ class LookAheadRLApp(object):
         timeout = time.time() + minutes # 5 minutes from now
         test = 0
 
+        link_A_usage_rate = -1
+        link_B_usage_rate = -1
+        link_C_usage_rate = -1
+        link_D_usage_rate = -1
+        link_E_usage_rate = -1
+        link_F_usage_rate = -1
+
+        link_A_previous_usage = 0
+        link_B_previous_usage = 0
+        link_C_previous_usage = 0
+        link_D_previous_usage = 0
+        link_E_previous_usage = 0
+        link_F_previous_usage = 0
+
+        usage_rates_dataframe = []
+        features_dataframe = []
+
+        snapshot_count = 0
+
         try:
             while True:
                 # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
                 # /wm/core/switch/<switchId>/<statType>/json
-                response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+                response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
                 response_data = response.json()
-                timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-                snapshots[timestamp] = response_data
 
-                # Coleta snapshots a cada 1 segundo
+                for item in response_data:
+                    if item["dpid"] == "00:00:00:00:00:00:00:01":
+                        if item["port"] == "1":
+                            # link A
+                            link_A_capacity = float(item["link-speed-bits-per-second"])
+                            link_A_usage_current_value = float(item["bits-per-second-rx"])
+                            link_A_usage_rate = float(link_A_usage_current_value / link_A_capacity)
+
+                    elif item["dpid"] == "00:00:00:00:00:00:00:02":
+                        if item["port"] == "1":
+                            # link B
+                            link_B_capacity = float(item["link-speed-bits-per-second"])
+                            link_B_usage_current_value = float(item["bits-per-second-rx"])
+                            link_B_usage_rate = float(link_B_usage_current_value / link_B_capacity)
+
+                        elif item["port"] == "2":
+                            # link E
+                            link_E_capacity = float(item["link-speed-bits-per-second"])
+                            link_E_usage_current_value = float(item["bits-per-second-rx"])
+                            link_E_usage_rate = float(link_E_usage_current_value / link_E_capacity)
+
+                        elif item["port"] == "3":
+                            # link D
+                            link_D_capacity = float(item["link-speed-bits-per-second"])
+                            link_D_usage_current_value = float(item["bits-per-second-rx"])
+                            link_D_usage_rate = float(link_D_usage_current_value / link_D_capacity)
+
+                    elif item["dpid"] == "00:00:00:00:00:00:00:03":
+                        if item["port"] == "1":
+                            # link C
+                            link_C_capacity = float(item["link-speed-bits-per-second"])
+                            link_C_usage_current_value = float(item["bits-per-second-rx"])
+                            link_C_usage_rate = float(link_C_usage_current_value / link_C_capacity)
+
+                        elif item["port"] == "3":
+                            # link F
+                            link_F_capacity = float(item["link-speed-bits-per-second"])
+                            link_F_usage_current_value = float(item["bits-per-second-rx"])
+                            link_F_usage_rate = float(link_F_usage_current_value / link_F_capacity)
+
+                snapshot = [
+                    snapshot_count,
+                    link_A_usage_rate,
+                    link_B_usage_rate,
+                    link_C_usage_rate,
+                    link_D_usage_rate,
+                    link_E_usage_rate,
+                    link_F_usage_rate
+                ]
+
+                usage_rates_dataframe.append(snapshot)
+
+                features_snapshot = [
+                    snapshot_count,
+                    link_A_capacity,
+                    link_A_usage_current_value,
+                    link_A_usage_rate,
+                    link_B_capacity,
+                    link_B_usage_current_value,
+                    link_B_usage_rate,
+                    link_C_capacity,
+                    link_C_usage_current_value,
+                    link_C_usage_rate,
+                    link_D_capacity,
+                    link_D_usage_current_value,
+                    link_D_usage_rate,
+                    link_E_capacity,
+                    link_E_usage_current_value,
+                    link_E_usage_rate,
+                    link_F_capacity,
+                    link_F_usage_current_value,
+                    link_F_usage_rate
+                ]
+
+                features_dataframe.append(features_snapshot)
+
                 time.sleep(1)
+                snapshot_count = snapshot_count + 1
 
+                # Roda script por um tempo fixo
                 # if test == minutes or time.time() > timeout:
                 #     snapshots_json = json.dumps(snapshots)
                 #     with open('./snapshot-h2-client-h4-server.txt', 'w+') as json_file:
@@ -104,47 +196,70 @@ class LookAheadRLApp(object):
                 # test = test - 1
 
         except KeyboardInterrupt:
-            snapshots_json = json.dumps(snapshots)
-            with open('./snapshot-h4-client-h1-server--fallback.txt', 'w+') as json_file:
-                json.dump(snapshots_json, json_file)
+            with open('./dataframe-h1-client-h2-server-usage-rate.csv', 'w+', newline='') as csv_file:
+                wr = csv.writer(csv_file)
+                header = [
+                    'snapshot',
+                    'link_A_usage_rate',
+                    'link_B_usage_rate',
+                    'link_C_usage_rate',
+                    'link_D_usage_rate',
+                    'link_E_usage_rate',
+                    'link_F_usage_rate'
+                ]
+                wr.writerow(header)
 
+                for row in usage_rates_dataframe:
+                    wr.writerow(row)
 
-    def listNetworkDevices(self):
-        # List static flows for a switch or all switches
-        response = requests.get('{host}/wm/device'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
+                print('Usage rate file created.')
 
-        return response
+            with open('./dataframe-h1-client-h2-server-features.csv', 'w+', newline='') as csv_file_features:
+                wr = csv.writer(csv_file_features)
+                header = [
+                    'snapshot_count',
+                    'link_A_capacity',
+                    'link_A_usage_current_value',
+                    'link_A_usage_rate',
+                    'link_B_capacity',
+                    'link_B_usage_current_value',
+                    'link_B_usage_rate',
+                    'link_C_capacity',
+                    'link_C_usage_current_value',
+                    'link_C_usage_rate',
+                    'link_D_capacity',
+                    'link_D_usage_current_value',
+                    'link_D_usage_rate',
+                    'link_E_capacity',
+                    'link_E_usage_current_value',
+                    'link_E_usage_rate',
+                    'link_F_capacity',
+                    'link_F_usage_current_value',
+                    'link_F_usage_rate'
+                ]
+                wr.writerow(header)
 
-    def setSwitchStatistics(self):
-        # Get statistics from all switches
-        response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
+                for row in features_dataframe:
+                    wr.writerow(row)
 
-        for item in response_data:
-            switch_dpid = item["dpid"]
-            # item é um objeto com o formato:
-            #    {
-            #       "bits-per-second-rx" : "0",
-            #       "dpid" : "00:00:00:00:00:00:00:02",
-            #       "updated" : "Mon Sep 02 15:54:17 EDT 2019",
-            #       "link-speed-bits-per-second" : "10000000",
-            #       "port" : "1",
-            #       "bits-per-second-tx" : "6059"
-            #    }
-            self.switch_info[switch_dpid]["statistics"] = item
+                print('Features file created.')
+
 
     def shouldReroute(self, predicted_size):
         if predicted_size > THRESHOLD:
             return True
         return False
 
+    def enableStatisticsCollection(self):
+        # curl -X POST -d "" http://0.0.0.0:8080/wm/statistics/config/enable/json
+        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data='')
+
     def run(self):
         # Create network graph
         self.initializeNetworkGraph()
         self.routing_model.setNetworkGraph(self.network_graph)
 
-        self.setSwitchStatistics()
+        self.enableStatisticsCollection()
         self.collectSnapshots()
         # Train prediction model
         # self.predictor.trainModel()

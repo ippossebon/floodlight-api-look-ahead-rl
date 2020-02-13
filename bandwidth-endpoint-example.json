@@ -1,0 +1,90 @@
+[
+  {
+    "dpid":"00:00:00:00:00:00:00:03",
+    "port":"local",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"0",
+    "bits-per-second-rx":"0",
+    "bits-per-second-tx":"0"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:02",
+    "port":"local",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"0",
+    "bits-per-second-rx":"0",
+    "bits-per-second-tx":"0"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:01",
+    "port":"local",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"0",
+    "bits-per-second-rx":"0",
+    "bits-per-second-tx":"78"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:03",
+    "port":"1",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"10000000",
+    "bits-per-second-rx":"314",
+    "bits-per-second-tx":"314"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:02",
+    "port":"1",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"10000000",
+    "bits-per-second-rx":"0",
+    "bits-per-second-tx":"0"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:03",
+    "port":"2",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"10000000",
+    "bits-per-second-rx":"0",
+    "bits-per-second-tx":"0"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:01",
+    "port":"1",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"10000000",
+    "bits-per-second-rx":"314",
+    "bits-per-second-tx":"314"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:02",
+    "port":"2",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"10000000",
+    "bits-per-second-rx":"0",
+    "bits-per-second-tx":"0"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:03",
+    "port":"3",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"10000000",
+    "bits-per-second-rx":"314",
+    "bits-per-second-tx":"314"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:01",
+    "port":"2",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"10000000",
+    "bits-per-second-rx":"314",
+    "bits-per-second-tx":"314"
+  },
+  {
+    "dpid":"00:00:00:00:00:00:00:02",
+    "port":"3",
+    "updated":"Tue Nov 26 04:14:13 PST 2019",
+    "link-speed-bits-per-second":"10000000",
+    "bits-per-second-rx":"0",
+    "bits-per-second-tx":"0"
+  }
+]

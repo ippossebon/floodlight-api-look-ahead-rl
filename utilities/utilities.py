@@ -1,2 +1,0 @@
-def parseNetworkJson(data):
-    

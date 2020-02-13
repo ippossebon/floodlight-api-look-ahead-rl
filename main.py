@@ -249,7 +249,7 @@ class LookAheadRLApp(object):
         while True:
             # Estatítiscas estão aramazenados em self.switch_info
             self.setSwitchStatistics()
-            self.setFlowsSnapshots()
+            # self.setFlowsSnapshots()
 
             print('-------- Time slot -------')
             for flow in self.active_flows:

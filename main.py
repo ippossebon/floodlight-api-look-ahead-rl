@@ -231,15 +231,15 @@ class LookAheadRLApp(object):
         response_data = response.json()
 
         links_usage = {
-            'A': 0,
-            'B': 0,
-            'C': 0,
-            'D': 0,
-            'E': 0,
-            'F': 0,
-            'G': 0,
-            'H': 0,
-            'I': 0
+            'A': -1,
+            'B': -1,
+            'C': -1,
+            'D': -1,
+            'E': -1,
+            'F': -1,
+            'G': -1,
+            'H': -1,
+            'I': -1
         }
         for item in response_data:
             switch_dpid = item['dpid']
@@ -253,9 +253,33 @@ class LookAheadRLApp(object):
             #       "bits-per-second-tx" : "6059"
             #    }
             if item['dpid'] == '1' and item['port'] == '1':
-                links_usage['A'] = float(item['bits-per-second-rx'])
+                links_usage['A'] = item['bits-per-second-rx']
 
+            elif item['dpid'] == '2' and item['port'] == '1':
+                links_usage['B'] = float(item['bits-per-second-rx'])
 
+            elif item['dpid'] == '4' and item['port'] == '1':
+                links_usage['C'] = float(item['bits-per-second-rx'])
+
+            elif item['dpid'] == '4' and item['port'] == '2':
+                links_usage['E'] = float(item['bits-per-second-rx'])
+
+            elif item['dpid'] == '5' and item['port'] == '1':
+                links_usage['D'] = float(item['bits-per-second-rx'])
+
+            elif item['dpid'] == '3' and item['port'] == '2':
+                links_usage['F'] = float(item['bits-per-second-rx'])
+
+            elif item['dpid'] == '3' and item['port'] == '4':
+                links_usage['H'] = float(item['bits-per-second-rx'])
+
+            elif item['dpid'] == '3' and item['port'] == '3':
+                links_usage['G'] = float(item['bits-per-second-rx'])
+
+            elif item['dpid'] == '00:00:00:00:00:02' and item['port'] == '1':
+                links_usage['I'] = float(item['bits-per-second-rx'])
+
+        return links_usage
 
 
     def isElephantFlow(self, flow):
@@ -271,7 +295,6 @@ class LookAheadRLApp(object):
         # Train prediction model
         # self.predictor.trainModel()
 
-
         # # Testando caminho de custo mínimo
         # source_switch_id = '00:00:00:00:00:00:00:01'
         # target_switch_id = '00:00:00:00:00:00:00:06'
@@ -281,17 +304,7 @@ class LookAheadRLApp(object):
         # min_cost_path = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
         # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
 
-        initial_usage = {
-            'A': 100,
-            'B': 50,
-            'C': 10,
-            'D': 30,
-            'E': 100,
-            'F': 20,
-            'G': 90,
-            'H': 60,
-            'I': 10
-        } # TODO self.getUsage()
+        initial_usage = self.getLinksUsage()
 
         self.env = gym.make('Load-Balance-v1')
         self.max_steps = 10

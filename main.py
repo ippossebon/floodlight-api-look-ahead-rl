@@ -8,6 +8,9 @@ from routing.binPacking import BinPackingRouting
 
 from operator import attrgetter
 
+import load_balance_gym
+
+import gym
 import requests
 import time
 
@@ -22,6 +25,8 @@ class LookAheadRLApp(object):
         self.routing_model = BinPackingRouting()
         self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
         self.active_flows = [] # lista de ActiveFlow
+
+        self.enableSwitchStatisticsEndpoit()
 
     def initializeNetworkGraph(self):
         # 1. Consome topologia floodlight
@@ -220,6 +225,39 @@ class LookAheadRLApp(object):
             #    }
             self.switch_info[switch_dpid]["statistics"] = item
 
+    def getLinksUsage(self):
+        # Get statistics from all switches
+        response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
+
+        links_usage = {
+            'A': 0,
+            'B': 0,
+            'C': 0,
+            'D': 0,
+            'E': 0,
+            'F': 0,
+            'G': 0,
+            'H': 0,
+            'I': 0
+        }
+        for item in response_data:
+            switch_dpid = item['dpid']
+            # item é um objeto com o formato:
+            #    {
+            #       "bits-per-second-rx" : "0",
+            #       "dpid" : "00:00:00:00:00:00:00:02",
+            #       "updated" : "Mon Sep 02 15:54:17 EDT 2019",
+            #       "link-speed-bits-per-second" : "10000000",
+            #       "port" : "1",
+            #       "bits-per-second-tx" : "6059"
+            #    }
+            if item['dpid'] == '1' and item['port'] == '1':
+                links_usage['A'] = float(item['bits-per-second-rx'])
+
+
+
+
     def isElephantFlow(self, flow):
         if flow.duration_sec > THRESHOLD_TIME and flow.byte_count > THRESHOLD_SIZE:
             return True
@@ -233,7 +271,6 @@ class LookAheadRLApp(object):
         # Train prediction model
         # self.predictor.trainModel()
 
-        # self.enableSwitchStatisticsEndpoit()
 
         # # Testando caminho de custo mínimo
         # source_switch_id = '00:00:00:00:00:00:00:01'
@@ -243,6 +280,35 @@ class LookAheadRLApp(object):
         # # custo = 1 / capacidade_atual
         # min_cost_path = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
         # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
+
+        initial_usage = {
+            'A': 100,
+            'B': 50,
+            'C': 10,
+            'D': 30,
+            'E': 100,
+            'F': 20,
+            'G': 90,
+            'H': 60,
+            'I': 10
+        } # TODO self.getUsage()
+
+        self.env = gym.make('Load-Balance-v1')
+        self.max_steps = 10
+        obs = env.reset()
+
+
+        # TODO: Como integrar esse for com o while true?
+        for step in range(n_steps):
+            # Random action
+            print('step = ', step)
+
+            action = env.action_space.sample()
+            print('action = ', action)
+
+            state, reward, done, info = env.step(action)
+            print('state = ', state)
+            print('reward = ', reward)
 
 
         # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos

@@ -317,26 +317,33 @@ class LookAheadRLApp(object):
         while True:
             # Estatítiscas estão aramazenados em self.switch_info
             self.setSwitchStatistics()
-            # self.setFlowsSnapshots()
+            self.setFlowsSnapshots()
 
-            print('-------- Time slot -------')
-            for flow in self.active_flows:
-                print(flow.features)
+            action = self.env.action_space.sample()
+            print('action = ', action)
 
-                if self.isElephantFlow(flow):
+            state, reward, done, info = self.env.step(action)
+            print('state = ', state)
+            print('reward = ', reward)
+
+            # print('-------- Time slot -------')
+            # for flow in self.active_flows:
+                # print(flow.features)
+
+                # if self.isElephantFlow(flow):
                     # Detectou-se que esse fluxo é grande o suficiente para, eventualmente,
                     # sobrecarregar os links. Por isso, vamos dividir a carga desse fluxo.
 
-                    for step in range(n_steps):
+                    # for step in range(n_steps):
                         # Random action
-                        print('step = ', step)
+                        # print('step = ', step)
 
-                        action = self.env.action_space.sample()
-                        print('action = ', action)
-
-                        state, reward, done, info = self.env.step(action)
-                        print('state = ', state)
-                        print('reward = ', reward)
+                        # action = self.env.action_space.sample()
+                        # print('action = ', action)
+                        #
+                        # state, reward, done, info = self.env.step(action)
+                        # print('state = ', state)
+                        # print('reward = ', reward)
 
                     # current_state = self.getNetworkState()
                     # best_action = self.rl_agent.chooseBestAction(current_state)
@@ -350,7 +357,7 @@ class LookAheadRLApp(object):
                     # source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
                     # target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
                     # new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
-            print('---------------------------------------------')
+            # print('---------------------------------------------')
 
             time.sleep(10)
 

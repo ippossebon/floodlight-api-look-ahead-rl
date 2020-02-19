@@ -316,8 +316,8 @@ class LookAheadRLApp(object):
         # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos
         while True:
             # Estatítiscas estão aramazenados em self.switch_info
-            self.setSwitchStatistics()
-            self.setFlowsSnapshots()
+            # self.setSwitchStatistics()
+            # self.setFlowsSnapshots()
 
             action = self.env.action_space.sample()
             print('action = ', action)

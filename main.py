@@ -310,7 +310,7 @@ class LookAheadRLApp(object):
 
         self.env = gym.make('Load-Balance-v1')
         self.max_steps = 10
-        obs = env.reset()
+        obs = self.env.reset()
 
 
         # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos
@@ -331,10 +331,10 @@ class LookAheadRLApp(object):
                         # Random action
                         print('step = ', step)
 
-                        action = env.action_space.sample()
+                        action = self.env.action_space.sample()
                         print('action = ', action)
 
-                        state, reward, done, info = env.step(action)
+                        state, reward, done, info = self.env.step(action)
                         print('state = ', state)
                         print('reward = ', reward)
 

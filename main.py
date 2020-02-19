@@ -231,15 +231,15 @@ class LookAheadRLApp(object):
         response_data = response.json()
 
         links_usage = {
-            'A': -1,
-            'B': -1,
-            'C': -1,
-            'D': -1,
-            'E': -1,
-            'F': -1,
-            'G': -1,
-            'H': -1,
-            'I': -1
+            'A': 0,
+            'B': 0,
+            'C': 0,
+            'D': 0,
+            'E': 0,
+            'F': 0,
+            'G': 0,
+            'H': 0,
+            'I': 0
         }
         for item in response_data:
             switch_dpid = item['dpid']

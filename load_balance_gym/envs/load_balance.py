@@ -58,7 +58,7 @@ class LoadBalanceEnv(gym.Env):
         # terá o fluxo dividido entre 2 caminhos
         self.action_space = spaces.Discrete(len(self.switches)) # array com o índice do switch sobre o qual vamos agir
         self.action_space = spaces.Box(
-            low=0,
+            low=-1, # -1 indica que nada deve ser feito
             high=len(self.switches)-1, # # TODO: rever
             shape=(3, 1), # [switch_id, link_saida1, link_saida2] shape=(3,1) = 1 linha, 3 colunas
             dtype=numpy.uint8
@@ -147,7 +147,11 @@ class LoadBalanceEnv(gym.Env):
         next_state = {}
 
         # action corresponde ao switch sobre o qual vamos agir, isto é: S1, S2, S3, S4 ou S5
-        if switch_id == 0:
+        if switch_id == -1:
+            # não faz nada
+            next_state = dict(self.usage)
+
+        elif switch_id == 0:
             # Atua sobre S1
             for link in self.topology['S1']:
                 total_usage += self.usage[link]

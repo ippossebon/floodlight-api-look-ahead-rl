@@ -1,5 +1,4 @@
 import gym
-import load_balance_gym
 
 # initial_usage = {
 #     'A': 100,

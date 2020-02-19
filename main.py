@@ -306,22 +306,11 @@ class LookAheadRLApp(object):
 
         initial_usage = self.getLinksUsage()
 
+        print('initial usage = ', initial_usage)
+
         self.env = gym.make('Load-Balance-v1')
         self.max_steps = 10
         obs = env.reset()
-
-
-        # TODO: Como integrar esse for com o while true?
-        for step in range(n_steps):
-            # Random action
-            print('step = ', step)
-
-            action = env.action_space.sample()
-            print('action = ', action)
-
-            state, reward, done, info = env.step(action)
-            print('state = ', state)
-            print('reward = ', reward)
 
 
         # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos
@@ -338,13 +327,23 @@ class LookAheadRLApp(object):
                     # Detectou-se que esse fluxo é grande o suficiente para, eventualmente,
                     # sobrecarregar os links. Por isso, vamos dividir a carga desse fluxo.
 
+                    for step in range(n_steps):
+                        # Random action
+                        print('step = ', step)
+
+                        action = env.action_space.sample()
+                        print('action = ', action)
+
+                        state, reward, done, info = env.step(action)
+                        print('state = ', state)
+                        print('reward = ', reward)
+
                     # current_state = self.getNetworkState()
                     # best_action = self.rl_agent.chooseBestAction(current_state)
 
                     # Converte a ação sugerida pelo agente em regras para instalar nos switches
                     # switch_rules = self.actionToRules(best_action)
                     # self.installRules(switch_rules)
-
 
 
 

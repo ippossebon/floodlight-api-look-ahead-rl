@@ -50,23 +50,25 @@ class LoadBalanceEnv(gym.Env):
         self.observation_space = spaces.Box(
             low=0,
             high=LINK_CAPACITY, # utilização maxima do link
-            shape=(len(self.links), 1), # é um array de utilização dos links
+            shape=(1, len(self.links)), # é um array de utilização dos links
             dtype=numpy.float16
         )
 
         # A ação é escolher o switch sobre o qual vai agir. Isto é, o switch que
-        # terá o fluxo dividido entre 2 caminhos
-        self.action_space = spaces.Discrete(len(self.switches)) # array com o índice do switch sobre o qual vamos agir
-        self.action_space = spaces.Box(
-            low=-1, # -1 indica que nada deve ser feito
-            high=len(self.switches)-1, # # TODO: rever
-            shape=(3, 1), # [switch_id, link_saida1, link_saida2] shape=(3,1) = 1 linha, 3 colunas
-            dtype=numpy.uint8
-        )
+        # terá o fluxo dividido entre 2 caminhos + 1 ação void
+        self.action_space = spaces.Discrete(len(self.switches) + 1) # array com o índice do switch sobre o qual vamos agir
+
+        # Considenrando que action seria um array de coisas
+        # self.action_space = spaces.Box(
+        #     low=np.array([-1, -1, -1]), # -1 indica que nada deve ser feito
+        #     high=np.array([max_switch_id, -1, -1]), # # TODO: rever
+        #     shape=(3, 1), # [switch_id, link_saida1, link_saida2] shape=(3,1) = 1 linha, 3 colunas
+        #     dtype=numpy.uint8
+        # )
 
         # Se tornou o uso da rede MAIS homogêneo, recompensa = 1
-        # Se tornou o uso da rede MENOS homogêneo, recompensa = -1
-        self.reward_range = (-1, 1)
+        # Se tornou o uso da rede MENOS homogêneo, recompensa = 0
+        self.reward_range = (0, 1)
 
     def reset(self):
         """
@@ -91,7 +93,7 @@ class LoadBalanceEnv(gym.Env):
         # self.current_step = random.randint(0, len(self.dataframe))
 
         # self.createNeuralNetworkModel()
-
+        return self.usage
 
     def createNeuralNetworkModel(self):
         # Cria rede neural
@@ -132,70 +134,48 @@ class LoadBalanceEnv(gym.Env):
         # It will take an action variable and will return a list of four things:
         # the next state, the reward for the current state, a boolean representing
         # whether the current episode of our model is done and some additional info on our problem.
-        switch_id = action[0]
-        output_link1 = action[1]
-        output_link2 = action[2]
-
-        # print('action = ', action)
-        # print('switch_id = ', switch_id)
-        # print('output_link1 = ', output_link1)
-        # print('output_link2 = ', output_link2)
-        # print('self.usage = ', self.usage)
+        switch_id = action
 
         # Pega o que temos nos links que saem de S1 e divide entre output_link1 e output_link2
-        total_usage = 0
-        next_state = {}
+        total_usage = sum(self.usage)
+        next_state = []
 
         # action corresponde ao switch sobre o qual vamos agir, isto é: S1, S2, S3, S4 ou S5
-        if switch_id == -1:
+        if switch_id == 0:
             # não faz nada
-            next_state = dict(self.usage)
-
-        elif switch_id == 0:
-            # Atua sobre S1
-            for link in self.topology['S1']:
-                total_usage += self.usage[link]
-
-            # Atualmente, estamos ignorando output_link1 e output_link2, e dividindo entre 2 os fluxos
-            next_state = self.generateNextState(total_usage, 'S1')
+            next_state = list(self.usage)
 
         elif switch_id == 1:
-            # Atua sobre S2
-            for link in self.topology['S2']:
-                total_usage += self.usage[link]
-
-            next_state = self.generateNextState(total_usage, 'S2')
+            # Atua sobre S1
+            # Atualmente, estamos ignorando output_link1 e output_link2, e dividindo entre 2 os fluxos
+            next_state = self.generateNextState(total_usage, 0)
 
         elif switch_id == 2:
-            # Atua sobre S3
-            for link in self.topology['S3']:
-                total_usage += self.usage[link]
-
-            next_state = self.generateNextState(total_usage, 'S3')
+            # Atua sobre S2
+            next_state = self.generateNextState(total_usage, 1)
 
         elif switch_id == 3:
-            # Atua sobre S4
-            for link in self.topology['S4']:
-                total_usage += self.usage[link]
-
-            next_state = self.generateNextState(total_usage, 'S4')
+            # Atua sobre S3
+            next_state = self.generateNextState(total_usage, 2)
 
         elif switch_id == 4:
-            # Atua sobre S5
-            for link in self.topology['S5']:
-                total_usage += self.usage[link]
+            # Atua sobre S4
+            next_state = self.generateNextState(total_usage, 3)
 
-            next_state = self.generateNextState(total_usage, 'S5')
+        elif switch_id == 5:
+            # Atua sobre S5
+            next_state = self.generateNextState(total_usage, 4)
+
         else:
             print('Erro: switch_id = ', switch_id)
             exit(0)
 
 
-        previous_state = dict(self.usage)
+        previous_state = list(self.usage)
         reward = self.calculateReward(next_state)
 
         # Atualiza estado
-        self.usage = dict(next_state)
+        self.usage = list(next_state)
 
         # It will take an action variable and will return a list of four things:
         # the next state, the reward for the current state, a boolean representing
@@ -203,31 +183,31 @@ class LoadBalanceEnv(gym.Env):
         return next_state, reward, done, {}
 
 
-    def generateNextState(self, total_usage, switch_id):
+    def generateNextState(self, total_usage, switch_array_index): # switch_array_index
         # Atualiza estado
-        next_state = {}
+        next_state = list(self.usage)
+        switch_id = self.switches[switch_array_index]
         available_links_count = len(self.topology[switch_id])
 
-        for link_id in self.usage.keys():
-            if link_id in self.topology[switch_id]:
+        total_switch_links_usage = 0
+
+        for link_index in range(len(self.links)):
+            if self.links[link_index] in self.topology[switch_id]:
+                # Se o link está associado ao switch em questao, contabiliza sua utilização
+                total_switch_links_usage += self.usage[link_index]
+
                 # deve atualizar o valor utilizado
                 # divide a carga entre todos os links do switch
-                next_state[link_id] = (total_usage and float(total_usage/available_links_count)) or 0
-            else:
-                next_state[link_id] = self.usage[link_id]
+                next_state[link_index] = (total_usage and float(total_usage/available_links_count)) or 0
 
         # print('next_state = ', next_state)
         return next_state
 
 
     def calculateReward(self, next_state):
-        # state is usage dict
-        next_usage_values = []
-
-        for link_id in next_state.keys():
-            next_usage_values.append(next_state[link_id])
-
-        np_next_usage = numpy.array(next_usage_values)
+        # state is usage link list
+        # [ 100, 20, 0, 10, 100, 20, 0, 10, 10 ]
+        np_next_usage = numpy.array(next_state)
         mean_next_usage = numpy.mean(np_next_usage)
         std_next_usage = numpy.std(np_next_usage)
 
@@ -236,20 +216,3 @@ class LoadBalanceEnv(gym.Env):
         reward = (std_next_usage and 1 / float(std_next_usage)) or 0
 
         return reward
-
-
-    def render(self, mode='human', close=False):
-        """
-        It may be called periodically to print a rendition of the environment. This could
-        be as simple as a print statement, or as complicated as rendering a 3D
-        environment using openGL. For this example, we will stick with print statements.
-        """
-        # Render the environment to the screen
-        profit = self.net_worth - INITIAL_ACCOUNT_BALANCE
-
-        print(f'Step: {self.current_step}')
-        print(f'Balance: {self.balance}')
-        print(f'Shares held: {self.shares_held} (Total sold: {self.total_shares_sold})')
-        print(f'Avg cost for held shares: {self.cost_basis} (Total sales value: {self.total_sales_value})')
-        print(f'Net worth: {self.net_worth} (Max net worth: {self.max_net_worth})')
-        print(f'Profit: {profit}')

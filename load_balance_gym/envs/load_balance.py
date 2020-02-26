@@ -196,6 +196,8 @@ class LoadBalanceEnv(gym.Env):
                 # Se o link está associado ao switch em questao, contabiliza sua utilização
                 total_switch_links_usage += self.usage[link_index]
 
+                # Aplica a ação = divide a carga igualmente
+
                 # deve atualizar o valor utilizado
                 # divide a carga entre todos os links do switch
                 next_state[link_index] = (total_usage and float(total_usage/available_links_count)) or 0

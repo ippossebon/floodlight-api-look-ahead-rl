@@ -4,15 +4,15 @@ import load_balance_gym
 from agent.DQNAgent import DQNAgent
 
 initial_usage = [
-    100,    # A
-    100,    # B
+    200,    # A
+    200,    # B
     0,      # C
     0,      # D
     0,      # E
-    100,    # F
+    200,    # F
     0,      # G
     0,      # H
-    100     # I
+    200     # I
 ]
 
 env = gym.make('Load-Balance-v1', usage=initial_usage)

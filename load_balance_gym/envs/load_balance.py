@@ -12,10 +12,7 @@ import numpy
 
 # tutorial importante: https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
 
-DATAFRAME_FILE = './dataframe/dataframe-h1-client-h2-server-usage-rate.csv'
-
 LINK_CAPACITY = 1000 # TODO: confirmar capacidade maxima do link
-MAX_ACTIVE_FLOWS = 5
 
 class LoadBalanceEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -24,8 +21,9 @@ class LoadBalanceEnv(gym.Env):
         super(LoadBalanceEnv, self).__init__()
 
         self.initial_usage = usage
+
         # Estado inicial = utilização de cada link
-        self.usage = usage
+        self.state = usage
 
         self.switches = ['S1', 'S2', 'S3', 'S4', 'S5']
         self.links = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
@@ -46,6 +44,7 @@ class LoadBalanceEnv(gym.Env):
             ['A', 'C', 'E', 'F', 'I']
         ]
 
+        ### Conjunto de informações sobre os fluxos da rede
         self.active_flows = []
         self.flow_paths = {} # dicionario no formato self.flow_paths['flow_id'] = []
         self.flow_size = {}
@@ -61,15 +60,18 @@ class LoadBalanceEnv(gym.Env):
         # A ação é escolher o switch sobre o qual vai agir. Isto é, o switch que
         # terá o fluxo dividido entre 2 caminhos + 1 ação void
         # self.action_space = spaces.Discrete(len(self.switches) + 1) # array com o índice do switch sobre o qual vamos agir
-        self.action_space = spaces.Box(
-            shape=(1, 2), # é um array no formato [flow_index, switch_index], flow_index indica o fluxo que deve ser alterado
-            # Valor mínimos são 0 pois é o primeiro índice possível
-            low=np.array([0, 0]),
-            # valor máximo de flow_index é 4, pois podemos ter até 5 flows em paralelo.
-            # Valor máximo de switch_index é 5, pois temos 5 switches na topologia + 1 ação void
-            high=np.array([MAX_ACTIVE_FLOWS-1, len(self.switches)),
-            dtype=numpy.uint8
-        )
+        # self.action_space = spaces.Box(
+        #     shape=(1, 2), # é um array no formato [flow_index, switch_index], flow_index indica o fluxo que deve ser alterado
+        #     # Valor mínimos são 0 pois é o primeiro índice possível
+        #     low=numpy.array([0, 0]),
+        #     # valor máximo de flow_index é 4, pois podemos ter até 5 flows em paralelo.
+        #     # 9 ações possíveis + 1 ação void = 10 acoes possiveis, entao o maior indice é 9
+        #     high=numpy.array([MAX_ACTIVE_FLOWS-1, 9]),
+        #     dtype=numpy.uint8
+        # )
+        # 9 ações possíveis + 1 ação void = 10 acoes possiveis, entao o maior indice é 9
+
+        self.action_space = spaces.Discrete(10)
 
         # Se tornou o uso da rede MAIS homogêneo, recompensa = 1
         # Se tornou o uso da rede MENOS homogêneo, recompensa = 0
@@ -105,84 +107,49 @@ class LoadBalanceEnv(gym.Env):
         - Called any time a new environment is created or to reset an existing environment’s state.
         """
         # Reset the state of the environment to an initial state
-        self.usage = list(self.initial_usage)
+        self.state = list(self.initial_usage)
 
-        return self.usage
+        return self.state
 
 
-    def step(self, action):
+    # flow_total_size corresponde ao tamanho do fluxo sobre o qual a ação será aplicada
+    # flow_current_paths indica quais sao os caminhos usados pelo fluxo atualmente
+    def step(self, action, flow_total_size, flow_current_paths):
         done = False # Aprendizado continuado
 
         # Execute one time step within the environment
         # It will take an action variable and will return a list of four things:
         # the next state, the reward for the current state, a boolean representing
         # whether the current episode of our model is done and some additional info on our problem.
-        flow_index = action[0]
-        switch_action_id = action[1]
+        # flow_index = action[0]
 
         # Pega o que temos nos links que saem de S1 e divide entre output_link1 e output_link2
-        total_usage = sum(self.usage)
+        total_usage = sum(self.state)
         next_state = []
 
         # action corresponde ao switch sobre o qual vamos agir, isto é: S1, S2, S3, S4 ou S5
-        if switch_action_id == 0:
+        if action == 0:
             # não faz nada
-            next_state = list(self.usage)
-
-        elif switch_action_id == 1:
-            # Atua sobre S1
-            next_state = self.generateNextState(
-                total_usage=total_usage,
-                switch_array_index=0,
-                flow_index=flow_index
-            )
-
-        elif switch_action_id == 2:
-            # Atua sobre S2
-            next_state = self.generateNextState(
-                total_usage=total_usage,
-                switch_array_index=1,
-                flow_index=flow_index
-            )
-
-        elif switch_action_id == 3:
-            # Atua sobre S3
-            next_state = self.generateNextState(
-                total_usage=total_usage,
-                switch_array_index=2,
-                flow_index=flow_index
-            )
-
-        elif switch_action_id == 4:
-            # Atua sobre S4
-            next_state = self.generateNextState(
-                total_usage=total_usage,
-                switch_array_index=3,
-                flow_index=flow_index
-            )
-
-        elif switch_action_id == 5:
-            # Atua sobre S5
-            next_state = self.generateNextState(
-                total_usage=total_usage,
-                switch_array_index=4,
-                flow_index=flow_index
-            )
+            next_state = list(self.state)
 
         else:
-            print('Error: invalid switch_id = ', switch_id)
-            exit(0)
+            next_state, next_paths = self.generateNextState(
+                total_usage=total_usage,
+                action_to_apply=action,
+                flow_total_size=flow_total_size,
+                flow_current_paths=flow_current_paths
+            )
 
-        previous_state = list(self.usage)
+        previous_state = list(self.state)
         reward = self.calculateReward(next_state)
 
         # Atualiza estado
-        self.usage = list(next_state)
+        self.state = list(next_state)
 
         # It will take an action variable and will return a list of four things:
         # the next state, the reward for the current state, a boolean representing
         # whether the current episode of our model is done and some additional info on our problem.
-        return next_state, reward, done, {}
+        return next_state, reward, done, { 'next_paths': next_paths }
 
 
     def getPathIndex(self, path):
@@ -194,75 +161,120 @@ class LoadBalanceEnv(gym.Env):
     def getLinkIndex(self, link):
         return self.links.index(link) or -1
 
-    def generateNextState(self, total_usage, switch_array_index, flow_index): # switch_array_index
-        # Atualiza estado com base na ação que foi escolhida (switch_array_index
-        # corresponde ao switch sobre o qual vamos atuar)
-        next_state = list(self.usage)
-        switch_id = self.switches[switch_array_index]
-        path1 = []
-        path2 = []
+    def generateNextState(self, total_usage, action_to_apply, flow_total_size, flow_current_paths):
+        # Atualiza estado com base na ação que foi escolhida
+        next_state = list(self.state)
+        next_paths = []
 
-        if switch_id == 'S1':
-            # split de fluxo em S1
-            path1 = ['A', 'C', 'G', 'I']
-            path2 = ['A', 'B', 'F', 'I']
+        # Zera utilização anterior
+        next_state = self.resetPreviousPathsUsage(flow_current_paths, flow_total_size)
 
-        elif switch_id == 'S2':
-            # split de fluxo em S2
-            path1 = ['A', 'B', 'D', 'H', 'I']
-            path2 = ['A', 'B', 'E', 'G', 'I']
+        if action_to_apply == 1:
+            next_paths.append(['A', 'C', 'G', 'I'])
+            next_paths.append(['A', 'B', 'F', 'I'])
 
-        elif switch_id == 'S3':
-            # mantem no mesmo caminho (não existe caminho alternativo que mexa apenas em S3)
-            return next_state
+            # Tiramos toda a utilização dos caminhos anteriores, precisamos
+            # colocar os valores do fluxo atual em todos os novos caminhos
 
-        elif switch_id == 'S4':
-            # split de fluxo em S4
-            path1 = ['A', 'C', 'G', 'I']
-            path2 = ['A', 'C', 'E', 'F', 'I']
+            next_state[0] += flow_total_size # A
+            next_state[1] += flow_total_size/2 # B
+            next_state[2] += flow_total_size/2 # C
+            next_state[5] += flow_total_size/2 # F
+            next_state[6] += flow_total_size/2 # G
+            next_state[8] += flow_total_size # I
 
-        elif switch_id == 'S5':
-            # mantem no mesmo caminho (não existe caminho alternativo que mexa apenas em S5)
-            return next_state
+        elif action_to_apply == 2:
+            next_paths.append(['A', 'B', 'D', 'H', 'I'])
+            next_paths.append(['A', 'B', 'E', 'G', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[1] += flow_total_size # B
+            next_state[3] += flow_total_size/2 # D
+            next_state[4] += flow_total_size/2 # E
+            next_state[6] += flow_total_size/2 # G
+            next_state[7] += flow_total_size/2 # H
+            next_state[8] += flow_total_size # I
+
+        elif action_to_apply == 3:
+            next_paths.append(['A', 'B', 'F', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[1] += flow_total_size # B
+            next_state[5] += flow_total_size # F
+            next_state[8] += flow_total_size # I
+
+        elif action_to_apply == 4:
+            next_paths.append(['A', 'C', 'G', 'I'])
+            next_paths.append(['A', 'C', 'E', 'F', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[2] += flow_total_size # C
+            next_state[4] += flow_total_size/2 # E
+            next_state[5] += flow_total_size/2 # F
+            next_state[6] += flow_total_size/2 # G
+            next_state[8] += flow_total_size # I
+
+        elif action_to_apply == 5:
+            next_paths.append(['A', 'C', 'G', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[2] += flow_total_size # C
+            next_state[6] += flow_total_size # G
+            next_state[8] += flow_total_size # I
+
+        elif action_to_apply == 6:
+            next_paths.append(['A', 'B', 'D', 'H', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[1] += flow_total_size # B
+            next_state[3] += flow_total_size # D
+            next_state[7] += flow_total_size # H
+            next_state[8] += flow_total_size # I
+
+        elif action_to_apply == 7:
+            next_paths.append(['A', 'B', 'E', 'G', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[1] += flow_total_size # B
+            next_state[4] += flow_total_size # E
+            next_state[6] += flow_total_size # G
+            next_state[8] += flow_total_size # I
+
+        elif action_to_apply == 8:
+            next_paths.append(['A', 'C', 'E', 'D', 'H', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[2] += flow_total_size # C
+            next_state[3] += flow_total_size # D
+            next_state[4] += flow_total_size # E
+            next_state[7] += flow_total_size # H
+            next_state[8] += flow_total_size # I
+
+        elif action_to_apply == 9:
+            next_paths.append(['A', 'C', 'E', 'F', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[2] += flow_total_size # C
+            next_state[4] += flow_total_size # E
+            next_state[5] += flow_total_size # F
+            next_state[8] += flow_total_size # I
+
         else:
-            print ('Error: invalid switch id [generateNextState]: ', switch_id)
+            print ('Error: invalid action type [generateNextState]: ', action_to_apply)
             exit(0)
 
-        path1_index = self.getPathIndex(path1)
-        path2_index = self.getPathIndex(path2)
-
-        # Pega os caminhos anteriores utilizados, para atulizar o estado
-        previous_paths = self.flow_paths[flow_id]
-
-        # Altera caminhos utilizados pelo fluxo
-        flow_id = self.active_flows[flow_index]
-        self.flow_paths[flow_id] = [path1_index, path2_index]
+        return next_state, next_paths
 
 
-        # Para cada caminho utilizado anteriormente, remove utilização dos links anteriores
-        for p in previous_paths:
-            previous_path_index = p
-            previous_path = self.possible_paths[previous_path_index]
-
-            # Remove utilização do link dos caminhos anteriores:
-            flow_size = self.flow_size[flow_id]
-            for link in previous_path:
+    # Remove utilização do fluxo dos caminhos anteriores
+    def resetPreviousPathsUsage(self, previous_paths, flow_size):
+        new_usage = list(self.state)
+        for path in previous_paths:
+            for link in path:
                 link_index = self.getLinkIndex(link)
-                next_state[link_index] = self.usage[link_index] - flow_size
+                new_usage[link_index] = self.state[link_index] - flow_size
 
-        # Seleciona links da diferença dos caminhos
-        # [A, B, D, H, I] - [A, C, G, I] = [B, C, D, G, H]
-        links_to_split = path1 - path2 # links que precisam ter sua utilização dividida em 2
-        links_to_keep = list(set(path1).intersection(path2)) # links que usam a quantidade total de fluxo
-        for link in links_to_keep:
-            link_index = self.getLinkIndex(link)
-            next_state[link_index] = self.usage[link_index] + flow_size
-
-        for link in links_to_split:
-            link_index = self.getLinkIndex(link)
-            next_state[link_index] = self.usage[link_index] + (flow_size/2)
-
-        return next_state
+        return new_usage
 
 
     def calculateReward(self, next_state):

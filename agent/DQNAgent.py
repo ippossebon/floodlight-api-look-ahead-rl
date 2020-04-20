@@ -15,11 +15,6 @@ class DQNAgent():
         self.state_dim = env.observation_space.shape
         self.action_size = env.action_space.n # n só existe se as ações forem discretas
 
-        # Se ações contínuas
-#         self.action_low = env.action_space.low
-#         self.action_high = env.action_space.high
-#         self.action_shape = env.action_space.shape
-
         self.q_network = QNetwork(self.state_dim, self.action_size)
 
         # É necessário para termos acesso aos valores de q_state da rede
@@ -48,10 +43,13 @@ class DQNAgent():
 
     def train(self, state, action, next_state, reward, done):
         self.replay_buffer.add((state, action, next_state, reward, done))
+
         states, actions, next_states, rewards, dones = self.replay_buffer.sample(50)
+        print('### next states = ', next_states)
         q_next_states = self.q_network.getQState(self.sess, next_states)
         q_next_states[dones] = np.zeros([self.action_size])
         q_targets = rewards + self.gamma * np.max(q_next_states, axis=1)
+
         self.q_network.updateModel(self.sess, states, actions, q_targets)
 
         if done: self.eps = max(0.1, 0.99*self.eps)

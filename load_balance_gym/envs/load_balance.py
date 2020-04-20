@@ -26,19 +26,20 @@ class LoadBalanceEnv(gym.Env):
         self.state = usage
 
         self.switches = ['S1', 'S2', 'S3', 'S4', 'S5']
+        # self.links = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
         self.links = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
         self.topology = {
-            'S1': ['B', 'C'], # links entre switches,
+            'S1': ['B', 'C'], # links entre switches,
             'S2': ['B', 'D', 'E', 'F'],
             'S3': ['F', 'G', 'H', 'I'],
-            'S4': ['C', 'E', 'G'],
+            'S4': ['C', 'E', 'G'],
             'S5': ['D', 'H']
         }
 
         self.possible_paths = [
-            ['A', 'B', 'D', 'H', 'I'],
-            ['A', 'B', 'F', 'I'],
-            ['A', 'B', 'E', 'G', 'I'],
+            ['A', 'B', 'D', 'H', 'I'],
+            ['A', 'B', 'F', 'I'],
+            ['A', 'B', 'E', 'G', 'I'],
             ['A', 'C', 'G', 'I'],
             ['A', 'C', 'E', 'D', 'H', 'I'],
             ['A', 'C', 'E', 'F', 'I']
@@ -71,7 +72,7 @@ class LoadBalanceEnv(gym.Env):
         # )
         # 9 ações possíveis + 1 ação void = 10 acoes possiveis, entao o maior indice é 9
 
-        self.action_space = spaces.Discrete(10)
+        self.action_space = spaces.Discrete(11)
 
         # Se tornou o uso da rede MAIS homogêneo, recompensa = 1
         # Se tornou o uso da rede MENOS homogêneo, recompensa = 0
@@ -126,12 +127,13 @@ class LoadBalanceEnv(gym.Env):
         # Pega o que temos nos links que saem de S1 e divide entre output_link1 e output_link2
         total_usage = sum(self.state)
         next_state = []
+        next_paths = []
 
         # action corresponde ao switch sobre o qual vamos agir, isto é: S1, S2, S3, S4 ou S5
         if action == 0:
             # não faz nada
             next_state = list(self.state)
-
+            next_paths = flow_current_paths
         else:
             next_state, next_paths = self.generateNextState(
                 total_usage=total_usage,
@@ -159,7 +161,12 @@ class LoadBalanceEnv(gym.Env):
         return self.active_flows.index(flow_id)
 
     def getLinkIndex(self, link):
-        return self.links.index(link) or -1
+        try:
+            return self.links.index(link.strip())
+        except ValueError:
+            print('####### --> [getLinkIndex] ValueError: link = {0}, ASCII = {1} #######'.format(link, link.encode('ascii')))
+            return -1
+
 
     def generateNextState(self, total_usage, action_to_apply, flow_total_size, flow_current_paths):
         # Atualiza estado com base na ação que foi escolhida
@@ -170,6 +177,7 @@ class LoadBalanceEnv(gym.Env):
         next_state = self.resetPreviousPathsUsage(flow_current_paths, flow_total_size)
 
         if action_to_apply == 1:
+            # Split do fluxo em S1
             next_paths.append(['A', 'C', 'G', 'I'])
             next_paths.append(['A', 'B', 'F', 'I'])
 
@@ -184,8 +192,9 @@ class LoadBalanceEnv(gym.Env):
             next_state[8] += flow_total_size # I
 
         elif action_to_apply == 2:
+            # Split em S2 por 2 caminhos (chegou por B, saiu por D e E)
             next_paths.append(['A', 'B', 'D', 'H', 'I'])
-            next_paths.append(['A', 'B', 'E', 'G', 'I'])
+            next_paths.append(['A', 'B', 'E', 'G', 'I'])
 
             next_state[0] += flow_total_size # A
             next_state[1] += flow_total_size # B
@@ -204,6 +213,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[8] += flow_total_size # I
 
         elif action_to_apply == 4:
+            # Spit em S4 (chegou por C e saiu por dois caminhos diferentes)
             next_paths.append(['A', 'C', 'G', 'I'])
             next_paths.append(['A', 'C', 'E', 'F', 'I'])
 
@@ -232,7 +242,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[8] += flow_total_size # I
 
         elif action_to_apply == 7:
-            next_paths.append(['A', 'B', 'E', 'G', 'I'])
+            next_paths.append(['A', 'B', 'E', 'G', 'I'])
 
             next_state[0] += flow_total_size # A
             next_state[1] += flow_total_size # B
@@ -259,6 +269,21 @@ class LoadBalanceEnv(gym.Env):
             next_state[5] += flow_total_size # F
             next_state[8] += flow_total_size # I
 
+        elif action_to_apply == 10:
+            # Split em S2 por 3 caminhos (chegou por B, saiu por D, E e F)
+            next_paths.append(['A', 'B', 'D', 'H', 'I'])
+            next_paths.append(['A', 'B', 'E', 'G', 'I'])
+            next_paths.append(['A', 'B', 'F', 'I'])
+
+            next_state[0] += flow_total_size # A
+            next_state[1] += flow_total_size # B
+            next_state[3] += flow_total_size/3 # D
+            next_state[4] += flow_total_size/3 # E
+            next_state[5] += flow_total_size/3 # F
+            next_state[6] += flow_total_size/3 # G
+            next_state[7] += flow_total_size/3 # H
+            next_state[8] += flow_total_size # I
+
         else:
             print ('Error: invalid action type [generateNextState]: ', action_to_apply)
             exit(0)
@@ -271,7 +296,7 @@ class LoadBalanceEnv(gym.Env):
         new_usage = list(self.state)
         for path in previous_paths:
             for link in path:
-                link_index = self.getLinkIndex(link)
+                link_index = self.getLinkIndex(link.strip()) # strip() necessary to remove \x1d characters
                 new_usage[link_index] = self.state[link_index] - flow_size
 
         return new_usage

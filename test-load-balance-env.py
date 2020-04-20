@@ -2,6 +2,7 @@ import gym
 import load_balance_gym
 
 from agent.DQNAgent import DQNAgent
+from agent.QNAgent import QNAgent
 
 initial_usage = [
     700,    # A
@@ -23,6 +24,8 @@ print('--> Action space', env.action_space)
 num_episodes = 100
 
 agent = DQNAgent(env)
+# qn_agent = QNAgent(env)
+
 
 active_flows = ['F1', 'F2']
 flow_sizes = {
@@ -30,8 +33,8 @@ flow_sizes = {
     'F2': 500
 }
 flow_paths = {
-    'F1': [['A', 'B', 'C', 'I']],
-    'F2': [['A', 'B', 'C', 'I']]
+    'F1': [['A', 'B', 'F', 'I']],
+    'F2': [['A', 'B', 'F', 'I']]
 }
 
 for ep in range(num_episodes):
@@ -50,7 +53,7 @@ for ep in range(num_episodes):
         flow_to_reroute_paths = flow_paths[flow_to_reroute]
 
         next_state, reward, done, info = env.step(
-            action,
+            action=action,
             flow_total_size=flow_to_reroute_size,
             flow_current_paths=flow_to_reroute_paths
         )
@@ -68,14 +71,3 @@ for ep in range(num_episodes):
         state = next_state
 
     print('Episode: {}, total_reward: {:.2f}'.format(ep, total_reward))
-
-# for episode in range(num_episodes):
-#     # Random action
-#     print('episode = ', episode)
-#
-#     action = env.action_space.sample()
-#     print('action = ', action)
-#
-#     state, reward, done, info = env.step(action)
-#     print('state = ', state)
-#     print('reward = ', reward)

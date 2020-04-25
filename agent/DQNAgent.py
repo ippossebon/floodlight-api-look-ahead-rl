@@ -46,6 +46,7 @@ class DQNAgent():
 
         states, actions, next_states, rewards, dones = self.replay_buffer.sample(50)
         print('### next states = ', next_states)
+        ## # TODO: deveria enviar next-states???
         q_next_states = self.q_network.getQState(self.sess, next_states)
         q_next_states[dones] = np.zeros([self.action_size])
         q_targets = rewards + self.gamma * np.max(q_next_states, axis=1)

@@ -9,8 +9,13 @@ from .agent import Agent
 
 class QNAgent(Agent):
     def __init__(self, env, discount_rate=0.97, learning_rate=0.01):
-        super().__init__(env)
+        # super().__init__(env)
         self.state_size = env.observation_space.n
+
+
+        self.state_dim = env.observation_space.shape
+        self.action_size = env.action_space.n # n só existe se as ações forem discretas
+
         print("State size:", self.state_size)
 
         self.eps = 1.0
@@ -19,6 +24,12 @@ class QNAgent(Agent):
         self.build_model()
 
         self.sess = tf.Session()
+        print('')
+        print('')
+        print('')
+        print('')
+
+        print('session = ', self.sess)
         self.sess.run(tf.global_variables_initializer())
 
     def build_model(self):

@@ -1,3 +1,5 @@
+import gym
+
 class Agent():
     def __init__(self, env):
         self.is_discrete = \

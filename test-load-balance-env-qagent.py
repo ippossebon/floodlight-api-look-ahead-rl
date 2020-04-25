@@ -1,8 +1,20 @@
+"""
+Problema: explosão de estados.
+
+Isso aconteceu porque estou usando um espaço de observação continuo.
+Ou seja, a quantidade de estados possíveis é enorme, o que faz com que a Q-table
+exploda de tamanho - é inviável manter uma tabela com todos os estados e ações possíveis.
+
+
+"""
+
 import gym
 import load_balance_gym
 
-from agent.DQNAgent import DQNAgent
+from agent.DiscretizedObservationWrapper import DiscretizedObservationWrapper
 from agent.QNAgent import QNAgent
+from agent.QAgent import QAgent
+
 
 initial_usage = [
     700,    # A
@@ -17,13 +29,15 @@ initial_usage = [
 ]
 
 env = gym.make('Load-Balance-v1', usage=initial_usage)
+env = DiscretizedObservationWrapper(env)
+
 print('----------> Starting Environment <----------')
 print('--> Observation space ', env.observation_space)
 print('--> Action space', env.action_space)
 
 num_episodes = 100
-
-agent = DQNAgent(env)
+# agent = QNAgent(env)
+agent = QAgent(env)
 
 
 active_flows = ['F1', 'F2']

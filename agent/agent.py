@@ -21,3 +21,5 @@ class Agent():
             action = np.random.uniform(self.action_low,
                                        self.action_high,
                                        self.action_shape)
+
+        return action

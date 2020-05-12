@@ -34,6 +34,8 @@ class DQNAgent():
 
         # Ação usando a rede neural
         # O agente precisa escolher a ação com o valor Q máximo previsto pela rede neural
+
+        # if random.random() < self.eps faz com que o agente explore outras possibilidades
         q_state = self.q_network.getQState(self.sess, [state])
         action_greedy = np.argmax(q_state)
         action_random = np.random.randint(self.action_size)

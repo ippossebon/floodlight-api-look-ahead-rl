@@ -2,8 +2,8 @@ import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 
-from keras.models import Sequential
-from keras.layers import Dense
+# from keras.models import Sequential
+# from keras.layers import Dense
 
 import pandas
 import numpy
@@ -23,7 +23,7 @@ class LoadBalanceEnv(gym.Env):
         self.initial_usage = usage
 
         # Estado inicial = utilização de cada link
-        self.state = usage
+        self.state = numpy.array(usage)
 
         self.switches = ['S1', 'S2', 'S3', 'S4', 'S5']
         # self.links = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
@@ -108,9 +108,8 @@ class LoadBalanceEnv(gym.Env):
         - Called any time a new environment is created or to reset an existing environment’s state.
         """
         # Reset the state of the environment to an initial state
-        self.state = list(self.initial_usage)
 
-        return self.state
+        return numpy.array(self.initial_usage)
 
 
     # flow_total_size corresponde ao tamanho do fluxo sobre o qual a ação será aplicada
@@ -125,14 +124,14 @@ class LoadBalanceEnv(gym.Env):
         # flow_index = action[0]
 
         # Pega o que temos nos links que saem de S1 e divide entre output_link1 e output_link2
-        total_usage = sum(self.state)
+        total_usage = numpy.sum(self.state)
         next_state = []
         next_paths = []
 
         # action corresponde ao switch sobre o qual vamos agir, isto é: S1, S2, S3, S4 ou S5
         if action == 0:
             # não faz nada
-            next_state = list(self.state)
+            next_state = numpy.array(self.state)
             next_paths = flow_current_paths
         else:
             next_state, next_paths = self.generateNextState(
@@ -142,11 +141,11 @@ class LoadBalanceEnv(gym.Env):
                 flow_current_paths=flow_current_paths
             )
 
-        previous_state = list(self.state)
+        previous_state = numpy.array(self.state)
         reward = self.calculateReward(next_state)
 
         # Atualiza estado
-        self.state = list(next_state)
+        self.state = numpy.array(next_state)
 
         # It will take an action variable and will return a list of four things:
         # the next state, the reward for the current state, a boolean representing
@@ -170,7 +169,7 @@ class LoadBalanceEnv(gym.Env):
 
     def generateNextState(self, total_usage, action_to_apply, flow_total_size, flow_current_paths):
         # Atualiza estado com base na ação que foi escolhida
-        next_state = list(self.state)
+        next_state = self.state.tolist()
         next_paths = []
 
         # Zera utilização anterior
@@ -288,12 +287,12 @@ class LoadBalanceEnv(gym.Env):
             print ('Error: invalid action type [generateNextState]: ', action_to_apply)
             exit(0)
 
-        return next_state, next_paths
+        return numpy.array(next_state), next_paths
 
 
     # Remove utilização do fluxo dos caminhos anteriores
     def resetPreviousPathsUsage(self, previous_paths, flow_size):
-        new_usage = list(self.state)
+        new_usage = self.state.tolist()
         for path in previous_paths:
             for link in path:
                 link_index = self.getLinkIndex(link.strip()) # strip() necessary to remove \x1d characters

@@ -5,7 +5,7 @@ import tensorflow as tf
 class QNetwork():
     def __init__(self, state_dim, action_size):
         print('--> State dimesion = ', state_dim)
-        self.state_in = tf.placeholder(tf.float32, shape=state_dim)
+        self.state_in = tf.placeholder(tf.float32, shape=[None, 9])
         self.action_in = tf.placeholder(tf.int32, shape=[None])
         self.q_target_in = tf.placeholder(tf.float32, shape=[None])
         action_one_hot = tf.one_hot(self.action_in, depth=action_size)
@@ -24,3 +24,14 @@ class QNetwork():
     def getQState(self, session, state):
         q_state = session.run(self.q_state, feed_dict={self.state_in: state})
         return q_state
+
+#
+# isadora state [array([-0.00092737,  0.04468767, -0.04492622, -0.02794201])]
+# isadora self.state_in Tensor("Placeholder:0", shape=(?, 4), dtype=float32)
+# isadora q_state [[-0.00099433  0.00972717]]
+#
+# isadora state [[700, 700, 0, 0, 0, 700, 0, 0, 700]]
+# isadora self.state_in Tensor("Placeholder:0", shape=(?, 1, 9), dtype=float32)
+#
+# isadora state [array([700, 700,   0,   0,   0, 700,   0,   0, 700])]
+# isadora self.state_in Tensor("Placeholder:0", shape=(?, 1, 9), dtype=float32)

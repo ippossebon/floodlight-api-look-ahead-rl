@@ -12,9 +12,7 @@ import gym
 import load_balance_gym
 
 from agent.DiscretizedObservationWrapper import DiscretizedObservationWrapper
-from agent.QNAgent import QNAgent
 from agent.QAgent import QAgent
-
 
 initial_usage = [
     700,    # A
@@ -36,7 +34,6 @@ print('--> Observation space ', env.observation_space)
 print('--> Action space', env.action_space)
 
 num_episodes = 100
-# agent = QNAgent(env)
 agent = QAgent(env)
 
 
@@ -55,7 +52,8 @@ for ep in range(num_episodes):
     total_reward = 0
     done = False
 
-    while not done:
+    print('vai entrar')
+    for n in range(100):
         print('--> State = ', state)
 
         action = agent.getAction(state)

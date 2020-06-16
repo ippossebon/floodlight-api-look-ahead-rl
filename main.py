@@ -4,7 +4,11 @@ from graphModel.graph import Graph
 from graphModel.link import Link
 from graphModel.node import Node
 
+from LoadBalanceRLAgent.agent import LoadBalanceAgent
+
 from routing.binPacking import BinPackingRouting
+
+from utilities.actionToRules import actionToRules
 
 from operator import attrgetter
 
@@ -25,6 +29,7 @@ class LookAheadRLApp(object):
         self.routing_model = BinPackingRouting()
         self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
         self.active_flows = [] # lista de ActiveFlow
+        self.links_usage = []
 
         self.enableSwitchStatisticsEndpoit()
 
@@ -73,7 +78,6 @@ class LookAheadRLApp(object):
 
 
     def getNetworkSummary(self):
-        print('Network summary: ')
         response = requests.get('{host}/wm/core/controller/summary/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
@@ -133,7 +137,6 @@ class LookAheadRLApp(object):
 
         # Para cada fluxo ativo em cada um dos switches
         for switch_id in self.switch_info.keys():
-            print('self.switch_info[switch_id] ', self.switch_info[switch_id])
             for flow in self.switch_info[switch_id]['flows']:
                 if flow['match']: # checa se existem fluxos correntes
                     flow_id = '{eth_dst}-{eth_src}-{in_port}-{eth_type}'.format(
@@ -225,22 +228,26 @@ class LookAheadRLApp(object):
             #    }
             self.switch_info[switch_dpid]["statistics"] = item
 
+
     def getLinksUsage(self):
+        # Deve retornar uma lista no formato:
+        # initial_usage = [
+        #     700,    # A
+        #     700,    # B
+        #     0,      # C
+        #     0,      # D
+        #     0,      # E
+        #     700,    # F
+        #     0,      # G
+        #     0,      # H
+        #     700     # I
+        # ]
         # Get statistics from all switches
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        links_usage = {
-            'A': 0,
-            'B': 0,
-            'C': 0,
-            'D': 0,
-            'E': 0,
-            'F': 0,
-            'G': 0,
-            'H': 0,
-            'I': 0
-        }
+        links_usage = list(self.links_usage)
+
         for item in response_data:
             switch_dpid = item['dpid']
             # item é um objeto com o formato:
@@ -253,31 +260,40 @@ class LookAheadRLApp(object):
             #       "bits-per-second-tx" : "6059"
             #    }
             if item['dpid'] == '1' and item['port'] == '1':
-                links_usage['A'] = item['bits-per-second-rx']
+                # link A
+                links_usage[0] = item['bits-per-second-rx']
 
             elif item['dpid'] == '2' and item['port'] == '1':
-                links_usage['B'] = float(item['bits-per-second-rx'])
+                # link B
+                links_usage[1] = float(item['bits-per-second-rx'])
 
             elif item['dpid'] == '4' and item['port'] == '1':
-                links_usage['C'] = float(item['bits-per-second-rx'])
+                # link C
+                links_usage[2] = float(item['bits-per-second-rx'])
 
             elif item['dpid'] == '4' and item['port'] == '2':
-                links_usage['E'] = float(item['bits-per-second-rx'])
+                # link E
+                links_usage[4] = float(item['bits-per-second-rx'])
 
             elif item['dpid'] == '5' and item['port'] == '1':
-                links_usage['D'] = float(item['bits-per-second-rx'])
+                # link D
+                links_usage[3] = float(item['bits-per-second-rx'])
 
             elif item['dpid'] == '3' and item['port'] == '2':
-                links_usage['F'] = float(item['bits-per-second-rx'])
+                # link F
+                links_usage[5] = float(item['bits-per-second-rx'])
 
             elif item['dpid'] == '3' and item['port'] == '4':
-                links_usage['H'] = float(item['bits-per-second-rx'])
+                # link H
+                links_usage[7] = float(item['bits-per-second-rx'])
 
             elif item['dpid'] == '3' and item['port'] == '3':
-                links_usage['G'] = float(item['bits-per-second-rx'])
+                # link G
+                links_usage[6] = float(item['bits-per-second-rx'])
 
             elif item['dpid'] == '00:00:00:00:00:02' and item['port'] == '1':
-                links_usage['I'] = float(item['bits-per-second-rx'])
+                # link I
+                links_usage[8] = float(item['bits-per-second-rx'])
 
         return links_usage
 
@@ -287,13 +303,25 @@ class LookAheadRLApp(object):
             return True
         return False
 
+    def actionToRules(self, action, flowToReroute):
+        # self.links_usage
+        # como identificar fluxos ativos na rede? o fluxo mais recente, maior?
+        pass
+
+    def installRules(self, rules):
+        # Deve gerar algo neste formato:
+        # curl -d '{"switch": "00:00:00:00:00:00:00:01", "name":"flow-mod-1",
+        # "priority":"32768", "ingress-port":"1","active":"true", "actions":"output=2"}'
+        pass
+
     def run(self):
         # Create network graph
         self.initializeNetworkGraph()
         self.routing_model.setNetworkGraph(self.network_graph)
 
-        # Train prediction model
-        # self.predictor.trainModel()
+        # Estatítiscas estão aramazenados em self.switch_info
+        # self.setSwitchStatistics()
+        # self.setFlowsSnapshots()
 
         # # Testando caminho de custo mínimo
         # source_switch_id = '00:00:00:00:00:00:00:01'
@@ -304,27 +332,15 @@ class LookAheadRLApp(object):
         # min_cost_path = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
         # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
 
-        initial_usage = self.getLinksUsage()
-
+        self.initial_usage = self.getLinksUsage()
         print('initial usage = ', initial_usage)
-
-        self.env = gym.make('Load-Balance-v1')
-        self.max_steps = 10
-        obs = self.env.reset()
-
+        self.agent = LoadBalanceAgent(initial_usage)
+        self.agent.train()
 
         # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos
         while True:
-            # Estatítiscas estão aramazenados em self.switch_info
-            # self.setSwitchStatistics()
-            # self.setFlowsSnapshots()
-
             action = self.env.action_space.sample()
-            print('action = ', action)
-
             state, reward, done, info = self.env.step(action)
-            print('state = ', state)
-            print('reward = ', reward)
 
             # print('-------- Time slot -------')
             # for flow in self.active_flows:
@@ -353,14 +369,12 @@ class LookAheadRLApp(object):
                     # self.installRules(switch_rules)
 
 
-
                     # source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
                     # target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
                     # new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
             # print('---------------------------------------------')
 
-            time.sleep(10)
-
+            time.sleep(5)
 
 
 

@@ -2,17 +2,14 @@ import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 
-# from keras.models import Sequential
-# from keras.layers import Dense
-
 import pandas
 import numpy
 
-# based on tutorial from: https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e
+# Based on the folllwing tutorials:
+# https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e
+# https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
 
-# tutorial importante: https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
-
-LINK_CAPACITY = 1000 # TODO: confirmar capacidade maxima do link
+LINK_CAPACITY = 1000 # TODO: update links capacity when generating network on mininet
 
 class LoadBalanceEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -22,14 +19,13 @@ class LoadBalanceEnv(gym.Env):
 
         self.initial_usage = usage
 
-        # Estado inicial = utilização de cada link
+        # Initial state = initial links usage
         self.state = numpy.array(usage)
 
         self.switches = ['S1', 'S2', 'S3', 'S4', 'S5']
-        # self.links = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
         self.links = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
         self.topology = {
-            'S1': ['B', 'C'], # links entre switches,
+            'S1': ['B', 'C'], # links between switches,
             'S2': ['B', 'D', 'E', 'F'],
             'S3': ['F', 'G', 'H', 'I'],
             'S4': ['C', 'E', 'G'],
@@ -45,16 +41,16 @@ class LoadBalanceEnv(gym.Env):
             ['A', 'C', 'E', 'F', 'I']
         ]
 
-        ### Conjunto de informações sobre os fluxos da rede
+        ### Information about network flows
         self.active_flows = []
-        self.flow_paths = {} # dicionario no formato self.flow_paths['flow_id'] = []
+        self.flow_paths = {} # dict on format self.flow_paths['flow_id'] = []
         self.flow_size = {}
 
-        # Utilização dos links da rede
+        # State = Links usage as [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
         self.observation_space = spaces.Box(
             low=0,
-            high=LINK_CAPACITY, # utilização maxima do link
-            shape=(1, len(self.links)), # é um array de utilização dos links
+            high=LINK_CAPACITY, # max link usage: # TODO: check if it's ok!
+            shape=(1, len(self.links)), # array of link usage: [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
             dtype=numpy.float16
         )
 
@@ -72,19 +68,19 @@ class LoadBalanceEnv(gym.Env):
         # )
         # 9 ações possíveis + 1 ação void = 10 acoes possiveis, entao o maior indice é 9
 
+        # Possible actions: 11 possible paths combinatios - check step function
         self.action_space = spaces.Discrete(11)
 
-        # Se tornou o uso da rede MAIS homogêneo, recompensa = 1
-        # Se tornou o uso da rede MENOS homogêneo, recompensa = 0
+        # TODO: still testing reward results
+        # If network usage became MORE homogeneous, recompensa = 1
+        # If network usage became LESS homogeneous, recompensa = 0
         self.reward_range = (0, 1)
 
     def addFlow(self, flow_id, flow_size):
         if flow_id not in self.active_flows:
             self.active_flows.append(flow_id)
 
-            # Inicializa dicionario onde será armazenado os caminhos pelo quais o fluxo está passando
             self.flow_paths[flow_id] = []
-
             self.flow_size[flow_id] = flow_size
 
     def removeFlow(self, flow_id):
@@ -107,13 +103,12 @@ class LoadBalanceEnv(gym.Env):
 
         - Called any time a new environment is created or to reset an existing environment’s state.
         """
-        # Reset the state of the environment to an initial state
 
         return numpy.array(self.initial_usage)
 
 
-    # flow_total_size corresponde ao tamanho do fluxo sobre o qual a ação será aplicada
-    # flow_current_paths indica quais sao os caminhos usados pelo fluxo atualmente
+    # flow_total_size is the flow total size over which the action will be applied
+    # flow_current_paths indicates which are the paths used by the flow currently
     def step(self, action, flow_total_size, flow_current_paths):
         done = False # Aprendizado continuado
 
@@ -123,14 +118,14 @@ class LoadBalanceEnv(gym.Env):
         # whether the current episode of our model is done and some additional info on our problem.
         # flow_index = action[0]
 
-        # Pega o que temos nos links que saem de S1 e divide entre output_link1 e output_link2
         total_usage = numpy.sum(self.state)
         next_state = []
         next_paths = []
 
         # action corresponde ao switch sobre o qual vamos agir, isto é: S1, S2, S3, S4 ou S5
         if action == 0:
-            # não faz nada
+            # do nothing: void action - Important so the agent could choose to simply keep going.
+            # This is used because we work with "continued learning" = there's no "done" state.
             next_state = numpy.array(self.state)
             next_paths = flow_current_paths
         else:
@@ -144,7 +139,7 @@ class LoadBalanceEnv(gym.Env):
         previous_state = numpy.array(self.state)
         reward = self.calculateReward(next_state)
 
-        # Atualiza estado
+        # Update state
         self.state = numpy.array(next_state)
 
         # It will take an action variable and will return a list of four things:
@@ -168,21 +163,20 @@ class LoadBalanceEnv(gym.Env):
 
 
     def generateNextState(self, total_usage, action_to_apply, flow_total_size, flow_current_paths):
-        # Atualiza estado com base na ação que foi escolhida
+        # Updates status based on the chosen action
         next_state = self.state.tolist()
         next_paths = []
 
-        # Zera utilização anterior
+        # Reset previous usage
         next_state = self.resetPreviousPathsUsage(flow_current_paths, flow_total_size)
 
         if action_to_apply == 1:
-            # Split do fluxo em S1
+            # "Splits" flow on S1
             next_paths.append(['A', 'C', 'G', 'I'])
             next_paths.append(['A', 'B', 'F', 'I'])
 
-            # Tiramos toda a utilização dos caminhos anteriores, precisamos
-            # colocar os valores do fluxo atual em todos os novos caminhos
-
+            # Because we removed all the usage from previous paths, we need to
+            # put the values of the current flow in all the new paths
             next_state[0] += flow_total_size # A
             next_state[1] += flow_total_size/2 # B
             next_state[2] += flow_total_size/2 # C
@@ -191,7 +185,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[8] += flow_total_size # I
 
         elif action_to_apply == 2:
-            # Split em S2 por 2 caminhos (chegou por B, saiu por D e E)
+            # "Split" on S2 using two paths (flow came in through B, came out through D and E)
             next_paths.append(['A', 'B', 'D', 'H', 'I'])
             next_paths.append(['A', 'B', 'E', 'G', 'I'])
 
@@ -212,7 +206,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[8] += flow_total_size # I
 
         elif action_to_apply == 4:
-            # Spit em S4 (chegou por C e saiu por dois caminhos diferentes)
+            # "Split" on S4 using two paths (flow came in through C)
             next_paths.append(['A', 'C', 'G', 'I'])
             next_paths.append(['A', 'C', 'E', 'F', 'I'])
 
@@ -269,7 +263,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[8] += flow_total_size # I
 
         elif action_to_apply == 10:
-            # Split em S2 por 3 caminhos (chegou por B, saiu por D, E e F)
+            # "Split" on S3 using three paths (flow came in through B, came out through D, E and F)
             next_paths.append(['A', 'B', 'D', 'H', 'I'])
             next_paths.append(['A', 'B', 'E', 'G', 'I'])
             next_paths.append(['A', 'B', 'F', 'I'])
@@ -290,7 +284,7 @@ class LoadBalanceEnv(gym.Env):
         return numpy.array(next_state), next_paths
 
 
-    # Remove utilização do fluxo dos caminhos anteriores
+    # Reset previous paths usage
     def resetPreviousPathsUsage(self, previous_paths, flow_size):
         new_usage = self.state.tolist()
         for path in previous_paths:
@@ -302,14 +296,23 @@ class LoadBalanceEnv(gym.Env):
 
 
     def calculateReward(self, next_state):
+        # # TODO: still testing if this is the right reward function. The agent is now chosing minimum rewards
+
         # state is usage link list
         # [ 100, 20, 0, 10, 100, 20, 0, 10, 10 ]
+        # print('next_state = ', next_state)
+
         np_next_usage = numpy.array(next_state)
+        # print('np_next_usage = ', np_next_usage)
         mean_next_usage = numpy.mean(np_next_usage)
+        # print('mean_next_usage = ', mean_next_usage)
+
         std_next_usage = numpy.std(np_next_usage)
+        # print('std_next_usage = ', std_next_usage)
 
         # Recompensa = 1 / desvio_padrao_soma_utilizacao_rede
         # Quanto menor for o desvio padrão da utilização da rede, maior será a recompensa
-        reward = (std_next_usage and 1 / float(std_next_usage)) or 0
+        reward = (std_next_usage and 1 / float(std_next_usage)) * 1000 or 0
+        # print('reward = ', rewa111rd)
 
         return reward

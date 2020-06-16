@@ -7,10 +7,10 @@ import numpy as np
 from .agent import Agent
 
 class QAgent(Agent):
-    def __init__(self, env, discount_rate=0.97, learning_rate=0.01):
+
+    def __init__(self, env, discount_rate=0.97, learning_rate=0.05):
         super().__init__(env)
         self.state_size = env.observation_space.n
-        print("State size:", self.state_size)
 
         self.eps = 1.0
         self.discount_rate = discount_rate
@@ -33,6 +33,7 @@ class QAgent(Agent):
 
         q_next = self.q_table[next_state]
         q_next = np.zeros([self.action_size]) if done else q_next
+
         q_target = reward + self.discount_rate * np.max(q_next)
 
         q_update = q_target - self.q_table[state,action]

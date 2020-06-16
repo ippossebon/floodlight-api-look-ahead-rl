@@ -4,7 +4,6 @@ import tensorflow as tf
 
 class QNetwork():
     def __init__(self, state_dim, action_size):
-        print('--> State dimesion = ', state_dim)
         self.state_in = tf.placeholder(tf.float32, shape=[None, 9])
         self.action_in = tf.placeholder(tf.int32, shape=[None])
         self.q_target_in = tf.placeholder(tf.float32, shape=[None])

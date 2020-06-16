@@ -16,14 +16,11 @@ initial_usage = [
 ]
 
 env = gym.make('Load-Balance-v1', usage=initial_usage)
-print('----------> Starting Environment <----------')
 print('--> Observation space ', env.observation_space)
 print('--> Action space', env.action_space)
 
 num_episodes = 100
-
 agent = DQNAgent(env)
-
 
 active_flows = ['F1', 'F2']
 flow_sizes = {
@@ -35,36 +32,44 @@ flow_paths = {
     'F2': [['A', 'B', 'F', 'I']]
 }
 
+
 for ep in range(num_episodes):
     state = env.reset()
-    total_reward = 0
-    done = False
+    total_reward = float(0)
+    iteraction = 0
+    # We do not use 'done' flag because there will be no "final" state.
+    # The agent will be monitoring network activity
 
-    print('--> State = ', state)
+    while iteraction < 10:
+        action = agent.getAction(state)
+        # print('--> Action = ', action)
 
-    action = agent.getAction(state)
-    print('--> Action = ', action)
+        # The flow to reroute will be chosen based on controller data.
+        # For instance, the most recent flow or the largest flow. Here, we hard
+        # code a specif flow to help testing.
+        flow_to_reroute = 'F2'
+        flow_to_reroute_size = flow_sizes[flow_to_reroute]
+        flow_to_reroute_paths = flow_paths[flow_to_reroute]
 
-    flow_to_reroute = 'F2'
-    flow_to_reroute_size = flow_sizes[flow_to_reroute]
-    flow_to_reroute_paths = flow_paths[flow_to_reroute]
+        next_state, reward, done, info = env.step(
+            action=action,
+            flow_total_size=flow_to_reroute_size,
+            flow_current_paths=flow_to_reroute_paths
+        )
 
-    next_state, reward, done, info = env.step(
-        action=action,
-        flow_total_size=flow_to_reroute_size,
-        flow_current_paths=flow_to_reroute_paths
-    )
+        # Updates flow information
+        flow_paths[flow_to_reroute] = info['next_paths']
 
-    # Atualiza informações do fluxo
-    flow_paths[flow_to_reroute] = info['next_paths']
+        # print('--> next_state = ', next_state)
+        # print('--> reward = ', reward)
+        # print('-------------------------')
 
-    print('--> next_state = ', next_state)
-    print('--> reward = ', reward)
-    print('-------------------------')
+        agent.train(state, action, next_state, reward, done)
 
-    agent.train(state, action, next_state, reward, done)
-
-    total_reward += reward
-    state = next_state
+        total_reward += reward
+        state = next_state
+        iteraction += 1
 
     print('Episode: {}, total_reward: {:.2f}'.format(ep, total_reward))
+
+# TODO: current problem: agent keeps choosing actions with lower rewards. Why?

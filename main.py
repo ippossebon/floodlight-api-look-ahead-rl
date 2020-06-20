@@ -31,6 +31,16 @@ class LookAheadRLApp(object):
         self.active_flows = [] # lista de ActiveFlow
         self.links_usage = []
 
+        self.switch_ids = {
+            'S1': '00:00:00:00:00:00:00:01',
+            'S2': '00:00:00:00:00:00:00:02',
+            'S3': '00:00:00:00:00:00:00:03',
+            'S4': '00:00:00:00:00:00:00:04',
+            'S5': '00:00:00:00:00:00:00:05'
+        }
+
+        self.flow_paths = {}
+
         self.enableSwitchStatisticsEndpoit()
 
     def initializeNetworkGraph(self):
@@ -303,16 +313,18 @@ class LookAheadRLApp(object):
             return True
         return False
 
+
     def actionToRules(self, action, flowToReroute):
         # self.links_usage
         # como identificar fluxos ativos na rede? o fluxo mais recente, maior?
-        pass
+        rules = actionToRules(action, current_paths, flow_name, self.switch_ids)
+        return rules
 
     def installRules(self, rules):
-        # Deve gerar algo neste formato:
-        # curl -d '{"switch": "00:00:00:00:00:00:00:01", "name":"flow-mod-1",
-        # "priority":"32768", "ingress-port":"1","active":"true", "actions":"output=2"}'
-        pass
+        if rules == None:
+            return
+        else:
+            pass
 
     def run(self):
         # Create network graph
@@ -342,37 +354,19 @@ class LookAheadRLApp(object):
             action = self.env.action_space.sample()
             state, reward, done, info = self.env.step(action)
 
-            # print('-------- Time slot -------')
-            # for flow in self.active_flows:
-                # print(flow.features)
+            flow_to_reroute = 'F2'
+            flow_to_reroute_size = flow_sizes[flow_to_reroute]
+            flow_to_reroute_paths = self.flow_paths[flow_to_reroute]
 
-                # if self.isElephantFlow(flow):
-                    # Detectou-se que esse fluxo é grande o suficiente para, eventualmente,
-                    # sobrecarregar os links. Por isso, vamos dividir a carga desse fluxo.
+            next_state, reward, done, info = env.step(
+                action=action,
+                flow_total_size=flow_to_reroute_size,
+                flow_current_paths=flow_to_reroute_paths
+            )
 
-                    # for step in range(n_steps):
-                        # Random action
-                        # print('step = ', step)
+            # Updates flow information
+            self.flow_paths[flow_to_reroute] = info['next_paths']
 
-                        # action = self.env.action_space.sample()
-                        # print('action = ', action)
-                        #
-                        # state, reward, done, info = self.env.step(action)
-                        # print('state = ', state)
-                        # print('reward = ', reward)
-
-                    # current_state = self.getNetworkState()
-                    # best_action = self.rl_agent.chooseBestAction(current_state)
-
-                    # Converte a ação sugerida pelo agente em regras para instalar nos switches
-                    # switch_rules = self.actionToRules(best_action)
-                    # self.installRules(switch_rules)
-
-
-                    # source_switch_id = '00:00:00:00:00:00:00:01' # get from flow info
-                    # target_switch_id = '00:00:00:00:00:00:00:06' # get from flow info
-                    # new_route = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
-            # print('---------------------------------------------')
 
             time.sleep(5)
 

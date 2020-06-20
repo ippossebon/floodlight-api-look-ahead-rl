@@ -77,38 +77,16 @@ env = gym.make('load-balance-v0')
 
 **Actions mapping**
 
-* Action 0 = void action, keeps everything as it is
-
-
-* Action 1 = Splits incoming flow on S1. Should route half of the flow to [a, c, g, i] and the other half to [a, b, f, i]
-
-
-* Action 2 = Splits incoming flow on S2. Should route half of the flow to [a, b, d, h, i] and the other half to [a, b, e, g, i]
-
-*Flow came through b, came out through d and e*
-
-
-* Action 3 = Should route the flow to [a, b, f, i]
-
-
-* Action 4 = Splits incoming flow on S4. Should route half of the flow to [a, c, g, i] and the other half to [a, c, e, f, i]
-
-*Flow came through c and came out through g and e*
-
-* Action 5 = Should route the flow to [a, c, g, i]
-
-
-* Action 6 = Should route the flow to [a, b, d, h, i]
-
-
-* Action 7 = Should route the flow to [a, b, e, g, i]
-
-
-* Action 8 = Should route the flow to [a, c, e, d, h, i]
-
-
-* Action 9 = Should route the flow to [a, c, e, f, i]
-
-
-* Action 4 = Splits incoming flow on S3. Should route 1/3 of the flow to [a, b, d, h, i], 1/3 to [a, b, e, g, i], and 1/3 to [a, b, f, i]
-*Flow came through b and came out through d, e and f*
+| Action 	| Routes 	| Comments 	|
+|:-:	|:-:	|:-:	|
+| 0 	| Void action, should use current routes 	|  	|
+| 1 	| Splits incoming flow on S1. Should route half of the flow to [a, c, g, i] and the other half to [a, b, f, i] 	|  	|
+| 2 	| Splits incoming flow on S2. Should route half of the flow to [a, b, d, h, i] and the other half to [a, b, e, g, i] 	| Flow came through b, came out through d and e 	|
+| 3 	| Should route the flow to [a, b, f, i] 	|  	|
+| 4 	| Splits incoming flow on S4. Should route half of the flow to [a, c, g, i] and the other half to [a, c, e, f, i] 	| Flow came through c and came out through g and e 	|
+| 5 	| Should route the flow to [a, c, g, i] 	|  	|
+| 6 	| Should route the flow to [a, b, d, h, i] 	|  	|
+| 7 	| Should route the flow to [a, b, e, g, i] 	|  	|
+| 8 	| Should route the flow to [a, c, e, d, h, i] 	|  	|
+| 9 	| Should route the flow to [a, c, e, f, i] 	|  	|
+| 10 	| Splits incoming flow on S3. Should route 1/3 of the flow to [a, b, d, h, i], 1/3 to [a, b, e, g, i], and 1/3 to [a, b, f, i] 	| Flow came through b and came out through d, e and f 	|

@@ -72,7 +72,7 @@ env = gym.make('load-balance-v0')
 
 **Environment topology**
 
-![Network topology used for modeling this OpenAi gym environment](./topology.jpg?raw=true "Network topology")
+![Network topology used for modeling this OpenAi gym environment](./topology.png?raw=true "Network topology")
 
 
 **Actions mapping**

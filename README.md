@@ -61,12 +61,54 @@ Referece: https://medium.com/analytics-vidhya/building-custom-gym-environments-f
 `pip install -e .` inside `load_balance_gym` file
 
 
-
 **How to use the gym environment**
-
 
 ```
 import gym
 import gym_foo
 env = gym.make('load-balance-v0')
 ```
+
+
+**Environment topology**
+
+![Network topology used for modeling this OpenAi gym environment](./topology.jpg?raw=true "Network topology")
+
+
+**Actions mapping**
+
+* Action 0 = void action, keeps everything as it is
+
+
+* Action 1 = Splits incoming flow on S1. Should route half of the flow to [a, c, g, i] and the other half to [a, b, f, i]
+
+
+* Action 2 = Splits incoming flow on S2. Should route half of the flow to [a, b, d, h, i] and the other half to [a, b, e, g, i]
+
+*Flow came through b, came out through d and e*
+
+
+* Action 3 = Should route the flow to [a, b, f, i]
+
+
+* Action 4 = Splits incoming flow on S4. Should route half of the flow to [a, c, g, i] and the other half to [a, c, e, f, i]
+
+*Flow came through c and came out through g and e*
+
+* Action 5 = Should route the flow to [a, c, g, i]
+
+
+* Action 6 = Should route the flow to [a, b, d, h, i]
+
+
+* Action 7 = Should route the flow to [a, b, e, g, i]
+
+
+* Action 8 = Should route the flow to [a, c, e, d, h, i]
+
+
+* Action 9 = Should route the flow to [a, c, e, f, i]
+
+
+* Action 4 = Splits incoming flow on S3. Should route 1/3 of the flow to [a, b, d, h, i], 1/3 to [a, b, e, g, i], and 1/3 to [a, b, f, i]
+*Flow came through b and came out through d, e and f*

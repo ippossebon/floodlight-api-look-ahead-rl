@@ -9,6 +9,7 @@ from LoadBalanceRLAgent.agent import LoadBalanceAgent
 from routing.binPacking import BinPackingRouting
 
 from utilities.actionToRules import actionToRules
+from utilities.staticFlowPusher import StaticFlowPusher
 
 from operator import attrgetter
 
@@ -18,10 +19,14 @@ import gym
 import requests
 import time
 
+CONTROLLER_IP = 'http://0.0.0.0'
 CONTROLLER_HOST = 'http://0.0.0.0:8080'
 
-THRESHOLD_TIME = 10 # IDEAFIX uses 10 seg
+THRESHOLD_TIME_SEC = 10 # IDEAFIX uses 10 seg
 THRESHOLD_SIZE = 10485760 # 10MB
+
+SPLIT_FLOW_LOOP_TIME_SEC = 3
+MAX_LOOP_DURATION_MIN = 2
 
 class LookAheadRLApp(object):
     def __init__(self):
@@ -40,6 +45,8 @@ class LookAheadRLApp(object):
         }
 
         self.flow_paths = {}
+
+        self.flow_pusher = StaticFlowPusher(CONTROLLER_IP)
 
         self.enableSwitchStatisticsEndpoit()
 
@@ -309,22 +316,44 @@ class LookAheadRLApp(object):
 
 
     def isElephantFlow(self, flow):
-        if flow.duration_sec > THRESHOLD_TIME and flow.byte_count > THRESHOLD_SIZE:
+        if flow.duration_sec > THRESHOLD_TIME_SEC and flow.byte_count > THRESHOLD_SIZE:
             return True
         return False
 
-
-    def actionToRules(self, action, flowToReroute):
+    def getRulesFromAction(self, action, flowToReroute):
         # self.links_usage
         # como identificar fluxos ativos na rede? o fluxo mais recente, maior?
-        rules = actionToRules(action, current_paths, flow_name, self.switch_ids)
-        return rules
+        fixed_rules, loop_rules = actionToRules(action, current_paths, flow_name, self.switch_ids)
+        return fixed_rules, loop_rule
 
-    def installRules(self, rules):
-        if rules == None:
-            return
-        else:
-            pass
+    def installRule(self, rule):
+        self.flow_pusher.set(rule)
+
+    def uninstallRule(self, rule):
+        self.flow_pusher.remove(rule)
+
+    def performAction(self, action, flowToReroute):
+        fixed_rules, loop_rules = getRulesFromAction(action, flowToReroute)
+
+        for rule in fixed_rules:
+            self.installRule(rule)
+
+        if len(loop_rules):
+            # Slip entre caminhos
+            # Assumindo que o fluxo elephant vai durar pelo menos THRESHOLD_TIME_SEC segundos + pelo menos 3 * SPLIT_FLOW_LOOP_TIME_SEC
+            # Usando threshold de 10seg + split time de 2 seg = o elephant flow deve durar pelo menos 16 segundos. (Máximo de 3min?)
+
+            # Para garantir que não há perda de pacotes: usamos a primeira regra como base e iteramos sobre a outra.
+            self.installRule(loop_rules[0])
+
+            t_end = time.time() + 60 * MAX_LOOP_DURATION_MIN # tempo máximo de duração do loop é de 2 minutos
+            while time.time() < t_end:
+                for rule in loop_rules:
+                    self.installRule(rule)
+                    time.sleep(SPLIT_FLOW_LOOP_TIME_SEC)
+                    self.uninstallRule(rule)
+                    # Atenção: neste instante, até que a nova regra seja instalada, os pacotes serão enviados pela primeira rota.
+
 
     def run(self):
         # Create network graph
@@ -349,6 +378,7 @@ class LookAheadRLApp(object):
         self.agent = LoadBalanceAgent(initial_usage)
         self.agent.train()
 
+
         # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos
         while True:
             action = self.env.action_space.sample()
@@ -366,10 +396,7 @@ class LookAheadRLApp(object):
 
             # Updates flow information
             self.flow_paths[flow_to_reroute] = info['next_paths']
-
-
             time.sleep(5)
-
 
 
 if __name__ == '__main__':

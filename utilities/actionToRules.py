@@ -13,7 +13,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "active": "true",
                 "actions": "output=2"
             }
-        elif target_link == 'c':
+        if target_link == 'c':
             return {
                 "switch": switch_ids["S1"],
                 "name": flow_name,
@@ -34,7 +34,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "active": "true",
                 "actions": "output=3"
             }
-        elif target_link == 'e':
+        if target_link == 'e':
             return {
                 "switch": switch_ids["S2"],
                 "name": flow_name,
@@ -43,7 +43,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "active": "true",
                 "actions": "output=2"
             }
-        elif and target_link == 'f'
+        if target_link == 'f'
             return {
                 "switch": switch_ids["S2"],
                 "name": flow_name,
@@ -128,7 +128,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
         else:
             return None
     elif source_link == 'g':
-        if  target_link == 'i':
+        if target_link == 'i':
             return {
                 "switch": switch_ids["S3"],
                 "name": flow_name,

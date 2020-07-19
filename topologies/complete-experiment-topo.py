@@ -10,11 +10,11 @@ from mininet.node import OVSSwitch, Controller, RemoteController
 
 class MastersSwitchTopo(Topo):
     def build(self):
-        s1 = self.addSwitch('s1', dpid='1', mac="11:00:00:00:00:11", protocols='OpenFlow13', bw=500)
-        s2 = self.addSwitch('s2', dpid='2', mac="11:00:00:00:00:12", protocols='OpenFlow13', bw=500)
-        s3 = self.addSwitch('s3', dpid='3', mac="11:00:00:00:00:13", protocols='OpenFlow13', bw=500)
-        s4 = self.addSwitch('s4', dpid='4', mac="11:00:00:00:00:14", protocols='OpenFlow13', bw=500)
-        s5 = self.addSwitch('s5', dpid='5', mac="11:00:00:00:00:15", protocols='OpenFlow13', bw=500)
+        s1 = self.addSwitch('S1', dpid='1', mac="11:00:00:00:00:11", protocols='OpenFlow13', bw=500)
+        s2 = self.addSwitch('S2', dpid='2', mac="11:00:00:00:00:12", protocols='OpenFlow13', bw=500)
+        s3 = self.addSwitch('S3', dpid='3', mac="11:00:00:00:00:13", protocols='OpenFlow13', bw=500)
+        s4 = self.addSwitch('S4', dpid='4', mac="11:00:00:00:00:14", protocols='OpenFlow13', bw=500)
+        s5 = self.addSwitch('S5', dpid='5', mac="11:00:00:00:00:15", protocols='OpenFlow13', bw=500)
 
         h1 = self.addHost('h1', mac="00:00:00:00:00:01", ip="10.0.0.1/12")
         h2 = self.addHost('h2', mac="00:00:00:00:00:02", ip="10.0.0.2/12")

@@ -36,15 +36,17 @@ class LookAheadRLApp(object):
     def __init__(self):
         self.network_graph = Graph()
         # self.routing_model = BinPackingRouting()
-        self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
+        self.switch_info = {
+
+        } # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
         self.active_flows = [] # lista de ActiveFlow: active_flows = ['F1', 'F2']
         self.links_usage = []
         self.switch_ids = {
-            'S1': '00:00:00:00:00:00:00:01',
-            'S2': '00:00:00:00:00:00:00:02',
-            'S3': '00:00:00:00:00:00:00:03',
-            'S4': '00:00:00:00:00:00:00:04',
-            'S5': '00:00:00:00:00:00:00:05'
+            'S1': '11:00:00:00:00:11',
+            'S2': '11:00:00:00:00:12',
+            'S3': '11:00:00:00:00:13',
+            'S4': '11:00:00:00:00:14',
+            'S5': '11:00:00:00:00:15'
         }
         self.flow_count = 0
         # self.flow_pusher = StaticFlowPusher(CONTROLLER_IP)
@@ -110,7 +112,6 @@ class LookAheadRLApp(object):
             links.append(link)
 
         self.network_graph.setLinks(links)
-
         self.network_graph.createCostMatrix()
         # self.network_graph.printCostMatrix()
 
@@ -431,7 +432,6 @@ class LookAheadRLApp(object):
     def run(self):
         # Initialize variables
         print('Running environment...')
-        self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
         self.setFlowsSnapshots()
 

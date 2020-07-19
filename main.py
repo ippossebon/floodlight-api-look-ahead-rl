@@ -72,7 +72,6 @@ class LookAheadRLApp(object):
         env = gym.make('Load-Balance-v1', usage=self.links_usage)
         self.agent = DQNAgent(env)
 
-        self.enableSwitchStatisticsEndpoit()
 
     def initializeNetworkGraph(self):
         switches_response = requests.get('{host}/wm/core/controller/switches/json'.format(host=CONTROLLER_HOST))
@@ -263,6 +262,8 @@ class LookAheadRLApp(object):
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+        print('isadora ', response_data)
+
         for item in response_data:
             switch_dpid = item["dpid"]
             # item é um objeto com o formato:
@@ -431,8 +432,10 @@ class LookAheadRLApp(object):
     def run(self):
         # Initialize variables
         print('Running environment...')
+        self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
         self.setFlowsSnapshots()
+        self.setSwitchStatistics()
 
         self.links_usage = self.getLinksUsage()
 

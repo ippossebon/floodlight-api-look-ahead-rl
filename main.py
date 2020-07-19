@@ -301,8 +301,6 @@ class LookAheadRLApp(object):
 
         links_usage = list(self.links_usage)
 
-        print('response_data', response_data)
-
         for item in response_data:
             switch_dpid = item['dpid']
             # item é um objeto com o formato:
@@ -322,7 +320,7 @@ class LookAheadRLApp(object):
             is_link_F = item['dpid'] == self.switch_ids['S3'] and item['port'] == '2'
             is_link_G = item['dpid'] == self.switch_ids['S3'] and item['port'] == '3'
             is_link_H = item['dpid'] == self.switch_ids['S3'] and item['port'] == '4'
-            is_link_I = item['dpid'] == self.switch_ids['S3'] and item['port'] == '1'
+            is_link_I = item['dpid'] == self.switch_ids['S3'] and item['port'] == '1' # TODO: como ver quanto que o host H2 está recebendo?
 
             if is_link_A:
                 links_usage[0] = float(item['bits-per-second-rx'])

@@ -10,7 +10,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "1",
-                "active": "true",
+                "active": "true",
                 "actions": "output=2"
             }
         elif target_link == 'c':
@@ -19,7 +19,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "1",
-                "active": "true",
+                "active": "true",
                 "actions": "output=3"
             }
         else:
@@ -31,7 +31,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "1",
-                "active": "true",
+                "active": "true",
                 "actions": "output=3"
             }
         elif target_link == 'e':
@@ -40,7 +40,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "1",
-                "active": "true",
+                "active": "true",
                 "actions": "output=2"
             }
         elif and target_link == 'f'
@@ -49,7 +49,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "1",
-                "active":"true",
+                "active": "true",
                 "actions": "output=4"
             }
         else:
@@ -61,7 +61,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "1",
-                "active":"true",
+                "active": "true",
                 "actions": "output=2"
             }
         if target_link == 'g':
@@ -70,7 +70,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "1",
-                "active":"true",
+                "active": "true",
                 "actions": "output=3"
             }
         else:
@@ -82,7 +82,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "1",
-                "active":"true",
+                "active": "true",
                 "actions": "output=2"
             }
         else:
@@ -94,7 +94,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "2",
-                "active":"true",
+                "active": "true",
                 "actions": "output=3"
             }
         if target_link == 'f':
@@ -103,7 +103,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "2",
-                "active":"true",
+                "active": "true",
                 "actions": "output=4"
             }
 
@@ -113,7 +113,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "2",
-                "active":"true",
+                "active": "true",
                 "actions": "output=3"
             }
         if target_link == 'i':
@@ -122,7 +122,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "2",
-                "active":"true",
+                "active": "true",
                 "actions": "output=1"
             }
         else:
@@ -134,7 +134,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "3",
-                "active":"true",
+                "active": "true",
                 "actions": "output=1"
             }
         else:
@@ -146,7 +146,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "name": flow_name,
                 "priority": priority,
                 "ingress-port": "4",
-                "active":"true",
+                "active": "true",
                 "actions": "output=1"
             }
         else:

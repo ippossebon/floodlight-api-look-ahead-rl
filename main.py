@@ -453,6 +453,8 @@ class LookAheadRLApp(object):
         self.links_usage = self.getLinksUsage()
         print('usage = ', self.links_usage)
 
+        time.sleep(15)
+
 
         # self.executeTrainingPhase()
         exit(0)

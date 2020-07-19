@@ -443,12 +443,12 @@ class LookAheadRLApp(object):
         self.setSwitchStatistics()
 
         self.links_usage = self.getLinksUsage()
-
         print('usage = ', self.links_usage)
 
         # Aguarda inicio de fluxos
         time.sleep(15)
 
+        self.links_usage = self.getLinksUsage()
         print('usage = ', self.links_usage)
 
 

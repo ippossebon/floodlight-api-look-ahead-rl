@@ -444,27 +444,32 @@ class LookAheadRLApp(object):
         self.setFlowsSnapshots()
         self.setSwitchStatistics()
 
-        self.links_usage = self.getLinksUsage()
-        print('usage = ', self.links_usage)
-
-        # Aguarda inicio de fluxos
-        time.sleep(15)
+        step = 0
 
         self.links_usage = self.getLinksUsage()
-        print('usage = ', self.links_usage)
+        print('{0} usage = {1}'.format(step, self.links_usage))
+        step = step + 1
 
-        time.sleep(15)
+        time.sleep(20)
+
+        self.links_usage = self.getLinksUsage()
+        print('{0} usage = {1}'.format(step, self.links_usage))
+        step = step + 1
 
 
         # self.executeTrainingPhase()
-        exit(0)
         while True:
             # Coleta estatísticas
-            self.setSwitchStatistics()
-            self.setFlowsSnapshots()
+            # self.setSwitchStatistics()
+            # self.setFlowsSnapshots()
+
+            self.links_usage = self.getLinksUsage()
+            print('{0} usage = {1}'.format(step, self.links_usage))
+            step = step + 1
+
 
             # TODO: como diferenciar fluxos com o mesmo ip de origem, destino e protocolo?
-            time.sleep(5)
+            time.sleep(2)
 
             # self.active_flows_id, self.active_flows_paths, self.active_flows_size = self.getActiveFlows()
             #

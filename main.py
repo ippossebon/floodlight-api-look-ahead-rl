@@ -439,6 +439,11 @@ class LookAheadRLApp(object):
     def run(self):
         # Initialize variables
         print('Running environment...')
+
+        summary = self.getNetworkSummary()
+
+        print('summary = ', summary)
+
         self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
         self.setFlowsSnapshots()

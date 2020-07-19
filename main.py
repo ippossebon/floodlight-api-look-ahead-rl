@@ -434,7 +434,7 @@ class LookAheadRLApp(object):
         self.initializeNetworkGraph()
         self.initial_usage = self.getLinksUsage()
 
-        print('initial_usage = ', initial_usage)
+        print('initial_usage = ', self.initial_usage)
 
         # Aguarda inicio de fluxos
         time.sleep(20)

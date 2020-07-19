@@ -112,7 +112,7 @@ class LookAheadRLApp(object):
         self.network_graph.setLinks(links)
 
         self.network_graph.createCostMatrix()
-        self.network_graph.printCostMatrix()
+        # self.network_graph.printCostMatrix()
 
 
     def getNetworkSummary(self):
@@ -430,17 +430,20 @@ class LookAheadRLApp(object):
 
     def run(self):
         # Initialize variables
+        print('Running environment...')
         self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
+        self.setFlowsSnapshots()
+
         self.initial_usage = self.getLinksUsage()
 
         print('initial_usage = ', self.initial_usage)
 
         # Aguarda inicio de fluxos
-        time.sleep(20)
+        time.sleep(15)
 
         print('initial_usage = ', self.initial_usage)
-        
+
 
         # self.executeTrainingPhase()
 

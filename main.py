@@ -439,6 +439,9 @@ class LookAheadRLApp(object):
         # Aguarda inicio de fluxos
         time.sleep(20)
 
+        print('initial_usage = ', self.initial_usage)
+        
+
         # self.executeTrainingPhase()
 
         while True:

@@ -301,6 +301,8 @@ class LookAheadRLApp(object):
 
         links_usage = list(self.links_usage)
 
+        print('response_data', response_data)
+
         for item in response_data:
             switch_dpid = item['dpid']
             # item é um objeto com o formato:
@@ -312,7 +314,6 @@ class LookAheadRLApp(object):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
-            print('item', item)
             is_link_A = item['dpid'] == self.switch_ids['S1'] and item['port'] == '1'
             is_link_B = item['dpid'] == self.switch_ids['S2'] and item['port'] == '1'
             is_link_C = item['dpid'] == self.switch_ids['S4'] and item['port'] == '1'
@@ -439,7 +440,7 @@ class LookAheadRLApp(object):
     def run(self):
         # Initialize variables
         print('Running environment...')
-        
+
         self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
         self.setFlowsSnapshots()

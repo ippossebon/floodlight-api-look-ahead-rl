@@ -43,7 +43,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
                 "active": "true",
                 "actions": "output=2"
             }
-        if target_link == 'f'
+        if target_link == 'f':
             return {
                 "switch": switch_ids["S2"],
                 "name": flow_name,

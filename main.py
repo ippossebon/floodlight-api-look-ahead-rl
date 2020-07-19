@@ -439,12 +439,7 @@ class LookAheadRLApp(object):
     def run(self):
         # Initialize variables
         print('Running environment...')
-
-        response = requests.get('{host}/wm/core/controller/hosts/json'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
-
-        print('response_data = ', response_data)
-
+        
         self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
         self.setFlowsSnapshots()

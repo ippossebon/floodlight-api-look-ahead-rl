@@ -20,7 +20,7 @@ import time
 from operator import attrgetter
 
 CONTROLLER_IP = 'http://0.0.0.0'
-CONTROLLER_HOST = '{CONTROLLER_IP}:8080'
+CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
 THRESHOLD_TIME_SEC = 10 # IDEAFIX uses 10 seg
 THRESHOLD_SIZE = 10485760 # 10MB
@@ -165,7 +165,7 @@ class LookAheadRLApp(object):
 
             # TODO pegar mais infos do flow e atualizar variaveis
 
-            flow_id = 'flow-{self.flow_count}'
+            flow_id = 'flow-{id}'.format(id=self.flow_count)
             self.flow_paths[flow_id] = []
             self.flow_sizes[flow_id] = 0
 
@@ -356,7 +356,7 @@ class LookAheadRLApp(object):
         return fixed_rules, loop_rule
 
     def installRule(self, rule):
-        urlPath = '{CONTROLLER_HOST}/wm/staticentrypusher/json'
+        urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
         headers = {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -366,7 +366,7 @@ class LookAheadRLApp(object):
         # return self.flow_pusher.set(rule)
 
     def uninstallRule(self, rule):
-        urlPath = '{CONTROLLER_HOST}/wm/staticentrypusher/json'
+        urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
         headers = {
             'Content-type': 'application/json',
             'Accept': 'application/json',

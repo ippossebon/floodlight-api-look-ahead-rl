@@ -40,7 +40,6 @@ class LookAheadRLApp(object):
 
         } # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
         self.active_flows = [] # lista de ActiveFlow: active_flows = ['F1', 'F2']
-        self.links_usage = []
         self.switch_ids = {
             'S1': '11:00:00:00:00:11',
             'S2': '11:00:00:00:00:12',
@@ -58,7 +57,7 @@ class LookAheadRLApp(object):
         # }
         self.active_flows_size = {}
 
-        self.initial_usage = [
+        self.links_usage = [
             0,    # A
             0,    # B
             0,    # C
@@ -70,7 +69,7 @@ class LookAheadRLApp(object):
             0     # I
         ]
 
-        env = gym.make('Load-Balance-v1', usage=self.initial_usage)
+        env = gym.make('Load-Balance-v1', usage=self.links_usage)
         self.agent = DQNAgent(env)
 
         self.enableSwitchStatisticsEndpoit()
@@ -279,7 +278,7 @@ class LookAheadRLApp(object):
 
     def getLinksUsage(self):
         # Deve retornar uma lista no formato:
-        # initial_usage = [
+        # usage = [
         #     700,    # A
         #     700,    # B
         #     0,      # C
@@ -435,14 +434,14 @@ class LookAheadRLApp(object):
         self.initializeNetworkGraph()
         self.setFlowsSnapshots()
 
-        self.initial_usage = self.getLinksUsage()
+        self.links_usage = self.getLinksUsage()
 
-        print('initial_usage = ', self.initial_usage)
+        print('usage = ', self.links_usage)
 
         # Aguarda inicio de fluxos
         time.sleep(15)
 
-        print('initial_usage = ', self.initial_usage)
+        print('usage = ', self.links_usage)
 
 
         # self.executeTrainingPhase()

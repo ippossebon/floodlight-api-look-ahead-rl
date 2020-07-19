@@ -185,7 +185,6 @@ class LookAheadRLApp(object):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print(response_data)
         return None
 
         # Guarda todos os fluxos relativos a cada switch
@@ -269,8 +268,6 @@ class LookAheadRLApp(object):
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print('isadora ', response_data)
-
         for item in response_data:
             switch_dpid = item["dpid"]
             # item é um objeto com o formato:
@@ -314,6 +311,7 @@ class LookAheadRLApp(object):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
+            print('item', item)
             if item['dpid'] == '1' and item['port'] == '1':
                 # link A
                 links_usage[0] = item['bits-per-second-rx']
@@ -455,7 +453,7 @@ class LookAheadRLApp(object):
 
 
         # self.executeTrainingPhase()
-
+        exit(0)
         while True:
             # Coleta estatísticas
             self.setSwitchStatistics()

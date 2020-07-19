@@ -9,7 +9,7 @@ from graphModel.node import Node
 # from routing.binPacking import BinPackingRouting
 
 from utilities.actionToRules import actionToRules
-from utilities.staticFlowPusher import StaticFlowPusher
+# from utilities.staticFlowPusher import StaticFlowPusher # cant use http module with python 3.6 because of openssl issues
 
 import load_balance_gym
 
@@ -47,7 +47,7 @@ class LookAheadRLApp(object):
             'S5': '00:00:00:00:00:00:00:05'
         }
         self.flow_count = 0
-        self.flow_pusher = StaticFlowPusher(CONTROLLER_IP)
+        # self.flow_pusher = StaticFlowPusher(CONTROLLER_IP)
 
         self.active_flows_id = []
         self.active_flows_paths = {} # {
@@ -253,10 +253,7 @@ class LookAheadRLApp(object):
 
     def enableSwitchStatisticsEndpoit(self):
         # Enable statistics collection
-        response = requests.post(
-            '{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST),
-            data={}
-        )
+        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
         response_data = response.json()
 
         return response_data
@@ -359,10 +356,24 @@ class LookAheadRLApp(object):
         return fixed_rules, loop_rule
 
     def installRule(self, rule):
-        return self.flow_pusher.set(rule)
+        urlPath = '{CONTROLLER_HOST}/wm/staticentrypusher/json'
+        headers = {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            }
+
+        return requests.post(urlPath, data=rule, headers=headers)
+        # return self.flow_pusher.set(rule)
 
     def uninstallRule(self, rule):
-        return self.flow_pusher.remove(rule)
+        urlPath = '{CONTROLLER_HOST}/wm/staticentrypusher/json'
+        headers = {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            }
+
+        return requests.delete(urlPath, data=rule, headers=headers)
+        # return self.flow_pusher.remove(rule)
 
     def performAction(self, action, flow_to_reroute):
         fixed_rules, loop_rules = getRulesFromAction(action, flow_to_reroute)
@@ -423,8 +434,10 @@ class LookAheadRLApp(object):
         self.initializeNetworkGraph()
         self.initial_usage = self.getLinksUsage()
 
+        print('initial_usage = ', initial_usage)
+
         # Aguarda inicio de fluxos
-        time.sleep(10)
+        time.sleep(20)
 
         # self.executeTrainingPhase()
 

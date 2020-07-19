@@ -1,4 +1,4 @@
-import httplib
+import http
 import json
 
 class StaticFlowPusher(object):
@@ -19,15 +19,18 @@ class StaticFlowPusher(object):
         ret = self.rest_call(data, 'DELETE')
         return ret[0] == 200
 
-    def rest_call(self, data, action):
+
+    def rest_call(self, data, method):
         path = '/wm/staticflowpusher/json'
         headers = {
             'Content-type': 'application/json',
             'Accept': 'application/json',
             }
         body = json.dumps(data)
-        conn = httplib.HTTPConnection(self.server, 8080)
-        conn.request(action, path, body, headers)
+
+        conn = http.client.HTTPConnection(self.server, 8080)
+        conn.request(method, path, body, headers)
+
         response = conn.getresponse()
         ret = (response.status, response.reason, response.read())
         print(ret)

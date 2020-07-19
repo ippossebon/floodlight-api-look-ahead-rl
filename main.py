@@ -312,6 +312,7 @@ class LookAheadRLApp(object):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
+            print('item', item)
             is_link_A = item['dpid'] == self.switch_ids['S1'] and item['port'] == '1'
             is_link_B = item['dpid'] == self.switch_ids['S2'] and item['port'] == '1'
             is_link_C = item['dpid'] == self.switch_ids['S4'] and item['port'] == '1'
@@ -455,6 +456,8 @@ class LookAheadRLApp(object):
         self.links_usage = self.getLinksUsage()
         print('{0} usage = {1}'.format(step, self.links_usage))
         step = step + 1
+
+        # # TODO: cuidado, os valores retornados em links_usage são por step.. ou seja, precisamos de um acumulador.
 
 
         # self.executeTrainingPhase()

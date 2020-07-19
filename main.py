@@ -321,7 +321,7 @@ class LookAheadRLApp(object):
             is_link_F = item['dpid'] == self.switch_ids['S3'] and item['port'] == '2'
             is_link_G = item['dpid'] == self.switch_ids['S3'] and item['port'] == '3'
             is_link_H = item['dpid'] == self.switch_ids['S3'] and item['port'] == '4'
-            is_link_I = item['dpid'] == self.switch_ids['S2'] and item['port'] == '1'
+            is_link_I = item['dpid'] == self.switch_ids['S3'] and item['port'] == '1'
 
             if is_link_A:
                 links_usage[0] = float(item['bits-per-second-rx'])
@@ -348,7 +348,7 @@ class LookAheadRLApp(object):
                 links_usage[6] = float(item['bits-per-second-rx'])
 
             elif is_link_I:
-                links_usage[8] = float(item['bits-per-second-rx'])
+                links_usage[8] = float(item['bits-per-second-tx'])
 
         return links_usage
 

@@ -1,17 +1,15 @@
+from agent.DQNAgent import DQNAgent
+
 from graphModel.activeFlow import ActiveFlow
 from graphModel.flow import Flow
 from graphModel.graph import Graph
 from graphModel.link import Link
 from graphModel.node import Node
 
-from LoadBalanceRLAgent.agent import LoadBalanceAgent
-
-from routing.binPacking import BinPackingRouting
+# from routing.binPacking import BinPackingRouting
 
 from utilities.actionToRules import actionToRules
 from utilities.staticFlowPusher import StaticFlowPusher
-
-from operator import attrgetter
 
 import load_balance_gym
 
@@ -19,8 +17,10 @@ import gym
 import requests
 import time
 
+from operator import attrgetter
+
 CONTROLLER_IP = 'http://0.0.0.0'
-CONTROLLER_HOST = 'http://0.0.0.0:8080'
+CONTROLLER_HOST = '{CONTROLLER_IP}:8080'
 
 THRESHOLD_TIME_SEC = 10 # IDEAFIX uses 10 seg
 THRESHOLD_SIZE = 10485760 # 10MB
@@ -28,14 +28,17 @@ THRESHOLD_SIZE = 10485760 # 10MB
 SPLIT_FLOW_LOOP_TIME_SEC = 3
 MAX_LOOP_DURATION_MIN = 2
 
+# Reinforcement Learning Agent configs
+NUM_EPISODES = 1000
+
+
 class LookAheadRLApp(object):
     def __init__(self):
         self.network_graph = Graph()
-        self.routing_model = BinPackingRouting()
+        # self.routing_model = BinPackingRouting()
         self.switch_info = {} # dicionário cuja chave é o MAC do switch. Ex: current_flows["00:00:00:00:00:00:00:01"]
-        self.active_flows = [] # lista de ActiveFlow
+        self.active_flows = [] # lista de ActiveFlow: active_flows = ['F1', 'F2']
         self.links_usage = []
-
         self.switch_ids = {
             'S1': '00:00:00:00:00:00:00:01',
             'S2': '00:00:00:00:00:00:00:02',
@@ -43,15 +46,34 @@ class LookAheadRLApp(object):
             'S4': '00:00:00:00:00:00:00:04',
             'S5': '00:00:00:00:00:00:00:05'
         }
-
-        self.flow_paths = {}
-
+        self.flow_count = 0
         self.flow_pusher = StaticFlowPusher(CONTROLLER_IP)
+
+        self.active_flows_id = []
+        self.active_flows_paths = {} # {
+        #     'F1': [['A', 'B', 'F', 'I']],
+        #     'F2': [['A', 'B', 'F', 'I']]
+        # }
+        self.active_flows_size = {}
+
+        self.initial_usage = [
+            0,    # A
+            0,    # B
+            0,    # C
+            0,    # D
+            0,    # E
+            0,    # F
+            0,    # G
+            0,    # H
+            0     # I
+        ]
+
+        env = gym.make('Load-Balance-v1', usage=self.initial_usage)
+        self.agent = DQNAgent(env)
 
         self.enableSwitchStatisticsEndpoit()
 
     def initializeNetworkGraph(self):
-        # 1. Consome topologia floodlight
         switches_response = requests.get('{host}/wm/core/controller/switches/json'.format(host=CONTROLLER_HOST))
         switches_response_data = switches_response.json()
 
@@ -65,7 +87,6 @@ class LookAheadRLApp(object):
             switches.append(switch_node)
 
         self.network_graph.setNodes(switches)
-
 
         links_response = requests.get('{host}/wm/topology/links/json'.format(host=CONTROLLER_HOST))
         links_response_data = links_response.json()
@@ -138,14 +159,28 @@ class LookAheadRLApp(object):
         return None
 
     def addActiveFlow(self, flow):
+        # # TODO: talvez não faça sentido verificar se o flow já está na lista. O Controle será feito por mim.
         if not self.containsFlowAsActive(flow):
             self.active_flows.append(flow)
 
+            # TODO pegar mais infos do flow e atualizar variaveis
+
+            flow_id = 'flow-{self.flow_count}'
+            self.flow_paths[flow_id] = []
+            self.flow_sizes[flow_id] = 0
+
+            self.flow_count = self.flow_count + 1
+
+    def getActiveFlows(self):
+        pass
 
     def setFlowsSnapshots(self):
         # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
+
+        print(response_data)
+        return None
 
         # Guarda todos os fluxos relativos a cada switch
         for item in response_data:
@@ -200,7 +235,6 @@ class LookAheadRLApp(object):
                         new_flow.features.append(snapshot)
                         self.active_flows.append(new_flow)
 
-
     def listNetworkDevices(self):
         # List static flows for a switch or all switches
         response = requests.get('{host}/wm/device'.format(host=CONTROLLER_HOST))
@@ -244,7 +278,6 @@ class LookAheadRLApp(object):
             #       "bits-per-second-tx" : "6059"
             #    }
             self.switch_info[switch_dpid]["statistics"] = item
-
 
     def getLinksUsage(self):
         # Deve retornar uma lista no formato:
@@ -314,26 +347,25 @@ class LookAheadRLApp(object):
 
         return links_usage
 
-
     def isElephantFlow(self, flow):
         if flow.duration_sec > THRESHOLD_TIME_SEC and flow.byte_count > THRESHOLD_SIZE:
             return True
         return False
 
-    def getRulesFromAction(self, action, flowToReroute):
+    def getRulesFromAction(self, action, flow_to_reroute):
         # self.links_usage
         # como identificar fluxos ativos na rede? o fluxo mais recente, maior?
         fixed_rules, loop_rules = actionToRules(action, current_paths, flow_name, self.switch_ids)
         return fixed_rules, loop_rule
 
     def installRule(self, rule):
-        self.flow_pusher.set(rule)
+        return self.flow_pusher.set(rule)
 
     def uninstallRule(self, rule):
-        self.flow_pusher.remove(rule)
+        return self.flow_pusher.remove(rule)
 
-    def performAction(self, action, flowToReroute):
-        fixed_rules, loop_rules = getRulesFromAction(action, flowToReroute)
+    def performAction(self, action, flow_to_reroute):
+        fixed_rules, loop_rules = getRulesFromAction(action, flow_to_reroute)
 
         for rule in fixed_rules:
             self.installRule(rule)
@@ -354,49 +386,77 @@ class LookAheadRLApp(object):
                     self.uninstallRule(rule)
                     # Atenção: neste instante, até que a nova regra seja instalada, os pacotes serão enviados pela primeira rota.
 
+    def executeTrainingPhase(self):
+        # rodar por 10min ?
+        while True:
+            # Coleta estatísticas
+            self.setSwitchStatistics()
+            self.setFlowsSnapshots()
+
+            self.active_flows_id, self.active_flows_paths, self.active_flows_size = self.getActiveFlows()
+
+            if self.containsElephantFlow():
+                # action = self.env.action_space.sample()
+                # state, reward, done, info = self.env.step(action)
+
+                # flow_to_reroute = 'F2'
+                # flow_to_reroute_size = self.flow_sizes[flow_to_reroute]
+                # flow_to_reroute_paths = self.flow_paths[flow_to_reroute]
+
+                # next_state, reward, done, info = env.step(
+                #     action=action,
+                #     flow_total_size=flow_to_reroute_size,
+                #     flow_current_paths=flow_to_reroute_paths
+                # )
+                #
+                # self.performAction(action, flow_to_reroute)
+
+                # # Updates flow information
+                # self.flow_paths[flow_to_reroute] = info['next_paths']
+
+            # time.sleep(5)
 
     def run(self):
-        # Create network graph
+        # Initialize variables
+        self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
-        self.routing_model.setNetworkGraph(self.network_graph)
-
-        # Estatítiscas estão aramazenados em self.switch_info
-        # self.setSwitchStatistics()
-        # self.setFlowsSnapshots()
-
-        # # Testando caminho de custo mínimo
-        # source_switch_id = '00:00:00:00:00:00:00:01'
-        # target_switch_id = '00:00:00:00:00:00:00:06'
-        #
-        # # Procura caminho de custo mínimo entre dois switches
-        # # custo = 1 / capacidade_atual
-        # min_cost_path = self.network_graph.getMinimumCostPath(source_switch_id, target_switch_id)
-        # print('Caminho de custo minimo entre 1 e 6: {0}\n'.format(min_cost_path))
-
         self.initial_usage = self.getLinksUsage()
-        print('initial usage = ', initial_usage)
-        self.agent = LoadBalanceAgent(initial_usage)
-        self.agent.train()
 
+        # Aguarda inicio de fluxos
+        time.sleep(10)
 
-        # Fluxos correntes e snapshot de suas features adicionados as listas a cada 5 segundos
+        # self.executeTrainingPhase()
+
         while True:
-            action = self.env.action_space.sample()
-            state, reward, done, info = self.env.step(action)
+            # Coleta estatísticas
+            self.setSwitchStatistics()
+            self.setFlowsSnapshots()
 
-            flow_to_reroute = 'F2'
-            flow_to_reroute_size = flow_sizes[flow_to_reroute]
-            flow_to_reroute_paths = self.flow_paths[flow_to_reroute]
-
-            next_state, reward, done, info = env.step(
-                action=action,
-                flow_total_size=flow_to_reroute_size,
-                flow_current_paths=flow_to_reroute_paths
-            )
-
-            # Updates flow information
-            self.flow_paths[flow_to_reroute] = info['next_paths']
+            # TODO: como diferenciar fluxos com o mesmo ip de origem, destino e protocolo?
             time.sleep(5)
+
+            # self.active_flows_id, self.active_flows_paths, self.active_flows_size = self.getActiveFlows()
+            #
+            # if self.containsElephantFlow():
+                # action = self.env.action_space.sample()
+                # state, reward, done, info = self.env.step(action)
+
+                # flow_to_reroute = 'F2'
+                # flow_to_reroute_size = self.flow_sizes[flow_to_reroute]
+                # flow_to_reroute_paths = self.flow_paths[flow_to_reroute]
+
+                # next_state, reward, done, info = env.step(
+                #     action=action,
+                #     flow_total_size=flow_to_reroute_size,
+                #     flow_current_paths=flow_to_reroute_paths
+                # )
+                #
+                # self.performAction(action, flow_to_reroute)
+
+                # # Updates flow information
+                # self.flow_paths[flow_to_reroute] = info['next_paths']
+
+            # time.sleep(5)
 
 
 if __name__ == '__main__':

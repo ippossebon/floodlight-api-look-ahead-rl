@@ -4,7 +4,7 @@ def getRule(source_link, target_link, flow_name, priority=None):
     priority = priority or MAX_PRIORITY
 
     if source_link == 'a':
-        if target_link == 'b'
+        if target_link == 'b':
             return {
                 "switch": switch_ids["S1"],
                 "name": flow_name,
@@ -291,7 +291,7 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
         rules.append(getRule(source_link='f', target_link='i', flow_name=flow_name))
 
         return rules
-        
+
     elif action == 10:
         # route 1/3 of the flow to [a, b, d, h, i], 1/3 to [a, b, e, g, i], and 1/3 to [a, b, f, i]
 

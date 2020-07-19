@@ -413,6 +413,7 @@ class LookAheadRLApp(object):
 
                 # # Updates flow information
                 # self.flow_paths[flow_to_reroute] = info['next_paths']
+                pass
 
             # time.sleep(5)
 

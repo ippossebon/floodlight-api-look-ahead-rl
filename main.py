@@ -312,40 +312,41 @@ class LookAheadRLApp(object):
             #       "bits-per-second-tx" : "6059"
             #    }
             print('item', item)
-            if item['dpid'] == '1' and item['port'] == '1':
-                # link A
+            is_link_A = item['dpid'] == self.switch_ids['S1'] and item['port'] == '1'
+            is_link_B = item['dpid'] == self.switch_ids['S2'] and item['port'] == '1'
+            is_link_C = item['dpid'] == self.switch_ids['S4'] and item['port'] == '1'
+            is_link_D = item['dpid'] == self.switch_ids['S5'] and item['port'] == '1'
+            is_link_E = item['dpid'] == self.switch_ids['S4'] and item['port'] == '2'
+            is_link_F = item['dpid'] == self.switch_ids['S3'] and item['port'] == '2'
+            is_link_G = item['dpid'] == self.switch_ids['S3'] and item['port'] == '3'
+            is_link_H = item['dpid'] == self.switch_ids['S3'] and item['port'] == '4'
+            is_link_I = item['dpid'] == self.switch_ids['S2'] and item['port'] == '1'
+
+            if is_link_A:
                 links_usage[0] = item['bits-per-second-rx']
 
-            elif item['dpid'] == '2' and item['port'] == '1':
-                # link B
+            elif is_link_B:
                 links_usage[1] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == '4' and item['port'] == '1':
-                # link C
+            elif is_link_C:
                 links_usage[2] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == '4' and item['port'] == '2':
-                # link E
+            elif is_link_E:
                 links_usage[4] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == '5' and item['port'] == '1':
-                # link D
+            elif is_link_D:
                 links_usage[3] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == '3' and item['port'] == '2':
-                # link F
+            elif is_link_F:
                 links_usage[5] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == '3' and item['port'] == '4':
-                # link H
+            elif is_link_H:
                 links_usage[7] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == '3' and item['port'] == '3':
-                # link G
+            elif is_link_G:
                 links_usage[6] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == '00:00:00:00:00:02' and item['port'] == '1':
-                # link I
+            elif is_link_I:
                 links_usage[8] = float(item['bits-per-second-rx'])
 
         return links_usage

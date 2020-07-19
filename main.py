@@ -21,6 +21,7 @@ from operator import attrgetter
 
 CONTROLLER_IP = 'http://0.0.0.0'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
+LLDP_PACKAGE_SIZE = 60
 
 THRESHOLD_TIME_SEC = 10 # IDEAFIX uses 10 seg
 THRESHOLD_SIZE = 10485760 # 10MB
@@ -323,7 +324,7 @@ class LookAheadRLApp(object):
             is_link_I = item['dpid'] == self.switch_ids['S2'] and item['port'] == '1'
 
             if is_link_A:
-                links_usage[0] = item['bits-per-second-rx']
+                links_usage[0] = float(item['bits-per-second-rx'])
 
             elif is_link_B:
                 links_usage[1] = float(item['bits-per-second-rx'])

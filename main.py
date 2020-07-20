@@ -186,6 +186,7 @@ class LookAheadRLApp(object):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+        print('isadora response_data', response_data)
         return None
 
         # Guarda todos os fluxos relativos a cada switch
@@ -409,7 +410,7 @@ class LookAheadRLApp(object):
         # rodar por 10min ?
         while True:
             # Coleta estatísticas
-            self.setSwitchStatistics()
+            # self.setSwitchStatistics()
             self.setFlowsSnapshots()
 
             self.active_flows_id, self.active_flows_paths, self.active_flows_size = self.getActiveFlows()
@@ -443,7 +444,7 @@ class LookAheadRLApp(object):
         self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
         self.setFlowsSnapshots()
-        self.setSwitchStatistics()
+        # self.setSwitchStatistics()
 
         step = 0
 
@@ -451,11 +452,12 @@ class LookAheadRLApp(object):
         print('{0} usage = {1}'.format(step, self.links_usage))
         step = step + 1
 
-        time.sleep(20)
+        time.sleep(2)
 
         self.links_usage = self.getLinksUsage()
         print('{0} usage = {1}'.format(step, self.links_usage))
         step = step + 1
+        self.setFlowsSnapshots()
 
         # # TODO: cuidado, os valores retornados em links_usage são por step.. ou seja, precisamos de um acumulador.
 
@@ -470,6 +472,7 @@ class LookAheadRLApp(object):
             print('{0} usage = {1}'.format(step, self.links_usage))
             step = step + 1
 
+            self.setFlowsSnapshots()
 
             # TODO: como diferenciar fluxos com o mesmo ip de origem, destino e protocolo?
             time.sleep(2)

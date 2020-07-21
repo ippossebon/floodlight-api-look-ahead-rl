@@ -32,7 +32,6 @@ MAX_LOOP_DURATION_MIN = 2
 # Reinforcement Learning Agent configs
 NUM_EPISODES = 1000
 
-
 class LookAheadRLApp(object):
     def __init__(self):
         self.network_graph = Graph()
@@ -44,6 +43,14 @@ class LookAheadRLApp(object):
             'S3': '00:00:00:00:00:00:00:03',
             'S4': '00:00:00:00:00:00:00:04',
             'S5': '00:00:00:00:00:00:00:05'
+        }
+
+        self.switch_address_to_id = {
+            '00:00:00:00:00:00:00:01': 'S1',
+            '00:00:00:00:00:00:00:02': 'S2',
+            '00:00:00:00:00:00:00:03': 'S3',
+            '00:00:00:00:00:00:00:04': 'S4',
+            '00:00:00:00:00:00:00:05': 'S5'
         }
 
         self.switch_info = {
@@ -165,21 +172,49 @@ class LookAheadRLApp(object):
                 return item
         return None
 
-    def addActiveFlow(self, flow):
-        # # TODO: talvez não faça sentido verificar se o flow já está na lista. O Controle será feito por mim.
-        if not self.containsFlowAsActive(flow):
-            self.active_flows.append(flow)
+    def addActiveFlow(self, flow_id):
+        self.active_flows_id.append(flow_id)
+        self.active_flows_size[flow_id] = 0 # inicializa
+        self.flow_count = self.flow_count + 1
 
-            # TODO pegar mais infos do flow e atualizar variaveis
+    def updateFlowStatistics(self):
+        # Objetivos:
+        # 1. acrescentar/remover na lista de fluxos ativos
+        # 2. Atualizar tamanho do fluxo
+        # 3. Atualizar rotas do fluxo
+        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
 
-            flow_id = 'flow-{id}'.format(id=self.flow_count)
-            self.flow_paths[flow_id] = []
-            self.flow_sizes[flow_id] = 0
+        flow_routes = {}
 
-            self.flow_count = self.flow_count + 1
+        for switch_address in response_data:
+            for flow for response_data[switch_address]['flows']:
+                contains_match = flow['match'].keys() > 1
 
-    def getActiveFlows(self):
-        pass
+                if contains_match:
+                    tcp_src_port = flow['match']['tcp_src']
+                    is_tcp_flow = tcp_src_port or 0
+
+                    if is_tcp_flow:
+                        flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port)
+
+                        # Se não existir na lista de fluxos ativos, adiciona
+                        if flow_id not in self.active_flows_id:
+                            self.addActiveFlow(flow_id)
+
+                            # Atualiza rotas pelas quais passa - variável auxiliar
+                            flow_routes[flow_id] = []
+
+                        # Atualiza tamanho do fluxo (cuidado para não somar o valor de todos os links)
+                        # # TODO: 
+
+                        # Atualiza rotas pelas quais passa - variável auxiliar
+                        in_port = flow['match']['in_port']
+                        out_action = flow['instructions']['instruction_apply_actions']['actions']
+
+                        link = rulesToLink(switch_address, in_port, out_action)
+                        flow_routes[flow_id].append(link)
+
 
     def setFlowsSnapshots(self):
         # List of all devices tracked by the controller. This includes MACs, IPs, and attachment points.
@@ -440,41 +475,32 @@ class LookAheadRLApp(object):
     def run(self):
         # Initialize variables
         print('Running environment...')
+        step = 0
 
         self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
-        self.setFlowsSnapshots()
-        # self.setSwitchStatistics()
-
-        step = 0
+        self.updateFlowStatistics()
 
         self.links_usage = self.getLinksUsage()
+
         print('{0} usage = {1}'.format(step, self.links_usage))
         step = step + 1
 
-        time.sleep(2)
-
-        self.links_usage = self.getLinksUsage()
-        print('{0} usage = {1}'.format(step, self.links_usage))
-        step = step + 1
-        self.setFlowsSnapshots()
-
-        # # TODO: cuidado, os valores retornados em links_usage são por step.. ou seja, precisamos de um acumulador.
-
+        sleep(10)
 
         # self.executeTrainingPhase()
         while True:
             # Coleta estatísticas
             # self.setSwitchStatistics()
-            # self.setFlowsSnapshots()
 
             self.links_usage = self.getLinksUsage()
+            self.updateFlowStatistics()
+
             print('{0} usage = {1}'.format(step, self.links_usage))
             step = step + 1
 
             self.setFlowsSnapshots()
 
-            # TODO: como diferenciar fluxos com o mesmo ip de origem, destino e protocolo?
             time.sleep(2)
 
             # self.active_flows_id, self.active_flows_paths, self.active_flows_size = self.getActiveFlows()

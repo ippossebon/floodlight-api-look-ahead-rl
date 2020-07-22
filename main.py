@@ -9,6 +9,7 @@ from graphModel.node import Node
 # from routing.binPacking import BinPackingRouting
 
 from utilities.actionToRules import actionToRules
+from utilities.rulesToLink import rulesToLink
 # from utilities.staticFlowPusher import StaticFlowPusher # cant use http module with python 3.6 because of openssl issues
 
 import load_balance_gym

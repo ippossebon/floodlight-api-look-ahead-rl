@@ -198,7 +198,7 @@ class LookAheadRLApp(object):
 
         for switch_address in response_data:
             for flow in response_data[switch_address]['flows']:
-                contains_match = flow['match'].keys() > 1
+                contains_match = len(flow['match'].keys()) > 1
 
                 if contains_match:
                     tcp_src_port = flow['match']['tcp_src']

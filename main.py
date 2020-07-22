@@ -201,8 +201,13 @@ class LookAheadRLApp(object):
                 contains_match = len(flow['match'].keys()) > 1
 
                 if contains_match:
-                    tcp_src_port = flow['match']['tcp_src']
-                    is_tcp_flow = tcp_src_port or 0
+                    is_tcp_flow = False
+                    tcp_src_port = None
+                    try:
+                        tcp_src_port = flow['match']['tcp_src']
+                        is_tcp_flow = tcp_src_port or 0
+                    except:
+                        is_tcp_flow = False
 
                     if is_tcp_flow:
                         flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port)

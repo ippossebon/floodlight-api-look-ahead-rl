@@ -210,7 +210,7 @@ class LookAheadRLApp(object):
                         is_tcp_flow = False
 
                     if is_tcp_flow:
-                        flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port)
+                        flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port=tcp_src_port)
                         flow_ids_to_update.append(flow_id)
 
                         # Se não existir na lista de fluxos ativos, adiciona

@@ -228,8 +228,9 @@ class LookAheadRLApp(object):
                         # Adiciona na lista para ter seu tamanho total atualizado
                         flow_size[flow_id].append(flow['byte_count'])
 
-        self.updateFlowPaths(flow_id, flow_paths[flow_id])
-        self.updateFlowSize(flow_id, flow_size[flow_id])
+        for flow_id in flow_ids_to_update:
+            self.updateFlowPaths(flow_id, flow_paths[flow_id])
+            self.updateFlowSize(flow_id, flow_size[flow_id])
 
 
     def setFlowsSnapshots(self):

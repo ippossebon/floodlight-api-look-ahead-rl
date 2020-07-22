@@ -512,7 +512,7 @@ class LookAheadRLApp(object):
         self.printDebugInfo(step)
         step = step + 1
 
-        sleep(10)
+        time.sleep(10)
 
         # self.executeTrainingPhase()
         while True:

@@ -177,6 +177,13 @@ class LookAheadRLApp(object):
         self.active_flows_size[flow_id] = 0 # inicializa
         self.flow_count = self.flow_count + 1
 
+    def updateFlowPaths(self, flow_id, flow_paths):
+        self.active_flows_paths[flow_id] = flow_paths
+
+    def updateFlowSize(self, flow_id, flow_byte_counts):
+        mean_byte_count = sum(flow_byte_counts) / len(flow_byte_counts)
+        self.active_flows_size[flow_id] = mean_byte_count
+
     def updateFlowStatistics(self):
         # Objetivos:
         # 1. acrescentar/remover na lista de fluxos ativos
@@ -185,7 +192,9 @@ class LookAheadRLApp(object):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        flow_routes = {}
+        flow_ids_to_update = []
+        flow_paths = {}
+        flow_size = {} # guarda o tamanho do fluxo em cada link, para no final fazer uma media
 
         for switch_address in response_data:
             for flow for response_data[switch_address]['flows']:
@@ -197,23 +206,30 @@ class LookAheadRLApp(object):
 
                     if is_tcp_flow:
                         flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port)
+                        flow_ids_to_update.append(flow_id)
 
                         # Se não existir na lista de fluxos ativos, adiciona
                         if flow_id not in self.active_flows_id:
                             self.addActiveFlow(flow_id)
 
                             # Atualiza rotas pelas quais passa - variável auxiliar
-                            flow_routes[flow_id] = []
+                            flow_paths[flow_id] = []
 
-                        # Atualiza tamanho do fluxo (cuidado para não somar o valor de todos os links)
-                        # # TODO: 
+                            # Atualiza tamanho do fluxo por link - variável auxiliar
+                            flow_size[flow_id] = []
 
                         # Atualiza rotas pelas quais passa - variável auxiliar
                         in_port = flow['match']['in_port']
                         out_action = flow['instructions']['instruction_apply_actions']['actions']
 
-                        link = rulesToLink(switch_address, in_port, out_action)
-                        flow_routes[flow_id].append(link)
+                        link = rulesToLink(switch_address, out_port)
+                        flow_paths[flow_id].append(link)
+
+                        # Adiciona na lista para ter seu tamanho total atualizado
+                        flow_size[flow_id].append(flow['byte_count'])
+
+        self.updateFlowPaths(flow_id, flow_paths[flow_id])
+        self.updateFlowSize(flow_id, flow_size[flow_id])
 
 
     def setFlowsSnapshots(self):
@@ -472,6 +488,16 @@ class LookAheadRLApp(object):
 
             # time.sleep(5)
 
+
+
+    def printDebugInfo(self, step):
+        print('-- Step {0} --'.format(step))
+        print('Usage = {0}'.format(self.links_usage))
+        print('Active flows = {0}'.format(self.active_flows))
+        print('Flows paths = {0}'.format(self.active_flows_paths))
+        print('Flows size = {0}'.format(self.active_flows_size))
+
+
     def run(self):
         # Initialize variables
         print('Running environment...')
@@ -480,10 +506,9 @@ class LookAheadRLApp(object):
         self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
         self.updateFlowStatistics()
-
         self.links_usage = self.getLinksUsage()
 
-        print('{0} usage = {1}'.format(step, self.links_usage))
+        self.printDebugInfo(step)
         step = step + 1
 
         sleep(10)
@@ -496,12 +521,12 @@ class LookAheadRLApp(object):
             self.links_usage = self.getLinksUsage()
             self.updateFlowStatistics()
 
-            print('{0} usage = {1}'.format(step, self.links_usage))
+            self.printDebugInfo(step)
             step = step + 1
 
-            self.setFlowsSnapshots()
+            # self.setFlowsSnapshots()
 
-            time.sleep(2)
+            time.sleep(1)
 
             # self.active_flows_id, self.active_flows_paths, self.active_flows_size = self.getActiveFlows()
             #

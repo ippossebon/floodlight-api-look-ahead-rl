@@ -16,6 +16,7 @@ import load_balance_gym
 
 import gym
 import requests
+import re
 import time
 
 from operator import attrgetter
@@ -226,7 +227,8 @@ class LookAheadRLApp(object):
 
                         # Atualiza rotas pelas quais passa - variável auxiliar
                         in_port = flow['match']['in_port']
-                        out_action = flow['instructions']['instruction_apply_actions']['actions']
+                        out_port_plain_text = flow['instructions']['instruction_apply_actions']['actions']
+                        out_port = re.split('output=')[1]
 
                         link = rulesToLink(switch_address, out_port)
                         flow_paths[flow_id].append(link)

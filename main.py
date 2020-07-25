@@ -228,14 +228,13 @@ class LookAheadRLApp(object):
                         # Atualiza rotas pelas quais passa - variável auxiliar
                         in_port = flow['match']['in_port']
                         out_port_plain_text = flow['instructions']['instruction_apply_actions']['actions']
-                        print('isadora', re.findall(r"\d+", out_port_plain_text))
                         out_port = float(re.findall(r"\d+", out_port_plain_text)[0])
 
                         link = rulesToLink(switch_address, out_port)
                         flow_paths[flow_id].append(link)
 
                         # Adiciona na lista para ter seu tamanho total atualizado
-                        flow_size[flow_id].append(flow['byte_count'])
+                        flow_size[flow_id].append(float(flow['byte_count']))
 
         for flow_id in flow_ids_to_update:
             self.updateFlowPaths(flow_id, flow_paths[flow_id])

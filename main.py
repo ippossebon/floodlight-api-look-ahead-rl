@@ -228,8 +228,8 @@ class LookAheadRLApp(object):
                         # Atualiza rotas pelas quais passa - variável auxiliar
                         in_port = flow['match']['in_port']
                         out_port_plain_text = flow['instructions']['instruction_apply_actions']['actions']
-                        print('isadora', re.split(out_port_plain_text, '='))
-                        out_port = re.split(out_port_plain_text, '=')[1]
+                        print('isadora', re.split(out_port_plain_text, '=\d+'))
+                        out_port = re.split(out_port_plain_text, '=')
 
                         link = rulesToLink(switch_address, out_port)
                         flow_paths[flow_id].append(link)

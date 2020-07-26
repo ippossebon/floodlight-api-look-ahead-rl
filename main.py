@@ -237,6 +237,7 @@ class LookAheadRLApp(object):
                         out_port = float(re.findall(r"\d+", out_port_plain_text)[0])
 
                         link = rulesToLink(switch_address, out_port)
+                        print('switch_address = {0}, out_port = {1}, link = {2}'.format(switch_address, out_port, link))
                         print('Flows paths LOCAL: ', flow_paths)
                         print('Flows size LOCAL: ', flow_size)
 

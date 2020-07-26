@@ -200,9 +200,9 @@ class LookAheadRLApp(object):
         flow_size = {} # guarda o tamanho do fluxo em cada link, para no final fazer uma media
 
         # Inicializa variáveis auxiliares
-        for ids in self.active_flows_id:
-            flow_paths[id] = [] # precisa considerar self.active_flows_paths
-            flow_size[id] = []  # precisa considerar self.active_flows_size
+        for active_flow_id in self.active_flows_id:
+            flow_paths[active_flow_id] = [] # precisa considerar self.active_flows_paths
+            flow_size[active_flow_id] = []  # precisa considerar self.active_flows_size
 
         print('(1) Flows paths LOCAL: ', flow_paths)
         print('(1) Flows size LOCAL: ', flow_size)

@@ -204,6 +204,9 @@ class LookAheadRLApp(object):
             flow_paths[id] = [] # precisa considerar self.active_flows_paths
             flow_size[id] = []  # precisa considerar self.active_flows_size
 
+        print('(1) Flows paths LOCAL: ', flow_paths)
+        print('(1) Flows size LOCAL: ', flow_size)
+
         for switch_address in response_data:
             for flow in response_data[switch_address]['flows']:
                 contains_match = len(flow['match'].keys()) > 1
@@ -222,6 +225,8 @@ class LookAheadRLApp(object):
 
                         # Se não existir na lista de fluxos ativos, adiciona
                         if flow_id not in self.active_flows_id:
+                            print('* flow novo')
+
                             self.addActiveFlow(flow_id)
 
                             # Atualiza rotas pelas quais passa - variável auxiliar
@@ -229,6 +234,8 @@ class LookAheadRLApp(object):
 
                             # Atualiza tamanho do fluxo por link - variável auxiliar
                             flow_size[flow_id] = []
+                        else:
+                            print('* flow existia')
 
                         # Atualiza rotas pelas quais passa - variável auxiliar
                         in_port = flow['match']['in_port']
@@ -237,8 +244,8 @@ class LookAheadRLApp(object):
 
                         link = rulesToLink(switch_address, out_port)
                         print('switch_address = {0}, out_port = {1}, link = {2}'.format(switch_address, out_port, link))
-                        print('Flows paths LOCAL: ', flow_paths)
-                        print('Flows size LOCAL: ', flow_size)
+                        print('(2) Flows paths LOCAL: ', flow_paths)
+                        print('(2) Flows size LOCAL: ', flow_size)
 
                         print('flow_id in flow_paths: ', flow_id in flow_paths.keys())
                         print('Flows flow_paths[flow_id]: ', flow_paths[flow_id])
@@ -249,7 +256,7 @@ class LookAheadRLApp(object):
                             # Adiciona na lista para ter seu tamanho total atualizado
                             flow_size[flow_id].append(float(flow['byte_count']))
 
-                            if flow_id not in flow_ids_to_update: 
+                            if flow_id not in flow_ids_to_update:
                                 flow_ids_to_update.append(flow_id)
 
 

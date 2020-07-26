@@ -181,6 +181,7 @@ class LookAheadRLApp(object):
         print('Novo fluxo: ', flow_id)
 
     def updateFlowPaths(self, flow_id, flow_paths):
+        # os fluxos sempre vão passar pelo link a
         self.active_flows_paths[flow_id] = flow_paths
 
     def updateFlowSize(self, flow_id, flow_byte_counts):
@@ -236,9 +237,6 @@ class LookAheadRLApp(object):
                         out_port = float(re.findall(r"\d+", out_port_plain_text)[0])
 
                         link = rulesToLink(switch_address, out_port)
-                        print('switch_address = {0}, out_port = {1}, link = {2}'.format(switch_address, out_port, link))
-                        print('Flows paths LOCAL: ', flow_paths)
-                        print('Flows size LOCAL: ', flow_size)
 
                         if link:
                             flow_paths[flow_id].append(link) # e quando tiver mais de um caminho??
@@ -250,7 +248,6 @@ class LookAheadRLApp(object):
                                 flow_ids_to_update.append(flow_id)
 
 
-        print('* Final do step *')
         print('flow_ids_to_update = ', flow_ids_to_update)
         print('flow_paths = ', flow_paths)
         print('flow_size = ', flow_size)

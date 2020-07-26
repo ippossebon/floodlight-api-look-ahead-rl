@@ -216,11 +216,14 @@ class LookAheadRLApp(object):
                     tcp_src_port = None
                     try:
                         tcp_src_port = flow['match']['tcp_src']
+                        tcp_dst_port = flow['match']['tcp_dst']
+
                         is_tcp_flow = tcp_src_port or 0
+                        is_h1_to_h2_flow = tcp_dst_port == '5001'
                     except:
                         is_tcp_flow = False
 
-                    if is_tcp_flow:
+                    if is_tcp_flow and is_h1_to_h2_flow:
                         flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port=tcp_src_port)
 
                         # Se não existir na lista de fluxos ativos, adiciona

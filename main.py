@@ -201,8 +201,8 @@ class LookAheadRLApp(object):
 
         # Inicializa variáveis auxiliares
         for ids in self.active_flows_id:
-            flow_paths[id] = []
-            flow_size[id] = []
+            flow_paths[id] = [] # precisa considerar self.active_flows_paths
+            flow_size[id] = []  # precisa considerar self.active_flows_size
 
         for switch_address in response_data:
             for flow in response_data[switch_address]['flows']:
@@ -237,7 +237,9 @@ class LookAheadRLApp(object):
                         out_port = float(re.findall(r"\d+", out_port_plain_text)[0])
 
                         link = rulesToLink(switch_address, out_port)
-                        print('Flows paths: ', flow_paths)
+                        print('Flows paths LOCAL: ', flow_paths)
+                        print('Flows size LOCAL: ', flow_size)
+
                         print('flow_id in flow_paths: ', flow_id in flow_paths.keys())
                         print('Flows flow_paths[flow_id]: ', flow_paths[flow_id])
 

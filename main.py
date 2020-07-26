@@ -237,6 +237,7 @@ class LookAheadRLApp(object):
                         out_port = float(re.findall(r"\d+", out_port_plain_text)[0])
 
                         link = rulesToLink(switch_address, out_port)
+                        print('Flows paths: ', flow_paths)
                         flow_paths[flow_id].append(link) # e quando tiver mais de um caminho??
 
                         # Adiciona na lista para ter seu tamanho total atualizado

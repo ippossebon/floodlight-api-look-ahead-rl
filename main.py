@@ -209,6 +209,8 @@ class LookAheadRLApp(object):
             for flow in response_data[switch_address]['flows']:
                 contains_match = len(flow['match'].keys()) > 1
 
+                print('Flow statistics - flow: ', flow)
+
                 if contains_match:
                     is_tcp_flow = False
                     tcp_src_port = None
@@ -389,7 +391,7 @@ class LookAheadRLApp(object):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
-            print('item', item)
+            print('Usage data - item: ', item)
             is_link_A = item['dpid'] == self.switch_ids['S1'] and item['port'] == '1'
             is_link_B = item['dpid'] == self.switch_ids['S2'] and item['port'] == '1'
             is_link_C = item['dpid'] == self.switch_ids['S4'] and item['port'] == '1'

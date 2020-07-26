@@ -198,6 +198,11 @@ class LookAheadRLApp(object):
         flow_paths = {}
         flow_size = {} # guarda o tamanho do fluxo em cada link, para no final fazer uma media
 
+        # Inicializa variáveis auxiliares
+        for ids in self.active_flows_id:
+            flow_paths[id] = []
+            flow_size[id] = []
+
         for switch_address in response_data:
             for flow in response_data[switch_address]['flows']:
                 contains_match = len(flow['match'].keys()) > 1

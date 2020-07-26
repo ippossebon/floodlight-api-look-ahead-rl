@@ -219,7 +219,6 @@ class LookAheadRLApp(object):
 
                     if is_tcp_flow:
                         flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port=tcp_src_port)
-                        flow_ids_to_update.append(flow_id)
 
                         # Se não existir na lista de fluxos ativos, adiciona
                         if flow_id not in self.active_flows_id:
@@ -244,10 +243,15 @@ class LookAheadRLApp(object):
                         print('flow_id in flow_paths: ', flow_id in flow_paths.keys())
                         print('Flows flow_paths[flow_id]: ', flow_paths[flow_id])
 
-                        flow_paths[flow_id].append(link) # e quando tiver mais de um caminho??
+                        if link:
+                            flow_paths[flow_id].append(link) # e quando tiver mais de um caminho??
 
-                        # Adiciona na lista para ter seu tamanho total atualizado
-                        flow_size[flow_id].append(float(flow['byte_count']))
+                            # Adiciona na lista para ter seu tamanho total atualizado
+                            flow_size[flow_id].append(float(flow['byte_count']))
+
+                            if flow_id not in flow_ids_to_update: 
+                                flow_ids_to_update.append(flow_id)
+
 
         for flow_id in flow_ids_to_update:
             self.updateFlowPaths(flow_id, flow_paths[flow_id])

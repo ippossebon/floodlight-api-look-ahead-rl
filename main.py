@@ -178,6 +178,7 @@ class LookAheadRLApp(object):
         self.active_flows_id.append(flow_id)
         self.active_flows_size[flow_id] = 0 # inicializa
         self.flow_count = self.flow_count + 1
+        print('Novo fluxo: ', flow_id)
 
     def updateFlowPaths(self, flow_id, flow_paths):
         self.active_flows_paths[flow_id] = flow_paths

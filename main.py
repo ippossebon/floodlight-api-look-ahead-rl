@@ -9,6 +9,7 @@ from graphModel.node import Node
 # from routing.binPacking import BinPackingRouting
 
 from utilities.actionToRules import actionToRules
+from utilities.linkstToPaths import linkstToPaths
 from utilities.rulesToLink import rulesToLink
 # from utilities.staticFlowPusher import StaticFlowPusher # cant use http module with python 3.6 because of openssl issues
 
@@ -24,6 +25,8 @@ from operator import attrgetter
 CONTROLLER_IP = 'http://0.0.0.0'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 LLDP_PACKAGE_SIZE = 60
+
+MEGA_BYTES = 1024 * 1024
 
 THRESHOLD_TIME_SEC = 10 # IDEAFIX uses 10 seg
 THRESHOLD_SIZE = 10485760 # 10MB
@@ -180,13 +183,18 @@ class LookAheadRLApp(object):
         self.flow_count = self.flow_count + 1
         print('Novo fluxo: ', flow_id)
 
-    def updateFlowPaths(self, flow_id, flow_paths):
-        # os fluxos sempre vão passar pelo link a
-        self.active_flows_paths[flow_id] = flow_paths
+    def updateFlowPaths(self, flow_id, flow_links):
+        flow_links.append('a') # os fluxos sempre vão passar pelo link a
+        self.active_flows_paths[flow_id] = linkstToPaths(flow_links)
 
     def updateFlowSize(self, flow_id, flow_byte_counts):
         mean_byte_count = sum(flow_byte_counts) / len(flow_byte_counts)
-        self.active_flows_size[flow_id] = mean_byte_count
+
+        # Valor armazenado em Megabyte, para evitar overflow. Indica o quanto foi
+        # transmitido no tempo do snapshot corrente. Por isso, precisamos adicionar ao valor já coletado.
+        snapshow_flow_size_mbytes = float(mean_byte_count / (MEGA_BYTES))
+
+        self.active_flows_size[flow_id] = self.active_flows_size[flow_id] + snapshow_flow_size_mbytes
 
     def updateFlowStatistics(self):
         # Objetivos:
@@ -197,12 +205,12 @@ class LookAheadRLApp(object):
         response_data = response.json()
 
         flow_ids_to_update = []
-        flow_paths = {}
+        flow_links = {}
         flow_size = {} # guarda o tamanho do fluxo em cada link, para no final fazer uma media
 
         # Inicializa variáveis auxiliares
         for active_flow_id in self.active_flows_id:
-            flow_paths[active_flow_id] = [] # precisa considerar self.active_flows_paths
+            flow_links[active_flow_id] = [] # precisa considerar self.active_flows_paths
             flow_size[active_flow_id] = []  # precisa considerar self.active_flows_size
 
         for switch_address in response_data:
@@ -231,7 +239,7 @@ class LookAheadRLApp(object):
                             self.addActiveFlow(flow_id)
 
                             # Atualiza rotas pelas quais passa - variável auxiliar
-                            flow_paths[flow_id] = []
+                            flow_links[flow_id] = []
 
                             # Atualiza tamanho do fluxo por link - variável auxiliar
                             flow_size[flow_id] = []
@@ -244,7 +252,7 @@ class LookAheadRLApp(object):
                         link = rulesToLink(switch_address, out_port)
 
                         if link:
-                            flow_paths[flow_id].append(link) # e quando tiver mais de um caminho??
+                            flow_links[flow_id].append(link) # e quando tiver mais de um caminho??
 
                             # Adiciona na lista para ter seu tamanho total atualizado
                             flow_size[flow_id].append(float(flow['byte_count']))
@@ -252,13 +260,10 @@ class LookAheadRLApp(object):
                             if flow_id not in flow_ids_to_update:
                                 flow_ids_to_update.append(flow_id)
 
-
-        print('flow_ids_to_update = ', flow_ids_to_update)
-        print('flow_paths = ', flow_paths)
-        print('flow_size = ', flow_size)
-
         for flow_id in flow_ids_to_update:
-            self.updateFlowPaths(flow_id, flow_paths[flow_id])
+            self.updateFlowPaths(flow_id, flow_links[flow_id])
+
+            # flow size é uma lista de de byte_counts transferidos pelos links envolvidos
             self.updateFlowSize(flow_id, flow_size[flow_id])
 
 
@@ -394,7 +399,7 @@ class LookAheadRLApp(object):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
-            print('Usage data - item: ', item)
+            # print('Usage data - item: ', item)
             is_link_A = item['dpid'] == self.switch_ids['S1'] and item['port'] == '1'
             is_link_B = item['dpid'] == self.switch_ids['S2'] and item['port'] == '1'
             is_link_C = item['dpid'] == self.switch_ids['S4'] and item['port'] == '1'
@@ -541,7 +546,7 @@ class LookAheadRLApp(object):
         self.printDebugInfo(step)
         step = step + 1
 
-        time.sleep(10)
+        time.sleep(5)
 
         # self.executeTrainingPhase()
         while True:

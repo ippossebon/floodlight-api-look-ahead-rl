@@ -9,7 +9,7 @@ from graphModel.node import Node
 # from routing.binPacking import BinPackingRouting
 
 from utilities.actionToRules import actionToRules
-from utilities.linkstToPaths import linkstToPaths
+from utilities.linksToPaths import linksToPaths
 from utilities.rulesToLink import rulesToLink
 # from utilities.staticFlowPusher import StaticFlowPusher # cant use http module with python 3.6 because of openssl issues
 
@@ -185,7 +185,7 @@ class LookAheadRLApp(object):
 
     def updateFlowPaths(self, flow_id, flow_links):
         flow_links.append('a') # os fluxos sempre vão passar pelo link a
-        self.active_flows_paths[flow_id] = linkstToPaths(flow_links)
+        self.active_flows_paths[flow_id] = linksToPaths(flow_links)
 
     def updateFlowSize(self, flow_id, flow_byte_counts):
         mean_byte_count = sum(flow_byte_counts) / len(flow_byte_counts)

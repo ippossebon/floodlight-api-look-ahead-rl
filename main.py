@@ -217,7 +217,7 @@ class LookAheadRLApp(object):
             for flow in response_data[switch_address]['flows']:
                 contains_match = len(flow['match'].keys()) > 1
 
-                print('Flow statistics - flow: ', flow)
+                # print('Flow statistics - flow: ', flow)
 
                 if contains_match:
                     is_tcp_flow = False

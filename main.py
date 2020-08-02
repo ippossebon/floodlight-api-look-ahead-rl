@@ -189,7 +189,7 @@ class LookAheadRLApp(object):
 
     def updateFlowSize(self, flow_id, flow_byte_counts):
         mean_byte_count = sum(flow_byte_counts) / len(flow_byte_counts)
-        print('Mean byte count snapshot {flow_id}: {mean_byte_count}'.format(flow_id, mean_byte_count))
+        print('Mean byte count snapshot {flow_id}: {mean_byte_count}'.format(flow_id=flow_id, mean_byte_count=mean_byte_count))
 
         # Valor armazenado em Megabyte, para evitar overflow. Indica o quanto foi
         # transmitido no tempo do snapshot corrente. Por isso, precisamos adicionar ao valor já coletado.

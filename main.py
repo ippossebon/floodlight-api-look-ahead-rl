@@ -194,7 +194,9 @@ class LookAheadRLApp(object):
         # transmitido no tempo do snapshot corrente. Por isso, precisamos adicionar ao valor já coletado.
         snapshow_flow_size_mbytes = float(mean_byte_count / (MEGA_BYTES))
 
-        self.active_flows_size[flow_id] = self.active_flows_size[flow_id] + snapshow_flow_size_mbytes
+        # self.active_flows_size[flow_id] = self.active_flows_size[flow_id] + snapshow_flow_size_mbytes
+        self.active_flows_size[flow_id] = self.active_flows_size[flow_id] + mean_byte_count
+
 
     def updateFlowStatistics(self):
         # Objetivos:

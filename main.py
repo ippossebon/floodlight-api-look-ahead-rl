@@ -577,6 +577,9 @@ class LookAheadRLApp(object):
 
         self.executeTrainingPhase()
 
+        print('Training phase ended')
+        exit(0)
+
         while True:
             # Coleta estatísticas
             # self.setSwitchStatistics()

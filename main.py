@@ -35,7 +35,11 @@ SPLIT_FLOW_LOOP_TIME_SEC = 3
 MAX_LOOP_DURATION_MIN = 2
 
 # Reinforcement Learning Agent configs
-NUM_EPISODES = 1000
+NUM_EPISODES = 10000
+MAX_STEPS_PER_EPISODE = 100
+
+TRAINING_TIME_MIN = time.time() + 60 * 5 # 5 minutos
+
 
 class LookAheadRLApp(object):
     def __init__(self):
@@ -195,7 +199,7 @@ class LookAheadRLApp(object):
         snapshow_flow_size_mbytes = float(mean_byte_count / (MEGA_BYTES))
 
         # self.active_flows_size[flow_id] = self.active_flows_size[flow_id] + snapshow_flow_size_mbytes
-        self.active_flows_size[flow_id] = mean_byte_count
+        self.active_flows_size[flow_id] = snapshow_flow_size_mbytes
 
 
     def updateFlowStatistics(self):
@@ -495,36 +499,60 @@ class LookAheadRLApp(object):
                     # Atenção: neste instante, até que a nova regra seja instalada, os pacotes serão enviados pela primeira rota.
 
     def executeTrainingPhase(self):
-        # rodar por 10min ?
-        while True:
+        rewards_all_episodes = []
+        # Primeiro teste de trainamento: considerando todos os fluxos. Não vou fazer o if de elephant flow.
+
+        for episode in range(NUM_EPISODES):
+            state = env.reset()
+
             # Coleta estatísticas
-            # self.setSwitchStatistics()
-            self.setFlowsSnapshots()
+            self.links_usage = self.getLinksUsage()
+            self.updateFlowStatistics()
 
-            self.active_flows_id, self.active_flows_paths, self.active_flows_size = self.getActiveFlows()
+            self.printDebugInfo(step)
 
-            if self.containsElephantFlow():
-                # action = self.env.action_space.sample()
-                # state, reward, done, info = self.env.step(action)
+            elephant_flow_id = self.getElephantFlow() # or primeiro fluxo ativo... preciso de um fallback pra essa primeira parte
 
-                # flow_to_reroute = 'F2'
-                # flow_to_reroute_size = self.flow_sizes[flow_to_reroute]
-                # flow_to_reroute_paths = self.flow_paths[flow_to_reroute]
+            rewards_current_episode = 0
 
-                # next_state, reward, done, info = env.step(
-                #     action=action,
-                #     flow_total_size=flow_to_reroute_size,
-                #     flow_current_paths=flow_to_reroute_paths
-                # )
-                #
-                # self.performAction(action, flow_to_reroute)
+            for step in range(max_steps_per_episode):
+                action = agent.getAction(self.links_usage)
 
-                # # Updates flow information
-                # self.flow_paths[flow_to_reroute] = info['next_paths']
-                pass
+                # The flow to reroute will be chosen based on controller data.
+                # For instance, the most recent flow or the largest flow. Here, we hard
+                # code a specif flow to help testing.
+                flow_to_reroute_size = flow_sizes[elephant_flow_id]
+                flow_to_reroute_paths = flow_paths[elephant_flow_id]
 
-            # time.sleep(5)
+                next_state, reward, done, info = env.step(
+                    action=action,
+                    flow_total_size=flow_to_reroute_size,
+                    flow_current_paths=flow_to_reroute_paths
+                )
 
+                # print('--> next_state = ', next_state)
+                # print('--> reward = ', reward)
+                # print('-------------------------')
+
+                agent.train(state, action, next_state, reward, done)
+
+                rewards_current_episode += reward
+                state = next_state
+                iteraction += 1
+
+                # # TODO: atualizar variavel global
+                flow_paths[flow_to_reroute] = info['next_paths']
+
+            rewards_all_episodes.append(rewards_current_episode)
+
+        # Calculate and print the average reward per thousand episodes
+        rewards_per_thousand_episodes = np.split(np.array(rewards_all_episodes), num_episodes/1000)
+        count = 1000
+        print("* Average reward per thousand episodes *")
+        for r in rewards_per_thousand_episodes:
+            print(count, ": ", str(sum(r/1000)))
+            count += 1000
+        # Com isso, podemos ver % de vezes que o agente conseguiu uma recomeonsa de 1, ou perto de 1
 
 
     def printDebugInfo(self, step):
@@ -537,7 +565,7 @@ class LookAheadRLApp(object):
 
     def run(self):
         # Initialize variables
-        print('Running environment...')
+        print('Running...')
         step = 0
 
         self.enableSwitchStatisticsEndpoit()
@@ -546,9 +574,9 @@ class LookAheadRLApp(object):
         self.links_usage = self.getLinksUsage()
 
         self.printDebugInfo(step)
-        step = step + 1
 
-        # self.executeTrainingPhase()
+        self.executeTrainingPhase()
+
         while True:
             # Coleta estatísticas
             # self.setSwitchStatistics()
@@ -559,32 +587,12 @@ class LookAheadRLApp(object):
             self.printDebugInfo(step)
             step = step + 1
 
-            # self.setFlowsSnapshots()
+            # if self.containsElephantFlow():
+            #     action = agent.getAction()
+            #     self.performAction(action)
+
 
             time.sleep(1)
-
-            # self.active_flows_id, self.active_flows_paths, self.active_flows_size = self.getActiveFlows()
-            #
-            # if self.containsElephantFlow():
-                # action = self.env.action_space.sample()
-                # state, reward, done, info = self.env.step(action)
-
-                # flow_to_reroute = 'F2'
-                # flow_to_reroute_size = self.flow_sizes[flow_to_reroute]
-                # flow_to_reroute_paths = self.flow_paths[flow_to_reroute]
-
-                # next_state, reward, done, info = env.step(
-                #     action=action,
-                #     flow_total_size=flow_to_reroute_size,
-                #     flow_current_paths=flow_to_reroute_paths
-                # )
-                #
-                # self.performAction(action, flow_to_reroute)
-
-                # # Updates flow information
-                # self.flow_paths[flow_to_reroute] = info['next_paths']
-
-            # time.sleep(5)
 
 
 if __name__ == '__main__':

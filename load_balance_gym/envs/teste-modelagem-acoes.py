@@ -11,8 +11,8 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
 
     if action_to_apply == 1:
         # split de fluxo em S1
-        next_paths.append(['A', 'C', 'G', 'I'])
-        next_paths.append(['A', 'B', 'F', 'I'])
+        next_paths.append(['a', 'c', 'g', 'i'])
+        next_paths.append(['a', 'b', 'f', 'i'])
 
         next_state[0] = flow_size # A
         next_state[1] = flow_size/2 # B
@@ -23,8 +23,8 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
 
     elif action_to_apply == 2:
         # split de fluxo em S2
-        next_paths.append(['A', 'B', 'D', 'H', 'I'])
-        next_paths.append(['A', 'B', 'E', 'G', 'I'])
+        next_paths.append(['a', 'b', 'd', 'h', 'i'])
+        next_paths.append(['a', 'b', 'e', 'G', 'i'])
 
         next_state[0] = flow_size # A
         next_state[1] = flow_size # B
@@ -35,7 +35,7 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
         next_state[8] = flow_size # I
 
     elif action_to_apply == 3:
-        next_paths.append(['A', 'B', 'F', 'I'])
+        next_paths.append(['a', 'b', 'f', 'i'])
 
         next_state[0] = flow_size # A
         next_state[1] = flow_size # B
@@ -44,8 +44,8 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
 
     elif action_to_apply == 4:
         # split de fluxo em S4
-        next_paths.append(['A', 'C', 'G', 'I'])
-        next_paths.append(['A', 'C', 'E', 'F', 'I'])
+        next_paths.append(['a', 'c', 'g', 'i'])
+        next_paths.append(['a', 'c', 'e', 'f', 'i'])
 
         next_state[0] = flow_size # A
         next_state[2] = flow_size # C
@@ -55,7 +55,7 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
         next_state[8] = flow_size # I
 
     elif action_to_apply == 5:
-        next_paths.append(['A', 'C', 'G', 'I'])
+        next_paths.append(['a', 'c', 'g', 'i'])
 
         next_state[0] = flow_size # A
         next_state[2] = flow_size # C
@@ -63,7 +63,7 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
         next_state[8] = flow_size # I
 
     elif action_to_apply == 6:
-        next_paths.append(['A', 'B', 'D', 'H', 'I'])
+        next_paths.append(['a', 'b', 'd', 'h', 'i'])
 
         next_state[0] = flow_size # A
         next_state[1] = flow_size # B
@@ -72,7 +72,7 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
         next_state[8] = flow_size # I
 
     elif action_to_apply == 7:
-        next_paths.append(['A', 'B', 'E', 'G', 'I'])
+        next_paths.append(['a', 'b', 'e', 'g', 'i'])
 
         next_state[0] = flow_size # A
         next_state[1] = flow_size # B
@@ -81,7 +81,7 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
         next_state[8] = flow_size # I
 
     elif action_to_apply == 8:
-        next_paths.append(['A', 'C', 'E', 'D', 'H', 'I'])
+        next_paths.append(['a', 'c', 'e', 'd', 'h', 'i'])
 
         next_state[0] = flow_size # A
         next_state[2] = flow_size # C
@@ -91,7 +91,7 @@ def generateNextState(self, total_usage, action_to_apply, flow_index): # switch_
         next_state[8] = flow_size # I
 
     elif action_to_apply == 9:
-        next_paths.append(['A', 'C', 'E', 'F', 'I'])
+        next_paths.append(['a', 'c', 'e', 'f', 'i'])
 
         next_state[0] = flow_size # A
         next_state[2] = flow_size # C

@@ -516,7 +516,7 @@ class LookAheadRLApp(object):
 
             rewards_current_episode = 0
 
-            for step in range(max_steps_per_episode):
+            for step in range(MAX_STEPS_PER_EPISODE):
                 action = self.agent.getAction(self.links_usage) if has_flow_to_reroute else 0
 
                 # The flow to reroute will be chosen based on controller data.

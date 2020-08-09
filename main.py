@@ -170,13 +170,13 @@ class LookAheadRLApp(object):
         return response_data
 
     def containsFlowAsActive(self, flow):
-        for item in self.active_flows:
+        for item in self.active_flows_id:
             if flow.id == item.id:
                 return True
         return False
 
     def getFlow(self, flow_id):
-        for item in self.active_flows:
+        for item in self.active_flows_id:
             if flow_id == item.id:
                 return item
         return None
@@ -508,7 +508,7 @@ class LookAheadRLApp(object):
 
             state = self.env.reset()
 
-            has_flow_to_reroute = True if len(self.active_flows) > 0 else False
+            has_flow_to_reroute = True if len(self.active_flows_id) > 0 else False
             print('has_flow_to_reroute = ', has_flow_to_reroute)
 
             # Coleta estatísticas
@@ -516,7 +516,7 @@ class LookAheadRLApp(object):
             self.updateFlowStatistics()
 
             # elephant_flow_id = self.getElephantFlow() # or primeiro fluxo ativo... preciso de um fallback pra essa primeira parte
-            elephant_flow_id = self.active_flows[0] if len(self.active_flows) > 0 else None
+            elephant_flow_id = self.active_flows_id[0] if len(self.active_flows_id) > 0 else None
 
             rewards_current_episode = 0
 
@@ -567,7 +567,7 @@ class LookAheadRLApp(object):
     def printDebugInfo(self, iter):
         print('-- Step {0} --'.format(iter))
         print('Usage = {0}'.format(self.links_usage))
-        print('Active flows = {0}'.format(self.active_flows))
+        print('Active flows = {0}'.format(self.active_flows_id))
         print('Flows paths = {0}'.format(self.active_flows_paths))
         print('Flows size = {0}'.format(self.active_flows_size))
 

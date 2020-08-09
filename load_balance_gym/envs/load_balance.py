@@ -310,11 +310,11 @@ class LoadBalanceEnv(gym.Env):
         # Contabiliza quantos links estão sendo usados
         if count == 4 or count == 5:
             return 0
-        else if count == 6:
+        elif count == 6:
             return 0.3
-        else if count == 7 or count == 8:
+        elif count == 7 or count == 8:
             return 0.6
-        else if count == 9:
+        elif count == 9:
             return 1
         else:
             return -1

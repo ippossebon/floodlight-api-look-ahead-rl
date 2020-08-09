@@ -588,6 +588,7 @@ class LookAheadRLApp(object):
             self.updateFlowStatistics()
 
             self.printDebugInfo(step)
+
             step = step + 1
 
             # if self.containsElephantFlow():

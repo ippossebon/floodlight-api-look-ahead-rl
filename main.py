@@ -181,11 +181,17 @@ class LookAheadRLApp(object):
                 return item
         return None
 
+    def removeActiveFlow(self, flow_id):
+        self.active_flows_id.remove(flow_id)
+        del self.active_flows_size[flow_id]
+        self.flow_count = self.flow_count - 1
+        print('Deleted flow: ', flow_id)
+
     def addActiveFlow(self, flow_id):
         self.active_flows_id.append(flow_id)
         self.active_flows_size[flow_id] = 0 # inicializa
         self.flow_count = self.flow_count + 1
-        print('Novo fluxo: ', flow_id)
+        print('New flow: ', flow_id)
 
     def updateFlowPaths(self, flow_id, flow_links):
         flow_links.append('a') # os fluxos sempre vão passar pelo link a
@@ -271,6 +277,11 @@ class LookAheadRLApp(object):
 
             # flow size é uma lista de de byte_counts transferidos pelos links envolvidos
             self.updateFlowSize(flow_id, flow_size[flow_id])
+
+        for flow_id in self.active_flows_id:
+            if flow_id not in flow_ids_to_update:
+                # O fluxo já terminou, deve ser retirado da lista
+                self.removeActiveFlow(flow_id)
 
 
     def setFlowsSnapshots(self):
@@ -537,11 +548,6 @@ class LookAheadRLApp(object):
 
                 # Preciso ter algum controle sobre: se não há fluxos ativos na rede, entao faz a ação "void"
 
-                print('next_state = ', next_state)
-                print('reward = ', reward)
-                print('-')
-
-
                 self.agent.train(state, action, next_state, reward, done)
 
                 rewards_current_episode += reward
@@ -552,6 +558,8 @@ class LookAheadRLApp(object):
                 if flow_to_reroute:
                     self.active_flows_paths[flow_to_reroute] = info['next_paths']
 
+            print('rewards_current_episode = ', rewards_current_episode)
+            print('-')
             rewards_all_episodes.append(rewards_current_episode)
 
         # Calculate and print the average reward per thousand episodes
@@ -561,7 +569,7 @@ class LookAheadRLApp(object):
         for r in rewards_per_thousand_episodes:
             print(count, ": ", str(sum(r/1000)))
             count += 1000
-        # Com isso, podemos ver % de vezes que o agente conseguiu uma recomeonsa de 1, ou perto de 1
+        # Com isso, podemos ver % de vezes que o agente conseguiu uma recompensa de 1, ou perto de 1
 
 
     def printDebugInfo(self, iter):

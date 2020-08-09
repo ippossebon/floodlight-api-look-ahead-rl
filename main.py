@@ -541,7 +541,7 @@ class LookAheadRLApp(object):
 
                 rewards_current_episode += reward
                 state = next_state
-                iteraction += 1
+                step += 1
 
                 # # TODO: atualizar variavel global
                 flow_paths[flow_to_reroute] = info['next_paths']
@@ -558,8 +558,8 @@ class LookAheadRLApp(object):
         # Com isso, podemos ver % de vezes que o agente conseguiu uma recomeonsa de 1, ou perto de 1
 
 
-    def printDebugInfo(self, step):
-        print('-- Step {0} --'.format(step))
+    def printDebugInfo(self, iter):
+        print('-- Step {0} --'.format(iter))
         print('Usage = {0}'.format(self.links_usage))
         print('Active flows = {0}'.format(self.active_flows))
         print('Flows paths = {0}'.format(self.active_flows_paths))
@@ -569,14 +569,14 @@ class LookAheadRLApp(object):
     def run(self):
         # Initialize variables
         print('Running...')
-        step = 0
+        iter = 0
 
         self.enableSwitchStatisticsEndpoit()
         self.initializeNetworkGraph()
         self.updateFlowStatistics()
         self.links_usage = self.getLinksUsage()
 
-        self.printDebugInfo(step)
+        self.printDebugInfo(iter)
 
         self.executeTrainingPhase()
 
@@ -590,9 +590,9 @@ class LookAheadRLApp(object):
             self.links_usage = self.getLinksUsage()
             self.updateFlowStatistics()
 
-            self.printDebugInfo(step)
+            self.printDebugInfo(iter)
 
-            step = step + 1
+            iter = iter + 1
 
             # if self.containsElephantFlow():
             #     action = agent.getAction()

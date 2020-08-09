@@ -501,8 +501,11 @@ class LookAheadRLApp(object):
     def executeTrainingPhase(self):
         rewards_all_episodes = []
         # Primeiro teste de trainamento: considerando todos os fluxos. Não vou fazer o if de elephant flow.
+        print('Started training phase')
 
         for episode in range(NUM_EPISODES):
+            print('Episode ', episode)
+
             state = self.env.reset()
 
             has_flow_to_reroute = True if len(self.active_flows) > 0 else False
@@ -533,9 +536,8 @@ class LookAheadRLApp(object):
 
                 # Preciso ter algum controle sobre: se não há fluxos ativos na rede, entao faz a ação "void"
 
-                # print('--> next_state = ', next_state)
-                # print('--> reward = ', reward)
-                # print('-------------------------')
+                print('-> next_state = ', next_state)
+                print('-> reward = ', reward)
 
                 self.agent.train(state, action, next_state, reward, done)
 

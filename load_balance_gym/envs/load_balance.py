@@ -158,7 +158,7 @@ class LoadBalanceEnv(gym.Env):
         try:
             return self.links.index(link.strip())
         except ValueError:
-            print('####### --> [getLinkIndex] ValueError: link = {0}, ASCII = {1} #######'.format(link, link.encode('ascii')))
+            print('####### --> [getLinkIndex] ValueError: link = {0}, ASCII = {1}, self.links = {2}'.format(link, link.encode('ascii'), self.links))
             return -1
 
 

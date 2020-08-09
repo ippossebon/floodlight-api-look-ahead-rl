@@ -505,7 +505,7 @@ class LookAheadRLApp(object):
         for episode in range(NUM_EPISODES):
             state = self.env.reset()
 
-            has_flow_to_reroute = if len(self.active_flows) > 0
+            has_flow_to_reroute = True if len(self.active_flows) > 0 else False
 
             # Coleta estatísticas
             self.links_usage = self.getLinksUsage()

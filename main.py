@@ -504,11 +504,12 @@ class LookAheadRLApp(object):
         print('Started training phase')
 
         for episode in range(NUM_EPISODES):
-            print('Episode ', episode)
+            print('-> Episode ', episode)
 
             state = self.env.reset()
 
             has_flow_to_reroute = True if len(self.active_flows) > 0 else False
+            print('has_flow_to_reroute = ', has_flow_to_reroute)
 
             # Coleta estatísticas
             self.links_usage = self.getLinksUsage()
@@ -536,8 +537,10 @@ class LookAheadRLApp(object):
 
                 # Preciso ter algum controle sobre: se não há fluxos ativos na rede, entao faz a ação "void"
 
-                print('-> next_state = ', next_state)
-                print('-> reward = ', reward)
+                print('next_state = ', next_state)
+                print('reward = ', reward)
+                print('-')
+
 
                 self.agent.train(state, action, next_state, reward, done)
 

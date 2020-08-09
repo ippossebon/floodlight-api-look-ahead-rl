@@ -295,24 +295,41 @@ class LoadBalanceEnv(gym.Env):
         return new_usage
 
 
+
     def calculateReward(self, next_state):
         # # TODO: still testing if this is the right reward function. The agent is now chosing minimum rewards
 
         # state is usage link list
         # [ 100, 20, 0, 10, 100, 20, 0, 10, 10 ]
         # print('next_state = ', next_state)
+        count = 0
+        for item in next_state:
+            if item !== 0:
+                count += 1
 
-        np_next_usage = numpy.array(next_state)
-        # print('np_next_usage = ', np_next_usage)
-        mean_next_usage = numpy.mean(np_next_usage)
-        # print('mean_next_usage = ', mean_next_usage)
+        # Contabiliza quantos links estão sendo usados
+        if count == 4 or count == 5:
+            return 0
+        else if count == 6:
+            return 0.3
+        else if count == 7 or count == 8:
+            return 0.6
+        else if count == 9:
+            return 1
+        else:
+            return -1
 
-        std_next_usage = numpy.std(np_next_usage)
-        # print('std_next_usage = ', std_next_usage)
-
-        # Recompensa = 1 / desvio_padrao_soma_utilizacao_rede
-        # Quanto menor for o desvio padrão da utilização da rede, maior será a recompensa
-        reward = (std_next_usage and 1 / float(std_next_usage)) * 1000 or 0
+        # np_next_usage = numpy.array(next_state)
+        # # print('np_next_usage = ', np_next_usage)
+        # mean_next_usage = numpy.mean(np_next_usage)
+        # # print('mean_next_usage = ', mean_next_usage)
+        #
+        # std_next_usage = numpy.std(np_next_usage)
+        # # print('std_next_usage = ', std_next_usage)
+        #
+        # # Recompensa = 1 / desvio_padrao_soma_utilizacao_rede
+        # # Quanto menor for o desvio padrão da utilização da rede, maior será a recompensa
+        # reward = (std_next_usage and 1 / float(std_next_usage)) * 1000 or 0
         # print('reward = ', rewa111rd)
 
-        return reward
+        # return reward

@@ -516,7 +516,7 @@ class LookAheadRLApp(object):
             self.updateFlowStatistics()
 
             # elephant_flow_id = self.getElephantFlow() # or primeiro fluxo ativo... preciso de um fallback pra essa primeira parte
-            elephant_flow_id = self.active_flows_id[0] if len(self.active_flows_id) > 0 else None
+            flow_to_reroute = self.active_flows_id[0] if len(self.active_flows_id) > 0 else None # deve ser um elephant flow
 
             rewards_current_episode = 0
 

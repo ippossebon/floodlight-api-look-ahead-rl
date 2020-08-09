@@ -544,7 +544,8 @@ class LookAheadRLApp(object):
                 step += 1
 
                 # # TODO: atualizar variavel global
-                self.active_flows_paths[flow_to_reroute] = info['next_paths']
+                if (has_flow_to_reroute):
+                    self.active_flows_paths[flow_to_reroute] = info['next_paths']
 
             rewards_all_episodes.append(rewards_current_episode)
 

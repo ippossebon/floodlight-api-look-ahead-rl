@@ -567,7 +567,7 @@ class LookAheadRLApp(object):
             rewards_all_episodes.append(rewards_current_episode)
 
         # Calculate and print the average reward per thousand episodes
-        rewards_per_thousand_episodes = numpy.split(numpy.array(rewards_all_episodes), num_episodes/1000)
+        rewards_per_thousand_episodes = numpy.split(numpy.array(rewards_all_episodes), NUM_EPISODES/1000)
         count = 1000
         print("* Average reward per thousand episodes *")
         for r in rewards_per_thousand_episodes:

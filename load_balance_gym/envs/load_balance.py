@@ -295,7 +295,6 @@ class LoadBalanceEnv(gym.Env):
         return new_usage
 
 
-
     def calculateReward(self, next_state):
         # # TODO: still testing if this is the right reward function. The agent is now chosing minimum rewards
 

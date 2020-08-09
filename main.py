@@ -505,29 +505,33 @@ class LookAheadRLApp(object):
         for episode in range(NUM_EPISODES):
             state = self.env.reset()
 
+            has_flow_to_reroute = if len(self.active_flows) > 0
+
             # Coleta estatísticas
             self.links_usage = self.getLinksUsage()
             self.updateFlowStatistics()
 
             # elephant_flow_id = self.getElephantFlow() # or primeiro fluxo ativo... preciso de um fallback pra essa primeira parte
-            elephant_flow_id = self.active_flows[0]
+            elephant_flow_id = self.active_flows[0] if len(self.active_flows) > 0 else None
 
             rewards_current_episode = 0
 
             for step in range(max_steps_per_episode):
-                action = self.agent.getAction(self.links_usage)
+                action = self.agent.getAction(self.links_usage) if has_flow_to_reroute else 0
 
                 # The flow to reroute will be chosen based on controller data.
                 # For instance, the most recent flow or the largest flow. Here, we hard
                 # code a specif flow to help testing.
-                flow_to_reroute_size = flow_sizes[elephant_flow_id]
-                flow_to_reroute_paths = flow_paths[elephant_flow_id]
+                flow_to_reroute_size = flow_sizes[elephant_flow_id] if has_flow_to_reroute else None
+                flow_to_reroute_paths = flow_paths[elephant_flow_id] if has_flow_to_reroute else None
 
                 next_state, reward, done, info = self.env.step(
                     action=action,
                     flow_total_size=flow_to_reroute_size,
                     flow_current_paths=flow_to_reroute_paths
                 )
+
+                # Preciso ter algum controle sobre: se não há fluxos ativos na rede, entao faz a ação "void"
 
                 # print('--> next_state = ', next_state)
                 # print('--> reward = ', reward)

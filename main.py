@@ -509,7 +509,8 @@ class LookAheadRLApp(object):
             self.links_usage = self.getLinksUsage()
             self.updateFlowStatistics()
 
-            elephant_flow_id = self.getElephantFlow() # or primeiro fluxo ativo... preciso de um fallback pra essa primeira parte
+            # elephant_flow_id = self.getElephantFlow() # or primeiro fluxo ativo... preciso de um fallback pra essa primeira parte
+            elephant_flow_id = self.active_flows[0]
 
             rewards_current_episode = 0
 

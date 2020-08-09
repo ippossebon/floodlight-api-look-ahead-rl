@@ -35,7 +35,7 @@ SPLIT_FLOW_LOOP_TIME_SEC = 3
 MAX_LOOP_DURATION_MIN = 2
 
 # Reinforcement Learning Agent configs
-NUM_EPISODES = 10000
+NUM_EPISODES = 100 # 10000
 MAX_STEPS_PER_EPISODE = 100
 
 TRAINING_TIME_MIN = time.time() + 60 * 5 # 5 minutos

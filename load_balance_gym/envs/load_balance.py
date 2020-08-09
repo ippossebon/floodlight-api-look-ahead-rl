@@ -25,10 +25,10 @@ class LoadBalanceEnv(gym.Env):
         self.switches = ['S1', 'S2', 'S3', 'S4', 'S5']
         self.links = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
         self.topology = {
-            'S1': ['b', 'C'], # links between switches,
+            'S1': ['b', 'c'], # links between switches,
             'S2': ['b', 'd', 'e', 'f'],
             'S3': ['f', 'g', 'h', 'i'],
-            'S4': ['C', 'e', 'g'],
+            'S4': ['c', 'e', 'g'],
             'S5': ['d', 'h']
         }
 
@@ -36,9 +36,9 @@ class LoadBalanceEnv(gym.Env):
             ['a', 'b', 'd', 'h', 'i'],
             ['a', 'b', 'f', 'i'],
             ['a', 'b', 'e', 'g', 'i'],
-            ['a', 'C', 'g', 'i'],
-            ['a', 'C', 'e', 'd', 'h', 'i'],
-            ['a', 'C', 'e', 'f', 'i']
+            ['a', 'c', 'g', 'i'],
+            ['a', 'c', 'e', 'd', 'h', 'i'],
+            ['a', 'c', 'e', 'f', 'i']
         ]
 
         ### Information about network flows
@@ -244,7 +244,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[8] += flow_total_size # I
 
         elif action_to_apply == 8:
-            next_paths.append(['a', 'C', 'e', 'd', 'h', 'i'])
+            next_paths.append(['a', 'c', 'e', 'd', 'h', 'i'])
 
             next_state[0] += flow_total_size # A
             next_state[2] += flow_total_size # C
@@ -254,7 +254,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[8] += flow_total_size # I
 
         elif action_to_apply == 9:
-            next_paths.append(['a', 'C', 'e', 'f', 'i'])
+            next_paths.append(['a', 'c', 'e', 'f', 'i'])
 
             next_state[0] += flow_total_size # A
             next_state[2] += flow_total_size # C

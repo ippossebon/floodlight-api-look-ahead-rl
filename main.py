@@ -554,7 +554,7 @@ class LookAheadRLApp(object):
                 state = next_state
                 step += 1
 
-                # # TODO: atualizar variavel global
+                # # TODO: atualizar variavel global§
                 if flow_to_reroute:
                     self.active_flows_paths[flow_to_reroute] = info['next_paths']
 

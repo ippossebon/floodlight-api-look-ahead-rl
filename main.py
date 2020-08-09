@@ -537,8 +537,8 @@ class LookAheadRLApp(object):
                 # The flow to reroute will be chosen based on controller data.
                 # For instance, the most recent flow or the largest flow. Here, we hard
                 # code a specif flow to help testing.
-                flow_to_reroute_size = self.active_flows_size[flow_to_reroute] if has_flow_to_reroute else None
-                flow_to_reroute_paths = self.active_flows_paths[flow_to_reroute] if has_flow_to_reroute else None
+                flow_to_reroute_size = self.active_flows_size[flow_to_reroute] if flow_to_reroute else None
+                flow_to_reroute_paths = self.active_flows_paths[flow_to_reroute] if flow_to_reroute else None
 
                 next_state, reward, done, info = self.env.step(
                     action=action,

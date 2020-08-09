@@ -304,7 +304,7 @@ class LoadBalanceEnv(gym.Env):
         # print('next_state = ', next_state)
         count = 0
         for item in next_state:
-            if item !== 0:
+            if item != 0:
                 count += 1
 
         # Contabiliza quantos links estão sendo usados

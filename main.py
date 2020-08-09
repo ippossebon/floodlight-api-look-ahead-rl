@@ -522,8 +522,8 @@ class LookAheadRLApp(object):
                 # The flow to reroute will be chosen based on controller data.
                 # For instance, the most recent flow or the largest flow. Here, we hard
                 # code a specif flow to help testing.
-                flow_to_reroute_size = flow_sizes[elephant_flow_id] if has_flow_to_reroute else None
-                flow_to_reroute_paths = flow_paths[elephant_flow_id] if has_flow_to_reroute else None
+                flow_to_reroute_size = self.flow_sizes[elephant_flow_id] if has_flow_to_reroute else None
+                flow_to_reroute_paths = self.flow_paths[elephant_flow_id] if has_flow_to_reroute else None
 
                 next_state, reward, done, info = self.env.step(
                     action=action,
@@ -544,7 +544,7 @@ class LookAheadRLApp(object):
                 step += 1
 
                 # # TODO: atualizar variavel global
-                flow_paths[flow_to_reroute] = info['next_paths']
+                self.flow_paths[flow_to_reroute] = info['next_paths']
 
             rewards_all_episodes.append(rewards_current_episode)
 

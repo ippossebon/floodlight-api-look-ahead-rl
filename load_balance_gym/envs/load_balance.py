@@ -54,22 +54,10 @@ class LoadBalanceEnv(gym.Env):
             dtype=numpy.float16
         )
 
-        # A ação é escolher o switch sobre o qual vai agir. Isto é, o switch que
-        # terá o fluxo dividido entre 2 caminhos + 1 ação void
-        # self.action_space = spaces.Discrete(len(self.switches) + 1) # array com o índice do switch sobre o qual vamos agir
-        # self.action_space = spaces.Box(
-        #     shape=(1, 2), # é um array no formato [flow_index, switch_index], flow_index indica o fluxo que deve ser alterado
-        #     # Valor mínimos são 0 pois é o primeiro índice possível
-        #     low=numpy.array([0, 0]),
-        #     # valor máximo de flow_index é 4, pois podemos ter até 5 flows em paralelo.
-        #     # 9 ações possíveis + 1 ação void = 10 acoes possiveis, entao o maior indice é 9
-        #     high=numpy.array([MAX_ACTIVE_FLOWS-1, 9]),
-        #     dtype=numpy.uint8
-        # )
-        # 9 ações possíveis + 1 ação void = 10 acoes possiveis, entao o maior indice é 9
 
-        # Possible actions: 11 possible paths combinatios - check step function
-        self.action_space = spaces.Discrete(11)
+        # 10 acoes possiveis, entao o maior indice é 9
+        # Possible actions: 10 possible paths combinatios - check step function
+        self.action_space = spaces.Discrete(10)
 
         # TODO: still testing reward results
         # If network usage became MORE homogeneous, recompensa = 1
@@ -94,16 +82,6 @@ class LoadBalanceEnv(gym.Env):
         self.flow_paths[flow_id].remove(path_index)
 
     def reset(self):
-        """
-         - Reset the state of the environment to an initial state
-        It  will be called to periodically reset the environment to an initial
-        state. This is followed by many steps through the environment, in which
-        an action will be provided by the model and must be executed, and the next
-        observation returned. This is also where rewards are calculated, more on this later.
-
-        - Called any time a new environment is created or to reset an existing environment’s state.
-        """
-
         return numpy.array(self.initial_usage)
 
 
@@ -123,18 +101,12 @@ class LoadBalanceEnv(gym.Env):
         next_paths = []
 
         # action corresponde ao switch sobre o qual vamos agir, isto é: S1, S2, S3, S4 ou S5
-        if action == 0:
-            # do nothing: void action - Important so the agent could choose to simply keep going.
-            # This is used because we work with "continued learning" = there's no "done" state.
-            next_state = numpy.array(self.state)
-            next_paths = flow_current_paths
-        else:
-            next_state, next_paths = self.generateNextState(
-                total_usage=total_usage,
-                action_to_apply=action,
-                flow_total_size=flow_total_size,
-                flow_current_paths=flow_current_paths
-            )
+        next_state, next_paths = self.generateNextState(
+            total_usage=total_usage,
+            action_to_apply=action,
+            flow_total_size=flow_total_size,
+            flow_current_paths=flow_current_paths
+        )
 
         previous_state = numpy.array(self.state)
         reward = self.calculateReward(next_state)
@@ -170,7 +142,7 @@ class LoadBalanceEnv(gym.Env):
         # Reset previous usage
         next_state = self.resetPreviousPathsUsage(flow_current_paths, flow_total_size)
 
-        if action_to_apply == 1:
+        if action_to_apply == 0:
             # "Splits" flow on S1
             next_paths.append(['a', 'c', 'g', 'i'])
             next_paths.append(['a', 'b', 'f', 'i'])
@@ -184,7 +156,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[6] += flow_total_size/2 # G
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 2:
+        elif action_to_apply == 1:
             # "Split" on S2 using two paths (flow came in through B, came out through D and E)
             next_paths.append(['a', 'b', 'd', 'h', 'i'])
             next_paths.append(['a', 'b', 'e', 'g', 'i'])
@@ -197,7 +169,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[7] += flow_total_size/2 # H
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 3:
+        elif action_to_apply == 2:
             next_paths.append(['a', 'b', 'f', 'i'])
 
             next_state[0] += flow_total_size # A
@@ -205,7 +177,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[5] += flow_total_size # F
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 4:
+        elif action_to_apply == 3:
             # "Split" on S4 using two paths (flow came in through C)
             next_paths.append(['a', 'c', 'g', 'i'])
             next_paths.append(['a', 'c', 'e', 'f', 'i'])
@@ -217,7 +189,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[6] += flow_total_size/2 # G
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 5:
+        elif action_to_apply == 4:
             next_paths.append(['a', 'c', 'g', 'i'])
 
             next_state[0] += flow_total_size # A
@@ -225,7 +197,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[6] += flow_total_size # G
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 6:
+        elif action_to_apply == 5:
             next_paths.append(['a', 'b', 'd', 'h', 'i'])
 
             next_state[0] += flow_total_size # A
@@ -234,7 +206,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[7] += flow_total_size # H
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 7:
+        elif action_to_apply == 6:
             next_paths.append(['a', 'b', 'e', 'g', 'i'])
 
             next_state[0] += flow_total_size # A
@@ -243,7 +215,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[6] += flow_total_size # G
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 8:
+        elif action_to_apply == 7:
             next_paths.append(['a', 'c', 'e', 'd', 'h', 'i'])
 
             next_state[0] += flow_total_size # A
@@ -253,7 +225,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[7] += flow_total_size # H
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 9:
+        elif action_to_apply == 8:
             next_paths.append(['a', 'c', 'e', 'f', 'i'])
 
             next_state[0] += flow_total_size # A
@@ -262,7 +234,7 @@ class LoadBalanceEnv(gym.Env):
             next_state[5] += flow_total_size # F
             next_state[8] += flow_total_size # I
 
-        elif action_to_apply == 10:
+        elif action_to_apply == 9:
             # "Split" on S3 using three paths (flow came in through B, came out through D, E and F)
             next_paths.append(['a', 'b', 'd', 'h', 'i'])
             next_paths.append(['a', 'b', 'e', 'g', 'i'])
@@ -307,16 +279,18 @@ class LoadBalanceEnv(gym.Env):
                 count += 1
 
         # Contabiliza quantos links estão sendo usados
-        if count == 4 or count == 5:
+        if count == 4:
             return 0
-        elif count == 6:
+        elif count == 5:
             return 0.3
-        elif count == 7 or count == 8:
-            return 0.6
-        elif count == 9:
+        elif count == 6:
+            return 0.5
+        elif count == 7:
+            return 0.8
+        elif count == 8:
             return 1
         else:
-            return -1
+            return -10000
 
         # np_next_usage = numpy.array(next_state)
         # # print('np_next_usage = ', np_next_usage)

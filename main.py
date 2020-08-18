@@ -533,34 +533,35 @@ class LookAheadRLApp(object):
             rewards_current_episode = 0
 
             for step in range(MAX_STEPS_PER_EPISODE):
-                action = self.agent.getAction(self.links_usage) if has_flow_to_reroute else 0
+                if has_flow_to_reroute:
+                    action = self.agent.getAction(self.links_usage)
 
-                # The flow to reroute will be chosen based on controller data.
-                # For instance, the most recent flow or the largest flow. Here, we hard
-                # code a specif flow to help testing.
-                flow_to_reroute_size = self.active_flows_size[flow_to_reroute] if flow_to_reroute else None
-                flow_to_reroute_paths = self.active_flows_paths[flow_to_reroute] if flow_to_reroute else None
+                    # The flow to reroute will be chosen based on controller data.
+                    # For instance, the most recent flow or the largest flow. Here, we hard
+                    # code a specif flow to help testing.
+                    flow_to_reroute_size = self.active_flows_size[flow_to_reroute] if flow_to_reroute else None
+                    flow_to_reroute_paths = self.active_flows_paths[flow_to_reroute] if flow_to_reroute else None
 
-                next_state, reward, done, info = self.env.step(
-                    action=action,
-                    flow_total_size=flow_to_reroute_size,
-                    flow_current_paths=flow_to_reroute_paths
-                )
+                    next_state, reward, done, info = self.env.step(
+                        action=action,
+                        flow_total_size=flow_to_reroute_size,
+                        flow_current_paths=flow_to_reroute_paths
+                    )
 
-                print('Flow to reroute: ', flow_to_reroute)
-                print('Action: ', action)
+                    print('Flow to reroute: ', flow_to_reroute)
+                    print('Action: ', action)
 
-                # Preciso ter algum controle sobre: se não há fluxos ativos na rede, entao faz a ação "void"
+                    # Preciso ter algum controle sobre: se não há fluxos ativos na rede, entao faz a ação "void"
 
-                self.agent.train(state, action, next_state, reward, done)
+                    self.agent.train(state, action, next_state, reward, done)
 
-                rewards_current_episode += reward
-                state = next_state
-                step += 1
+                    rewards_current_episode += reward
+                    state = next_state
+                    step += 1
 
-                # # TODO: atualizar variavel global§
-                if flow_to_reroute:
-                    self.active_flows_paths[flow_to_reroute] = info['next_paths']
+                    # # TODO: atualizar variavel global§
+                    if flow_to_reroute:
+                        self.active_flows_paths[flow_to_reroute] = info['next_paths']
 
             print('rewards_current_episode = ', rewards_current_episode)
             print('-')

@@ -178,9 +178,6 @@ curl -d '{
 def actionToRules(action, current_paths, flow_name, switch_ids):
 
     if action == 0:
-        # should keep everything as it is
-        return []
-    elif action == 1:
         # half of the flow to [a, c, g, i] and the other half to [a, b, f, i]
         # Pra dividir o fluxo entre dois caminhos, será necessário:
 
@@ -200,7 +197,7 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
 
         return fixed_rules, loop_rules
 
-    elif action == 2:
+    elif action == 1:
         # half of the flow to [a, b, d, h, i] and the other half to [a, b, e, g, i]
 
         # Instalar regra que leva de b pra d. Sleep 2 segundos. Instala regra de b pra e, com maior prioridade
@@ -218,7 +215,7 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
 
         return fixed_rules, loop_rules
 
-    elif action == 3:
+    elif action == 2:
         # route the flow to [a, b, f, i]
         rules = []
         rules.append(getRule(source_link='a', target_link='b', flow_name=flow_name))
@@ -227,7 +224,7 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
 
         return rules
 
-    elif action == 4:
+    elif action == 3:
         # half of the flow to [a, c, g, i] and the other half to [a, c, e, f, i]
 
         # Instalar regra que leva de c pra g. Sleep 2 segundos. Instala regra de c pra e, com maior prioridade
@@ -244,14 +241,14 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
 
         return fixed_rules, loop_rules
 
-    elif action == 5:
+    elif action == 4:
         # route the flow to [a, c, g, i]
         rules = []
         rules.append(getRule(source_link='a', target_link='c', flow_name=flow_name))
         rules.append(getRule(source_link='c', target_link='g', flow_name=flow_name))
         rules.append(getRule(source_link='g', target_link='i', flow_name=flow_name))
 
-    elif action == 6:
+    elif action == 5:
         # oute the flow to [a, b, d, h, i]
         rules = []
         rules.append(getRule(source_link='a', target_link='b', flow_name=flow_name))
@@ -261,7 +258,7 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
 
         return rules
 
-    elif action == 7:
+    elif action == 6:
         # route the flow to [a, b, e, g, i]
         rules = []
         rules.append(getRule(source_link='a', target_link='b', flow_name=flow_name))
@@ -271,7 +268,7 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
 
         return rules
 
-    elif action == 8:
+    elif action == 7:
         # route the flow to [a, c, e, d, h, i]
         rules = []
         rules.append(getRule(source_link='a', target_link='c', flow_name=flow_name))
@@ -282,7 +279,7 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
 
         return rules
 
-    elif action == 9:
+    elif action == 8:
         # route the flow to [a, c, e, f, i]
         rules = []
         rules.append(getRule(source_link='a', target_link='c', flow_name=flow_name))
@@ -292,7 +289,7 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
 
         return rules
 
-    elif action == 10:
+    elif action == 9:
         # route 1/3 of the flow to [a, b, d, h, i], 1/3 to [a, b, e, g, i], and 1/3 to [a, b, f, i]
 
         # Instalar regra que leva de b pra d. Sleep 2 segundos. Instala regra de b pra f, com maior prioridade. Sleep 2 segundos. Instala regra de b pra e, com maior prioridade.
@@ -311,3 +308,5 @@ def actionToRules(action, current_paths, flow_name, switch_ids):
         fixed_rules.append(getRule(source_link='f', target_link='i', flow_name=flow_name))
 
         return fixed_rules, loop_rules
+    else:
+        return None

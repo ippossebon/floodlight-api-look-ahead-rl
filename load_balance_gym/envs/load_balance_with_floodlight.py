@@ -20,7 +20,7 @@ NUM_PORTS = 16
 class LoadBalanceEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, num_flows):
+    def __init__(self, num_flows, source_port, source_switch, target_port, target_switch):
         # Quero acomodar N fluxos na rede. Como?
         super(LoadBalanceEnv, self).__init__()
 

@@ -18,6 +18,7 @@ class LoadBalanceEnv(gym.Env):
         super(LoadBalanceEnv, self).__init__()
 
         self.initial_usage = usage
+        self.num_steps = 0
 
         # Initial state = initial links usage
         self.state = numpy.array(usage)
@@ -117,6 +118,8 @@ class LoadBalanceEnv(gym.Env):
         # It will take an action variable and will return a list of four things:
         # the next state, the reward for the current state, a boolean representing
         # whether the current episode of our model is done and some additional info on our problem.
+        self.num_steps = self.num_steps + 1
+
         return next_state, reward, done, { 'next_paths': next_paths }
 
 

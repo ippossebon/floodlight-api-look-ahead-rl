@@ -569,6 +569,8 @@ class LookAheadRLApp(object):
 
         # Calculate and print the average reward per thousand episodes
         rewards_per_thousand_episodes = numpy.split(numpy.array(rewards_all_episodes), NUM_EPISODES/1000)
+        # TODO Error: 'array split does not result in an equal division')
+        # Como lidar com episódios em que não há elephant flows? Como trtar isso?
         count = 1000
         print("* Average reward per thousand episodes *")
         for r in rewards_per_thousand_episodes:

@@ -4,7 +4,7 @@ import tensorflow as tf
 
 class QNetwork():
     def __init__(self, state_dim, action_size):
-        self.state_in = tf.placeholder(tf.float32, shape=[None, 9])
+        self.state_in = tf.placeholder(tf.float32, shape=[None, 9]) # 9 é o numero de ações possiveis
         self.action_in = tf.placeholder(tf.int32, shape=[None])
         self.q_target_in = tf.placeholder(tf.float32, shape=[None])
         action_one_hot = tf.one_hot(self.action_in, depth=action_size)

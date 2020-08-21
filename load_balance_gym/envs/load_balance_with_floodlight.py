@@ -118,8 +118,8 @@ class LoadBalanceEnv(gym.Env):
 
         response = requests.get('{host}/wm/routing/paths/{src}/{dst}/json'.format(
             host=CONTROLLER_HOST,
-            src=src_dpid,
-            dst=dst_dpid
+            src=src_switch,
+            dst=dst_switch
         ),
         data={ 'max_fast_paths': '10' }) # pois o default é 3
         response_data = response.json()
@@ -127,8 +127,8 @@ class LoadBalanceEnv(gym.Env):
 
         response = requests.get('{host}/wm/routing/paths/{src}/{dst}/json'.format(
             host=CONTROLLER_HOST,
-            src=src_dpid,
-            dst=dst_dpid
+            src=src_switch,
+            dst=dst_switch
         ))
         response_data = response.json()
         paths = []

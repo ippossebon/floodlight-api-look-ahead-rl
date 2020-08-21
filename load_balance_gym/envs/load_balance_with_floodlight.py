@@ -30,7 +30,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.switch_ids = []
         self.discoverTopology()
-        self.discoverPossiblePaths() # posso assumir que sempre saio de H1 para H2
+        self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch]) # posso assumir que sempre saio de H1 para H2
 
         # State = Links usage as [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
         self.observation_space = spaces.Box(
@@ -51,8 +51,6 @@ class LoadBalanceEnv(gym.Env):
         self.reward_range = (0, 1)
 
     def discoverTopology(self):
-        print('discoverPossiblePaths')
-
         response = requests.get('{host}/wm/topology/links/json'.format(
             host=CONTROLLER_HOST
         ))
@@ -83,14 +81,14 @@ class LoadBalanceEnv(gym.Env):
             if item['dst-switch'] not in self.switch_ids:
                 self.switch_ids.append(item['dst-switch'])
 
-        print('Switch IDs: ', self.switch_ids)
+        # print('Switch IDs: ', self.switch_ids)
 
         num_ports_aux = 0
         for switch_id in switch_ports:
             num_ports_aux += len(switch_ports[switch_id])
 
         num_ports_aux += 2 # portas dos hosts
-        print('Numero de portas calculadas: ', num_ports_aux)
+        # print('Numero de portas calculadas: ', num_ports_aux)
 
         self.num_ports = NUM_PORTS # fixo neste primeiro momento
         self.ports: {
@@ -113,7 +111,7 @@ class LoadBalanceEnv(gym.Env):
         }
 
 
-    def discoverPossiblePaths(self):
+    def discoverPossiblePaths(self, src_switch, dst_switch):
         # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
         # Get an ordered list of paths from the shortest to the longest path
         print('[discoverPossiblePaths]')

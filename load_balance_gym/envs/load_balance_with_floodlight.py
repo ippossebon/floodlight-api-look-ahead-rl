@@ -28,7 +28,7 @@ class LoadBalanceEnv(gym.Env):
         # TODO: vou precisar dos ids dos fluxos
         # TODO: será que o if de fluxos vai ficar aqui dentro?
 
-        # self.discoverTopology()
+        self.discoverTopology()
         self.discoverPossiblePaths() # posso assumir que sempre saio de H1 para H2
 
         # State = Links usage as [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
@@ -52,6 +52,14 @@ class LoadBalanceEnv(gym.Env):
     def discoverTopology(self):
         # Preciso setar o número de portas, para definir o estado
         # para cada switch, quantas portas?
+
+        print('discoverPossiblePaths')
+
+        response = requests.get('{host}/wm/topology/switchclusters/json'.format(
+            host=CONTROLLER_HOST
+        ))
+        response_data = response.json()
+        print(response_data)
 
         self.num_ports = NUM_PORTS # fixo neste primeiro momento
         self.ports: {

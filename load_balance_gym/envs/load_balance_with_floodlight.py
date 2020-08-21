@@ -76,7 +76,7 @@ class LoadBalanceEnv(gym.Env):
         pass
 
 
-    def discoverPossiblePaths(self, src_dpid, dst_dpid):
+    def discoverPossiblePaths(self):
         # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
         # Get an ordered list of paths from the shortest to the longest path
         print('[discoverPossiblePaths]')

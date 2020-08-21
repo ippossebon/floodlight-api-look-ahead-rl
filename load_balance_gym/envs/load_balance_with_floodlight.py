@@ -28,6 +28,7 @@ class LoadBalanceEnv(gym.Env):
         # TODO: vou precisar dos ids dos fluxos
         # TODO: será que o if de fluxos vai ficar aqui dentro?
 
+        self.switch_ids = []
         self.discoverTopology()
         self.discoverPossiblePaths() # posso assumir que sempre saio de H1 para H2
 
@@ -50,16 +51,46 @@ class LoadBalanceEnv(gym.Env):
         self.reward_range = (0, 1)
 
     def discoverTopology(self):
-        # Preciso setar o número de portas, para definir o estado
-        # para cada switch, quantas portas?
-
         print('discoverPossiblePaths')
 
-        response = requests.get('{host}/wm/topology/switchclusters/json'.format(
+        response = requests.get('{host}/wm/topology/links/json'.format(
             host=CONTROLLER_HOST
         ))
         response_data = response.json()
-        print(response_data)
+        switch_ports = {}
+
+        # Guarda mapeamento de switches e portas
+        for item in response_data:
+            switch_id = item['src-switch']
+            if switch_id not in switch_ports.keys():
+                switch_ports[switch_id] = []
+            else:
+                port = item['src-port']
+                if port not in switch_ports[switch_id]:
+                    switch_ports[switch_id].append(port)
+
+            switch_id = item['dst-switch']
+            if switch_id not in switch_ports.keys():
+                switch_ports[switch_id] = []
+            else:
+                port = item['dst-port']
+                if port not in switch_ports[switch_id]:
+                    switch_ports[switch_id].append(port)
+
+            # Guarda IDs de switches
+            if item['src-switch'] not in self.switch_ids:
+                self.switch_ids.append(item['src-switch'])
+            if item['dst-switch'] not in self.switch_ids:
+                self.switch_ids.append(item['dst-switch'])
+
+        print('Switch IDs: ', self.switch_ids)
+
+        num_ports_aux = 0
+        for switch_id in switch_ports:
+            num_ports_aux += len(switch_ports[switch_id])
+
+        num_ports_aux += 2 # portas dos hosts
+        print('Numero de portas calculadas: ', num_ports_aux)
 
         self.num_ports = NUM_PORTS # fixo neste primeiro momento
         self.ports: {
@@ -81,19 +112,29 @@ class LoadBalanceEnv(gym.Env):
             'S5.2': 15,
         }
 
-        pass
-
 
     def discoverPossiblePaths(self):
         # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
         # Get an ordered list of paths from the shortest to the longest path
         print('[discoverPossiblePaths]')
+
+        response = requests.get('{host}/wm/routing/paths/{src}/{dst}/json'.format(
+            host=CONTROLLER_HOST,
+            src=src_dpid,
+            dst=dst_dpid
+        ),
+        data={ 'max_fast_paths': '10' }) # pois o default é 3
+        response_data = response.json()
+
+
         response = requests.get('{host}/wm/routing/paths/{src}/{dst}/json'.format(
             host=CONTROLLER_HOST,
             src=src_dpid,
             dst=dst_dpid
         ))
         response_data = response.json()
+        paths = []
+
         print(response_data)
 
         # TODO deve setar self.possible_paths

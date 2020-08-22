@@ -190,6 +190,7 @@ class LoadBalanceEnv(gym.Env):
         numpy.zeros(NUM_PORTS)
 
     def getState(self):
+        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 

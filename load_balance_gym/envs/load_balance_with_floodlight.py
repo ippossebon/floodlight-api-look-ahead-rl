@@ -169,7 +169,8 @@ class LoadBalanceEnv(gym.Env):
                 path.append({ switch_id: port })
             paths.append(path)
 
-        print('Caminhos possiveis')
+        print('Caminhos possiveis: ', paths)
+
         paths_with_links = []
         for path in paths:
             links = []

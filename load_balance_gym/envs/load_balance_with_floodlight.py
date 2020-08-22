@@ -129,7 +129,7 @@ class LoadBalanceEnv(gym.Env):
         print('SRC = ', src_switch)
         print('DST = ', dst_switch)
 
-        response = requests.get('{host}/wm/routing/paths/{src}/{dst}/json'.format(
+        response = requests.get('{host}/wm/routing/paths/{src}/{dst}/10/json'.format(
             host=CONTROLLER_HOST,
             src=src_switch,
             dst=dst_switch

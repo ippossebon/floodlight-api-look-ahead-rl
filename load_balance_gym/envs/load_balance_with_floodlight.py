@@ -59,7 +59,7 @@ class LoadBalanceEnv(gym.Env):
         self.action_space = spaces.Box(
             low=numpy.array([0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
             high=numpy.array([self.num_flows-1, len(self.possible_paths)-1]), # primeiro: maior indice do fluxo, maior indice do caminho
-            shape=(num_flows, len(self.possible_paths)), # array com o RX de cada porta
+            shape=(1, 2), # array com o RX de cada porta -> 1 linha e duas colunas = tupla
             dtype=numpy.int16 # cada caminho possivel
         )
 

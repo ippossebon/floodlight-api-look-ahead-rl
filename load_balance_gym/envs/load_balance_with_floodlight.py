@@ -28,10 +28,6 @@ class LoadBalanceEnv(gym.Env):
         # TODO: vou precisar dos ids dos fluxos
         # TODO: será que o if de fluxos vai ficar aqui dentro?
 
-        self.switch_ids = []
-        self.discoverTopology()
-        self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch]) # posso assumir que sempre saio de H1 para H2
-
         # For debugging!
         self.links_map = {
             'b': {'00:00:00:00:00:00:00:01' : '2'},
@@ -43,6 +39,11 @@ class LoadBalanceEnv(gym.Env):
             'h': {'00:00:00:00:00:00:00:05' : '3'},
             'i': {'00:00:00:00:00:00:00:03' : '1'}
         }
+
+        self.switch_ids = []
+        self.discoverTopology()
+        self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch]) # posso assumir que sempre saio de H1 para H2
+
 
         # State = Links usage as [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
         self.observation_space = spaces.Box(

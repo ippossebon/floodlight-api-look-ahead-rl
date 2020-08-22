@@ -214,52 +214,52 @@ class LoadBalanceEnv(gym.Env):
             #    }
             print('Usage data - item: ', item)
 
-            if item['dpid'] == self.switch_ids['S1'] and item['port'] == '1':
+            if item['dpid'] == self.switch_ids[0] and item['port'] == '1':
                 #S1.1
                 state[0] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S1'] and item['port'] == '2':
+            elif item['dpid'] == self.switch_ids[0] and item['port'] == '2':
                 #S1.2
                 state[1] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S1'] and item['port'] == '3':
+            elif item['dpid'] == self.switch_ids[0] and item['port'] == '3':
                 #S1.3
                 state[2] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S2'] and item['port'] == '1':
+            elif item['dpid'] == self.switch_ids[1] and item['port'] == '1':
                 #S2.1
                 state[3] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S2'] and item['port'] == '2':
+            elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
                 #S2.2
                 state[4] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S2'] and item['port'] == '3':
+            elif item['dpid'] == self.switch_ids[1] and item['port'] == '3':
                 #S2.3
                 state[5] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S2'] and item['port'] == '4':
+            elif item['dpid'] == self.switch_ids[1] and item['port'] == '4':
                 #S2.4
                 state[6] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S3'] and item['port'] == '1':
+            elif item['dpid'] == self.switch_ids[2] and item['port'] == '1':
                 #S3.1
                 state[7] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S3'] and item['port'] == '2':
+            elif item['dpid'] == self.switch_ids[2] and item['port'] == '2':
                 #S3.2
                 state[8] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S3'] and item['port'] == '3':
+            elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
                 #S3.3
                 state[9] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S3'] and item['port'] == '4':
+            elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
                 #S3.4
                 state[10] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S4'] and item['port'] == '1':
+            elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
                 #S4.1
                 state[11] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S4'] and item['port'] == '2':
+            elif item['dpid'] == self.switch_ids[3] and item['port'] == '2':
                 #S4.2
                 state[12] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S4'] and item['port'] == '3':
+            elif item['dpid'] == self.switch_ids[3] and item['port'] == '3':
                 #S4.3
                 state[13] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S5'] and item['port'] == '1':
+            elif item['dpid'] == self.switch_ids[4] and item['port'] == '1':
                 #S5.1
                 state[14] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == self.switch_ids['S5'] and item['port'] == '2':
+            elif item['dpid'] == self.switch_ids[4] and item['port'] == '2':
                 #S5.2
                 state[15] = float(item['bits-per-second-rx'])
 

@@ -82,6 +82,7 @@ class LoadBalanceEnv(gym.Env):
                 self.switch_ids.append(item['dst-switch'])
 
         # print('Switch IDs: ', self.switch_ids)
+        self.switch_ids = sorted(self.switch_ids)
 
         num_ports_aux = 0
         for switch_id in switch_ports:
@@ -135,7 +136,7 @@ class LoadBalanceEnv(gym.Env):
         ))
         response_data = response.json()
         paths = []
-        
+
         print('Resposta de caminhos possiveis')
         print(response_data)
 

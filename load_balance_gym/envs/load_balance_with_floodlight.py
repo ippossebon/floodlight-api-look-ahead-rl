@@ -25,6 +25,8 @@ class LoadBalanceEnv(gym.Env):
         super(LoadBalanceEnv, self).__init__()
 
         self.num_flows = num_flows # exemplo = 5
+        self.src_port = source_port
+        self.dst_port = target_port
         # TODO: vou precisar dos ids dos fluxos
         # TODO: será que o if de fluxos vai ficar aqui dentro?
 
@@ -49,7 +51,7 @@ class LoadBalanceEnv(gym.Env):
         self.observation_space = spaces.Box(
             low=0,
             high=LINK_CAPACITY,
-            shape=(1, len(self.num_ports)), # array com o RX de cada porta
+            shape=(1, self.num_ports), # array com o RX de cada porta
             dtype=numpy.float16
         )
 
@@ -169,17 +171,16 @@ class LoadBalanceEnv(gym.Env):
                 path.append({ switch_id: port })
             paths.append(path)
 
-        print('Caminhos possiveis: ', paths)
-
-        paths_with_links = []
-        for path in paths:
-            links = []
-            for hop in path:
-                link = self.getKeyDict(self.links_map, hop)
-                links.append(link)
-            paths_with_links.append(links)
-
-        print('Caminhos com formato de links: ', paths_with_links)
+        # print('Caminhos possiveis')
+        # paths_with_links = []
+        # for path in paths:
+        #     links = []
+        #     for hop in path:
+        #         link = self.getKeyDict(self.links_map, hop)
+        #         links.append(link)
+        #     paths_with_links.append(links)
+        #
+        # print('Caminhos com formato de links: ', paths_with_links)
 
 
     def reset(self):

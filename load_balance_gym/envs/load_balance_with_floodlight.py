@@ -129,7 +129,7 @@ class LoadBalanceEnv(gym.Env):
              if val == value:
                  return key
 
-        print('[getKeyDict] Key does not exist.')
+        print('[getKeyDict] Key does not exist: ', val)
         return None
 
 

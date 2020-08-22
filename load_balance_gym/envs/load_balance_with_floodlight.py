@@ -32,6 +32,18 @@ class LoadBalanceEnv(gym.Env):
         self.discoverTopology()
         self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch]) # posso assumir que sempre saio de H1 para H2
 
+        # For debugging!
+        self.links_map = {
+            'b': {'00:00:00:00:00:00:00:01' : '2'},
+            'c': {'00:00:00:00:00:00:00:01' : '3'},
+            'd': {'00:00:00:00:00:00:00:02' : '2'},
+            'e': {'00:00:00:00:00:00:00:04' : '2'},
+            'f': {'00:00:00:00:00:00:00:02' : '3'},
+            'g': {'00:00:00:00:00:00:00:04' : '3'},
+            'h': {'00:00:00:00:00:00:00:05' : '3'},
+            'i': {'00:00:00:00:00:00:00:03' : '1'}
+        }
+
         # State = Links usage as [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
         self.observation_space = spaces.Box(
             low=0,
@@ -111,6 +123,14 @@ class LoadBalanceEnv(gym.Env):
             'S5.2': 15,
         }
 
+    def getKeyDict(self, dict, val):
+        for key, value in dict.items():
+             if val == value:
+                 return key
+
+        print('[getKeyDict] Key does not exist.')
+        return None
+
 
     def discoverPossiblePaths(self, src_switch, dst_switch):
         # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
@@ -149,10 +169,15 @@ class LoadBalanceEnv(gym.Env):
             paths.append(path)
 
         print('Caminhos possiveis')
-        print(paths)
+        paths_with_links = []
+        for path in paths:
+            links = []
+            for hop in path:
+                link = self.getKeyDict(self.links_map, hop)
+                links.append(link)
+            paths_with_links.append(links)
 
-        # TODO deve setar self.possible_paths
-        # criar dict com mapeamento pra facilitar
+        print('Caminhos com formato de links: ', paths_with_links)
 
 
     def reset(self):

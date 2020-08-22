@@ -191,6 +191,9 @@ class LoadBalanceEnv(gym.Env):
 
     def getState(self):
         response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
+        response_data = response.json()
+        print('response_data enable', response_data)
+
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 

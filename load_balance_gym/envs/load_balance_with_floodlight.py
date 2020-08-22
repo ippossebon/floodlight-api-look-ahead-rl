@@ -137,8 +137,19 @@ class LoadBalanceEnv(gym.Env):
         response_data = response.json()
         paths = []
 
-        print('Resposta de caminhos possiveis')
-        print(response_data)
+        # Paths tem o formato: [
+        #     [{'switch_id': 'port' }, {'switch_id': 'port' }]
+        # ]
+        for item in response_data['results']:
+            path = []
+            for hop in item['path']:
+                switch_id = hop['dpid']
+                port = hop['port']
+                path.append({ switch_id: port })
+            paths.append(path)
+
+        print('Caminhos possiveis')
+        print(paths)
 
         # TODO deve setar self.possible_paths
         # criar dict com mapeamento pra facilitar

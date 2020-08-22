@@ -206,7 +206,7 @@ class LoadBalanceEnv(gym.Env):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
-            # print('Usage data - item: ', item)
+            print('Usage data - item: ', item)
 
             if item['dpid'] == self.switch_ids['S1'] and item['port'] == '1':
                 #S1.1

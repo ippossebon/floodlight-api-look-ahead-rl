@@ -3,7 +3,7 @@ from staticFlowPusher import StaticFlowPusher
 
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(num_flows = 10, source_port = 1, source_switch = 0, target_port = 1, target_switch = 2)
-pusher = StaticEntryPusher(CONTROLLER_IP)
+pusher = StaticFlowPusher(CONTROLLER_IP)
 
 flow1 = {
     'switch':'00:00:00:00:00:00:00:01',

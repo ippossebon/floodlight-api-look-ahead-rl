@@ -192,15 +192,19 @@ class LoadBalanceEnv(gym.Env):
     def reset(self):
         numpy.zeros(NUM_PORTS)
 
+    def getFlows(self):
+        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
+
+        print(response_data)
+
+
     def getState(self):
         response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
         response_data = response.json()
-        print('response_data enable', response_data)
 
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
-
-        print('response_data', response_data)
 
         state = numpy.zeros(self.num_ports)
 

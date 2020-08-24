@@ -193,7 +193,7 @@ class LoadBalanceEnv(gym.Env):
         numpy.zeros(NUM_PORTS)
 
     def getFlows(self):
-        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/staticflowpusher/list/all/json '.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
         print(response_data)
@@ -219,7 +219,7 @@ class LoadBalanceEnv(gym.Env):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
-            print('Usage data - item: ', item)
+            # print('Usage data - item: ', item)
 
             if item['dpid'] == self.switch_ids[0] and item['port'] == '1':
                 #S1.1

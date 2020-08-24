@@ -142,19 +142,15 @@ class LoadBalanceEnv(gym.Env):
     def discoverPossiblePaths(self, src_switch, dst_switch):
         # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
         # Get an ordered list of paths from the shortest to the longest path
-        print('[discoverPossiblePaths]')
 
         response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
             host=CONTROLLER_HOST,
             src=src_switch,
             dst=dst_switch
         ),
-        data={ 'max_fast_paths': '10' }) # pois o default é 3
+        data={ 'max_fast_paths': '9' }) # pois o default é 3
         response_data = response.json()
         print('Resposta setando max paths ', response_data)
-
-        print('SRC = ', src_switch)
-        print('DST = ', dst_switch)
 
         response = requests.get('{host}/wm/routing/paths/{src}/{dst}/10/json'.format(
             host=CONTROLLER_HOST,

@@ -29,6 +29,14 @@ class StaticFlowPusher(object):
         body = json.dumps(data)
 
         conn = http.client.HTTPConnection(self.server, 8080)
+
+        print('conn = ', conn)
+        print('')
+        print('method = ', method)
+        print('path = ', path)
+        print('body = ', body)
+        print('headers = ', headers)
+
         conn.request(method, path, body, headers)
 
         response = conn.getresponse()

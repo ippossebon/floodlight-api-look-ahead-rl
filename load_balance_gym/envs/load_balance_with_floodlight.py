@@ -27,7 +27,10 @@ class LoadBalanceEnv(gym.Env):
         self.num_flows = num_flows # exemplo = 5
         self.src_port = source_port
         self.dst_port = target_port
+
         # TODO: vou precisar dos ids dos fluxos
+        self.flows_ids = []
+
         # TODO: será que o if de fluxos vai ficar aqui dentro?
 
         # For debugging!
@@ -277,7 +280,6 @@ class LoadBalanceEnv(gym.Env):
 
     def step(self, action):
         # Preciso conectar com o floodlight, instalar o caminho e analisar de novo
-        done = False # Aprendizado continuado
 
         # action = [flow, path]
         flow_index = action[0]
@@ -296,6 +298,7 @@ class LoadBalanceEnv(gym.Env):
 
         next_state = self.getState()
         reward = self.calculateReward(next_state)
+        done = False # Aprendizado continuado
 
         return next_state, reward, done
 

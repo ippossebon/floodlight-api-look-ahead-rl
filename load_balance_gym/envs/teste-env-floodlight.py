@@ -1,6 +1,9 @@
 from load_balance_with_floodlight import LoadBalanceEnv
 from staticFlowPusher import StaticFlowPusher
 
+import time
+
+
 CONTROLLER_IP = 'http://0.0.0.0'
 
 # Fluxo sai de H1 e vai para H2
@@ -35,7 +38,7 @@ env = LoadBalanceEnv(num_flows = 10, source_port = 1, source_switch = 0, target_
 # pusher.set(flow2)
 # print('Adicionou fluxos.')
 
-sleep(4)
+time.sleep(4)
 
 print('Vai fazer um GET nos fluxos.')
 

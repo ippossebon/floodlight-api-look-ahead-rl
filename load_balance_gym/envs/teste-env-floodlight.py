@@ -3,8 +3,9 @@ from staticFlowPusher import StaticFlowPusher
 
 import time
 import http.client, urllib.parse
+import requests
 
-CONTROLLER_IP = 'http://localhost:8080'
+CONTROLLER_IP = 'http://localhost:8080/wm/staticentrypusher/json'
 
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(num_flows = 10, source_port = 1, source_switch = 0, target_port = 1, target_switch = 2)
@@ -26,6 +27,8 @@ conn = http.client.HTTPConnection(CONTROLLER_IP)
 conn.request('POST', '', params, headers)
 response = conn.getresponse()
 
+# r = requests.post('http://localhost:8080/post', data = {'key':'value'})
+
 print('Status = ', response.status )
 print('Reason = ', response.reason)
 data = response.read()
@@ -33,7 +36,7 @@ data = response.read()
 print('Data = ', data)
 
 conn.close()
-
+#
 # print('vai criar o pusher')
 # pusher = StaticFlowPusher(CONTROLLER_IP)
 # print('criou o pusher')

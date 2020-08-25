@@ -12,7 +12,7 @@ import requests
 
 LINK_CAPACITY = 1000 # TODO: update links capacity when generating network on mininet
 
-CONTROLLER_IP = 'http://0.0.0.0'
+CONTROLLER_IP = 'http://127.0.0.1'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 LLDP_PACKAGE_SIZE = 60
 NUM_PORTS = 16

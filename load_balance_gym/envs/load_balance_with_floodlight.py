@@ -189,7 +189,9 @@ class LoadBalanceEnv(gym.Env):
         numpy.zeros(NUM_PORTS)
 
     def getFlows(self):
-        response = requests.get('{host}/wm/staticflowpusher/list/all/json '.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/staticflowpusher/list/00:00:00:00:00:00:00:01/json '.format(host=CONTROLLER_HOST))
+        # response = requests.get('{host}/wm/staticflowpusher/list/all/json '.format(host=CONTROLLER_HOST))
+
         response_data = response.json()
 
         print(response_data)

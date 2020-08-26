@@ -205,7 +205,8 @@ class LoadBalanceEnv(gym.Env):
 
         flows_ids = []
         for switch_id in response_data:
-            for flow_id in response_data[switch_id]:
+            for flow_obj in response_data[switch_id]:
+                flow_id = flow_obj.keys()[0]
                 if flow_id not in flows_ids:
                     flows_ids.append(flow_id)
 

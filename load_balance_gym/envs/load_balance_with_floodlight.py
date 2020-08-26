@@ -135,15 +135,13 @@ class LoadBalanceEnv(gym.Env):
         ))
         response_data = response.json()
 
-        print('-> [discoverTopology] Resposta topologia ', response_data)
-
         # Guarda mapeamento de switches e portas
         for item in response_data:
             self.saveItemLinks(item)
             self.saveItemSwitchIds(item)
 
-        print('-> [discoverTopology] Switch IDs: ', self.switch_ids)
         self.switch_ids = sorted(self.switch_ids)
+        # print('-> [discoverTopology] Switch IDs: ', self.switch_ids)
 
         print('-> [discoverTopology] Switch Links: ', self.switch_links)
 

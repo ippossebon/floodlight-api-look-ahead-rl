@@ -105,14 +105,14 @@ class LoadBalanceEnv(gym.Env):
 
         if switch_src not in self.switch_links.keys():
             self.switch_links[switch_src] = []
-        else:
-            link1 = {
-                'src_port': item['src-port'],
-                'dst_port': item['dst-port'],
-                'dst_switch': item['dst-switch']
-            }
-            self.switch_links[switch_src].append(link1)
-            self.num_links += 1
+
+        link1 = {
+            'src_port': item['src-port'],
+            'dst_port': item['dst-port'],
+            'dst_switch': item['dst-switch']
+        }
+        self.switch_links[switch_src].append(link1)
+        self.num_links += 1
 
         print('self.switch_links[switch_src] : ', self.switch_links[switch_src])
 
@@ -122,14 +122,14 @@ class LoadBalanceEnv(gym.Env):
 
         if switch_dst not in self.switch_links.keys():
             self.switch_links[switch_dst] = []
-        else:
-            link2 = {
-                'src_port': item['dst-port'],
-                'dst_port': item['src-port'],
-                'dst_switch': item['src-switch']
-            }
-            self.switch_links[switch_dst].append(link2)
-            self.num_links += 1
+
+        link2 = {
+            'src_port': item['dst-port'],
+            'dst_port': item['src-port'],
+            'dst_switch': item['src-switch']
+        }
+        self.switch_links[switch_dst].append(link2)
+        self.num_links += 1
 
         print('self.switch_links[switch_dst] : ', self.switch_links[switch_dst])
 

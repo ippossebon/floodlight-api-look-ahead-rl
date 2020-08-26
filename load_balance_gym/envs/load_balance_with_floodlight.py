@@ -194,24 +194,24 @@ class LoadBalanceEnv(gym.Env):
         numpy.zeros(NUM_PORTS)
 
     def getFlows(self):
-        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
-
         """
         Resposta getFlows =  <Response [200]>
         {'00:00:00:00:00:00:00:01': [
             {'flow-mod-1':
                 {'version': 'OF_13', 'command': 'MODIFY', 'cookie': '45035997351236006', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}, {'flow-curl-isadora': {'version': 'OF_13', 'command': 'ADD', 'cookie': '45035996653798236', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}, {'flow_1': {'version': 'OF_13', 'command': 'MODIFY', 'cookie': '49539595572518463', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}]}
          """
+        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
 
-         flows_ids = []
-         for switch_id in response_data:
-             for flow_id in response_data[switch_id]:
-                 if flow_id not in flows_ids:
-                     flows_ids.append(flow_id)
+        flows_ids = []
+        for switch_id in response_data:
+            for flow_id in response_data[switch_id]:
+                if flow_id not in flows_ids:
+                    flows_ids.append(flow_id)
 
-        print('Fluxos na rede: ', flows_ids)
-        return flows_ids
+       print('Fluxos na rede: ', flows_ids)
+       return flows_ids
+
 
     def getState(self):
         response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})

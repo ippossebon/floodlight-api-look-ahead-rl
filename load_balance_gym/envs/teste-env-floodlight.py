@@ -45,9 +45,9 @@ for flow_index in range(0, NUM_FLOWS):
 
     response = requests.post(
         'http://localhost:8080/wm/staticentrypusher/json',
-        data=json.dumps(flow1)
+        data=json.dumps(flow)
     )
-    print('response = ', response)
+    print('Resposta ao adicionar novo fluxo na rede: ', response)
 
 
 # Fluxo sai de H1 e vai para H2

@@ -81,13 +81,13 @@ class LoadBalanceEnv(gym.Env):
         Gera um dicionário no formato:
         self.switch_links = {
             '00:00:01': [{
-                in_port: 1,
-                out_port: 2,
+                src_port: 1,
+                dst_port: 2,
                 dst_switch: '00:00:002'
             },
             {
-                in_port: 1,
-                out_port: 3,
+                src_port: 1,
+                dst_port: 3,
                 dst_switch: '00:00:003'
             }]
         ...
@@ -100,8 +100,8 @@ class LoadBalanceEnv(gym.Env):
             self.switch_links[switch_id] = []
         else:
             link = {
-                'in_port': item['src-port'],
-                'out_port': item['dst-port'],
+                'src_port': item['src-port'],
+                'dst_port': item['dst-port'],
                 'dst_switch': item['dst-switch']
             }
             self.switch_links[switch_id].append(link)
@@ -113,8 +113,8 @@ class LoadBalanceEnv(gym.Env):
             self.switch_links[switch_id] = []
         else:
             link = {
-                'in_port': item['dst-port'],
-                'out_port': item['src-port'],
+                'src_port': item['dst-port'],
+                'dst_port': item['src-port'],
                 'dst_switch': item['src-switch']
             }
             self.switch_links[switch_id].append(link)

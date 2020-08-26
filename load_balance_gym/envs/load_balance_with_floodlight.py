@@ -135,6 +135,13 @@ class LoadBalanceEnv(gym.Env):
         ))
         response_data = response.json()
 
+        print('')
+        print('')
+        print('Resposta topologia', response_data)
+        print('')
+        print('')
+
+
         # Guarda mapeamento de switches e portas
         for item in response_data:
             self.saveItemLinks(item)

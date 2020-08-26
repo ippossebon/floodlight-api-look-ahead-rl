@@ -15,7 +15,9 @@ LINK_CAPACITY = 1000 # TODO: update links capacity when generating network on mi
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 LLDP_PACKAGE_SIZE = 60
+
 NUM_PORTS = 16
+MAX_PORTS_SWITCH = 4 # numero maximo de portas de um swithc
 
 class LoadBalanceEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -24,12 +26,11 @@ class LoadBalanceEnv(gym.Env):
         # Quero acomodar N fluxos na rede. Como?
         super(LoadBalanceEnv, self).__init__()
 
-        self.num_flows = num_flows # exemplo = 5
+        self.num_flows = num_flows
         self.src_port = source_port
         self.dst_port = target_port
 
-        # TODO: vou precisar dos ids dos fluxos
-        self.flows_ids = []
+        self.flows_ids = self.getFlows()
 
         # TODO: será que o if de fluxos vai ficar aqui dentro?
 
@@ -47,8 +48,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.switch_ids = []
         self.discoverTopology()
-        self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch]) # posso assumir que sempre saio de H1 para H2
-
+        self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch])
 
         # State = Links usage as [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
         self.observation_space = spaces.Box(
@@ -58,13 +58,16 @@ class LoadBalanceEnv(gym.Env):
             dtype=numpy.float16
         )
 
-        # Ação = (flow, caminho)
+        # Ação = (flow_id, switch_id, in_port, out_port)
+        # Ação = (flow_index, switch_index, in_port, out_port)
         max_flow_index = self.num_flows-1
         max_path_index = len(self.possible_paths)-1
+        max_switch_index = len(self.switch_ids)-1
+        max_port_index = MAX_PORTS_SWITCH - 1
         self.action_space = spaces.Box(
-            low=numpy.array([0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
-            high=numpy.array([max_flow_index, max_path_index]), # primeiro: maior indice do fluxo, maior indice do caminho
-            dtype=numpy.int16 # cada caminho possivel
+            low=numpy.array([0, 0, 0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
+            high=numpy.array([max_flow_index, max_switch_index, max_port_index, max_port_index]), # primeiro: maior indice do fluxo, maior indice do caminho
+            dtype=numpy.int16
         )
 
         self.reward_range = (0, 1)
@@ -75,6 +78,8 @@ class LoadBalanceEnv(gym.Env):
         ))
         response_data = response.json()
         switch_ports = {}
+
+        print('resposta topologia ', response_data)
 
         # Guarda mapeamento de switches e portas
         for item in response_data:
@@ -190,12 +195,23 @@ class LoadBalanceEnv(gym.Env):
 
     def getFlows(self):
         response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
-        print('response dentro de getFlows = ', response)
-
         response_data = response.json()
 
-        print(response_data)
+        """
+        Resposta getFlows =  <Response [200]>
+        {'00:00:00:00:00:00:00:01': [
+            {'flow-mod-1':
+                {'version': 'OF_13', 'command': 'MODIFY', 'cookie': '45035997351236006', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}, {'flow-curl-isadora': {'version': 'OF_13', 'command': 'ADD', 'cookie': '45035996653798236', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}, {'flow_1': {'version': 'OF_13', 'command': 'MODIFY', 'cookie': '49539595572518463', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}]}
+         """
 
+         flows_ids = []
+         for switch_id in response_data:
+             for flow_id in response_data[switch_id]:
+                 if flow_id not in flows_ids:
+                     flows_ids.append(flow_id)
+
+        print('Fluxos na rede: ', flows_ids)
+        return flows_ids
 
     def getState(self):
         response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
@@ -280,27 +296,54 @@ class LoadBalanceEnv(gym.Env):
         return requests.post(urlPath, data=rule, headers=headers)
         # return self.flow_pusher.set(rule)
 
+    def actionToRule(self, action):
+        # Ação = (flow_index, switch_index, in_port, out_port)
+        flow_index = action[0]
+        switch_index = action[1]
+        in_port = action[2]
+        out_port = action[3]
+
+        pass
+
+    def isValidAction(self, action):
+        flow_index = action[0]
+        switch_index = action[1]
+        in_port = action[2]
+        out_port = action[3]
+
+        # Deve existir um fluxo com esse indice na lista
+        contains_flow_index = True if flow_index <= len(self.flows_ids) else False
+
+        # Deve existir um switch com o indice
+        contains_switch_index = True if switch_index <= len(self.switch_ids) else False
+
+        # Deve existir in e out port no switch
+        switch_contains_in_port
+        switch_contains_out_port
+
+        # Não vou checar se pertence a um caminho possível.
+
+        is_valid = contains_flow_index and contains_switch_index and switch_contains_in_port and switch_contains_out_port
+
+        return is_valid
+
     def step(self, action):
         # Preciso conectar com o floodlight, instalar o caminho e analisar de novo
+        done = False # Aprendizado continuado
+        next_state = []
+        reward = 0
 
-        # action = [flow, path]
-        flow_index = action[0]
-        path_index = action[1]
-
-        # flow_mbps = self.flows_mbps[flow_index]]
-        # path = self.possible_paths[path_index]
-
-        # # TODO:  como saber o id dos fluxos?
-
-        rules = self.pathToRules(flow_index, path_index)
-        for rule in rules:
+        if self.isValidAction(action):
+            rule = self.actionToRule(flow_index, path_index)
             self.installRule(rule)
 
-        slep(2) # aguarda regras refletirem e pacotes serem enviados novamente
+            slep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 
-        next_state = self.getState()
-        reward = self.calculateReward(next_state)
-        done = False # Aprendizado continuado
+            next_state = self.getState()
+            reward = self.calculateReward(next_state)
+        else:
+            next_state = self.getState()
+            reward = 0
 
         return next_state, reward, done
 

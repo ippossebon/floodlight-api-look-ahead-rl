@@ -57,4 +57,6 @@ print('Vai fazer um GET nos fluxos.')
 
 env.getFlows()
 
+# Próximo teste: rodaar um step.
+
 print('Feito.')

@@ -16,6 +16,8 @@ CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 LLDP_PACKAGE_SIZE = 60
 
+MAX_PRIORITY = "32768"
+
 NUM_PORTS = 16
 MAX_PORTS_SWITCH = 4 # numero maximo de portas de um swithc
 
@@ -324,14 +326,49 @@ class LoadBalanceEnv(gym.Env):
         return requests.post(urlPath, data=rule, headers=headers)
         # return self.flow_pusher.set(rule)
 
-    def actionToRule(self, action):
+    def actionToRule(self, action, priority=MAX_PRIORITY):
         # Ação = (flow_index, switch_index, in_port, out_port)
         flow_index = action[0]
         switch_index = action[1]
-        in_port = action[2]
-        out_port = action[3]
+        in_port = str(action[2])
+        out_port = str(action[3])
 
-        pass
+        flow_id = self.flows_ids[flow_index]
+        switch_id = self.switch_ids[switch_index]
+        rule = {
+            "switch": switch_id,
+            "name": flow_id,
+            "priority": priority,
+            "ingress-port": in_port,
+            "active": "true",
+            "actions": "output={0}".format(out_port)
+        }
+
+        return rule
+
+    def switchContainsPort(self, switch_id, port):
+        """
+        Considera o dicionário:
+        self.switch_links = {
+            '00:00:01': [{
+                src_port: 1,
+                dst_port: 2,
+                dst_switch: '00:00:002'
+            },
+            {
+                src_port: 1,
+                dst_port: 3,
+                dst_switch: '00:00:003'
+            }]
+        ...
+        }
+
+        """
+        for links in self.switch_links[switch_id]:
+            if link['src_port'] == port:
+                return True
+
+        return False
 
     def isValidAction(self, action):
         flow_index = action[0]
@@ -346,12 +383,23 @@ class LoadBalanceEnv(gym.Env):
         contains_switch_index = True if switch_index <= len(self.switch_ids) else False
 
         # Deve existir in e out port no switch
-        switch_contains_in_port
-        switch_contains_out_port
+        switch_id = self.switch_ids[switch_index]
+        switch_contains_in_port = self.switchContainsPort(switch_id, str(in_port))
+        switch_contains_out_port = self.switchContainsPort(switch_id, str(out_port))
 
         # Não vou checar se pertence a um caminho possível.
 
         is_valid = contains_flow_index and contains_switch_index and switch_contains_in_port and switch_contains_out_port
+
+        ### TODO: Debugging
+        print('--> isValidAction')
+        print('flow_index = ', flow_index)
+        print('flow_id = ', self.flows_ids[flow_index])
+        print('switch_index = ', switch_index)
+        print('switch_id = ', self.switch_ids[switch_index])
+        print('in_port = ', in_port)
+        print('out_port = ', out_port)
+        print('is_valid = ', is_valid)
 
         return is_valid
 

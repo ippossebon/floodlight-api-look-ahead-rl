@@ -469,6 +469,8 @@ class LookAheadRLApp(object):
         return fixed_rules, loop_rule
 
     def installRule(self, rule):
+        # isso aqui adiciona um fluxo, e nao instala uma regra
+
         urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
         headers = {
             'Content-type': 'application/json',

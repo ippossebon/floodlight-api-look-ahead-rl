@@ -135,19 +135,19 @@ class LoadBalanceEnv(gym.Env):
         ))
         response_data = response.json()
 
-        print('Resposta topologia ', response_data)
+        print('-> [discoverTopology] Resposta topologia ', response_data)
 
         # Guarda mapeamento de switches e portas
         for item in response_data:
             self.saveItemLinks(item)
             self.saveItemSwitchIds(item)
 
-        print('Switch IDs: ', self.switch_ids)
+        print('-> [discoverTopology] Switch IDs: ', self.switch_ids)
         self.switch_ids = sorted(self.switch_ids)
 
-        print('Switch Links: ', self.switch_links)
+        print('-> [discoverTopology] Switch Links: ', self.switch_links)
 
-        print('Numero de portas: ', self.num_links + 2) # + 2 dos switches conectados aos hosts
+        print('-> [discoverTopology] Numero de portas: ', self.num_links + 2) # + 2 dos switches conectados aos hosts
 
         self.num_ports = NUM_PORTS # fixo neste primeiro momento
         self.ports: {
@@ -236,11 +236,10 @@ class LoadBalanceEnv(gym.Env):
             for flow_obj in response_data[switch_id]:
                 flow_obj_keys = flow_obj.keys()
                 for flow_id in flow_obj_keys:
-                    print('Flow_id = ', flow_id)
                     if flow_id not in flows_ids:
                         flows_ids.append(flow_id)
 
-        print('Fluxos na rede: ', sorted(flows_ids))
+        print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
         return sorted(flows_ids)
 
 

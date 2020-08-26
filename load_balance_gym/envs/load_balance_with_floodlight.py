@@ -95,33 +95,43 @@ class LoadBalanceEnv(gym.Env):
 
         """
 
+        print('Item : ', item)
+
 
         # Adiciona no mapeamento de links na direção 1
         switch_src = item['src-switch']
+
+        print('switch_src : ', switch_src)
+
         if switch_src not in self.switch_links.keys():
             self.switch_links[switch_src] = []
         else:
-            link = {
+            link1 = {
                 'src_port': item['src-port'],
                 'dst_port': item['dst-port'],
                 'dst_switch': item['dst-switch']
             }
-            self.switch_links[switch_src].append(link)
+            self.switch_links[switch_src].append(link1)
             self.num_links += 1
 
+        print('self.switch_links[switch_src] : ', self.switch_links[switch_src])
 
         # Adiciona no mapeamento de links na direção 2
         switch_dst = item['dst-switch']
+        print('switch_dst : ', switch_dst)
+
         if switch_dst not in self.switch_links.keys():
             self.switch_links[switch_dst] = []
         else:
-            link = {
+            link2 = {
                 'src_port': item['dst-port'],
                 'dst_port': item['src-port'],
                 'dst_switch': item['src-switch']
             }
-            self.switch_links[switch_dst].append(link)
+            self.switch_links[switch_dst].append(link2)
             self.num_links += 1
+
+        print('self.switch_links[switch_dst] : ', self.switch_links[switch_dst])
 
 
     def saveItemSwitchIds(self, item):

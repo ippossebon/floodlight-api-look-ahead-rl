@@ -209,8 +209,8 @@ class LoadBalanceEnv(gym.Env):
                 if flow_id not in flows_ids:
                     flows_ids.append(flow_id)
 
-       print('Fluxos na rede: ', flows_ids)
-       return flows_ids
+        print('Fluxos na rede: ', flows_ids)
+        return flows_ids
 
 
     def getState(self):

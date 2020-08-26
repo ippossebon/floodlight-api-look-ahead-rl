@@ -95,14 +95,8 @@ class LoadBalanceEnv(gym.Env):
 
         """
 
-        print('Item : ', item)
-
-
         # Adiciona no mapeamento de links na direção 1
         switch_src = item['src-switch']
-
-        print('switch_src : ', switch_src)
-
         if switch_src not in self.switch_links.keys():
             self.switch_links[switch_src] = []
 
@@ -114,12 +108,8 @@ class LoadBalanceEnv(gym.Env):
         self.switch_links[switch_src].append(link1)
         self.num_links += 1
 
-        print('self.switch_links[switch_src] : ', self.switch_links[switch_src])
-
         # Adiciona no mapeamento de links na direção 2
         switch_dst = item['dst-switch']
-        print('switch_dst : ', switch_dst)
-
         if switch_dst not in self.switch_links.keys():
             self.switch_links[switch_dst] = []
 
@@ -130,8 +120,6 @@ class LoadBalanceEnv(gym.Env):
         }
         self.switch_links[switch_dst].append(link2)
         self.num_links += 1
-
-        print('self.switch_links[switch_dst] : ', self.switch_links[switch_dst])
 
 
     def saveItemSwitchIds(self, item):
@@ -148,13 +136,6 @@ class LoadBalanceEnv(gym.Env):
         ))
         response_data = response.json()
 
-        print('')
-        print('')
-        print('Resposta topologia', response_data)
-        print('')
-        print('')
-
-
         # Guarda mapeamento de switches e portas
         for item in response_data:
             self.saveItemLinks(item)
@@ -164,7 +145,6 @@ class LoadBalanceEnv(gym.Env):
         # print('-> [discoverTopology] Switch IDs: ', self.switch_ids)
 
         print('-> [discoverTopology] Switch Links: ', self.switch_links)
-
         print('-> [discoverTopology] Numero de portas: ', self.num_links + 2) # + 2 dos switches conectados aos hosts
 
         self.num_ports = NUM_PORTS # fixo neste primeiro momento

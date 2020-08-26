@@ -92,32 +92,35 @@ class LoadBalanceEnv(gym.Env):
             }]
         ...
         }
+
         """
-        switch_id = item['src-switch']
+
 
         # Adiciona no mapeamento de links na direção 1
-        if switch_id not in self.switch_links.keys():
-            self.switch_links[switch_id] = []
+        switch_src = item['src-switch']
+        if switch_src not in self.switch_links.keys():
+            self.switch_links[switch_src] = []
         else:
             link = {
                 'src_port': item['src-port'],
                 'dst_port': item['dst-port'],
                 'dst_switch': item['dst-switch']
             }
-            self.switch_links[switch_id].append(link)
+            self.switch_links[switch_src].append(link)
             self.num_links += 1
 
-        switch_id = item['dst-switch']
+
         # Adiciona no mapeamento de links na direção 2
-        if switch_id not in self.switch_links.keys():
-            self.switch_links[switch_id] = []
+        switch_dst = item['dst-switch']
+        if switch_dst not in self.switch_links.keys():
+            self.switch_links[switch_dst] = []
         else:
             link = {
                 'src_port': item['dst-port'],
                 'dst_port': item['src-port'],
                 'dst_switch': item['src-switch']
             }
-            self.switch_links[switch_id].append(link)
+            self.switch_links[switch_dst].append(link)
             self.num_links += 1
 
 

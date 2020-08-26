@@ -47,6 +47,10 @@ class LoadBalanceEnv(gym.Env):
         }
 
         self.switch_ids = []
+        self.switch_links = {}
+        self.switch_ports = {}
+        self.num_links = 0
+
         self.discoverTopology()
         self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch])
 
@@ -72,48 +76,78 @@ class LoadBalanceEnv(gym.Env):
 
         self.reward_range = (0, 1)
 
+    def saveItemLinks(self, item):
+        """
+        Gera um dicionário no formato:
+        self.switch_links = {
+            '00:00:01': [{
+                in_port: 1,
+                out_port: 2,
+                dst_switch: '00:00:002'
+            },
+            {
+                in_port: 1,
+                out_port: 3,
+                dst_switch: '00:00:003'
+            }]
+        ...
+        }
+        """
+        switch_id = item['src-switch']
+
+        # Adiciona no mapeamento de links na direção 1
+        if switch_id not in self.switch_links.keys():
+            self.switch_links[switch_id] = []
+        else:
+            link = {
+                'in_port': item['src-port'],
+                'out_port': item['dst-port'],
+                'dst_switch': item['dst-switch']
+            }
+            self.switch_links[switch_id].append(link)
+            self.num_links += 1
+
+        switch_id = item['dst-switch']
+        # Adiciona no mapeamento de links na direção 2
+        if switch_id not in self.switch_links.keys():
+            self.switch_links[switch_id] = []
+        else:
+            link = {
+                'in_port': item['dst-port'],
+                'out_port': item['src-port'],
+                'dst_switch': item['src-switch']
+            }
+            self.switch_links[switch_id].append(link)
+            self.num_links += 1
+
+
+    def saveItemSwitchIds(self, item):
+        # Guarda IDs de switches
+        if item['src-switch'] not in self.switch_ids:
+            self.switch_ids.append(item['src-switch'])
+        if item['dst-switch'] not in self.switch_ids:
+            self.switch_ids.append(item['dst-switch'])
+
+
     def discoverTopology(self):
         response = requests.get('{host}/wm/topology/links/json'.format(
             host=CONTROLLER_HOST
         ))
         response_data = response.json()
-        switch_ports = {}
 
-        print('resposta topologia ', response_data)
+        print('Resposta topologia ', response_data)
 
         # Guarda mapeamento de switches e portas
         for item in response_data:
-            switch_id = item['src-switch']
-            if switch_id not in switch_ports.keys():
-                switch_ports[switch_id] = []
-            else:
-                port = item['src-port']
-                if port not in switch_ports[switch_id]:
-                    switch_ports[switch_id].append(port)
+            self.saveItemLinks(item)
+            self.saveItemSwitchIds(item)
 
-            switch_id = item['dst-switch']
-            if switch_id not in switch_ports.keys():
-                switch_ports[switch_id] = []
-            else:
-                port = item['dst-port']
-                if port not in switch_ports[switch_id]:
-                    switch_ports[switch_id].append(port)
-
-            # Guarda IDs de switches
-            if item['src-switch'] not in self.switch_ids:
-                self.switch_ids.append(item['src-switch'])
-            if item['dst-switch'] not in self.switch_ids:
-                self.switch_ids.append(item['dst-switch'])
-
-        # print('Switch IDs: ', self.switch_ids)
+        print('Switch IDs: ', self.switch_ids)
         self.switch_ids = sorted(self.switch_ids)
 
-        num_ports_aux = 0
-        for switch_id in switch_ports:
-            num_ports_aux += len(switch_ports[switch_id])
+        print('Switch Links: ', self.switch_links)
 
-        num_ports_aux += 2 # portas dos hosts
-        # print('Numero de portas calculadas: ', num_ports_aux)
+        print('Numero de portas: ', self.num_links + 2) # + 2 dos switches conectados aos hosts
 
         self.num_ports = NUM_PORTS # fixo neste primeiro momento
         self.ports: {
@@ -194,12 +228,6 @@ class LoadBalanceEnv(gym.Env):
         numpy.zeros(NUM_PORTS)
 
     def getFlows(self):
-        """
-        Resposta getFlows =  <Response [200]>
-        {'00:00:00:00:00:00:00:01': [
-            {'flow-mod-1':
-                {'version': 'OF_13', 'command': 'MODIFY', 'cookie': '45035997351236006', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}, {'flow-curl-isadora': {'version': 'OF_13', 'command': 'ADD', 'cookie': '45035996653798236', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}, {'flow_1': {'version': 'OF_13', 'command': 'MODIFY', 'cookie': '49539595572518463', 'priority': '32768', 'idleTimeoutSec': '0', 'hardTimeoutSec': '0', 'outPort': 'any', 'flags': '1', 'cookieMask': '0', 'outGroup': 'any', 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}}]}
-         """
         response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
@@ -212,8 +240,8 @@ class LoadBalanceEnv(gym.Env):
                     if flow_id not in flows_ids:
                         flows_ids.append(flow_id)
 
-        print('Fluxos na rede: ', flows_ids)
-        return flows_ids
+        print('Fluxos na rede: ', sorted(flows_ids))
+        return sorted(flows_ids)
 
 
     def getState(self):

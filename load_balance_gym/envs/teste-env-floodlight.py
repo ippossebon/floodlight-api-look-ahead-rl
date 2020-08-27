@@ -10,7 +10,7 @@ Ideia do experimento: iniciar com 5 fluxos.
 
 sleep(30)
 
-Mais um fluxo. Mais um fluxo, e assim por dianteself.
+Mais um fluxo. Mais um fluxo, e assim por diante.
 
 O objetivo é fazer com que o sistema acomode os fluxos na rede. Para um número N
 de fluxos, em qualquer topologia (dado que utilizamos a aplicação para descobrir
@@ -53,10 +53,11 @@ for flow_index in range(0, NUM_FLOWS):
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(num_flows=NUM_FLOWS, source_port=1, source_switch=0, target_port=1, target_switch=2)
 
-print('Vai fazer um GET nos fluxos.')
 
 env.getFlows()
 
-# Próximo teste: rodaar um step.
+print('Vai dar um step.')
+
+env.step(env.action_space.sample())
 
 print('Feito.')

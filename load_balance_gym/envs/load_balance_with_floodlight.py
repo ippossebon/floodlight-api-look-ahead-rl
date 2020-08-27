@@ -330,8 +330,8 @@ class LoadBalanceEnv(gym.Env):
         # Ação = (flow_index, switch_index, in_port, out_port)
         flow_index = action[0]
         switch_index = action[1]
-        in_port = str(action[2])
-        out_port = str(action[3])
+        in_port = str(action[2] + 1)
+        out_port = str(action[3] + 1)
 
         flow_id = self.flows_ids[flow_index]
         switch_id = self.switch_ids[switch_index]
@@ -373,8 +373,11 @@ class LoadBalanceEnv(gym.Env):
     def isValidAction(self, action):
         flow_index = action[0]
         switch_index = action[1]
-        in_port = action[2]
-        out_port = action[3]
+        in_port_index = action[2]
+        out_port_index = action[3]
+
+        in_port = in_port_index + 1
+        out_port_index = out_port_index + 1
 
         # Deve existir um fluxo com esse indice na lista
         contains_flow_index = True if flow_index <= len(self.flows_ids) else False

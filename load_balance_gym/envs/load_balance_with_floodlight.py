@@ -391,11 +391,19 @@ class LoadBalanceEnv(gym.Env):
         switch_contains_out_port = self.switchContainsPort(switch_id, str(out_port))
 
         # Não vou checar se pertence a um caminho possível.
+        # Acho que preciso checar se o fluxo está passando por aquele switch
 
         is_valid = contains_flow_index and contains_switch_index and switch_contains_in_port and switch_contains_out_port
 
         ### TODO: Debugging
         print('--> isValidAction')
+        print('contains_flow_index = ', contains_flow_index)
+        print('contains_switch_index = ', contains_switch_index)
+        print('switch_contains_in_port = ', switch_contains_in_port)
+        print('switch_contains_out_port = ', switch_contains_out_port)
+
+        print('links do switch = ', self.switch_links[switch_id])
+
         print('flow_index = ', flow_index)
         print('flow_id = ', self.flows_ids[flow_index])
         print('switch_index = ', switch_index)

@@ -19,6 +19,8 @@ LLDP_PACKAGE_SIZE = 60
 
 MAX_PRIORITY = "32768"
 
+EPSILON = 0.001
+
 NUM_PORTS = 16
 MAX_PORTS_SWITCH = 4 # numero maximo de portas de um swithc
 
@@ -446,6 +448,7 @@ class LoadBalanceEnv(gym.Env):
 
 
     def calculateReward(self, state):
-        harmonic_mean = float(len(state) / numpy.sum(1.0/state))
+        state_values_sum = numpy.sum(1.0/state) or EPSILON
+        harmonic_mean = float(len(state) / state_values_sum)
 
         return harmonic_mean

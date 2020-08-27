@@ -364,7 +364,7 @@ class LoadBalanceEnv(gym.Env):
         }
 
         """
-        for links in self.switch_links[switch_id]:
+        for link in self.switch_links[switch_id]:
             if link['src_port'] == port:
                 return True
 

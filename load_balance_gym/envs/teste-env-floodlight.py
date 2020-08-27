@@ -59,7 +59,7 @@ env.getFlows()
 print('Vai dar um step.')
 action = env.action_space.sample()
 print('Action = ', action)
-next_state, reward = env.step()
+next_state, reward = env.step(action)
 print('next_state = ', next_state)
 print('reward = ', reward)
 

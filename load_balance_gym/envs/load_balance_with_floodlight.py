@@ -50,7 +50,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.switch_ids = []
         self.switch_links = {}
-        self.switch_ports = {}
+        self.switch_possible_ports = {}
         self.num_links = 0
 
         self.discoverTopology()
@@ -110,6 +110,11 @@ class LoadBalanceEnv(gym.Env):
         self.switch_links[switch_src].append(link1)
         self.num_links += 1
 
+        # Adiciona porta possível
+        if switch_src not in self.switch_possible_ports.keys():
+            self.switch_possible_ports[switch_src] = []
+        self.switch_possible_ports[switch_src].append(item['src-port'])
+
         # Adiciona no mapeamento de links na direção 2
         switch_dst = item['dst-switch']
         if switch_dst not in self.switch_links.keys():
@@ -122,6 +127,11 @@ class LoadBalanceEnv(gym.Env):
         }
         self.switch_links[switch_dst].append(link2)
         self.num_links += 1
+
+        # Adiciona porta possível
+        if switch_dst not in self.switch_possible_ports.keys():
+            self.switch_possible_ports[switch_dst] = []
+        self.switch_possible_ports[switch_dst].append(item['dst-port'])
 
 
     def saveItemSwitchIds(self, item):
@@ -349,23 +359,16 @@ class LoadBalanceEnv(gym.Env):
     def switchContainsPort(self, switch_id, port):
         """
         Considera o dicionário:
-        self.switch_links = {
-            '00:00:01': [{
-                src_port: 1,
-                dst_port: 2,
-                dst_switch: '00:00:002'
-            },
-            {
-                src_port: 1,
-                dst_port: 3,
-                dst_switch: '00:00:003'
-            }]
+        self.switch_possible_ports = {
+            '00:00:01': ['1', '2', '3],
+            '00:00:02': ['1', '2', '3', '4']
         ...
         }
 
         """
-        for link in self.switch_links[switch_id]:
-            if link['src_port'] == port:
+
+        for possible_port in self.switch_possible_ports[switch_id]:
+            if possible_port == port:
                 return True
 
         return False
@@ -402,7 +405,7 @@ class LoadBalanceEnv(gym.Env):
         print('switch_contains_in_port = ', switch_contains_in_port)
         print('switch_contains_out_port = ', switch_contains_out_port)
 
-        print('links do switch = ', self.switch_links[switch_id])
+        print('portas do switch = ', self.switch_possible_ports[switch_id])
 
         print('flow_index = ', flow_index)
         print('flow_id = ', self.flows_ids[flow_index])

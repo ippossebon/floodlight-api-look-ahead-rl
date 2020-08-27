@@ -441,7 +441,7 @@ class LoadBalanceEnv(gym.Env):
             next_state = self.getState()
             reward = 0
 
-        return next_state, reward, done
+        return next_state, reward
 
 
     def calculateReward(self, state):

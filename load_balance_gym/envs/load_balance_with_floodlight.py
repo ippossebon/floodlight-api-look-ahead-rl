@@ -402,13 +402,14 @@ class LoadBalanceEnv(gym.Env):
         is_valid = contains_flow_index and contains_switch_index and switch_contains_in_port and switch_contains_out_port
 
         ### TODO: Debugging
+        print('...')
         print('--> isValidAction')
-        print('contains_flow_index = ', contains_flow_index)
-        print('contains_switch_index = ', contains_switch_index)
-        print('switch_contains_in_port = ', switch_contains_in_port)
-        print('switch_contains_out_port = ', switch_contains_out_port)
-
-        print('portas do switch = ', self.switch_possible_ports[switch_id])
+        # print('contains_flow_index = ', contains_flow_index)
+        # print('contains_switch_index = ', contains_switch_index)
+        # print('switch_contains_in_port = ', switch_contains_in_port)
+        # print('switch_contains_out_port = ', switch_contains_out_port)
+        #
+        # print('portas do switch = ', self.switch_possible_ports[switch_id])
 
         print('flow_index = ', flow_index)
         print('flow_id = ', self.flows_ids[flow_index])
@@ -417,6 +418,7 @@ class LoadBalanceEnv(gym.Env):
         print('in_port = ', in_port)
         print('out_port = ', out_port)
         print('is_valid = ', is_valid)
+        print('...')
 
         return is_valid
 
@@ -427,7 +429,8 @@ class LoadBalanceEnv(gym.Env):
         reward = 0
 
         if self.isValidAction(action):
-            rule = self.actionToRule(flow_index, path_index)
+            rule = self.actionToRule(action)
+            print('Regra a ser instalada = ', rule)
             self.installRule(rule)
 
             slep(2) # aguarda regras refletirem e pacotes serem enviados novamente

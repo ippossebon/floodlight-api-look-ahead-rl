@@ -57,7 +57,10 @@ env = LoadBalanceEnv(num_flows=NUM_FLOWS, source_port=1, source_switch=0, target
 env.getFlows()
 
 print('Vai dar um step.')
-
-env.step(env.action_space.sample())
+action = env.action_space.sample()
+print('Action = ', action)
+next_state, reward = env.step()
+print('next_state = ', next_state)
+print('reward = ', reward)
 
 print('Feito.')

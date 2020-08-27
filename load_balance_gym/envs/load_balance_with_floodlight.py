@@ -366,8 +366,13 @@ class LoadBalanceEnv(gym.Env):
         }
 
         """
+        print('port = ', port)
+        print('port type = ', type(port))
 
         for possible_port in self.switch_possible_ports[switch_id]:
+            print('possible_port = ', possible_port)
+            print('possible_port type = ', type(possible_port))
+
             if possible_port == port:
                 return True
 

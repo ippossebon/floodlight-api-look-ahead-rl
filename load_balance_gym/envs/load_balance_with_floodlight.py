@@ -5,6 +5,7 @@ from gym.utils import seeding
 import numpy
 import pandas
 import requests
+import time
 
 # Based on the folllwing tutorials:
 # https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e

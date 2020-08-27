@@ -56,6 +56,10 @@ class LoadBalanceEnv(gym.Env):
         self.discoverTopology()
         self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch])
 
+        # Ao descobrir a topologia, só são adicionadas as portas que conectam switches
+        self.switch_possible_ports[source_switch].append(source_port)
+        self.switch_possible_ports[target_switch].append(target_port)
+
         # State = Links usage as [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
         self.observation_space = spaces.Box(
             low=0,

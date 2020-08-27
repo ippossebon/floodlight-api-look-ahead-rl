@@ -433,7 +433,7 @@ class LoadBalanceEnv(gym.Env):
             print('Regra a ser instalada = ', rule)
             self.installRule(rule)
 
-            slep(2) # aguarda regras refletirem e pacotes serem enviados novamente
+            time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 
             next_state = self.getState()
             reward = self.calculateReward(next_state)

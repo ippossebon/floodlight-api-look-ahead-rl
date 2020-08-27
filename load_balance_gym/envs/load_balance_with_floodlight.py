@@ -377,7 +377,7 @@ class LoadBalanceEnv(gym.Env):
         out_port_index = action[3]
 
         in_port = in_port_index + 1
-        out_port_index = out_port_index + 1
+        out_port = out_port_index + 1
 
         # Deve existir um fluxo com esse indice na lista
         contains_flow_index = True if flow_index <= len(self.flows_ids) else False

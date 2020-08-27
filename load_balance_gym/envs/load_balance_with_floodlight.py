@@ -373,7 +373,7 @@ class LoadBalanceEnv(gym.Env):
             print('possible_port = ', possible_port)
             print('possible_port type = ', type(possible_port))
 
-            if possible_port == port:
+            if str(possible_port) == port:
                 return True
 
         return False

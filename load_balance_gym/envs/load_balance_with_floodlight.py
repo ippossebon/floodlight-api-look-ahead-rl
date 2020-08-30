@@ -351,6 +351,7 @@ class LoadBalanceEnv(gym.Env):
         max_usage_flow_id = None # preciso de um fallback
 
         print('GET MOST COSTLY FLOW DO SWITCH ', switch_id)
+        print('response: ', response)
         print('response_data', response_data)
         print('')
 
@@ -365,7 +366,7 @@ class LoadBalanceEnv(gym.Env):
                             max_usage_flow_id = flow_id
 
 
-        return flow_id
+        return max_usage_flow_id
 
     def actionToRule(self, action, priority=MAX_PRIORITY):
         # Ação = (flow_index, switch_index, in_port, out_port)

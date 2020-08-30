@@ -344,7 +344,7 @@ class LoadBalanceEnv(gym.Env):
     def getMostCostlyFlow(self, switch_id):
         # retorna o fluxo que exige mais do switch, pra que esse tenha suas
         # rotas recalculadas
-        response = requests.get('{host}/wm/core/controller/switches/json'.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/statistics/bandwidth/{switch_id}/all/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
         response_data = response.json()
 
         max_usage = -1

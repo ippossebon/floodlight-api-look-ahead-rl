@@ -57,6 +57,8 @@ class LoadBalanceEnv(gym.Env):
 
         self.discoverTopology()
         self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch])
+        self.enableSwitchStatisticsEndpoit()
+
 
         # Ao descobrir a topologia, só são adicionadas as portas que conectam switches
         self.switch_possible_ports[self.switch_ids[source_switch]].append(str(source_port))
@@ -82,6 +84,15 @@ class LoadBalanceEnv(gym.Env):
         )
 
         self.reward_range = (0, 1)
+
+
+    def enableSwitchStatisticsEndpoit(self):
+        # Enable statistics collection
+        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
+        response_data = response.json()
+
+        print('[enableSwitchStatisticsEndpoit] ', response_data)
+
 
     def saveItemLinks(self, item):
         """

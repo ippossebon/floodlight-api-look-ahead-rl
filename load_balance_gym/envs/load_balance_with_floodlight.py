@@ -161,8 +161,8 @@ class LoadBalanceEnv(gym.Env):
         self.switch_ids = sorted(self.switch_ids)
         # print('-> [discoverTopology] Switch IDs: ', self.switch_ids)
 
-        print('-> [discoverTopology] Switch Links: ', self.switch_links)
-        print('-> [discoverTopology] Numero de portas: ', self.num_links + 2) # + 2 dos switches conectados aos hosts
+        # print('-> [discoverTopology] Switch Links: ', self.switch_links)
+        # print('-> [discoverTopology] Numero de portas: ', self.num_links + 2) # + 2 dos switches conectados aos hosts
 
         self.num_ports = NUM_PORTS # fixo neste primeiro momento
         self.ports: {
@@ -344,7 +344,7 @@ class LoadBalanceEnv(gym.Env):
     def getMostCostlyFlow(self, switch_id):
         # retorna o fluxo que exige mais do switch, pra que esse tenha suas
         # rotas recalculadas
-        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/core/controller/switches/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
         max_usage = -1

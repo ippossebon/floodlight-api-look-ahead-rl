@@ -27,7 +27,8 @@ Setup do experimento:
 Todos os fluxos começam por a, b, f, i
 
 """
-
+CONTROLLER_IP = 'http://localhost'
+CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 NUM_FLOWS = 5
 
 for flow_index in range(0, NUM_FLOWS):
@@ -53,8 +54,14 @@ for flow_index in range(0, NUM_FLOWS):
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
 
+switch_id = '00:00:00:00:00:00:00:01'
+response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+response_data = response.json()
 
-env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+
+
+sleep(60)
+# env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 
 
 #

@@ -27,11 +27,10 @@ MAX_PORTS_SWITCH = 4 # numero maximo de portas de um swithc
 class LoadBalanceEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, num_flows, source_port, source_switch, target_port, target_switch):
+    def __init__(self, source_port, source_switch, target_port, target_switch):
         # Quero acomodar N fluxos na rede. Como?
         super(LoadBalanceEnv, self).__init__()
 
-        self.num_flows = num_flows
         self.src_port = source_port
         self.dst_port = target_port
 
@@ -57,7 +56,7 @@ class LoadBalanceEnv(gym.Env):
         self.num_links = 0
 
         self.discoverTopology()
-        self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch])
+        self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch])
 
         # Ao descobrir a topologia, só são adicionadas as portas que conectam switches
         self.switch_possible_ports[self.switch_ids[source_switch]].append(str(source_port))
@@ -73,13 +72,12 @@ class LoadBalanceEnv(gym.Env):
 
         # Ação = (flow_id, switch_id, in_port, out_port)
         # Ação = (flow_index, switch_index, in_port, out_port)
-        max_flow_index = self.num_flows-1
         max_path_index = len(self.possible_paths)-1
         max_switch_index = len(self.switch_ids)-1
         max_port_index = MAX_PORTS_SWITCH - 1
         self.action_space = spaces.Box(
-            low=numpy.array([0, 0, 0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
-            high=numpy.array([max_flow_index, max_switch_index, max_port_index, max_port_index]), # primeiro: maior indice do fluxo, maior indice do caminho
+            low=numpy.array([0, 0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
+            high=numpy.array([max_switch_index, max_port_index, max_port_index]), # primeiro: maior indice do fluxo, maior indice do caminho
             dtype=numpy.int16
         )
 
@@ -227,7 +225,7 @@ class LoadBalanceEnv(gym.Env):
                 path.append({ switch_id: port })
             paths.append(path)
 
-        self.possible_paths = paths
+        return paths
 
         # print('Caminhos possiveis')
         # paths_with_links = []
@@ -343,15 +341,41 @@ class LoadBalanceEnv(gym.Env):
         return requests.post(urlPath, data=rule, headers=headers)
         # return self.flow_pusher.set(rule)
 
+    def getMostCostlyFlow(self, switch_id):
+        # retorna o fluxo que exige mais do switch, pra que esse tenha suas
+        # rotas recalculadas
+        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
+
+        max_usage = -1
+        max_usage_flow_id = None # preciso de um fallback
+
+        print('GET MOST COSTLY FLOW DO SWITCH ', switch_id)
+        print('response_data', response_data)
+        print('')
+
+        flows_ids = []
+        for switch in response_data:
+            if switch == switch_id:
+                for flow_obj in response_data[switch_id]:
+                    flow_obj_keys = flow_obj.keys()
+                    print('flow_obj_keys', flow_obj_keys)
+                    for flow_id in flow_obj_keys:
+                        if flow_obj_keys['rx'] > max_usage:
+                            max_usage_flow_id = flow_id
+
+
+        return flow_id
+
     def actionToRule(self, action, priority=MAX_PRIORITY):
         # Ação = (flow_index, switch_index, in_port, out_port)
-        flow_index = action[0]
-        switch_index = action[1]
-        in_port = str(action[2] + 1)
-        out_port = str(action[3] + 1)
+        switch_index = action[0]
+        in_port = str(action[1] + 1)
+        out_port = str(action[2] + 1)
 
-        flow_id = self.flows_ids[flow_index]
         switch_id = self.switch_ids[switch_index]
+
+        flow_id = self.getMostCostlyFlow(switch_id)
         rule = {
             "switch": switch_id,
             "name": flow_id,
@@ -379,17 +403,27 @@ class LoadBalanceEnv(gym.Env):
 
         return False
 
+    def actionBelongsToPath(self, action):
+        # Deve checar se faz parte de um caminho possível
+        switch_index = action[0]
+        in_port_index = action[1]
+        out_port_index = action[2]
+
+        print('Possible paths: ', self.possible_paths)
+        # self.possible_paths
+
+        pass
+
     def isValidAction(self, action):
-        flow_index = action[0]
-        switch_index = action[1]
-        in_port_index = action[2]
-        out_port_index = action[3]
+        switch_index = action[0]
+        in_port_index = action[1]
+        out_port_index = action[2]
 
         in_port = in_port_index + 1
         out_port = out_port_index + 1
 
         # Deve existir um fluxo com esse indice na lista
-        contains_flow_index = True if flow_index <= len(self.flows_ids) else False
+        # contains_flow_index = True if flow_index <= len(self.flows_ids) else False
 
         # Deve existir um switch com o indice
         contains_switch_index = True if switch_index <= len(self.switch_ids) else False
@@ -398,28 +432,27 @@ class LoadBalanceEnv(gym.Env):
         switch_id = self.switch_ids[switch_index]
         switch_contains_in_port = self.switchContainsPort(switch_id, str(in_port))
         switch_contains_out_port = self.switchContainsPort(switch_id, str(out_port))
+        switch_contains_ports = switch_contains_in_port and switch_contains_out_port
 
-        # Não vou checar se pertence a um caminho possível.
-        # Acho que preciso checar se o fluxo está passando por aquele switch
+        # Checa se pertence a algum caminho possível. Para evitar loops na rede.
+        belongs_to_path = self.actionBelongsToPath(action) if switch_contains_ports else False
 
-        is_valid = contains_flow_index and contains_switch_index and switch_contains_in_port and switch_contains_out_port
+        is_valid = contains_switch_index and switch_contains_ports and belongs_to_path
 
         ### TODO: Debugging
         print('...')
         print('--> isValidAction')
-        # print('contains_flow_index = ', contains_flow_index)
         # print('contains_switch_index = ', contains_switch_index)
         # print('switch_contains_in_port = ', switch_contains_in_port)
         # print('switch_contains_out_port = ', switch_contains_out_port)
         #
         # print('portas do switch = ', self.switch_possible_ports[switch_id])
 
-        print('flow_index = ', flow_index)
-        print('flow_id = ', self.flows_ids[flow_index])
         print('switch_index = ', switch_index)
         print('switch_id = ', self.switch_ids[switch_index])
         print('in_port = ', in_port)
         print('out_port = ', out_port)
+        print('belongs_to_path = ', belongs_to_path)
         print('is_valid = ', is_valid)
         print('...')
 
@@ -441,6 +474,7 @@ class LoadBalanceEnv(gym.Env):
             next_state = self.getState()
             reward = self.calculateReward(next_state)
         else:
+            # # TODO: pede outra ação!! Só devemos aplicar ações válidas
             next_state = self.getState()
             reward = 0
 

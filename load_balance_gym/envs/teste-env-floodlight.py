@@ -51,16 +51,18 @@ for flow_index in range(0, NUM_FLOWS):
 
 
 # Fluxo sai de H1 e vai para H2
-env = LoadBalanceEnv(num_flows=NUM_FLOWS, source_port=1, source_switch=0, target_port=1, target_switch=2)
+env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
 
 
-env.getFlows()
+env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 
-print('Vai dar um step.')
-action = env.action_space.sample()
-print('Action = ', action)
-next_state, reward = env.step(action)
-print('next_state = ', next_state)
-print('reward = ', reward)
+
+#
+# print('Vai dar um step.')
+# action = env.action_space.sample()
+# print('Action = ', action)
+# next_state, reward = env.step(action)
+# print('next_state = ', next_state)
+# print('reward = ', reward)
 
 print('Feito.')

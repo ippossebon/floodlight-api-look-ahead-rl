@@ -67,7 +67,8 @@ switch_id = '00:00:00:00:00:00:00:01'
 #
 # print('Resposta desse cara ', response_data)
 
-env.actionBelongsToPath(0, 1, 2)
+action = [0, 1, 2]
+env.actionBelongsToPath(action)
 
 
 # env.getMostCostlyFlow('00:00:00:00:00:00:00:01')

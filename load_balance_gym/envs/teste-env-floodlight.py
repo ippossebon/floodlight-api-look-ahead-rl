@@ -62,10 +62,12 @@ switch_id = '00:00:00:00:00:00:00:01'
 # response = requests.get('{host}/wm/staticentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
 # response_data = response.json()
 
-response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
-response_data = response.json()
+# response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+# response_data = response.json()
+#
+# print('Resposta desse cara ', response_data)
 
-print('Resposta desse cara ', response_data)
+env.actionBelongsToPath(0, 1, 2)
 
 
 # env.getMostCostlyFlow('00:00:00:00:00:00:00:01')

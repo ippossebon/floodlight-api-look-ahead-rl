@@ -428,13 +428,26 @@ class LoadBalanceEnv(gym.Env):
     def actionBelongsToPath(self, action):
         # Deve checar se faz parte de um caminho possível
         switch_index = action[0]
-        in_port_index = action[1]
         out_port_index = action[2]
 
-        print('Possible paths: ', self.possible_paths)
-        # self.possible_paths
+        switch_id = self.switch_ids[switch_index]
+        out_port = str(out_port_index + 1)
 
-        pass
+        
+        # Possible paths lista os links. Ex: saí de switch X na porta Y, cheguei em switch X na porta Z
+        """
+        Possible paths:  [[{'00:00:00:00:00:00:00:01': '3'}, {'00:00:00:00:00:00:00:04': '1'}, {'00:00:00:00:00:00:00:04': '3'}, {'00:00:00:00:00:00:00:03': '3'}], [{'00:00:00:00:00:00:00:01': '2'}, {'00:00:00:00:00:00:00:02': '1'}, {'00:00:00:00:00:00:00:02': '4'}, {'00:00:00:00:00:00:00:03': '2'}], [{'00:00:00:00:00:00:00:01': '3'}, {'00:00:00:00:00:00:00:04': '1'}, {'00:00:00:00:00:00:00:04': '2'}, {'00:00:00:00:00:00:00:02': '2'}, {'00:00:00:00:00:00:00:02': '4'}, {'00:00:00:00:00:00:00:03': '2'}]]
+        """
+
+        for path in self.possible_paths:
+            for link in path:
+                contains_rule_as_source = link[0].keys()[0] == switch_id and link[0].values()[0] == out_port
+                contains_rule_as_target = link[1].keys()[0] == switch_id and link[1].values()[0] == out_port
+
+                if contains_rule_as_source or contains_rule_as_target:
+                    return True
+
+        return False
 
     def isValidAction(self, action):
         switch_index = action[0]

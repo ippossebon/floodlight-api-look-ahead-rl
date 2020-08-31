@@ -68,12 +68,14 @@ switch_id = '00:00:00:00:00:00:00:01'
 # print('Resposta desse cara ', response_data)
 
 action = [0, 1, 2]
-env.actionBelongsToPath(action)
+action_belongs_to_path =  env.actionBelongsToPath(action)
+print('Action = ', action)
+print('Possible paths: ', env.possible_paths)
+print('action_belongs_to_path: ', action_belongs_to_path)
+
 
 
 # env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-time.sleep(30)
-
 
 #
 # print('Vai dar um step.')

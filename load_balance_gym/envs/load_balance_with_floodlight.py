@@ -442,10 +442,10 @@ class LoadBalanceEnv(gym.Env):
         for path in self.possible_paths:
             for link in path:
                 print('link = ', link)
-                contains_rule_as_source = link[0].keys()[0] == switch_id and link[0].values()[0] == out_port
-                contains_rule_as_target = link[1].keys()[0] == switch_id and link[1].values()[0] == out_port
+                print('link.keys() = ', link.keys())
+                print('link.values() = ', link.values())
 
-                if contains_rule_as_source or contains_rule_as_target:
+                if link.keys()[0] == switch_id and link.values()[0] == out_port:
                     return True
 
         return False

@@ -54,14 +54,22 @@ for flow_index in range(0, NUM_FLOWS):
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
 
+time.sleep(10)
+
+
 switch_id = '00:00:00:00:00:00:00:01'
-response = requests.get('{host}/wm/staticentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+# Indica quais sao os fluxos que passam por aquele switch.
+# response = requests.get('{host}/wm/staticentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+# response_data = response.json()
+
+response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
 response_data = response.json()
 
+print('Resposta desse cara ', response_data)
 
 
-time.sleep(60)
 # env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+time.sleep(30)
 
 
 #

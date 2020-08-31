@@ -441,12 +441,12 @@ class LoadBalanceEnv(gym.Env):
 
         for path in self.possible_paths:
             for link in path:
-                print('link = ', link)
-                print('link.keys() = ', link.keys())
-                print('link.values() = ', link.values())
+                for link_switch_id in link.keys():
+                    link_out_port = link[link_switch_id]
+                    print('out_port = {0} - link_out_port = {1}'.format(out_port, link_out_port))
 
-                if link.keys()[0] == switch_id and link.values()[0] == out_port:
-                    return True
+                    if out_port == link_out_port:
+                        return True
 
         return False
 

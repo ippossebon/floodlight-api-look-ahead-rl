@@ -55,7 +55,7 @@ for flow_index in range(0, NUM_FLOWS):
 env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
 
 switch_id = '00:00:00:00:00:00:00:01'
-response = requests.get('{host}/wm/statistics/bandwidth/{switch_id}/all/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+response = requests.get('{host}/wm/staticentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
 response_data = response.json()
 
 

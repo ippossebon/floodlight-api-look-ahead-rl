@@ -366,6 +366,7 @@ class LoadBalanceEnv(gym.Env):
         print('response_data', response_data)
         print('')
 
+
         flows_ids = []
         for switch in response_data:
             if switch == switch_id:

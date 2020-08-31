@@ -433,7 +433,7 @@ class LoadBalanceEnv(gym.Env):
         switch_id = self.switch_ids[switch_index]
         out_port = str(out_port_index + 1)
 
-        
+
         # Possible paths lista os links. Ex: saí de switch X na porta Y, cheguei em switch X na porta Z
         """
         Possible paths:  [[{'00:00:00:00:00:00:00:01': '3'}, {'00:00:00:00:00:00:00:04': '1'}, {'00:00:00:00:00:00:00:04': '3'}, {'00:00:00:00:00:00:00:03': '3'}], [{'00:00:00:00:00:00:00:01': '2'}, {'00:00:00:00:00:00:00:02': '1'}, {'00:00:00:00:00:00:00:02': '4'}, {'00:00:00:00:00:00:00:03': '2'}], [{'00:00:00:00:00:00:00:01': '3'}, {'00:00:00:00:00:00:00:04': '1'}, {'00:00:00:00:00:00:00:04': '2'}, {'00:00:00:00:00:00:00:02': '2'}, {'00:00:00:00:00:00:00:02': '4'}, {'00:00:00:00:00:00:00:03': '2'}]]
@@ -441,6 +441,7 @@ class LoadBalanceEnv(gym.Env):
 
         for path in self.possible_paths:
             for link in path:
+                print('link = ', link)
                 contains_rule_as_source = link[0].keys()[0] == switch_id and link[0].values()[0] == out_port
                 contains_rule_as_target = link[1].keys()[0] == switch_id and link[1].values()[0] == out_port
 

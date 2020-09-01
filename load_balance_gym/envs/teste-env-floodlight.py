@@ -58,27 +58,27 @@ env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switc
 time.sleep(20)
 
 
-# print('Vai aplicar uma acao valida: ')
-# action = [0, 1, 2]
-# next_state, reward, done = env.step(action)
-#
-# print('next_state = ', next_state)
-# print('reward = ', reward)
-#
-# print('Render: ')
-# env.render()
+print('Vai aplicar uma acao valida: ')
+action = [0, 1, 2]
+next_state, reward, done = env.step(action)
 
-# print('-------------------------------------------------')
-#
-# print('Vai aplicar uma acao invalida: ')
-# action = [4, 1, 3]
-# next_state, reward, done = env.step(action)
-#
-# print('next_state = ', next_state)
-# print('reward = ', reward)
-#
-# print('Render: ')
-# env.render()
+print('next_state = ', next_state)
+print('reward = ', reward)
+
+print('Render: ')
+env.render()
+
+print('-------------------------------------------------')
+
+print('Vai aplicar uma acao invalida: ')
+action = [4, 1, 3]
+next_state, reward, done = env.step(action)
+
+print('next_state = ', next_state)
+print('reward = ', reward)
+
+print('Render: ')
+env.render()
 
 print('*** Recompensas: ')
 # Melhor estado possível:

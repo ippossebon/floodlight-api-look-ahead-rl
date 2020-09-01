@@ -389,14 +389,14 @@ class LoadBalanceEnv(gym.Env):
                         print('Flow ID: ', flow_id)
 
                         if flow_byte_count > max_byte_count:
-                            print('é maior!')
+                            print('eh maior!')
                             print('flow_byte_count', flow_byte_count)
                             print('max_byte_count', max_byte_count)
                             max_byte_count = flow_byte_count
                             max_usage_flow_id = flow_id
 
 
-        print('Fluxo que exige mais é: ', max_usage_flow_id)
+        print('Fluxo que exige mais eh: ', max_usage_flow_id)
 
         return max_usage_flow_id
 

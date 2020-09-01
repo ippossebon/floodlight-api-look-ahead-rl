@@ -544,6 +544,11 @@ class LoadBalanceEnv(gym.Env):
 
 
     def calculateReward(self, state):
+        for i in range(len(state)):
+            if state[i] == 0:
+                state[i] = EPSILON
+
+
         state_values_sum = numpy.sum(1.0/state) or EPSILON
         harmonic_mean = float(len(state) / state_values_sum)
 

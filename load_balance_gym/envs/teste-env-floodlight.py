@@ -58,26 +58,39 @@ env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switc
 time.sleep(20)
 
 
-print('Vai aplicar uma acao valida: ')
-action = [0, 1, 2]
-next_state, reward, done = env.step(action)
+# print('Vai aplicar uma acao valida: ')
+# action = [0, 1, 2]
+# next_state, reward, done = env.step(action)
+#
+# print('next_state = ', next_state)
+# print('reward = ', reward)
+#
+# print('Render: ')
+# env.render()
 
-print('next_state = ', next_state)
-print('reward = ', reward)
+# print('-------------------------------------------------')
+#
+# print('Vai aplicar uma acao invalida: ')
+# action = [4, 1, 3]
+# next_state, reward, done = env.step(action)
+#
+# print('next_state = ', next_state)
+# print('reward = ', reward)
+#
+# print('Render: ')
+# env.render()
 
-print('Render: ')
-env.render()
+print('*** Recompensas: ')
+# Melhor estado possível:
+max_link_capacity = 60
+state = [max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity, max_link_capacity]
+reward = env.calculateReward(state)
+print('State = {0} -- Reward: {1}'.format(state, reward))
 
-print('-------------------------------------------------')
 
-print('Vai aplicar uma acao invalida: ')
-action = [4, 1, 3]
-next_state, reward, done = env.step(action)
-
-print('next_state = ', next_state)
-print('reward = ', reward)
-
-print('Render: ')
-env.render()
+# Pior estado possível:
+state = [max_link_capacity, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+reward = env.calculateReward(state)
+print('State = {0} -- Reward: {1}'.format(state, reward))
 
 print('Fim.')

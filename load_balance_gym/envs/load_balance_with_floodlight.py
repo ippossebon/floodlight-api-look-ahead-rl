@@ -516,7 +516,7 @@ class LoadBalanceEnv(gym.Env):
         # Garante que só vamos executar ações válidas.
         while not (is_valid_action and flow_id):
             # Se a ação for inválida, pedimos uma nova ação.
-            action = agent.getAction(state)
+            action = self.action_space.sample() # TODO: rever!!!!
             is_valid_action = self.isValidAction(action)
             switch_index = action[0]
             switch_id = self.switch_ids[switch_index]

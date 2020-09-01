@@ -379,7 +379,6 @@ class LoadBalanceEnv(gym.Env):
             if switch == switch_id:
                 for flow_obj in response_data[switch_id]['flows']:
 
-                    print('flow_obj = ', flow_obj)
                     flow_cookie = flow_obj['cookie']
                     if flow_cookie != '0':
                         flow_obj_keys = flow_obj.keys()
@@ -389,8 +388,15 @@ class LoadBalanceEnv(gym.Env):
                         print('Byte count: ', flow_byte_count)
                         print('Flow ID: ', flow_id)
 
-                        if flow_byte_count > max_byte_count:
+                        if  > max_byte_count:
+                            print('é maior!')
+                            print('flow_byte_count', flow_byte_count)
+                            print('max_byte_count', max_byte_count)
+                            max_byte_count = flow_byte_count
                             max_usage_flow_id = flow_id
+
+
+        print('Fluxo que exige mais é: ', max_usage_flow_id)
 
         return max_usage_flow_id
 

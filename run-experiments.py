@@ -1,6 +1,6 @@
 from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
 
-from staticFlowPusher import StaticFlowPusher
+from load_balance_gym.envs.staticFlowPusher import StaticFlowPusher
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy

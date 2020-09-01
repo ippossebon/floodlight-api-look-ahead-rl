@@ -371,13 +371,6 @@ class LoadBalanceEnv(gym.Env):
         print('response_data', response_data)
         print('')
 
-        print('flows cookies = ', self.flows_cookies)
-
-        response2 = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
-        response_data2 = response2.json()
-        print('staticpusher resposta = ', response_data2)
-
-
         """
 
         {'00:00:00:00:00:00:00:04': {'flows': [{'version': 'OF_13', 'cookie': '0', 'table_id': '0x0', 'packet_count': '290', 'byte_count': '21846', 'duration_sec': '1371', 'duration_nsec': '438000000', 'priority': '0', 'idle_timeout_s': '0', 'hard_timeout_s': '0', 'flags': [], 'match': {}, 'instructions': {'instruction_apply_actions': {'actions': 'output=controller'}}}]}, '00:00:00:00:00:00:00:05': {'flows': [{'version': 'OF_13', 'cookie': '0', 'table_id': '0x0', 'packet_count': '187', 'byte_count': '14041', 'duration_sec': '1371', 'duration_nsec': '435000000', 'priority': '0', 'idle_timeout_s': '0', 'hard_timeout_s': '0', 'flags': [], 'match': {}, 'instructions': {'instruction_apply_actions': {'actions': 'output=controller'}}}]}, '00:00:00:00:00:00:00:02': {'flows': [{'version': 'OF_13', 'cookie': '0', 'table_id': '0x0', 'packet_count': '377', 'byte_count': '28347', 'duration_sec': '1371', 'duration_nsec': '406000000', 'priority': '0', 'idle_timeout_s': '0', 'hard_timeout_s': '0', 'flags': [], 'match': {}, 'instructions': {'instruction_apply_actions': {'actions': 'output=controller'}}}]}, '00:00:00:00:00:00:00:03': {'flows': [{'version': 'OF_13', 'cookie': '0', 'table_id': '0x0', 'packet_count': '283', 'byte_count': '21281', 'duration_sec': '1371', 'duration_nsec': '304000000', 'priority': '0', 'idle_timeout_s': '0', 'hard_timeout_s': '0', 'flags': [], 'match': {}, 'instructions': {'instruction_apply_actions': {'actions': 'output=controller'}}}]}, '00:00:00:00:00:00:00:01': {'flows': [{'version': 'OF_13', 'cookie': '49539595572507916', 'table_id': '0x0', 'packet_count': '0', 'byte_count': '0', 'duration_sec': '1330', 'duration_nsec': '532000000', 'priority': '32768', 'idle_timeout_s': '0', 'hard_timeout_s': '0', 'flags': ['SEND_FLOW_REM'], 'match': {'in_port': '1'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}}, {'version': 'OF_13', 'cookie': '0', 'table_id': '0x0', 'packet_count': '192', 'byte_count': '14448', 'duration_sec': '1371', 'duration_nsec': '415000000', 'priority': '0', 'idle_timeout_s': '0', 'hard_timeout_s': '0', 'flags': [], 'match': {}, 'instructions': {'instruction_apply_actions': {'actions': 'output=controller'}}}]}}
@@ -388,12 +381,18 @@ class LoadBalanceEnv(gym.Env):
         for switch in response_data:
             if switch == switch_id:
                 for flow_obj in response_data[switch_id]['flows']:
+
+                    print('flow_obj_keys = ', flow_obj_keys)
+                    print('max_byte_count = ', max_byte_count)
+                    print('Flow ID: {0} - cookie: {1}'.format(flow_id, self.flows_cookies[flow_id]))
+                    print('Flow: ID: {0} - Byte count: {1}'.format(flow_id, flow_obj_keys['byte_count']))
+
+
                     flow_obj_keys = flow_obj.keys()
                     flow_id = '' # TODO: como conseguir o ID? deveria olhar pro cookie?
                     flow_byte_count = flow_obj_keys['byte_count']
 
-                    print('max_byte_count = ', max_byte_count)
-                    print('Flow: {0} - {1}'.format(flow_id, flow_byte_count))
+
 
                     if flow_byte_count > max_byte_count:
                         max_usage_flow_id = flow_id

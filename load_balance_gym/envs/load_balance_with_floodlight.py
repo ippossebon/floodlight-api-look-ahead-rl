@@ -358,7 +358,7 @@ class LoadBalanceEnv(gym.Env):
 
     def getFlowIdByCookie(self, cookie):
         for flow_id, flow_cookie in self.flows_cookies.items():
-            if flow_cookie == cokie:
+            if flow_cookie == cookie:
                 return flow_id
         return None
 

@@ -1,9 +1,14 @@
 from load_balance_with_floodlight import LoadBalanceEnv
+
 from staticFlowPusher import StaticFlowPusher
+from stable_baselines.common.policies import MlpPolicy
+from stable_baselines.common import make_vec_env
+from stable_baselines import PPO2
 
 import json
 import time
 import requests
+import gym
 
 """
 Ideia do experimento: iniciar com 5 fluxos.
@@ -31,7 +36,6 @@ CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 NUM_FLOWS = 5
 
-
 for flow_index in range(0, NUM_FLOWS):
     # Adiciona fluxo na rede.
     flow_name = 'flow-{0}'.format(flow_index)
@@ -39,7 +43,7 @@ for flow_index in range(0, NUM_FLOWS):
         'switch':'00:00:00:00:00:00:00:01',
         'name': flow_name,
         'cookie':'0',
-        'priority':'32768',
+        'priority':'32767',
         'in_port':'1',
         'active':'true',
         'actions':'output=2'
@@ -53,31 +57,24 @@ for flow_index in range(0, NUM_FLOWS):
 
 
 # Fluxo sai de H1 e vai para H2
-env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
+# env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
 
 time.sleep(20)
 
+# multiprocess environment
+# env = make_vec_env('CartPole-v1', n_envs=4)
+env = gym.make('Load-Balance-v1', source_port=1, source_switch=0, target_port=1, target_switch=2)
 
-print('Vai aplicar uma ação válida: ')
-action = []
-next_state, reward = env.step(action)
+model = PPO2(MlpPolicy, env, verbose=1)
+model.learn(total_timesteps=25000)
+model.save('ppo2_load_balance')
 
-print('next_state = ', next_state)
-print('reward = ', reward)
+del model # remove to demonstrate saving and loading
 
-print('Render: ')
-env.render()
+model = PPO2.load('ppo2_load_balance')
 
-print('-------------------------------------------------')
-
-print('Vai aplicar uma ação inválida: ')
-action = []
-next_state, reward = env.step(action)
-
-print('next_state = ', next_state)
-print('reward = ', reward)
-
-print('Render: ')
-env.render()
-
-print('Fim.')
+obs = env.reset()
+while True:
+    action, _states = model.predict(obs)
+    obs, rewards, dones, info = env.step(action)
+    env.render()

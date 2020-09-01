@@ -59,12 +59,10 @@ class LoadBalanceEnv(gym.Env):
         self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch])
         self.enableSwitchStatisticsEndpoit()
 
-
         # Ao descobrir a topologia, só são adicionadas as portas que conectam switches
         self.switch_possible_ports[self.switch_ids[source_switch]].append(str(source_port))
         self.switch_possible_ports[self.switch_ids[target_switch]].append(str(target_port))
 
-        # State = Links usage as [link_A_usage, link_B_usage, link_C_usage, link_D_usage, ..., link_I_usage]
         self.observation_space = spaces.Box(
             low=0,
             high=LINK_CAPACITY,
@@ -83,6 +81,7 @@ class LoadBalanceEnv(gym.Env):
             dtype=numpy.int16
         )
 
+        self.state = None
         self.reward_range = (0, 1)
 
 
@@ -251,7 +250,10 @@ class LoadBalanceEnv(gym.Env):
 
 
     def reset(self):
-        numpy.zeros(NUM_PORTS)
+        self.state = numpy.zeros()
+
+        return numpy.zeros()
+
 
     def getFlows(self):
         response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
@@ -357,7 +359,6 @@ class LoadBalanceEnv(gym.Env):
         # return self.flow_pusher.set(rule)
 
     def getFlowIdByCookie(self, cookie):
-        print('cookie', cookie)
         for flow_id, flow_cookie in self.flows_cookies.items():
             print('flow_id: {0} - flow_cookie = {1}'.format(flow_id, flow_cookie))
             if flow_cookie == cookie:
@@ -377,8 +378,6 @@ class LoadBalanceEnv(gym.Env):
 
         flows_ids = []
 
-        print('response de flows: ', response_data[switch_id]['flows'])
-
         for flow_obj in response_data[switch_id]['flows']:
 
             flow_cookie = flow_obj['cookie']
@@ -392,20 +391,14 @@ class LoadBalanceEnv(gym.Env):
                     max_usage_flow_id = flow_id
 
 
-        print('max_byte_count: ', max_byte_count)
-        print('Fluxo que exige mais eh: ', max_usage_flow_id)
+        print('[getMostCostlyFlow] max_byte_count: ', max_byte_count)
+        print('[getMostCostlyFlow] max_usage_flow_id: ', max_usage_flow_id)
 
         return max_usage_flow_id
 
-    def actionToRule(self, action, priority=MAX_PRIORITY):
+    def actionToRule(self, switch_id, in_port, out_port, flow_id, priority=MAX_PRIORITY):
+        # Só recebe ações possíveis
         # Ação = (flow_index, switch_index, in_port, out_port)
-        switch_index = action[0]
-        in_port = str(action[1] + 1)
-        out_port = str(action[2] + 1)
-
-        switch_id = self.switch_ids[switch_index]
-
-        flow_id = self.getMostCostlyFlow(switch_id)
         rule = {
             "switch": switch_id,
             "name": flow_id,
@@ -440,7 +433,6 @@ class LoadBalanceEnv(gym.Env):
 
         switch_id = self.switch_ids[switch_index]
         out_port = str(out_port_index + 1)
-
 
         # Possible paths lista os links. Ex: saí de switch X na porta Y, cheguei em switch X na porta Z
         """
@@ -496,7 +488,6 @@ class LoadBalanceEnv(gym.Env):
         # print('portas do switch = ', self.switch_possible_ports[switch_id])
 
         print('switch_index = ', switch_index)
-        print('switch_id = ', self.switch_ids[switch_index])
         print('in_port = ', in_port)
         print('out_port = ', out_port)
         print('belongs_to_path = ', belongs_to_path)
@@ -511,21 +502,45 @@ class LoadBalanceEnv(gym.Env):
         next_state = []
         reward = 0
 
-        if self.isValidAction(action):
-            rule = self.actionToRule(action)
-            print('Regra a ser instalada = ', rule)
-            self.installRule(rule)
+        switch_index = action[0]
+        in_port_index = action[1]
+        out_port_index = action[2]
 
-            time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
+        switch_id = self.switch_ids[switch_index]
+        in_port = str(in_port_index + 1)
+        out_port = str(out_port_index + 1)
 
-            next_state = self.getState()
-            reward = self.calculateReward(next_state)
-        else:
-            # # TODO: pede outra ação!! Só devemos aplicar ações válidas
-            next_state = self.getState()
-            reward = 0
+        is_valid_action = env.isValidAction(action)
+        flow_id = env.getMostCostlyFlow(switch_id) if is_valid_action else None
 
-        return next_state, reward
+        # Garante que só vamos executar ações válidas.
+        while not (is_valid_action and flow_id):
+            # Se a ação for inválida, pedimos uma nova ação.
+            action = agent.getAction(state)
+            is_valid_action = self.isValidAction(action)
+            switch_index = action[0]
+            switch_id = self.switch_ids[switch_index]
+            flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
+
+
+        rule = self.actionToRule(
+            switch_id,
+            in_port,
+            out_port,
+            flow_id
+        )
+
+        print('Regra a ser instalada = ', rule)
+        self.installRule(rule)
+
+        time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
+
+        next_state = self.getState()
+        reward = self.calculateReward(next_state)
+
+        self.state = next_state
+
+        return next_state, reward, done
 
 
     def calculateReward(self, state):
@@ -533,3 +548,7 @@ class LoadBalanceEnv(gym.Env):
         harmonic_mean = float(len(state) / state_values_sum)
 
         return harmonic_mean
+
+    def render(self):
+        print('State = ', self.state)
+        print('Flow ids = ', self.flows_ids)

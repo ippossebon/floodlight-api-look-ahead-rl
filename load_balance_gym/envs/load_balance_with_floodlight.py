@@ -250,9 +250,9 @@ class LoadBalanceEnv(gym.Env):
 
 
     def reset(self):
-        self.state = numpy.zeros()
+        self.state = numpy.zeros([0, 0, 0])
 
-        return numpy.zeros()
+        return numpy.zeros([0, 0, 0])
 
 
     def getFlows(self):

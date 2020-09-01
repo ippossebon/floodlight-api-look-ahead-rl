@@ -1,4 +1,4 @@
-from load_balance_with_floodlight import LoadBalanceEnv
+from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
 
 from staticFlowPusher import StaticFlowPusher
 

@@ -371,6 +371,8 @@ class LoadBalanceEnv(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+        print('response de flows: ', response_data)
+
         max_byte_count = -1
         max_usage_flow_id = None # preciso de um fallback
 

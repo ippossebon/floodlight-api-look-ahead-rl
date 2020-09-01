@@ -371,25 +371,25 @@ class LoadBalanceEnv(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print('response de flows: ', response_data)
 
         max_byte_count = -1
         max_usage_flow_id = None # preciso de um fallback
 
         flows_ids = []
-        for switch in response_data:
-            if switch == switch_id:
-                for flow_obj in response_data[switch_id]['flows']:
 
-                    flow_cookie = flow_obj['cookie']
-                    if flow_cookie != '0':
-                        flow_obj_keys = flow_obj.keys()
-                        flow_id = self.getFlowIdByCookie(flow_cookie) # TODO: como conseguir o ID? deveria olhar pro cookie?
-                        flow_byte_count = int(flow_obj['byte_count'])
+        print('response de flows: ', response_data[switch_id]['flows'])
 
-                        if flow_byte_count > max_byte_count:
-                            max_byte_count = flow_byte_count
-                            max_usage_flow_id = flow_id
+        for flow_obj in response_data[switch_id]['flows']:
+
+            flow_cookie = flow_obj['cookie']
+            if flow_cookie != '0':
+                flow_obj_keys = flow_obj.keys()
+                flow_id = self.getFlowIdByCookie(flow_cookie) # TODO: como conseguir o ID? deveria olhar pro cookie?
+                flow_byte_count = int(flow_obj['byte_count'])
+
+                if flow_byte_count > max_byte_count:
+                    max_byte_count = flow_byte_count
+                    max_usage_flow_id = flow_id
 
 
         print('max_byte_count: ', max_byte_count)

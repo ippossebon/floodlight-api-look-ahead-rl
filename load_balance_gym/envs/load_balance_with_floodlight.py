@@ -356,6 +356,12 @@ class LoadBalanceEnv(gym.Env):
         return requests.post(urlPath, data=rule, headers=headers)
         # return self.flow_pusher.set(rule)
 
+    def getFlowIdByCookie(self, cookie):
+        for flow_id, flow_cookie in self.flows_cookies.items():
+            if flow_cookie == cokie:
+                return flow_id
+        return None
+
     def getMostCostlyFlow(self, switch_id):
         # retorna o fluxo que exige mais do switch, pra que esse tenha suas
         # rotas recalculadas
@@ -384,15 +390,14 @@ class LoadBalanceEnv(gym.Env):
 
                     print('flow_obj = ', flow_obj)
                     print('max_byte_count = ', max_byte_count)
-                    print('Flow ID: {0} - cookie: {1}'.format(flow_id, self.flows_cookies[flow_id]))
-                    print('Flow: ID: {0} - Byte count: {1}'.format(flow_id, flow_obj_keys['byte_count']))
 
-
+                    flow_cookie = flow_obj['cookie']
                     flow_obj_keys = flow_obj.keys()
-                    flow_id = '' # TODO: como conseguir o ID? deveria olhar pro cookie?
+                    flow_id = self.getFlowIdByCookie(flow_cookie) # TODO: como conseguir o ID? deveria olhar pro cookie?
                     flow_byte_count = flow_obj_keys['byte_count']
 
-
+                    print('Byte count: {1}'.format(flow_obj_keys['byte_count']))
+                    print('Flow ID: {0} - cookie: {1}'.format(flow_id, self.flows_cookies[flow_id]))
 
                     if flow_byte_count > max_byte_count:
                         max_usage_flow_id = flow_id

@@ -388,7 +388,7 @@ class LoadBalanceEnv(gym.Env):
                         print('Byte count: ', flow_byte_count)
                         print('Flow ID: ', flow_id)
 
-                        if  > max_byte_count:
+                        if flow_byte_count > max_byte_count:
                             print('é maior!')
                             print('flow_byte_count', flow_byte_count)
                             print('max_byte_count', max_byte_count)

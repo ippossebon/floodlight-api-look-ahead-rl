@@ -67,22 +67,10 @@ switch_id = '00:00:00:00:00:00:00:01'
 #
 # print('Resposta desse cara ', response_data)
 
-action = [0, 1, 2]
-action_belongs_to_path =  env.actionBelongsToPath(action)
-print('Action = ', action)
-print('Possible paths: ', env.possible_paths)
-print('action_belongs_to_path que deve ser true: ', action_belongs_to_path)
-
-
-action = [2, 1, 3]
-action_belongs_to_path =  env.actionBelongsToPath(action)
-print('Action = ', action)
-print('Possible paths: ', env.possible_paths)
-print('action_belongs_to_path que deve ser FALSE: ', action_belongs_to_path)
 
 
 
-# env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 
 #
 # print('Vai dar um step.')

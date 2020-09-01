@@ -262,6 +262,7 @@ class LoadBalanceEnv(gym.Env):
         for switch_id in response_data:
             for flow_obj in response_data[switch_id]:
                 flow_obj_keys = flow_obj.keys()
+                print('flow_obj', flow_obj)
                 for flow_id in flow_obj_keys:
                     if flow_id not in flows_ids:
                         flows_ids.append(flow_id)
@@ -372,7 +373,7 @@ class LoadBalanceEnv(gym.Env):
         print('')
 
         print('flows cookies = ', self.flows_cookies)
-        
+
         response2 = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
         response_data2 = response2.json()
         print('staticpusher resposta = ', response_data2)

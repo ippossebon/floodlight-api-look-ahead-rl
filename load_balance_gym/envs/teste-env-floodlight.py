@@ -1,5 +1,4 @@
 from load_balance_with_floodlight import LoadBalanceEnv
-from staticFlowPusher import StaticFlowPusher
 
 import json
 import time

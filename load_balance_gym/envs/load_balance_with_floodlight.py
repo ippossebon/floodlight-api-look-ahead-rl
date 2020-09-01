@@ -549,7 +549,7 @@ class LoadBalanceEnv(gym.Env):
                 state[i] = EPSILON
 
 
-        state_values_sum = numpy.sum(1.0/state) or EPSILON
+        state_values_sum = numpy.sum(1.0/numpy.array(state)) or EPSILON
         harmonic_mean = float(len(state) / state_values_sum)
 
         return harmonic_mean

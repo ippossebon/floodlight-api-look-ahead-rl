@@ -34,7 +34,7 @@ class LoadBalanceEnv(gym.Env):
         self.src_port = source_port
         self.dst_port = target_port
 
-        self.flows_ids = self.getFlows()
+        self.flows_ids, self.flows_cookies = self.getFlows()
 
         # TODO: será que o if de fluxos vai ficar aqui dentro?
 
@@ -258,15 +258,19 @@ class LoadBalanceEnv(gym.Env):
         response_data = response.json()
 
         flows_ids = []
+        flow_cookies = {}
         for switch_id in response_data:
             for flow_obj in response_data[switch_id]:
                 flow_obj_keys = flow_obj.keys()
                 for flow_id in flow_obj_keys:
                     if flow_id not in flows_ids:
                         flows_ids.append(flow_id)
+                        flow_cookies[flow_id] = flow_obj['cookie']
 
         print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
-        return sorted(flows_ids)
+        print('-> [getFlows] Cookies dos fluxos na rede: ', flow_cookies)
+
+        return sorted(flows_ids), flow_cookies
 
 
     def getState(self):
@@ -367,6 +371,8 @@ class LoadBalanceEnv(gym.Env):
         print('response_data', response_data)
         print('')
 
+        print('flows cookies = ', self.flows_cookies)
+        
         response2 = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
         response_data2 = response2.json()
         print('staticpusher resposta = ', response_data2)

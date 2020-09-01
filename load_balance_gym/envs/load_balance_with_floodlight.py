@@ -382,7 +382,7 @@ class LoadBalanceEnv(gym.Env):
             if switch == switch_id:
                 for flow_obj in response_data[switch_id]['flows']:
 
-                    print('flow_obj_keys = ', flow_obj_keys)
+                    print('flow_obj = ', flow_obj)
                     print('max_byte_count = ', max_byte_count)
                     print('Flow ID: {0} - cookie: {1}'.format(flow_id, self.flows_cookies[flow_id]))
                     print('Flow: ID: {0} - Byte count: {1}'.format(flow_id, flow_obj_keys['byte_count']))

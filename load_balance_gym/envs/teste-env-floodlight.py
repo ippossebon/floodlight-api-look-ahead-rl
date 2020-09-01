@@ -60,7 +60,7 @@ time.sleep(20)
 
 print('Vai aplicar uma acao valida: ')
 action = [0, 1, 2]
-next_state, reward = env.step(action)
+next_state, reward, done = env.step(action)
 
 print('next_state = ', next_state)
 print('reward = ', reward)
@@ -72,7 +72,7 @@ print('-------------------------------------------------')
 
 print('Vai aplicar uma acao invalida: ')
 action = [4, 1, 3]
-next_state, reward = env.step(action)
+next_state, reward, done = env.step(action)
 
 print('next_state = ', next_state)
 print('reward = ', reward)

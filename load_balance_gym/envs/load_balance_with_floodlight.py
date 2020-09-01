@@ -510,8 +510,8 @@ class LoadBalanceEnv(gym.Env):
         in_port = str(in_port_index + 1)
         out_port = str(out_port_index + 1)
 
-        is_valid_action = env.isValidAction(action)
-        flow_id = env.getMostCostlyFlow(switch_id) if is_valid_action else None
+        is_valid_action = self.isValidAction(action)
+        flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
 
         # Garante que só vamos executar ações válidas.
         while not (is_valid_action and flow_id):

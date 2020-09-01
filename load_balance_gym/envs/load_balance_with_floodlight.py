@@ -380,17 +380,17 @@ class LoadBalanceEnv(gym.Env):
                 for flow_obj in response_data[switch_id]['flows']:
 
                     print('flow_obj = ', flow_obj)
-
                     flow_cookie = flow_obj['cookie']
-                    flow_obj_keys = flow_obj.keys()
-                    flow_id = self.getFlowIdByCookie(flow_cookie) # TODO: como conseguir o ID? deveria olhar pro cookie?
-                    flow_byte_count = int(flow_obj['byte_count'])
+                    if flow_cookie != '0':
+                        flow_obj_keys = flow_obj.keys()
+                        flow_id = self.getFlowIdByCookie(flow_cookie) # TODO: como conseguir o ID? deveria olhar pro cookie?
+                        flow_byte_count = int(flow_obj['byte_count'])
 
-                    print('Byte count: ', flow_byte_count)
-                    print('Flow ID: ', flow_id)
+                        print('Byte count: ', flow_byte_count)
+                        print('Flow ID: ', flow_id)
 
-                    if flow_byte_count > max_byte_count:
-                        max_usage_flow_id = flow_id
+                        if flow_byte_count > max_byte_count:
+                            max_usage_flow_id = flow_id
 
         return max_usage_flow_id
 

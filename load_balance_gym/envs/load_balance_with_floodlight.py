@@ -262,11 +262,10 @@ class LoadBalanceEnv(gym.Env):
         for switch_id in response_data:
             for flow_obj in response_data[switch_id]:
                 flow_obj_keys = flow_obj.keys()
-                print('flow_obj', flow_obj)
                 for flow_id in flow_obj_keys:
                     if flow_id not in flows_ids:
                         flows_ids.append(flow_id)
-                        flow_cookies[flow_id] = flow_obj['cookie']
+                        flow_cookies[flow_id] = flow_obj[flow_id]['cookie']
 
         print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
         print('-> [getFlows] Cookies dos fluxos na rede: ', flow_cookies)

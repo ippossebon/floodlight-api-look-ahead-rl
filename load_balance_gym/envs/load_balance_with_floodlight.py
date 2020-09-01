@@ -394,9 +394,9 @@ class LoadBalanceEnv(gym.Env):
                     flow_cookie = flow_obj['cookie']
                     flow_obj_keys = flow_obj.keys()
                     flow_id = self.getFlowIdByCookie(flow_cookie) # TODO: como conseguir o ID? deveria olhar pro cookie?
-                    flow_byte_count = flow_obj_keys['byte_count']
+                    flow_byte_count = flow_obj['byte_count']
 
-                    print('Byte count: {1}'.format(flow_obj_keys['byte_count']))
+                    print('Byte count: {1}'.format(flow_byte_count))
                     print('Flow ID: {0} - cookie: {1}'.format(flow_id, self.flows_cookies[flow_id]))
 
                     if flow_byte_count > max_byte_count:

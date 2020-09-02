@@ -67,7 +67,7 @@ class LoadBalanceEnv(gym.Env):
             low=0,
             high=LINK_CAPACITY,
             shape=(self.num_ports, 1), # array com o RX de cada porta
-            dtype=numpy.float16
+            dtype=numpy.int_
         )
 
         # Ação = (flow_id, switch_id, in_port, out_port)
@@ -78,7 +78,7 @@ class LoadBalanceEnv(gym.Env):
         self.action_space = spaces.Box(
             low=numpy.array([0, 0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
             high=numpy.array([max_switch_index, max_port_index, max_port_index]), # primeiro: maior indice do fluxo, maior indice do caminho
-            dtype=numpy.int16
+            dtype=numpy.int_
         )
 
         self.state = None

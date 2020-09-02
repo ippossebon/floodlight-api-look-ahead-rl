@@ -66,7 +66,7 @@ class LoadBalanceEnv(gym.Env):
         self.observation_space = spaces.Box(
             low=0,
             high=LINK_CAPACITY,
-            shape=(1, self.num_ports), # array com o RX de cada porta
+            shape=(self.num_ports, 1), # array com o RX de cada porta
             dtype=numpy.float16
         )
 
@@ -282,7 +282,7 @@ class LoadBalanceEnv(gym.Env):
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        state = numpy.zeros(self.num_ports)
+        state = numpy.zeros(shape=self.observation_space.shape)
 
         for item in response_data:
             switch_dpid = item['dpid']

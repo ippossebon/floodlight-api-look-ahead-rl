@@ -501,6 +501,7 @@ class LoadBalanceEnv(gym.Env):
         done = False # Aprendizado continuado
         next_state = []
         reward = 0
+        info = {}
 
         switch_index = action[0]
         in_port_index = action[1]
@@ -540,7 +541,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.state = next_state
 
-        return next_state, reward, done
+        return next_state, reward, done, info
 
 
     def calculateReward(self, state):

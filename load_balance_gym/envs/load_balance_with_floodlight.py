@@ -542,6 +542,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.state = next_state
 
+        print('next_state shape ', next_state.shape)
         return next_state, reward, done, info
 
 

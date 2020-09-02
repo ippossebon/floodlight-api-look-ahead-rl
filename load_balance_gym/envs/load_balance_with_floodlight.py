@@ -428,7 +428,7 @@ class LoadBalanceEnv(gym.Env):
 
     def actionBelongsToPath(self, action):
         # Deve checar se faz parte de um caminho possível
-        switch_index = action[0]
+        switch_index = int(action[0])
         out_port_index = action[2]
 
         switch_id = self.switch_ids[switch_index]
@@ -454,7 +454,7 @@ class LoadBalanceEnv(gym.Env):
         return False
 
     def isValidAction(self, action):
-        switch_index = action[0]
+        switch_index = int(action[0])
         in_port_index = action[1]
         out_port_index = action[2]
 
@@ -503,7 +503,7 @@ class LoadBalanceEnv(gym.Env):
         reward = 0
         info = {}
 
-        switch_index = action[0]
+        switch_index = int(action[0])
         in_port_index = action[1]
         out_port_index = action[2]
 
@@ -519,7 +519,7 @@ class LoadBalanceEnv(gym.Env):
             # Se a ação for inválida, pedimos uma nova ação.
             action = self.action_space.sample() # TODO: rever!!!!
             is_valid_action = self.isValidAction(action)
-            switch_index = action[0]
+            switch_index = int(action[0])
             switch_id = self.switch_ids[switch_index]
             flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
 

@@ -250,7 +250,7 @@ class LoadBalanceEnv(gym.Env):
 
 
     def reset(self):
-        self.state = numpy.zeros([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        self.state = numpy.zeros(shape=self.observation_space.shape)
 
         return self.state
 

@@ -3,7 +3,7 @@ from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
-from stable_baselines import PPO2
+from stable_baselines import PPO2, ACKTR
 
 import json
 import time
@@ -64,10 +64,21 @@ time.sleep(10)
 # multiprocess environment
 # env = make_vec_env('CartPole-v1', n_envs=4)
 env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
-print('observation_space shape = ', env.observation_space.shape)
-print('state shape = ', env.reset().shape)
+# print(check_env(env, warn=True))
+env = make_vec_env(lambda: env, n_envs=1)
 
-print(check_env(env, warn=True))
+model = ACKTR('MlpPolicy', env, verbose=1).learn(5000)
+
+# Test the trained agent
+obs = env.reset()
+n_steps = 20
+for step in range(n_steps):
+  action, _ = model.predict(obs, deterministic=True)
+  print("Step {}".format(step + 1))
+  print("Action: ", action)
+  obs, reward, done, info = env.step(action)
+  print('obs=', obs, 'reward=', reward, 'done=', done)
+  env.render()
 
 
 # model = PPO2(MlpPolicy, env, verbose=1)

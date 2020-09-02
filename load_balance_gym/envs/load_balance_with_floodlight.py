@@ -507,6 +507,10 @@ class LoadBalanceEnv(gym.Env):
         in_port_index = action[1]
         out_port_index = action[2]
 
+        print('switch_index = ', switch_index)
+        print('switch_index int = ', int(switch_index))
+
+
         switch_id = self.switch_ids[switch_index]
         in_port = str(in_port_index + 1)
         out_port = str(out_port_index + 1)

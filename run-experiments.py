@@ -64,6 +64,9 @@ time.sleep(10)
 # multiprocess environment
 # env = make_vec_env('CartPole-v1', n_envs=4)
 env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
+print('observation_space shape = ', env.observation_space.shape)
+print('state shape = ', env.reset().shape)
+
 print(check_env(env, warn=True))
 
 

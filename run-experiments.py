@@ -67,11 +67,11 @@ env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switc
 # print(check_env(env, warn=True))
 env = make_vec_env(lambda: env, n_envs=1)
 
-model = ACKTR('MlpPolicy', env, verbose=1).learn(5000)
+model = ACKTR('MlpPolicy', env, verbose=1).learn(25)
 
 # Test the trained agent
 obs = env.reset()
-n_steps = 20
+n_steps = 10
 for step in range(n_steps):
   action, _ = model.predict(obs, deterministic=True)
   print("Step {}".format(step + 1))

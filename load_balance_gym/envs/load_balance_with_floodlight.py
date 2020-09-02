@@ -538,6 +538,7 @@ class LoadBalanceEnv(gym.Env):
 
         next_state = self.getState()
         reward = self.calculateReward(next_state)
+        next_state = numpy.array(next_state)
 
         self.state = next_state
 

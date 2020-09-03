@@ -406,9 +406,9 @@ class LoadBalanceEnv(gym.Env):
             "switch": switch_id,
             "name": flow_id,
             "priority": priority,
-            "ingress-port": int64(in_port),
+            "ingress-port": numpy.int64(in_port),
             "active": "true",
-            "actions": "output={0}".format(int64(out_port))
+            "actions": "output={0}".format(numpy.int64(out_port))
         }
 
         return rule

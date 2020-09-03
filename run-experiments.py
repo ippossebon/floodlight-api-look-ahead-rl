@@ -64,22 +64,24 @@ time.sleep(10) # deve ser mais.
 # multiprocess environment
 # env = make_vec_env('CartPole-v1', n_envs=4)
 env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
+
+env.discoverPossiblePaths(src_switch='00:00:00:00:00:00:00:01', dst_switch='00:00:00:00:00:00:00:03')
 # print(check_env(env, warn=True))
-env = make_vec_env(lambda: env, n_envs=1)
-
-model = ACKTR('MlpPolicy', env, verbose=1).learn(25)
-
-# Test the trained agent
-obs = env.reset()
-n_steps = 10
-for step in range(n_steps):
-  action, _ = model.predict(obs, deterministic=True)
-  print("Step {}".format(step + 1))
-  print("Action: ", action)
-  obs, reward, done, info = env.step(action)
-  print('obs=', obs, 'reward=', reward, 'done=', done)
-  env.render()
-
+# env = make_vec_env(lambda: env, n_envs=1)
+#
+# model = ACKTR('MlpPolicy', env, verbose=1).learn(25)
+#
+# # Test the trained agent
+# obs = env.reset()
+# n_steps = 10
+# for step in range(n_steps):
+#   action, _ = model.predict(obs, deterministic=True)
+#   print("Step {}".format(step + 1))
+#   print("Action: ", action)
+#   obs, reward, done, info = env.step(action)
+#   print('obs=', obs, 'reward=', reward, 'done=', done)
+#   env.render()
+#
 
 # model = PPO2(MlpPolicy, env, verbose=1)
 # model.learn(total_timesteps=25000)

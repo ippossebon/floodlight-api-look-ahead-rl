@@ -224,6 +224,8 @@ class LoadBalanceEnv(gym.Env):
         response_data = response.json()
         paths = []
 
+        print('Resposta de possible paths: ', response_data)
+
         # Paths tem o formato: [
         #     [{'switch_id': 'port' }, {'switch_id': 'port' }]
         # ]
@@ -399,9 +401,6 @@ class LoadBalanceEnv(gym.Env):
     def actionToRule(self, switch_id, in_port, out_port, flow_id, priority=MAX_PRIORITY):
         # Só recebe ações possíveis
         # Ação = (flow_index, switch_index, in_port, out_port)
-        print('[actionToRule] in_port = {0} ||  str(in_port)= {1} || type(in_port) = {2}'.format(in_port, str(in_port), type(in_port)))
-        print('[actionToRule] out_port = {0} ||  str(out_port)= {1} || type(out_port) = {2}'.format(out_port, str(out_port), type(out_port)))
-
         rule = {
             "switch": switch_id,
             "name": flow_id,

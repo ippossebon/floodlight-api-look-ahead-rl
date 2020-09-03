@@ -59,7 +59,7 @@ for flow_index in range(0, NUM_FLOWS):
 # Fluxo sai de H1 e vai para H2
 # env = LoadBalanceEnv(source_port=1, source_switch=0, target_port=1, target_switch=2)
 
-time.sleep(10)
+time.sleep(10) # deve ser mais.
 
 # multiprocess environment
 # env = make_vec_env('CartPole-v1', n_envs=4)

@@ -260,7 +260,7 @@ class LoadBalanceEnv(gym.Env):
         new_path_switches = []
 
         for item in path:
-            for switch_ind in item.keys():
+            for switch_id in item.keys():
                 if switch_id in new_path_switches:
                     # Deve sobrescrever, pois tem o hop de entrada
                     new_path.pop(switch_id)

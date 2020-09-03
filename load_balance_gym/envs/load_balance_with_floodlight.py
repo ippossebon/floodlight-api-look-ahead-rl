@@ -403,9 +403,9 @@ class LoadBalanceEnv(gym.Env):
             "switch": switch_id,
             "name": flow_id,
             "priority": priority,
-            "ingress-port": str(in_port),
+            "ingress-port": in_port,
             "active": "true",
-            "actions": "output={0}".format(str(out_port))
+            "actions": "output={0}".format(out_port)
         }
 
         return rule

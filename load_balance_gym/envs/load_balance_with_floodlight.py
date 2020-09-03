@@ -424,7 +424,7 @@ class LoadBalanceEnv(gym.Env):
 
         """
         for possible_port in self.switch_possible_ports[switch_id]:
-            if str(possible_port) == port:
+            if str(possible_port) == str(port):
                 return True
 
         return False
@@ -472,8 +472,8 @@ class LoadBalanceEnv(gym.Env):
 
         # Deve existir in e out port no switch
         switch_id = self.switch_ids[switch_index]
-        switch_contains_in_port = self.switchContainsPort(switch_id, str(in_port))
-        switch_contains_out_port = self.switchContainsPort(switch_id, str(out_port))
+        switch_contains_in_port = self.switchContainsPort(switch_id, in_port)
+        switch_contains_out_port = self.switchContainsPort(switch_id, out_port)
         switch_contains_ports = switch_contains_in_port and switch_contains_out_port
 
         # Checa se pertence a algum caminho possível. Para evitar loops na rede.
@@ -511,8 +511,8 @@ class LoadBalanceEnv(gym.Env):
         out_port_index = action[2]
 
         switch_id = self.switch_ids[switch_index]
-        in_port = str(in_port_index + 1)
-        out_port = str(out_port_index + 1)
+        in_port = in_port_index + 1
+        out_port = out_port_index + 1
 
         is_valid_action = self.isValidAction(action)
         flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None

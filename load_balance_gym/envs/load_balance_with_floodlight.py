@@ -224,8 +224,6 @@ class LoadBalanceEnv(gym.Env):
         response_data = response.json()
         paths = []
 
-        print('Resposta de possible paths: ', response_data)
-
         # Paths tem o formato: [
         #     [{'switch_id': 'port' }, {'switch_id': 'port' }]
         # ]
@@ -235,7 +233,13 @@ class LoadBalanceEnv(gym.Env):
                 switch_id = hop['dpid']
                 port = hop['port']
                 path.append({ switch_id: port })
+
+            # Remove links que consideram portas de entrada.
+            path = self.removeInnerHops(path)
+
             paths.append(path)
+
+        print('Caminhos possíveis: ', paths)
 
         return paths
 
@@ -250,6 +254,19 @@ class LoadBalanceEnv(gym.Env):
         #
         # print('Caminhos com formato de links: ', paths_with_links)
 
+    def removeInnerHops(self, path):
+        #     [{'switch_id': 'port' }, {'switch_id': 'port' }]
+        new_path = []
+        new_path_switches = []
+
+        for switch_id, port in path:
+            if switch_id in new_path_switches:
+                # Deve sobrescrever, pois tem o hop de entrada
+                new_path.pop(switch_id)
+
+            new_path.append({ switch_id: port })
+
+        return new_path
 
     def reset(self):
         self.state = numpy.zeros(shape=self.observation_space.shape)

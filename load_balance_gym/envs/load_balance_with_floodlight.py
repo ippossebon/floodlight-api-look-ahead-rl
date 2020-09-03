@@ -259,12 +259,12 @@ class LoadBalanceEnv(gym.Env):
         new_path = []
         new_path_switches = []
 
-        for switch_id, port in path:
-            if switch_id in new_path_switches:
-                # Deve sobrescrever, pois tem o hop de entrada
-                new_path.pop(switch_id)
-
-            new_path.append({ switch_id: port })
+        for item in path:
+            for switch_id, port in item:
+                if switch_id in new_path_switches:
+                    # Deve sobrescrever, pois tem o hop de entrada
+                    new_path.pop(switch_id)
+                new_path.append({ switch_id: port })
 
         return new_path
 

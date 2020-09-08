@@ -50,7 +50,7 @@ class LoadBalanceEnv(gym.Env):
             'i': {'00:00:00:00:00:00:00:03' : '1'}
         }
 
-        self.switch_ids = []
+        c = []
         self.switch_links = {}
         self.switch_possible_ports = {}
         self.num_links = 0
@@ -225,34 +225,114 @@ class LoadBalanceEnv(gym.Env):
         paths = []
 
         # Paths tem o formato: [
-        #     [{'switch_id': 'port' }, {'switch_id': 'port' }]
+        #    [switch_index, in_port_index, out_port_index]
         # ]
+
+        # "results":[
+        #     {
+        #         "src_dpid":"00:00:00:00:00:00:00:01",
+        #         "dst_dpid":"00:00:00:00:00:00:00:03",
+        #         "hop_count":"2",
+        #         "latency":"9",
+        #         "path_index":"0",
+        #         "path":[
+        #         {
+        #             "dpid":"00:00:00:00:00:00:00:01",
+        #             "port":"3"
+        #         },
+        #         {
+        #             "dpid":"00:00:00:00:00:00:00:04",
+        #             "port":"1"
+        #         },
+        #         {
+        #             "dpid":"00:00:00:00:00:00:00:04",
+        #             "port":"3"
+        #         },
+        #         {
+        #             "dpid":"00:00:00:00:00:00:00:03",
+        #             "port":"3"
+        #         }]
+        #     },
+
+        # saida esperada: [
+        #      [0, 0, 2]      ==       [00:00:00:00:00:00:00:01, 1, 3],  -- [self.src_switch, self.src_port, item[port]-1]
+        #     [3, 0, 2],      ==       [00:00:00:00:00:00:00:04, 1, 3],
+        #     [2, 2, 0]       ==       [00:00:00:00:00:00:00:03, 3, 1]   -- [item[dpid], item[port], self.dst_port]
+        # ]
+
+        paths_with_ids = []
         for item in response_data['results']:
-            path = []
+            # path = {
+            #  '00:00:01':  [1, 4],
+            #  '00:00:02': [3, 2]
+            # }
+            #
+            #
+            path = {}
+
             for hop in item['path']:
                 switch_id = hop['dpid']
-                port = hop['port']
-                path.append({ switch_id: port })
+                port_id = hop['port']
+                if switch_id not in path.keys():
+                    path[switch_id] = []
+                path[switch_id].append()
 
-            # Remove links que consideram portas de entrada.
-            path = self.removeInnerHops(path)
+            paths_with_ids.append(path)
 
-            paths.append(path)
+        print('paths_with_ids = ', paths_with_ids)
+
+
+        # Aqui temos uma lista de todos os caminhos nesse formato:
+        # paths = [{
+        #  '00:00:01':  [1, 4],
+        #  '00:00:02': [3, 2]
+        # },
+        #  {
+        # '00:00:01':  [1, 4],
+        #  '00:00:02': [3, 2]
+        # }]
+        # for path_str in paths_with_ids:
+        #     path = []
+        #
+        #
+        #
+        #
+        #     path = []
+        #     num_hop = 0
+        #     last_hop_index = len(item['path']) -1
+        #     prev_port_index = None
+        #
+        #     for hop in item['path']:
+        #         if num_hop == 0:
+        #             # É o primeiro hop, então precisa considerar infos da env
+        #             switch_index = self.src_switch
+        #             in_port_index = self.src_port
+        #             out_port_index = int(hop['port']) - 1
+        #
+        #             path.append([switch_index, in_port_index, out_port_index])
+        #
+        #         elif num_hop == last_hop_index:
+        #             # ultimo hop
+        #             switch_index = self.dst_switch
+        #             in_port_index = int(hop['port']) - 1
+        #             out_port_index = self.dst_port
+        #
+        #             path.append([switch_index, in_port_index, out_port_index])
+        #
+        #         else:
+        #             switch_id = hop['dpid']
+        #             switch_index = self.switch_ids.index(switch_id)
+        #             in_port_index = # todo
+        #             out_port_index = int(hop['port']) - 1
+        #
+        #             path.append([switch_index, in_port_index, out_port_index])
+        #
+        #     paths.append(path)
 
         print('Caminhos possiveis: ', paths)
 
         return paths
 
-        # print('Caminhos possiveis')
-        # paths_with_links = []
-        # for path in paths:
-        #     links = []
-        #     for hop in path:
-        #         link = self.getKeyDict(self.links_map, hop)
-        #         links.append(link)
-        #     paths_with_links.append(links)
-        #
-        # print('Caminhos com formato de links: ', paths_with_links)
 
     def removeInnerHops(self, path):
         #     [{'switch_id': 'port' }, {'switch_id': 'port' }]

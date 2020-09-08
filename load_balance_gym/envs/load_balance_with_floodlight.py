@@ -50,7 +50,7 @@ class LoadBalanceEnv(gym.Env):
             'i': {'00:00:00:00:00:00:00:03' : '1'}
         }
 
-        c = []
+        self.switch_ids = []
         self.switch_links = {}
         self.switch_possible_ports = {}
         self.num_links = 0

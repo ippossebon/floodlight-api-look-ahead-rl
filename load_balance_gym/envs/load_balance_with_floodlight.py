@@ -275,7 +275,7 @@ class LoadBalanceEnv(gym.Env):
                 port_id = hop['port']
                 if switch_id not in path.keys():
                     path[switch_id] = []
-                path[switch_id].append()
+                path[switch_id].append(port_id)
 
             paths_with_ids.append(path)
 

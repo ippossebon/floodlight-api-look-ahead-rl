@@ -636,8 +636,6 @@ class LoadBalanceEnv(gym.Env):
 
         return harmonic_mean
 
-    def render(self, mode='console'):
-        if mode != 'console':
-            raise NotImplementedError()
+    def render(self):
         print('State = ', self.state)
         print('Flow ids = ', self.flows_ids)

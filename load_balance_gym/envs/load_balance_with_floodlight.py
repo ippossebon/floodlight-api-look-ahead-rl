@@ -283,51 +283,43 @@ class LoadBalanceEnv(gym.Env):
 
 
         # Aqui temos uma lista de todos os caminhos nesse formato:
-        # paths = [{
-        #  '00:00:01':  [1, 4],
-        #  '00:00:02': [3, 2]
-        # },
-        #  {
-        # '00:00:01':  [1, 4],
-        #  '00:00:02': [3, 2]
-        # }]
-        # for path_str in paths_with_ids:
-        #     path = []
         #
-        #
-        #
-        #
-        #     path = []
-        #     num_hop = 0
-        #     last_hop_index = len(item['path']) -1
-        #     prev_port_index = None
-        #
-        #     for hop in item['path']:
-        #         if num_hop == 0:
-        #             # É o primeiro hop, então precisa considerar infos da env
-        #             switch_index = self.src_switch
-        #             in_port_index = self.src_port
-        #             out_port_index = int(hop['port']) - 1
-        #
-        #             path.append([switch_index, in_port_index, out_port_index])
-        #
-        #         elif num_hop == last_hop_index:
-        #             # ultimo hop
-        #             switch_index = self.dst_switch
-        #             in_port_index = int(hop['port']) - 1
-        #             out_port_index = self.dst_port
-        #
-        #             path.append([switch_index, in_port_index, out_port_index])
-        #
-        #         else:
-        #             switch_id = hop['dpid']
-        #             switch_index = self.switch_ids.index(switch_id)
-        #             in_port_index = # todo
-        #             out_port_index = int(hop['port']) - 1
-        #
-        #             path.append([switch_index, in_port_index, out_port_index])
-        #
-        #     paths.append(path)
+        # paths_with_ids =  [
+        #     {'00:00:00:00:00:00:00:01': ['3'], '00:00:00:00:00:00:00:04': ['1', '3'], '00:00:00:00:00:00:00:03': ['3']},
+        #     {'00:00:00:00:00:00:00:01': ['2'], '00:00:00:00:00:00:00:02': ['1', '4'], '00:00:00:00:00:00:00:03': ['2']},
+        #     {'00:00:00:00:00:00:00:01': ['3'], '00:00:00:00:00:00:00:04': ['1', '2'], '00:00:00:00:00:00:00:02': ['2', '4'], '00:00:00:00:00:00:00:03': ['2']}
+        # ]
+
+        for path_str in paths_with_ids:
+            path = []
+            num_hop = 0
+            last_hop_index = len(item['path']) -1
+
+            for switch_id, ports in path_str:
+                if num_hop == 0:
+                    # É o primeiro hop, então precisa considerar infos da env
+                    switch_index = self.src_switch
+                    in_port_index = self.src_port
+                    out_port_index = int(ports[0]) - 1
+
+                    path.append([switch_index, in_port_index, out_port_index])
+
+                elif num_hop == last_hop_index:
+                    # ultimo hop
+                    switch_index = self.dst_switch
+                    in_port_index = int(ports[0]) - 1
+                    out_port_index = self.dst_port
+
+                    path.append([switch_index, in_port_index, out_port_index])
+
+                else:
+                    switch_index = self.switch_ids.index(switch_id)
+                    in_port_index = int(ports[0]) - 1
+                    out_port_index = int(ports[1]) - 1
+
+                    path.append([switch_index, in_port_index, out_port_index])
+
+            paths.append(path)
 
         print('Caminhos possiveis: ', paths)
 

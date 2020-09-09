@@ -54,7 +54,7 @@ for flow_index in range(0, NUM_FLOWS):
         'http://localhost:8080/wm/staticentrypusher/json',
         data=json.dumps(flow)
     )
-    print('Resposta ao adicionar novo fluxo na rede: ', response)
+    # print('Resposta ao adicionar novo fluxo na rede: ', response)
 
 
 # Fluxo sai de H1 e vai para H2
@@ -65,8 +65,13 @@ time.sleep(10) # deve ser mais.
 # multiprocess environment
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 
+flow_ids, cookies = env.getFlows()
+print('* flow_ids', flow_ids)
+print('* cookies', cookies)
+
+
 max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-print('max_usage_flow_id = ', max_usage_flow_id)
+print('* max_usage_flow_id = ', max_usage_flow_id)
 
 # print('Todas devem ser TRUE')
 # print(env.actionBelongsToPath(action=numpy.array([0,0,2])))

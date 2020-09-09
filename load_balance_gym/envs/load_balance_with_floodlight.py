@@ -468,6 +468,7 @@ class LoadBalanceEnv(gym.Env):
         flows_ids = []
 
         for flow_obj in response_data[switch_id]['flows']:
+            print('flow_obj', flow_obj)
 
             flow_cookie = flow_obj['cookie']
             if flow_cookie != '0':

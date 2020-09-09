@@ -279,11 +279,6 @@ class LoadBalanceEnv(gym.Env):
 
             paths_with_ids.append(path)
 
-        print('paths_with_ids = ', paths_with_ids)
-
-
-        # Aqui temos uma lista de todos os caminhos nesse formato:
-        #
         # paths_with_ids =  [
         #     {'00:00:00:00:00:00:00:01': ['3'], '00:00:00:00:00:00:00:04': ['1', '3'], '00:00:00:00:00:00:00:03': ['3']},
         #     {'00:00:00:00:00:00:00:01': ['2'], '00:00:00:00:00:00:00:02': ['1', '4'], '00:00:00:00:00:00:00:03': ['2']},
@@ -295,13 +290,7 @@ class LoadBalanceEnv(gym.Env):
             num_hop = 0
             last_hop_index = len(path_str.keys()) -1
 
-            print('last_hop_index', last_hop_index)
-            print('path_str.keys()', path_str.keys())
-
             for switch_id in path_str.keys():
-                print('switch_id', switch_id)
-                print('path_str[switch_id] ( = portas)', path_str[switch_id])
-
                 if num_hop == 0:
                     # É o primeiro hop, então precisa considerar infos da env
                     switch_index = self.src_switch_index
@@ -331,7 +320,6 @@ class LoadBalanceEnv(gym.Env):
             paths.append(path)
 
         print('Caminhos possiveis: ', paths)
-
         return paths
 
 
@@ -529,29 +517,18 @@ class LoadBalanceEnv(gym.Env):
 
     def actionBelongsToPath(self, action):
         # Deve checar se faz parte de um caminho possível
-        switch_index = int(action[0])
-        out_port_index = action[2]
-
-        switch_id = self.switch_ids[switch_index]
-        out_port = str(out_port_index + 1)
-
-        # Possible paths lista os links. Ex: saí de switch X na porta Y, cheguei em switch X na porta Z
+        # Possible paths lista as regras de cada switch.
         """
-        Possible paths:  [
-            [{'00:00:00:00:00:00:00:01': '3'}, {'00:00:00:00:00:00:00:04': '1'}, {'00:00:00:00:00:00:00:04': '3'}, {'00:00:00:00:00:00:00:03': '3'}],
-            [{'00:00:00:00:00:00:00:01': '2'}, {'00:00:00:00:00:00:00:02': '1'}, {'00:00:00:00:00:00:00:02': '4'}, {'00:00:00:00:00:00:00:03': '2'}],
-            [{'00:00:00:00:00:00:00:01': '3'}, {'00:00:00:00:00:00:00:04': '1'}, {'00:00:00:00:00:00:00:04': '2'}, {'00:00:00:00:00:00:00:02': '2'}, {'00:00:00:00:00:00:00:02': '4'}, {'00:00:00:00:00:00:00:03': '2'}]]
+        Possible paths: [
+            [[0, 0, 2], [3, 0, 2], [2, 2, 0]],
+            [[0, 0, 1], [1, 0, 3], [2, 1, 0]],
+            [[0, 0, 1], [1, 0, 2], [4, 0, 1], [2, 3, 0]]
+        ]
         """
 
         for path in self.possible_paths:
-            for link in path:
-                for link_switch_id in link.keys():
-                    link_out_port = link[link_switch_id]
-                    print('out_port = {0} - link_out_port = {1}'.format(out_port, link_out_port))
-
-                    if link_switch_id == switch_id and out_port == link_out_port:
-                        return True
-
+            if action in path:
+                return True
         return False
 
     def isValidAction(self, action):

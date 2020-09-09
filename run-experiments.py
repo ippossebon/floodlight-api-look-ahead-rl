@@ -65,7 +65,31 @@ time.sleep(10) # deve ser mais.
 # env = make_vec_env('CartPole-v1', n_envs=4)
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 
-env.discoverPossiblePaths(src_switch='00:00:00:00:00:00:00:01', dst_switch='00:00:00:00:00:00:00:03')
+print('Todas devem ser TRUE')
+print(env.actionBelongsToPath(action=[0,0,2]))
+print(env.actionBelongsToPath(action=[3,0,2]))
+print(env.actionBelongsToPath(action=[2,2,0]))
+print(env.actionBelongsToPath(action=[0,0,1]))
+print(env.actionBelongsToPath(action=[1,0,3]))
+print(env.actionBelongsToPath(action=[2,1,0]))
+print(env.actionBelongsToPath(action=[1,0,2]))
+print(env.actionBelongsToPath(action=[4,0,1]))
+print(env.actionBelongsToPath(action=[2,3,0]))
+print('-----')
+
+print('Todas devem ser FALSE')
+print(env.actionBelongsToPath(action=[0,1,2]))
+print(env.actionBelongsToPath(action=[4,0,2]))
+print(env.actionBelongsToPath(action=[4,2,3]))
+print(env.actionBelongsToPath(action=[4,1,1]))
+print(env.actionBelongsToPath(action=[1,2,2]))
+print(env.actionBelongsToPath(action=[1,1,1]))
+print(env.actionBelongsToPath(action=[2,2,2]))
+print(env.actionBelongsToPath(action=[3,4,5]))
+print(env.actionBelongsToPath(action=[1,5,5]))
+print('-----')
+
+
 # print(check_env(env, warn=True))
 # env = make_vec_env(lambda: env, n_envs=1)
 #

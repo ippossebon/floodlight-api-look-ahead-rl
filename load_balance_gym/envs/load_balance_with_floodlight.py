@@ -297,7 +297,7 @@ class LoadBalanceEnv(gym.Env):
                     in_port_index = self.src_port_index
                     out_port_index = int(path_str[switch_id][0]) - 1
 
-                    path.append([switch_index, in_port_index, out_port_index])
+                    path.append(numpy.array([switch_index, in_port_index, out_port_index]))
                     num_hop += 1
 
                 elif num_hop == last_hop_index:
@@ -306,7 +306,7 @@ class LoadBalanceEnv(gym.Env):
                     in_port_index = int(path_str[switch_id][0]) - 1
                     out_port_index = self.dst_port_index
 
-                    path.append([switch_index, in_port_index, out_port_index])
+                    path.append(numpy.array([switch_index, in_port_index, out_port_index]))
                     num_hop += 1
 
                 else:
@@ -314,7 +314,7 @@ class LoadBalanceEnv(gym.Env):
                     in_port_index = int(path_str[switch_id][0]) - 1
                     out_port_index = int(path_str[switch_id][1]) - 1
 
-                    path.append([switch_index, in_port_index, out_port_index])
+                    path.append(numpy.array([switch_index, in_port_index, out_port_index]))
                     num_hop += 1
 
             paths.append(path)
@@ -528,7 +528,7 @@ class LoadBalanceEnv(gym.Env):
 
         for path in self.possible_paths:
             for rule in path:
-                if action == numpy.array(rule):
+                if (action==rule).all():
                     return True
         return False
 

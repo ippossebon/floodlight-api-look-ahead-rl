@@ -527,7 +527,7 @@ class LoadBalanceEnv(gym.Env):
         """
 
         for path in self.possible_paths:
-            if action in path:
+            if action in path.any():
                 return True
         return False
 

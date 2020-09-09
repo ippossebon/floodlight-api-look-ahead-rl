@@ -458,17 +458,19 @@ class LoadBalanceEnv(gym.Env):
         # retorna o fluxo que exige mais do switch, pra que esse tenha suas
         # rotas recalculadas
         # response = requests.get('{host}/wm/statistics/bandwidth/{switch_id}/all/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
-        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+        # response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/staticflowentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+
         response_data = response.json()
 
 
-        max_byte_count = -1
+        max_byte_count = 0
         max_usage_flow_id = None # preciso de um fallback
 
         flows_ids = []
 
         print('response_data', response_data)
-
+        exit(1)
 
         for flow_obj in response_data[switch_id]['flows']:
             print('flow_obj', flow_obj)

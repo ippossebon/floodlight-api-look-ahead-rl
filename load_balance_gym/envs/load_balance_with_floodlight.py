@@ -554,23 +554,23 @@ class LoadBalanceEnv(gym.Env):
         # Checa se pertence a algum caminho possível. Para evitar loops na rede.
         belongs_to_path = self.actionBelongsToPath(action) if switch_contains_ports else False
 
-        is_valid = contains_switch_index and switch_contains_ports and belongs_to_path
+        is_valid = contains_switch_index and belongs_to_path
 
         ### TODO: Debugging
-        print('...')
-        print('--> isValidAction')
+        # print('...')
+        # print('--> isValidAction')
         # print('contains_switch_index = ', contains_switch_index)
         # print('switch_contains_in_port = ', switch_contains_in_port)
         # print('switch_contains_out_port = ', switch_contains_out_port)
         #
         # print('portas do switch = ', self.switch_possible_ports[switch_id])
 
-        print('switch_index = ', switch_index)
-        print('in_port = ', in_port)
-        print('out_port = ', out_port)
-        print('belongs_to_path = ', belongs_to_path)
-        print('is_valid = ', is_valid)
-        print('...')
+        # print('switch_index = ', switch_index)
+        # print('in_port = ', in_port)
+        # print('out_port = ', out_port)
+        # print('belongs_to_path = ', belongs_to_path)
+        # print('is_valid = ', is_valid)
+        # print('...')
 
         return is_valid
 
@@ -620,7 +620,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.state = next_state
 
-        print('next_state shape ', next_state.shape)
+        # print('next_state shape ', next_state.shape)
         return next_state, reward, done, info
 
 

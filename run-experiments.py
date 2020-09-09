@@ -62,50 +62,52 @@ for flow_index in range(0, NUM_FLOWS):
 time.sleep(10) # deve ser mais.
 
 # multiprocess environment
-# env = make_vec_env('CartPole-v1', n_envs=4)
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 
-print('Todas devem ser TRUE')
-print(env.actionBelongsToPath(action=[0,0,2]))
-print(env.actionBelongsToPath(action=[3,0,2]))
-print(env.actionBelongsToPath(action=[2,2,0]))
-print(env.actionBelongsToPath(action=[0,0,1]))
-print(env.actionBelongsToPath(action=[1,0,3]))
-print(env.actionBelongsToPath(action=[2,1,0]))
-print(env.actionBelongsToPath(action=[1,0,2]))
-print(env.actionBelongsToPath(action=[4,0,1]))
-print(env.actionBelongsToPath(action=[2,3,0]))
-print('-----')
-
-print('Todas devem ser FALSE')
-print(env.actionBelongsToPath(action=[0,1,2]))
-print(env.actionBelongsToPath(action=[4,0,2]))
-print(env.actionBelongsToPath(action=[4,2,3]))
-print(env.actionBelongsToPath(action=[4,1,1]))
-print(env.actionBelongsToPath(action=[1,2,2]))
-print(env.actionBelongsToPath(action=[1,1,1]))
-print(env.actionBelongsToPath(action=[2,2,2]))
-print(env.actionBelongsToPath(action=[3,4,5]))
-print(env.actionBelongsToPath(action=[1,5,5]))
-print('-----')
-
-
-# print(check_env(env, warn=True))
-# env = make_vec_env(lambda: env, n_envs=1)
+# print('Todas devem ser TRUE')
+# print(env.actionBelongsToPath(action=[0,0,2]))
+# print(env.actionBelongsToPath(action=[3,0,2]))
+# print(env.actionBelongsToPath(action=[2,2,0]))
+# print(env.actionBelongsToPath(action=[0,0,1]))
+# print(env.actionBelongsToPath(action=[1,0,3]))
+# print(env.actionBelongsToPath(action=[2,1,0]))
+# print(env.actionBelongsToPath(action=[1,0,2]))
+# print(env.actionBelongsToPath(action=[4,0,1]))
+# print(env.actionBelongsToPath(action=[2,3,0]))
+# print('-----')
 #
-# model = ACKTR('MlpPolicy', env, verbose=1).learn(25)
-#
-# # Test the trained agent
-# obs = env.reset()
-# n_steps = 10
-# for step in range(n_steps):
-#   action, _ = model.predict(obs, deterministic=True)
-#   print("Step {}".format(step + 1))
-#   print("Action: ", action)
-#   obs, reward, done, info = env.step(action)
-#   print('obs=', obs, 'reward=', reward, 'done=', done)
-#   env.render()
-#
+# print('Todas devem ser FALSE')
+# print(env.actionBelongsToPath(action=[0,1,2]))
+# print(env.actionBelongsToPath(action=[4,0,2]))
+# print(env.actionBelongsToPath(action=[4,2,3]))
+# print(env.actionBelongsToPath(action=[4,1,1]))
+# print(env.actionBelongsToPath(action=[1,2,2]))
+# print(env.actionBelongsToPath(action=[1,1,1]))
+# print(env.actionBelongsToPath(action=[2,2,2]))
+# print(env.actionBelongsToPath(action=[3,4,5]))
+# print(env.actionBelongsToPath(action=[1,5,5]))
+# print('-----')
+
+
+print('Treinando o agente com ACKTR...')
+print(check_env(env, warn=True))
+env = make_vec_env(lambda: env, n_envs=1)
+
+model = ACKTR('MlpPolicy', env, verbose=1).learn(25)
+
+# Test the trained agent
+print('Testando o agente com gerado...')
+
+obs = env.reset()
+n_steps = 10
+for step in range(n_steps):
+  action, _ = model.predict(obs, deterministic=True)
+  print('Step {}'.format(step + 1))
+  print('Action: ', action)
+  obs, reward, done, info = env.step(action)
+  print('obs=', obs, 'reward=', reward, 'done=', done)
+  env.render()
+
 
 # model = PPO2(MlpPolicy, env, verbose=1)
 # model.learn(total_timesteps=25000)

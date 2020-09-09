@@ -27,14 +27,14 @@ MAX_PORTS_SWITCH = 4 # numero maximo de portas de um swithc
 class LoadBalanceEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, source_port, source_switch, target_port, target_switch):
+    def __init__(self, source_port_index, source_switch_index, target_port_index, target_switch_index):
         # Quero acomodar N fluxos na rede. Como?
         super(LoadBalanceEnv, self).__init__()
 
-        self.src_switch_index = source_switch
-        self.src_port_index = source_port
-        self.dst_switch_index = target_switch
-        self.dst_port_index = target_port
+        self.src_switch_index = source_switch_index
+        self.src_port_index = source_port_index
+        self.dst_switch_index = target_switch_index
+        self.dst_port_index = target_port_index
 
         self.flows_ids, self.flows_cookies = self.getFlows()
 
@@ -58,12 +58,12 @@ class LoadBalanceEnv(gym.Env):
         self.num_links = 0
 
         self.discoverTopology()
-        self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch], dst_switch=self.switch_ids[target_switch])
+        self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch_index], dst_switch=self.switch_ids[target_switch_index])
         self.enableSwitchStatisticsEndpoit()
 
         # Ao descobrir a topologia, só são adicionadas as portas que conectam switches
-        self.switch_possible_ports[self.switch_ids[source_switch]].append(str(source_port))
-        self.switch_possible_ports[self.switch_ids[target_switch]].append(str(target_port))
+        self.switch_possible_ports[self.switch_ids[source_switch_index]].append(str(source_port_index + 1))
+        self.switch_possible_ports[self.switch_ids[target_switch_index]].append(str(target_port_index + 1))
 
         self.observation_space = spaces.Box(
             low=0,

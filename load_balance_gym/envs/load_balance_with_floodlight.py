@@ -527,8 +527,9 @@ class LoadBalanceEnv(gym.Env):
         """
 
         for path in self.possible_paths:
-            if action in path.any():
-                return True
+            for rule in path:
+                if action == numpy.array(rule):
+                    return True
         return False
 
     def isValidAction(self, action):

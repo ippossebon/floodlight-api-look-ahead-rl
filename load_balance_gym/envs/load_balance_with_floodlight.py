@@ -31,8 +31,10 @@ class LoadBalanceEnv(gym.Env):
         # Quero acomodar N fluxos na rede. Como?
         super(LoadBalanceEnv, self).__init__()
 
-        self.src_port = source_port
-        self.dst_port = target_port
+        self.src_switch_index = source_switch
+        self.src_port_index = source_port
+        self.dst_switch_index = target_switch
+        self.dst_port_index = target_port
 
         self.flows_ids, self.flows_cookies = self.getFlows()
 
@@ -255,9 +257,9 @@ class LoadBalanceEnv(gym.Env):
         #     },
 
         # saida esperada: [
-        #      [0, 0, 2]      ==       [00:00:00:00:00:00:00:01, 1, 3],  -- [self.src_switch, self.src_port, item[port]-1]
+        #      [0, 0, 2]      ==       [00:00:00:00:00:00:00:01, 1, 3],  -- [self.src_switch, self.src_port_index, item[port]-1]
         #     [3, 0, 2],      ==       [00:00:00:00:00:00:00:04, 1, 3],
-        #     [2, 2, 0]       ==       [00:00:00:00:00:00:00:03, 3, 1]   -- [item[dpid], item[port], self.dst_port]
+        #     [2, 2, 0]       ==       [00:00:00:00:00:00:00:03, 3, 1]   -- [item[dpid], item[port], self.dst_port_index]
         # ]
 
         paths_with_ids = []
@@ -298,17 +300,17 @@ class LoadBalanceEnv(gym.Env):
             for switch_id in path_str.keys():
                 if num_hop == 0:
                     # É o primeiro hop, então precisa considerar infos da env
-                    switch_index = self.src_switch
-                    in_port_index = self.src_port
+                    switch_index = self.src_switch_index
+                    in_port_index = self.src_port_index
                     out_port_index = int(path_str[switch_id][0]) - 1
 
                     path.append([switch_index, in_port_index, out_port_index])
 
                 elif num_hop == last_hop_index:
                     # ultimo hop
-                    switch_index = self.dst_switch
+                    switch_index = self.dst_switch_index
                     in_port_index = int(path_str[switch_id][0]) - 1
-                    out_port_index = self.dst_port
+                    out_port_index = self.dst_port_index
 
                     path.append([switch_index, in_port_index, out_port_index])
 

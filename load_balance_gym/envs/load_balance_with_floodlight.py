@@ -268,8 +268,6 @@ class LoadBalanceEnv(gym.Env):
             #  '00:00:01':  [1, 4],
             #  '00:00:02': [3, 2]
             # }
-            #
-            #
             path = {}
 
             for hop in item['path']:
@@ -295,9 +293,15 @@ class LoadBalanceEnv(gym.Env):
         for path_str in paths_with_ids:
             path = []
             num_hop = 0
-            last_hop_index = len(item['path']) -1
+            last_hop_index = len(path_str.keys()) -1
+
+            print('last_hop_index', last_hop_index)
+            print('path_str.keys()', path_str.keys())
 
             for switch_id in path_str.keys():
+                print('switch_id', switch_id)
+                print('path_str[switch_id] ( = portas)', path_str[switch_id])
+
                 if num_hop == 0:
                     # É o primeiro hop, então precisa considerar infos da env
                     switch_index = self.src_switch_index
@@ -305,6 +309,7 @@ class LoadBalanceEnv(gym.Env):
                     out_port_index = int(path_str[switch_id][0]) - 1
 
                     path.append([switch_index, in_port_index, out_port_index])
+                    num_hop += 1
 
                 elif num_hop == last_hop_index:
                     # ultimo hop
@@ -313,6 +318,7 @@ class LoadBalanceEnv(gym.Env):
                     out_port_index = self.dst_port_index
 
                     path.append([switch_index, in_port_index, out_port_index])
+                    num_hop += 1
 
                 else:
                     switch_index = self.switch_ids.index(switch_id)
@@ -320,6 +326,7 @@ class LoadBalanceEnv(gym.Env):
                     out_port_index = int(path_str[switch_id][1]) - 1
 
                     path.append([switch_index, in_port_index, out_port_index])
+                    num_hop += 1
 
             paths.append(path)
 

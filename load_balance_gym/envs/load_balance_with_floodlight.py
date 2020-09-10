@@ -608,6 +608,14 @@ class LoadBalanceEnv(gym.Env):
             flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
 
 
+        switch_index = int(action[0])
+        in_port_index = action[1]
+        out_port_index = action[2]
+
+        switch_id = self.switch_ids[switch_index]
+        in_port = in_port_index + 1
+        out_port = out_port_index + 1
+
         rule = self.actionToRule(
             switch_id,
             in_port,

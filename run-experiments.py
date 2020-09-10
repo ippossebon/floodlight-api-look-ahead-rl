@@ -131,9 +131,9 @@ model = PPO2.load('ppo2_load_balance')
 
 print('Testando o agente gerado...')
 obs = env.reset()
-n_steps = 50
+n_steps = 20
 for step in range(n_steps):
-  action, _ = model.predict(obs, deterministic=True)
+  action, _ = model.predict(obs)
   print('Step {}'.format(step + 1))
   print('Action: ', action)
   obs, reward, done, info = env.step(action)

@@ -449,7 +449,6 @@ class LoadBalanceEnv(gym.Env):
 
     def getFlowIdByCookie(self, cookie):
         for flow_id, flow_cookie in self.flows_cookies.items():
-            print('flow_id: {0} - flow_cookie = {1}'.format(flow_id, flow_cookie))
             if flow_cookie == cookie:
                 return flow_id
         return None
@@ -462,7 +461,6 @@ class LoadBalanceEnv(gym.Env):
         # response = requests.get('{host}/wm/staticflowentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
 
         response_data = response.json()
-
 
         max_byte_count = 0
         max_usage_flow_id = None # preciso de um fallback
@@ -485,8 +483,7 @@ class LoadBalanceEnv(gym.Env):
                     max_usage_flow_id = flow_id
 
 
-        print('[getMostCostlyFlow] max_byte_count: ', max_byte_count)
-        print('[getMostCostlyFlow] max_usage_flow_id: ', max_usage_flow_id)
+        print('[getMostCostlyFlow] max_byte_count: {0} - max_usage_flow_id: {1}'.format(max_byte_count, max_usage_flow_id))
 
         return max_usage_flow_id
 
@@ -651,4 +648,4 @@ class LoadBalanceEnv(gym.Env):
 
     def render(self, render='console'):
         print('State = ', self.state)
-        print('Flow ids = ', self.flows_ids)
+        # print('Flow ids = ', self.flows_ids)

@@ -133,7 +133,7 @@ print('Testando o agente gerado...')
 obs = env.reset()
 n_steps = 20
 for step in range(n_steps):
-  action, _ = model.predict(obs)
+  action, _ = model.predict(obs, deterministic=True)
   print('Step {}'.format(step + 1))
   print('Action: ', action)
   obs, reward, done, info = env.step(action)

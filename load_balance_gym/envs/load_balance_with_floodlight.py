@@ -92,8 +92,6 @@ class LoadBalanceEnv(gym.Env):
         response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
         response_data = response.json()
 
-        print('[enableSwitchStatisticsEndpoit] ', response_data)
-
 
     def saveItemLinks(self, item):
         """
@@ -323,21 +321,6 @@ class LoadBalanceEnv(gym.Env):
         return paths
 
 
-    def removeInnerHops(self, path):
-        #     [{'switch_id': 'port' }, {'switch_id': 'port' }]
-        new_path = []
-        new_path_switches = []
-
-        for item in path:
-            for switch_id in item.keys():
-                if switch_id in new_path_switches:
-                    # Deve sobrescrever, pois tem o hop de entrada
-                    new_path.pop(switch_id)
-                port = item[switch_id]
-                new_path.append({ switch_id: port })
-
-        return new_path
-
     def reset(self):
         self.state = numpy.zeros(shape=self.observation_space.shape)
 
@@ -451,6 +434,8 @@ class LoadBalanceEnv(gym.Env):
         for flow_id, flow_cookie in self.flows_cookies.items():
             if flow_cookie == cookie:
                 return flow_id
+
+        print('[getFlowIdByCookie] Não há match para cookie: ', cookie, ' flows_cookies = ', self.flow_cookies)
         return None
 
     def getMostCostlyFlow(self, switch_id):
@@ -631,7 +616,6 @@ class LoadBalanceEnv(gym.Env):
 
         self.state = next_state
 
-        # print('next_state shape ', next_state.shape)
         return next_state, reward, done, info
 
 
@@ -647,5 +631,8 @@ class LoadBalanceEnv(gym.Env):
         return harmonic_mean
 
     def render(self, render='console'):
+        self.state = self.getState()
         print('State = ', self.state)
-        # print('Flow ids = ', self.flows_ids)
+
+        self.flows_ids, self.flows_cookies = self.getFlows()
+        print('Flow ids = ', self.flows_ids)

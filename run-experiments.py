@@ -67,13 +67,13 @@ time.sleep(2) # deve ser mais.
 # multiprocess environment
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 
-flow_ids, cookies = env.getFlows()
-print('* flow_ids', flow_ids)
-print('* cookies', cookies)
-
-
-max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-print('* max_usage_flow_id = ', max_usage_flow_id)
+# flow_ids, cookies = env.getFlows()
+# print('* flow_ids', flow_ids)
+# print('* cookies', cookies)
+#
+#
+# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+# print('* max_usage_flow_id = ', max_usage_flow_id)
 
 # print('Todas devem ser TRUE')
 # print(env.actionBelongsToPath(action=numpy.array([0,0,2])))
@@ -120,22 +120,22 @@ env = make_vec_env(lambda: env, n_envs=1)
 #   env.render()
 
 
-# print('Treinando o agente com PPO2...')
-# model = PPO2(MlpPolicy, env, verbose=1)
-# model.learn(total_timesteps=100)
-# model.save('ppo2_load_balance')
-#
-# del model # remove to demonstrate saving and loading
-#
-# model = PPO2.load('ppo2_load_balance')
-#
-# print('Testando o agente gerado...')
-# obs = env.reset()
-# n_steps = 50
-# for step in range(n_steps):
-#   action, _ = model.predict(obs, deterministic=True)
-#   print('Step {}'.format(step + 1))
-#   print('Action: ', action)
-#   obs, reward, done, info = env.step(action)
-#   print('obs=', obs, 'reward=', reward, 'done=', done)
-#   env.render()
+print('Treinando o agente com PPO2...')
+model = PPO2(MlpPolicy, env, verbose=1)
+model.learn(total_timesteps=100)
+model.save('ppo2_load_balance')
+
+del model # remove to demonstrate saving and loading
+
+model = PPO2.load('ppo2_load_balance')
+
+print('Testando o agente gerado...')
+obs = env.reset()
+n_steps = 50
+for step in range(n_steps):
+  action, _ = model.predict(obs, deterministic=True)
+  print('Step {}'.format(step + 1))
+  print('Action: ', action)
+  obs, reward, done, info = env.step(action)
+  print('obs=', obs, 'reward=', reward, 'done=', done)
+  env.render()

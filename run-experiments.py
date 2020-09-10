@@ -37,18 +37,20 @@ CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 NUM_FLOWS = 5
 
+flow_cookie = 49539595572507912
 for flow_index in range(0, NUM_FLOWS):
     # Adiciona fluxo na rede.
     flow_name = 'flow-{0}'.format(flow_index)
     flow = {
         'switch':'00:00:00:00:00:00:00:01',
         'name': flow_name,
-        'cookie':'0',
-        'priority':'32767',
+        'cookie': str(flow_cookie),
+        'priority':'32766',
         'in_port':'1',
         'active':'true',
         'actions':'output=2'
     }
+    flow_cookie += 1
 
     response = requests.post(
         'http://localhost:8080/wm/staticentrypusher/json',

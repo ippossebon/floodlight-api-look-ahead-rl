@@ -39,7 +39,7 @@ Todos os fluxos começam por a, b, f, i
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
-# addFlows(num_flows=5)
+addFlows(num_flows=5)
 time.sleep(20)
 
 # Fluxo sai de H1 e vai para H2
@@ -123,4 +123,4 @@ print('* max_usage_flow_id = ', max_usage_flow_id)
 
 
 # print()
-# deleteFlows(num_flows=5)
+deleteFlows(num_flows=5)

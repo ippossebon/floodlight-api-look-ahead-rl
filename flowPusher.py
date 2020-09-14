@@ -221,8 +221,8 @@ def addFlows(num_flows):
         )
 
         flow_cookie += 1
-        
-    print(num_flows + 'flows added.')
+
+    print(str(num_flows) + ' flows added.')
 
 
 def deleteFlows(num_flows):

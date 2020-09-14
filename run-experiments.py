@@ -35,7 +35,7 @@ Todos os fluxos começam por a, b, f, i
 """
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
-NUM_FLOWS = 5
+NUM_FLOWS = 2
 
 flow_cookie = 49539595572507912
 for flow_index in range(0, NUM_FLOWS):

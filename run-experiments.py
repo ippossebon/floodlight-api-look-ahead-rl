@@ -172,22 +172,18 @@ for flow_index in range(0, NUM_FLOWS):
 
 
 
-time.sleep(2)
+time.sleep(10)
 
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 print()
 print()
-print()
 
 flow_ids, cookies = env.getFlows()
-print()
-print()
-print()
-
 print('* flow_ids', flow_ids)
 print('* cookies', cookies)
-
+print()
+print()
 
 max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 print('* max_usage_flow_id = ', max_usage_flow_id)
@@ -260,6 +256,9 @@ print('* max_usage_flow_id = ', max_usage_flow_id)
 
 # Deleta os fluxos da rede
 # Fluxo ReverseARP
+print()
+print()
+
 for flow_index in range(0, NUM_FLOWS):
     for flow_type in ['forward', 'forward-arp', 'reverse', 'reverse-arp']:
         flow = { 'name': 'flow-{0}-{1}'.format(flow_index,flow_type) }

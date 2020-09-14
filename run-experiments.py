@@ -39,8 +39,8 @@ Todos os fluxos começam por a, b, f, i
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
-addFlows(num_flows=5)
-time.sleep(10)
+# addFlows(num_flows=5)
+time.sleep(20)
 
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
@@ -122,7 +122,5 @@ print('* max_usage_flow_id = ', max_usage_flow_id)
 #   # env.render()
 
 
-# Deleta os fluxos da rede
-# Fluxo ReverseARP
-print()
-deleteFlows(num_flows=5)
+# print()
+# deleteFlows(num_flows=5)

@@ -222,7 +222,7 @@ def addFlows(num_flows):
 
         flow_cookie += 1
 
-    print(str(num_flows) + ' flows added.')
+    print('- ' + str(num_flows) + ' flows added.')
 
 
 def deleteFlows(num_flows):
@@ -235,4 +235,3 @@ def deleteFlows(num_flows):
               'http://localhost:8080/wm/staticentrypusher/json',
               data=json.dumps(flow)
             )
-            print('Resposta ao remover remover fluxo ', response)

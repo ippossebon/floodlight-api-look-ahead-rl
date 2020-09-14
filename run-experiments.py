@@ -40,24 +40,137 @@ NUM_FLOWS = 5
 flow_cookie = 49539595572507912
 for flow_index in range(0, NUM_FLOWS):
     # Adiciona fluxo na rede.
-    flow_name = 'flow-{0}'.format(flow_index)
-    flow = {
-        'switch':'00:00:00:00:00:00:00:01',
-        'name': flow_name,
-        'cookie': str(flow_cookie),
-        'priority':'32766',
-        'in_port':'1',
-        'active':'true',
-        'outPort': '2',
-        'actions':'output=2'
+    # For each switch we need to push 4 flows Forward, Reverse, ForwardARP, ReverseARP
+    #
+    # curl -s -d '{
+        # "switch": "00:00:00:00:00:00:00:02",
+        # "name":"00:00:00:00:00:00:00:02.5Mbps02-04.f",
+        # "src-ip":"10.0.0.2",
+        # "dst-ip":"10.0.0.4",
+        # "ether-type":"0x800",
+        # "cookie":"0",
+        # "priority":"2",
+        # "ingress-port":"2",
+        # "active":"true",
+        # "actions":"output=3"}' http://192.168.0.107:8080/wm/staticflowentrypusher/json
+    #
+    # curl -s -d '{
+        # "switch": "00:00:00:00:00:00:00:02",
+        # "name":"00:00:00:00:00:00:00:02.5Mbps02-04.farp",
+        # "ether-type":"0x806",
+        # "cookie":"0",
+        # "priority":"2",
+        # "ingress-port":"2",
+        # "active":"true",
+        # "actions":"output=3"}' http://192.168.0.107:8080/wm/staticflowentrypusher/json
+    #
+    # curl -s -d '{
+        # "switch": "00:00:00:00:00:00:00:02",
+        # "name":"00:00:00:00:00:00:00:02.5Mbps02-04.r",
+        # "src-ip":"10.0.0.4",
+        # "dst-ip":"10.0.0.2",
+        # "ether-type":"0x800",
+        # "cookie":"0",
+        # "priority":"2",
+        # "ingress-port":"3",
+        # "active":"true",
+        # "actions":"output=2"}' http://192.168.0.107:8080/wm/staticflowentrypusher/json
+    #
+    # curl -s -d '{
+    # "switch": "00:00:00:00:00:00:00:02",
+    # "name":"00:00:00:00:00:00:00:02.5Mbps02-04.rarp",
+    # "ether-type":"0x806",
+    # "cookie":"0",
+    # "priority":"2",
+    # "ingress-port":"3",
+    # "active":"true",
+    # "actions":"output=2"}' http://192.168.0.107:8080/wm/staticflowentrypusher/json
+
+    # FLuxo FORWARD
+    flow_forward = {
+      'switch':'00:00:00:00:00:00:00:01',
+      'name': 'flow-{0}-forward'.format(flow_index),
+      "ether-type":"0x800",
+      "src-ip":"10.0.0.1",
+      "dst-ip":"10.0.0.2",
+      'cookie': str(flow_cookie),
+      'priority':'2',
+      'ingress-port':'1',
+      'active':'true',
+      'outPort': '2',
+      'actions':'output=2'
     }
+    response = requests.post(
+      'http://localhost:8080/wm/staticentrypusher/json',
+      data=json.dumps(flow_forward)
+    )
+    print('Resposta ao adicionar novo fluxo FORWARD na rede: ', response)
+
+
+    # Fluxo ForwardARP
+    flow_reverse = {
+      'switch':'00:00:00:00:00:00:00:01',
+      'name': 'flow-{0}-forward-arp'.format(flow_index),
+      "ether-type":"0x806",
+      "src-ip":"10.0.0.1",
+      "dst-ip":"10.0.0.2",
+      'cookie': str(flow_cookie),
+      'priority':'2',
+      'ingress-port':'1',
+      'active':'true',
+      'outPort': '2',
+      'actions':'output=2'
+    }
+    response = requests.post(
+      'http://localhost:8080/wm/staticentrypusher/json',
+      data=json.dumps(flow_reverse)
+    )
+    print('Resposta ao adicionar novo fluxo FORWARD ARP na rede: ', response)
+
+    # FLuxo REVERSE
+    flow_forward = {
+      'switch':'00:00:00:00:00:00:00:01',
+      'name': 'flow-{0}-reverse'.format(flow_index),
+      "ether-type":"0x800",
+      "src-ip":"10.0.0.2",
+      "dst-ip":"10.0.0.1",
+      'cookie': str(flow_cookie),
+      'priority':'2',
+      'ingress-port':'1',
+      'active':'true',
+      'outPort': '2',
+      'actions':'output=2'
+    }
+    response = requests.post(
+      'http://localhost:8080/wm/staticentrypusher/json',
+      data=json.dumps(flow_forward)
+    )
+    print('Resposta ao adicionar novo fluxo REVERSE na rede: ', response)
+
+
+    # Fluxo ReverseARP
+    flow_reverse = {
+      'switch':'00:00:00:00:00:00:00:01',
+      'name': 'flow-{0}-reverse-arp'.format(flow_index),
+      "ether-type":"0x806",
+      "src-ip":"10.0.0.2",
+      "dst-ip":"10.0.0.1",
+      'cookie': str(flow_cookie),
+      'priority':'2',
+      'ingress-port':'1',
+      'active':'true',
+      'outPort': '2',
+      'actions':'output=2'
+    }
+    response = requests.post(
+      'http://localhost:8080/wm/staticentrypusher/json',
+      data=json.dumps(flow_reverse)
+    )
+    print('Resposta ao adicionar novo fluxo REVERSE ARP na rede: ', response)
+
     flow_cookie += 1
 
-    response = requests.post(
-        'http://localhost:8080/wm/staticentrypusher/json',
-        data=json.dumps(flow)
-    )
-    # print('Resposta ao adicionar novo fluxo na rede: ', response)
+
 
 time.sleep(2)
 

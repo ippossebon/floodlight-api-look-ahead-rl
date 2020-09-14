@@ -35,7 +35,7 @@ Todos os fluxos começam por a, b, f, i
 """
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
-NUM_FLOWS = 2
+NUM_FLOWS = 3
 
 flow_cookie = 49539595572507912
 for flow_index in range(0, NUM_FLOWS):
@@ -256,3 +256,15 @@ print('* max_usage_flow_id = ', max_usage_flow_id)
 #   state, reward, done, info = env.step(action)
 #   print('state=', state, 'reward=', reward, 'done=', done)
 #   # env.render()
+
+
+# Deleta os fluxos da rede
+# Fluxo ReverseARP
+for flow_index in range(0, NUM_FLOWS):
+    for flow_type in ['forward', 'forward-arp', 'reverse', 'reverse-arp']:
+        flow = { 'name': 'flow-{0}-{1}'.format(flow_index,flow_type) }
+        response = requests.delete(
+          'http://localhost:8080/wm/staticentrypusher/json',
+          data=json.dumps(flow_reverse)
+        )
+        print('Resposta ao remover remover fluxo ', response)

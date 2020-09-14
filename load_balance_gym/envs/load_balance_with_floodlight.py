@@ -449,6 +449,8 @@ class LoadBalanceEnv(gym.Env):
 
         response_data = response.json()
 
+        print('getMostCostlyFlow ', response_data)
+
         max_byte_count = 0
         max_usage_flow_id = None # preciso de um fallback
 

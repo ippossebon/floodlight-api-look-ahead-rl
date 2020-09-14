@@ -331,6 +331,8 @@ class LoadBalanceEnv(gym.Env):
         response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+        print('flows da rede ' , response_data)
+
         flows_ids = []
         flow_cookies = {}
         for switch_id in response_data:

@@ -62,8 +62,15 @@ time.sleep(2)
 
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+print()
+print()
+print()
 
 flow_ids, cookies = env.getFlows()
+print()
+print()
+print()
+
 print('* flow_ids', flow_ids)
 print('* cookies', cookies)
 

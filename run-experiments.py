@@ -108,7 +108,7 @@ for flow_index in range(0, NUM_FLOWS):
 
 
     # Fluxo ForwardARP
-    flow_reverse = {
+    flow_forward_arp = {
       'switch':'00:00:00:00:00:00:00:01',
       'name': 'flow-{0}-forward-arp'.format(flow_index),
       "ether-type":"0x806",
@@ -123,12 +123,12 @@ for flow_index in range(0, NUM_FLOWS):
     }
     response = requests.post(
       'http://localhost:8080/wm/staticentrypusher/json',
-      data=json.dumps(flow_reverse)
+      data=json.dumps(flow_forward_arp)
     )
     print('Resposta ao adicionar novo fluxo FORWARD ARP na rede: ', response)
 
     # FLuxo REVERSE
-    flow_forward = {
+    flow_reverse = {
       'switch':'00:00:00:00:00:00:00:01',
       'name': 'flow-{0}-reverse'.format(flow_index),
       "ether-type":"0x800",
@@ -143,13 +143,13 @@ for flow_index in range(0, NUM_FLOWS):
     }
     response = requests.post(
       'http://localhost:8080/wm/staticentrypusher/json',
-      data=json.dumps(flow_forward)
+      data=json.dumps(flow_reverse)
     )
     print('Resposta ao adicionar novo fluxo REVERSE na rede: ', response)
 
 
     # Fluxo ReverseARP
-    flow_reverse = {
+    flow_reverse_arp = {
       'switch':'00:00:00:00:00:00:00:01',
       'name': 'flow-{0}-reverse-arp'.format(flow_index),
       "ether-type":"0x806",
@@ -164,7 +164,7 @@ for flow_index in range(0, NUM_FLOWS):
     }
     response = requests.post(
       'http://localhost:8080/wm/staticentrypusher/json',
-      data=json.dumps(flow_reverse)
+      data=json.dumps(flow_reverse_arp)
     )
     print('Resposta ao adicionar novo fluxo REVERSE ARP na rede: ', response)
 

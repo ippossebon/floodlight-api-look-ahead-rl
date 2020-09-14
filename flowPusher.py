@@ -221,14 +221,18 @@ def addFlows(num_flows):
         )
 
         flow_cookie += 1
+        
+    print(num_flows + 'flows added.')
 
 
 def deleteFlows(num_flows):
     for flow_index in range(0, num_flows):
         for flow_type in ['forward', 'forward-arp', 'reverse', 'reverse-arp']:
-            flow = { 'name': 'flow-{0}-{1}'.format(flow_index,flow_type) }
+            flow = {
+                'name': 'flow-{0}-{1}'.format(flow_index,flow_type)
+            }
             response = requests.delete(
               'http://localhost:8080/wm/staticentrypusher/json',
-              data=json.dumps(flow_reverse)
+              data=json.dumps(flow)
             )
             print('Resposta ao remover remover fluxo ', response)

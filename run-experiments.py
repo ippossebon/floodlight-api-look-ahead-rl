@@ -48,6 +48,7 @@ for flow_index in range(0, NUM_FLOWS):
         'priority':'32766',
         'in_port':'1',
         'active':'true',
+        'outPort': '2',
         'actions':'output=2'
     }
     flow_cookie += 1

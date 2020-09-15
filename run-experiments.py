@@ -80,40 +80,43 @@ print()
 # env = make_vec_env(lambda: env, n_envs=1)
 
 
-print('Treinando o agente com ACKTR...')
-model = ACKTR('MlpPolicy', env, verbose=1).learn(25)
-
-# Test the trained agent
-print('Testando o agente com gerado...')
-
-obs = env.reset()
-n_steps = 10
-for step in range(n_steps):
-  action, _ = model.predict(obs, deterministic=True)
-  print('Step {}'.format(step + 1))
-  print('Action: ', action)
-  obs, reward, done, info = env.step(action)
-  print('obs=', obs, 'reward=', reward, 'done=', done)
+# print('Treinando o agente com ACKTR...')
+# model = ACKTR('MlpPolicy', env, verbose=1).learn(25)
+#
+# # Test the trained agent
+# print('Testando o agente com gerado...')
+#
+# obs = env.reset()
+# n_steps = 10
+# for step in range(n_steps):
+#   action, _ = model.predict(obs, deterministic=True)
+#   print('Step {}'.format(step + 1))
+#   print('Action: ', action)
+#   obs, reward, done, info = env.step(action)
+#   print('obs=', obs, 'reward=', reward, 'done=', done)
 #   env.render()
 
-# print('Treinando o agente com PPO2...')
-# model = PPO2(MlpPolicy, env, verbose=1)
-# model.learn(total_timesteps=100)
-# model.save('ppo2_load_balance')
-#
-# del model # remove to demonstrate saving and loading
-#
-# model = PPO2.load('ppo2_load_balance')
-#
-# print('Testando o agente gerado...')
-# state = env.reset()
-# n_steps = 20
-# for step in range(n_steps):
-#   action, _ = model.predict(state, deterministic=True)
-#   print('Step: ', step + 1)
-#   print('Action: ', action)
-#   state, reward, done, info = env.step(action)
-#   print('state=', state, 'reward=', reward, 'done=', done)
+print('Treinando o agente com PPO2...')
+model = PPO2(MlpPolicy, env, verbose=1)
+model.learn(total_timesteps=100)
+model.save('ppo2_load_balance')
+
+del model # remove to demonstrate saving and loading
+
+model = PPO2.load('ppo2_load_balance')
+
+print('Testando o agente gerado...')
+state = env.reset()
+n_steps = 20
+ print('State: ', state)
+
+for step in range(n_steps):
+  action, _ = model.predict(state, deterministic=True)
+  print('Step: ', step + 1)
+  print('Action: ', action)
+  state, reward, done, info = env.step(action)
+
+  print('state=', state, 'reward=', reward, 'done=', done)
   # env.render()
 
 

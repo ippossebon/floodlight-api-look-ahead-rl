@@ -96,25 +96,25 @@ print()
 #   print('obs=', obs, 'reward=', reward, 'done=', done)
 #   env.render()
 
-# print('Treinando o agente com PPO2...')
-# model = PPO2(MlpPolicy, env, verbose=1)
-# model.learn(total_timesteps=100)
-# model.save('ppo2_load_balance')
-#
-# del model # remove to demonstrate saving and loading
-#
-# model = PPO2.load('ppo2_load_balance')
-#
-# print('Testando o agente gerado...')
-# state = env.reset()
-# n_steps = 20
-# for step in range(n_steps):
-#   action, _ = model.predict(state, deterministic=True)
-#   print('Step: ', step + 1)
-#   print('Action: ', action)
-#   state, reward, done, info = env.step(action)
-#   print('state=', state, 'reward=', reward, 'done=', done)
-#   # env.render()
+print('Treinando o agente com PPO2...')
+model = PPO2(MlpPolicy, env, verbose=1)
+model.learn(total_timesteps=100)
+model.save('ppo2_load_balance')
+
+del model # remove to demonstrate saving and loading
+
+model = PPO2.load('ppo2_load_balance')
+
+print('Testando o agente gerado...')
+state = env.reset()
+n_steps = 20
+for step in range(n_steps):
+  action, _ = model.predict(state, deterministic=True)
+  print('Step: ', step + 1)
+  print('Action: ', action)
+  state, reward, done, info = env.step(action)
+  print('state=', state, 'reward=', reward, 'done=', done)
+  # env.render()
 
 
 # print()

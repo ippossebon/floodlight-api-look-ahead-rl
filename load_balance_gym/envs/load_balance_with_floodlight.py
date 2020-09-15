@@ -451,16 +451,12 @@ class LoadBalanceEnv(gym.Env):
         # return self.flow_pusher.set(rule)
 
     def getFlowIdByCookie(self, cookie):
-        print('getFlowIdByCookie: cookie = {0}'.format(cookie))
-        print('self.flows_cookies: ', self.flows_cookies)
-        print('self.flows_cookies.items() ', self.flows_cookies.items())
-
         for flow_id, flow_cookie in self.flows_cookies.items():
             if flow_cookie == cookie:
                 return flow_id
 
         print('[getFlowIdByCookie] Nao ha match para cookie: ', cookie, ' flows_cookies = ', self.flows_cookies)
-        exit(0)
+
         return None
 
     def getMostCostlyFlow(self, switch_id):

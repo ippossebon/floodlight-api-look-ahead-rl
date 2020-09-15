@@ -328,20 +328,40 @@ class LoadBalanceEnv(gym.Env):
 
 
     def getFlows(self):
-        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print('flows da rede ' , response_data)
+        print('################ estatiscticas da rede ' , response_data)
 
         flows_ids = []
         flow_cookies = {}
-        for switch_id in response_data:
-            for flow_obj in response_data[switch_id]:
-                flow_obj_keys = flow_obj.keys()
-                for flow_id in flow_obj_keys:
-                    if flow_id not in flows_ids:
-                        flows_ids.append(flow_id)
-                        flow_cookies[flow_id] = flow_obj[flow_id]['cookie']
+        for switch_address in response_data:
+            for flow in response_data[switch_address]['flows']:
+                contains_match = len(flow['match'].keys()) > 1
+
+                # print('Flow statistics - flow: ', flow)
+
+                if contains_match:
+                    is_tcp_flow = False
+                    tcp_src_port = None
+                    try:
+                        tcp_src_port = flow['match']['tcp_src']
+                        tcp_dst_port = flow['match']['tcp_dst']
+
+                        is_tcp_flow = tcp_src_port or 0
+                        is_h1_to_h2_flow = tcp_dst_port == '5001'
+                    except:
+                        is_tcp_flow = False
+
+                    if is_tcp_flow and is_h1_to_h2_flow:
+                        flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port=tcp_src_port)
+
+                        # Se não existir na lista de fluxos ativos, adiciona
+                        if flow_id not in flows_ids:
+                            flow_cookie = flow['cookie']
+                            flows_ids.append(flow_id)
+                            flows_cookies.append(flow_cookie)
+
 
         print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
         print('-> [getFlows] Cookies dos fluxos na rede: ', flow_cookies)

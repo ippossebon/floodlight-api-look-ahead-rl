@@ -12,9 +12,6 @@ def addFlows(num_flows):
         flow_forward = {
           'switch':'00:00:00:00:00:00:00:01',
           'name': 'flow-{0}-forward'.format(flow_index),
-          # "ether-type":"0x800",
-          # "src-ip":"10.0.0.1",
-          # "dst-ip":"10.0.0.2",
           'cookie': str(flow_cookie),
           'priority':'32768',
           'in_port':'1',
@@ -29,9 +26,6 @@ def addFlows(num_flows):
         flow_forward = {
           'switch':'00:00:00:00:00:00:00:02',
           'name': 'flow-{0}-forward'.format(flow_index),
-          # "ether-type":"0x800",
-          # "src-ip":"10.0.0.1",
-          # "dst-ip":"10.0.0.2",
           'cookie': str(flow_cookie),
           'priority':'32768',
           'in_port':'1',
@@ -46,9 +40,6 @@ def addFlows(num_flows):
         flow_forward = {
           'switch':'00:00:00:00:00:00:00:03',
           'name': 'flow-{0}-forward'.format(flow_index),
-          # "ether-type":"0x800",
-          # "src-ip":"10.0.0.1",
-          # "dst-ip":"10.0.0.2",
           'cookie': str(flow_cookie),
           'priority':'32768',
           'in_port':'2',

@@ -331,8 +331,6 @@ class LoadBalanceEnv(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print('################ estatiscticas da rede ' , response_data)
-
         flows_ids = []
         flows_cookies = {}
         for switch_address in response_data:
@@ -469,7 +467,7 @@ class LoadBalanceEnv(gym.Env):
 
         response_data = response.json()
 
-        print('getMostCostlyFlow ', response_data)
+        print('getMostCostlyFlow ', response_data[switch_id]['flows'])
 
         max_byte_count = 0
         max_usage_flow_id = None # preciso de um fallback

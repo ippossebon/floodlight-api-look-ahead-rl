@@ -46,10 +46,10 @@ time.sleep(10)
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 print()
 
-flow_ids, cookies = env.getFlows()
-
-max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-print('* max_usage_flow_id = ', max_usage_flow_id)
+# flow_ids, cookies = env.getFlows()
+#
+# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+# print('* max_usage_flow_id = ', max_usage_flow_id)
 
 # print('Todas devem ser TRUE')
 # print(env.actionBelongsToPath(action=numpy.array([0,0,2])))

@@ -468,7 +468,7 @@ class LoadBalanceEnv(gym.Env):
 
         response_data = response.json()
 
-        print('getMostCostlyFlow ', response_data[switch_id]['flows'])
+        # print('getMostCostlyFlow ', response_data[switch_id]['flows'])
 
         max_byte_count = 0
         max_usage_flow_id = None # preciso de um fallback
@@ -477,8 +477,6 @@ class LoadBalanceEnv(gym.Env):
 
 
         for flow_obj in response_data[switch_id]['flows']:
-            print('flow_obj', flow_obj)
-
             flow_cookie = flow_obj['cookie']
             if flow_cookie != '0':
                 flow_obj_keys = flow_obj.keys()

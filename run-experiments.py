@@ -53,8 +53,8 @@ print('* cookies', cookies)
 print()
 print()
 
-max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-print('* max_usage_flow_id = ', max_usage_flow_id)
+# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+# print('* max_usage_flow_id = ', max_usage_flow_id)
 
 # print('Todas devem ser TRUE')
 # print(env.actionBelongsToPath(action=numpy.array([0,0,2])))

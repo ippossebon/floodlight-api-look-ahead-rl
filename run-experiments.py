@@ -40,7 +40,7 @@ CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
 # addFlows(num_flows=5)
-time.sleep(20)
+time.sleep(10)
 
 # Fluxo sai de H1 e vai para H2
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)

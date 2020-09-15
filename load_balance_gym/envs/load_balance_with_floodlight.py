@@ -360,7 +360,7 @@ class LoadBalanceEnv(gym.Env):
                         if flow_id not in flows_ids:
                             flow_cookie = flow['cookie']
                             flows_ids.append(flow_id)
-                            flows_cookies.append({ flow_id: flow_cookie })
+                            flows_cookies[flow_id] = flow_cookie
 
 
         print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))

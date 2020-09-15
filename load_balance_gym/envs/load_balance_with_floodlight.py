@@ -459,7 +459,8 @@ class LoadBalanceEnv(gym.Env):
             if flow_cookie == cookie:
                 return flow_id
 
-        print('[getFlowIdByCookie] Não há match para cookie: ', cookie, ' flows_cookies = ', self.flows_cookies)
+        print('[getFlowIdByCookie] Nao ha match para cookie: ', cookie, ' flows_cookies = ', self.flows_cookies)
+        exit(0)
         return None
 
     def getMostCostlyFlow(self, switch_id):

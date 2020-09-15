@@ -334,7 +334,7 @@ class LoadBalanceEnv(gym.Env):
         print('################ estatiscticas da rede ' , response_data)
 
         flows_ids = []
-        flow_cookies = {}
+        flows_cookies = {}
         for switch_address in response_data:
             for flow in response_data[switch_address]['flows']:
                 contains_match = len(flow['match'].keys()) > 1
@@ -360,13 +360,13 @@ class LoadBalanceEnv(gym.Env):
                         if flow_id not in flows_ids:
                             flow_cookie = flow['cookie']
                             flows_ids.append(flow_id)
-                            flows_cookies.append(flow_cookie)
+                            flows_cookies.append({ flow_id: flow_cookie })
 
 
         print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
-        print('-> [getFlows] Cookies dos fluxos na rede: ', flow_cookies)
+        print('-> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
 
-        return sorted(flows_ids), flow_cookies
+        return sorted(flows_ids), flows_cookies
 
 
     def getState(self):

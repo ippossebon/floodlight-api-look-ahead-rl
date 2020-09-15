@@ -109,7 +109,7 @@ print('Testando o agente gerado...')
 state = env.reset()
 n_steps = 20
 for step in range(n_steps):
-  action, _ = model.predict(state, deterministic=True)
+  action, _ = model.predict(state, deterministic=False)
   print('Step: ', step + 1)
   print('Action: ', action)
   state, reward, done, info = env.step(action)

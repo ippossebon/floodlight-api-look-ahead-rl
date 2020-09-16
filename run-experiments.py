@@ -142,7 +142,7 @@ model = PPO2.load('ppo2_load_balance_1000')
 
 print('Testando o agente gerado...')
 state = env.reset()
-n_steps = 150
+n_steps = 100
 print('State: ', state)
 
 for step in range(n_steps):

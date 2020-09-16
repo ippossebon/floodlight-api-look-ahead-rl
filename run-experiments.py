@@ -3,7 +3,7 @@ from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
-from stable_baselines import PPO2, ACKTR
+from stable_baselines import PPO2, ACKTR, DQN
 
 from flowPusher import addFlows, deleteFlows
 
@@ -132,7 +132,7 @@ PPO2
 
 print('Treinando o agente com PPO2...')
 # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
-env = make_vec_env(lambda: env, n_envs=2)
+env = make_vec_env(env, n_envs=4)
 print('Env = ', env)
 exit(0)
 model = PPO2(policy=MlpPolicy, env=env, verbose=1)
@@ -157,6 +157,8 @@ for step in range(n_steps):
 
   print('state=', state, 'reward=', reward, 'done=', done)
   # env.render()
+
+
 
 
 # print()

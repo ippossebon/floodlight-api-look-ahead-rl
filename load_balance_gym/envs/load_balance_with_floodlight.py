@@ -70,7 +70,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.observation_space = spaces.Box(
             low=0,
-            high=LINK_CAPACITY,
+            high=numpy.iinfo(numpy.float16).max,
             shape=(self.num_ports,), # array com o RX de cada porta
             dtype=numpy.float16
         )
@@ -312,7 +312,7 @@ class LoadBalanceEnv(gym.Env):
 
             paths.append(path)
 
-        print('Caminhos possiveis: ', paths)
+        # print('Caminhos possiveis: ', paths)
         return paths
 
 
@@ -355,7 +355,7 @@ class LoadBalanceEnv(gym.Env):
 
 
         print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
-        print('-> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
+        # print('-> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
 
         return sorted(flows_ids), flows_cookies
 
@@ -622,9 +622,8 @@ class LoadBalanceEnv(gym.Env):
 
         next_state = self.getState()
         reward = self.calculateReward(next_state)
-        next_state = numpy.array(next_state)
 
-        self.state =  next_state
+        self.state = next_state
 
         print('self.observation_space.shape ', self.observation_space.shape)
         print('next_state.shape ', next_state.shape)

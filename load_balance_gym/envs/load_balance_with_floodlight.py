@@ -59,6 +59,7 @@ class LoadBalanceEnv(gym.Env):
         self.switch_possible_ports = {}
         self.num_links = 0
 
+        self.num_ports = NUM_PORTS # fixo neste primeiro momento
         self.discoverTopology()
         self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch_index], dst_switch=self.switch_ids[target_switch_index])
         self.enableSwitchStatisticsEndpoit()
@@ -176,7 +177,6 @@ class LoadBalanceEnv(gym.Env):
         # print('-> [discoverTopology] Switch Links: ', self.switch_links)
         # print('-> [discoverTopology] Numero de portas: ', self.num_links + 2) # + 2 dos switches conectados aos hosts
 
-        self.num_ports = NUM_PORTS # fixo neste primeiro momento
         self.ports: {
             'S1.1': 0,
             'S1.2': 1,
@@ -634,6 +634,10 @@ class LoadBalanceEnv(gym.Env):
         next_state = numpy.array(next_state)
 
         self.state = next_state
+
+        print('next_state.shape', next_state.shape)
+        print('self.state.shape', self.state.shape)
+
 
         return next_state, reward, done, info
 

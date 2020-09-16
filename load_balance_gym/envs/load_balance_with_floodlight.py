@@ -624,7 +624,11 @@ class LoadBalanceEnv(gym.Env):
         reward = self.calculateReward(next_state)
         next_state = numpy.array(next_state)
 
-        self.state =  next_state.flatten()
+        self.state =  next_state
+
+        print('self.observation_space.shape ', self.observation_space.shape)
+        print('next_state.shape ', next_state.shape)
+        print('next_state, reward, done, info', next_state, reward, done, info)
 
         return next_state, reward, done, info
 

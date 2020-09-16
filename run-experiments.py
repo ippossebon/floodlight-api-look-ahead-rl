@@ -132,17 +132,18 @@ PPO2
 
 print('Treinando o agente com PPO2...')
 # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
-env = make_vec_env(env, n_envs=4)
+env = make_vec_env(lambda: env, n_envs=4)
 print('Env = ', env)
-exit(0)
-model = PPO2(policy=MlpPolicy, env=env, verbose=1)
-model.learn(total_timesteps=50)
-model.save('ppo2_load_balance_50')
+model = A2C('CnnPolicy', env).learn(total_timesteps=1000)
+# exit(0)
+# model = PPO2(policy=MlpPolicy, env=env, verbose=1)
+# model.learn(total_timesteps=50)
+model.save('A2C')
 print('Modelo treinado e salvo.')
 
 del model # remove to demonstrate saving and loading
 
-model = PPO2.load('ppo2_load_balance_50')
+model = PPO2.load('A2C')
 
 print('Testando o agente gerado...')
 state = env.reset()

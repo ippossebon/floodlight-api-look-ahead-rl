@@ -46,10 +46,25 @@ time.sleep(10)
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 print()
 
-# flow_ids, cookies = env.getFlows()
+flow_ids, cookies = env.getFlows()
+print('flow_ids = ', flow_ids)
+print('cookies = ', cookies)
+print()
 #
-# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-# print('* max_usage_flow_id = ', max_usage_flow_id)
+max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
+
+max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
+print('* max_usage_flow_id de 00:00:00:00:00:00:00:02 = ', max_usage_flow_id)
+
+max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
+print('* max_usage_flow_id de 00:00:00:00:00:00:00:03 = ', max_usage_flow_id)
+
+max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
+print('* max_usage_flow_id de 00:00:00:00:00:00:00:04 = ', max_usage_flow_id)
+
+max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
+print('* max_usage_flow_id de 00:00:00:00:00:00:00:05 = ', max_usage_flow_id)
 
 # print('Todas devem ser TRUE')
 # print(env.actionBelongsToPath(action=numpy.array([0,0,2])))
@@ -96,27 +111,27 @@ print()
 #   print('obs=', obs, 'reward=', reward, 'done=', done)
 #   env.render()
 
-print('Treinando o agente com PPO2...')
-model = PPO2(MlpPolicy, env, verbose=1)
-model.learn(total_timesteps=100)
-model.save('ppo2_load_balance')
-
-del model # remove to demonstrate saving and loading
-
-model = PPO2.load('ppo2_load_balance')
-
-print('Testando o agente gerado...')
-state = env.reset()
-n_steps = 50
-print('State: ', state)
-
-for step in range(n_steps):
-  action, _ = model.predict(state, deterministic=True)
-  print('Step: ', step + 1)
-  print('Action: ', action)
-  state, reward, done, info = env.step(action)
-
-  print('state=', state, 'reward=', reward, 'done=', done)
+# print('Treinando o agente com PPO2...')
+# model = PPO2(MlpPolicy, env, verbose=1)
+# model.learn(total_timesteps=100)
+# model.save('ppo2_load_balance')
+#
+# del model # remove to demonstrate saving and loading
+#
+# model = PPO2.load('ppo2_load_balance')
+#
+# print('Testando o agente gerado...')
+# state = env.reset()
+# n_steps = 50
+# print('State: ', state)
+#
+# for step in range(n_steps):
+#   action, _ = model.predict(state, deterministic=True)
+#   print('Step: ', step + 1)
+#   print('Action: ', action)
+#   state, reward, done, info = env.step(action)
+#
+#   print('state=', state, 'reward=', reward, 'done=', done)
   # env.render()
 
 

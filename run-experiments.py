@@ -102,7 +102,6 @@ Env Validation
 
 print('************** Validacao da env: *************')
 print(check_env(env, warn=True))
-# env = make_vec_env(lambda: env, n_envs=1)
 print('************************************************')
 
 
@@ -133,6 +132,7 @@ PPO2
 
 print('Treinando o agente com PPO2...')
 # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
+env = make_vec_env(lambda: env, n_envs=1)
 model = PPO2(policy=MlpPolicy, env=env, verbose=1)
 model.learn(total_timesteps=50)
 model.save('ppo2_load_balance_50')

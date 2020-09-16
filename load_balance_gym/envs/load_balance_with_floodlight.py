@@ -24,6 +24,8 @@ EPSILON = 0.001
 NUM_PORTS = 16
 MAX_PORTS_SWITCH = 4 # numero maximo de portas de um swithc
 
+MEGABITS_CONVERSION = 1048576
+
 class LoadBalanceEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
@@ -368,6 +370,7 @@ class LoadBalanceEnv(gym.Env):
 
 
     def getState(self):
+        # IMPORTANTE: o estado não pode ser guardado em bits. Será guardado em Mbits
         response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
         response_data = response.json()
 
@@ -391,52 +394,52 @@ class LoadBalanceEnv(gym.Env):
 
             if item['dpid'] == self.switch_ids[0] and item['port'] == '1':
                 #S1.1
-                state[0] = float(item['bits-per-second-rx'])
+                state[0] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[0] and item['port'] == '2':
                 #S1.2
-                state[1] = float(item['bits-per-second-rx'])
+                state[1] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[0] and item['port'] == '3':
                 #S1.3
-                state[2] = float(item['bits-per-second-rx'])
+                state[2] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '1':
                 #S2.1
-                state[3] = float(item['bits-per-second-rx'])
+                state[3] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
                 #S2.2
-                state[4] = float(item['bits-per-second-rx'])
+                state[4] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '3':
                 #S2.3
-                state[5] = float(item['bits-per-second-rx'])
+                state[5] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '4':
                 #S2.4
-                state[6] = float(item['bits-per-second-rx'])
+                state[6] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '1':
                 #S3.1
-                state[7] = float(item['bits-per-second-rx'])
+                state[7] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '2':
                 #S3.2
-                state[8] = float(item['bits-per-second-rx'])
+                state[8] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
                 #S3.3
-                state[9] = float(item['bits-per-second-rx'])
+                state[9] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
                 #S3.4
-                state[10] = float(item['bits-per-second-rx'])
+                state[10] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
                 #S4.1
-                state[11] = float(item['bits-per-second-rx'])
+                state[11] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '2':
                 #S4.2
-                state[12] = float(item['bits-per-second-rx'])
+                state[12] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '3':
                 #S4.3
-                state[13] = float(item['bits-per-second-rx'])
+                state[13] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[4] and item['port'] == '1':
                 #S5.1
-                state[14] = float(item['bits-per-second-rx'])
+                state[14] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[4] and item['port'] == '2':
                 #S5.2
-                state[15] = float(item['bits-per-second-rx'])
+                state[15] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
         return state
 

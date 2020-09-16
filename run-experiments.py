@@ -53,7 +53,7 @@ Env methods tests
 response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
     host=CONTROLLER_HOST
 ),
-data={ "max_fast_paths": "2" }) # pois o default é 3
+data={'{"max_fast_paths": "10"}'}) # pois o default é 3
 response_data = response.json()
 print('Resposta setando max paths ', response_data)
 

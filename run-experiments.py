@@ -134,7 +134,7 @@ print('Treinando o agente com PPO2...')
 # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
 env = make_vec_env(lambda: env, n_envs=4)
 print('Env = ', env)
-model = A2C('CnnPolicy', env).learn(total_timesteps=1000)
+model = A2C('CnnPolicy', env).learn(total_timesteps=100)
 # exit(0)
 # model = PPO2(policy=MlpPolicy, env=env, verbose=1)
 # model.learn(total_timesteps=50)

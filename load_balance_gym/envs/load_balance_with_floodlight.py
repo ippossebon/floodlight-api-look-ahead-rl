@@ -431,7 +431,7 @@ class LoadBalanceEnv(gym.Env):
                 #S5.2
                 state[15] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
-        return state
+        return state.flatten()
 
     def installRule(self, rule):
         urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
@@ -624,15 +624,7 @@ class LoadBalanceEnv(gym.Env):
         reward = self.calculateReward(next_state)
         next_state = numpy.array(next_state)
 
-        self.state = next_state
-
-        next_state_flatten = next_state.flatten()
-        print('next_state', next_state)
-        print('next_state.shape', next_state.shape)
-        print('next_state flatten', next_state_flatten)
-        print('next_state.shape flatten', next_state_flatten.shape)
-
-
+        self.state =  next_state.flatten()
 
         return next_state, reward, done, info
 

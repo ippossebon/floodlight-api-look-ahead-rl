@@ -86,10 +86,10 @@ print()
 # print('-----')
 
 
-print('************** Validacao da env: *************')
-print(check_env(env, warn=True))
-# env = make_vec_env(lambda: env, n_envs=1)
-print('************************************************')
+# print('************** Validacao da env: *************')
+# print(check_env(env, warn=True))
+# # env = make_vec_env(lambda: env, n_envs=1)
+# print('************************************************')
 
 
 # print('Treinando o agente com ACKTR...')

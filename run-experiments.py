@@ -133,10 +133,10 @@ PPO2
 
 print('Treinando o agente com PPO2...')
 model = PPO2(MlpPolicy, env, verbose=1)
-model.learn(total_timesteps=1000)
-model.save('ppo2_load_balance_1000')
-
-del model # remove to demonstrate saving and loading
+# model.learn(total_timesteps=1000)
+# model.save('ppo2_load_balance_1000')
+#
+# del model # remove to demonstrate saving and loading
 
 model = PPO2.load('ppo2_load_balance_1000')
 

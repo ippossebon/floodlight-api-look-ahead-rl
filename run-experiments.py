@@ -55,7 +55,7 @@ response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
     src='00:00:00:00:00:00:00:01',
     dst='00:00:00:00:00:00:00:03'
 ),
-data={ 'max_fast_paths': '9' }) # pois o default é 3
+data={ "max_fast_paths": "2" }) # pois o default é 3
 response_data = response.json()
 print('Resposta setando max paths ', response_data)
 

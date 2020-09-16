@@ -14,6 +14,11 @@ import gym
 import numpy
 
 """
+Antes de iniciar o experimento, rodar:
+
+curl -X POST 'http://localhost:8080//wm/routing/paths/max-fast-paths/json' -d '{"max_fast_paths": "10"}'
+
+
 Ideia do experimento: iniciar com 5 fluxos.
 
 sleep(30)
@@ -50,15 +55,6 @@ print()
 Env methods tests
 """
 
-response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
-    host=CONTROLLER_HOST
-),
-data={'max_fast_paths':'10'}) # pois o default eh 3
-response_data = response.json()
-print('Resposta setando max paths ', response_data)
-
-paths = env.discoverPossiblePaths(src_switch='00:00:00:00:00:00:00:01', dst_switch='00:00:00:00:00:00:00:03')
-print('Numero de caminhos descobertos: ', len(paths))
 # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 # print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
 #
@@ -135,27 +131,27 @@ ACKTR
 PPO2
 """
 
-# print('Treinando o agente com PPO2...')
-# model = PPO2(MlpPolicy, env, verbose=1)
-# model.learn(total_timesteps=1000)
-# model.save('ppo2_load_balance_1000')
-#
-# del model # remove to demonstrate saving and loading
-#
-# model = PPO2.load('ppo2_load_balance_1000')
-#
-# print('Testando o agente gerado...')
-# state = env.reset()
-# n_steps = 150
-# print('State: ', state)
-#
-# for step in range(n_steps):
-#   action, _ = model.predict(state, deterministic=True)
-#   print('Step: ', step + 1)
-#   print('Action: ', action)
-#   state, reward, done, info = env.step(action)
-#
-#   print('state=', state, 'reward=', reward, 'done=', done)
+print('Treinando o agente com PPO2...')
+model = PPO2(MlpPolicy, env, verbose=1)
+model.learn(total_timesteps=1000)
+model.save('ppo2_load_balance_1000')
+
+del model # remove to demonstrate saving and loading
+
+model = PPO2.load('ppo2_load_balance_1000')
+
+print('Testando o agente gerado...')
+state = env.reset()
+n_steps = 150
+print('State: ', state)
+
+for step in range(n_steps):
+  action, _ = model.predict(state, deterministic=True)
+  print('Step: ', step + 1)
+  print('Action: ', action)
+  state, reward, done, info = env.step(action)
+
+  print('state=', state, 'reward=', reward, 'done=', done)
   # env.render()
 
 

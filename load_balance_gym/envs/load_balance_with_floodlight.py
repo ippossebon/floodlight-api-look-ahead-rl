@@ -74,6 +74,7 @@ class LoadBalanceEnv(gym.Env):
             shape=(self.num_ports, 1), # array com o RX de cada porta
             dtype=numpy.float16
         )
+        print('self.observation_space.shape', self.observation_space.shape)
 
         # Ação = (flow_id, switch_id, in_port, out_port)
         # Ação = (flow_index, switch_index, in_port, out_port)

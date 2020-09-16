@@ -628,12 +628,9 @@ class LoadBalanceEnv(gym.Env):
 
 
     def calculateReward(self, state):
-        # Normalize vector
         for i in range(len(state)):
             if state[i] == 0:
-                state[i] = EPSILON / MAX_BITS_CAPACITY
-            else:
-                state[i] = state[i] / MAX_BITS_CAPACITY
+                state[i] = EPSILON
 
 
         state_values_sum = numpy.sum(1.0/numpy.array(state)) or EPSILON

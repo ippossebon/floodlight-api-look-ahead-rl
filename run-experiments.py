@@ -133,7 +133,7 @@ PPO2
 
 print('Treinando o agente com PPO2...')
 # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
-model = PPO2(MlpPolicy, env, verbose=1)
+model = PPO2(policy=MlpPolicy, env=env, verbose=1)
 model.learn(total_timesteps=50)
 model.save('ppo2_load_balance_50')
 print('Modelo treinado e salvo.')

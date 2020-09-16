@@ -197,14 +197,6 @@ class LoadBalanceEnv(gym.Env):
             'S5.2': 15,
         }
 
-    def getKeyDict(self, dict, val):
-        for key, value in dict.items():
-             if val == value:
-                 return key
-
-        print('[getKeyDict] Key does not exist: ', val)
-        return None
-
 
     def discoverPossiblePaths(self, src_switch, dst_switch):
         # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
@@ -339,8 +331,6 @@ class LoadBalanceEnv(gym.Env):
         for switch_address in response_data:
             for flow in response_data[switch_address]['flows']:
                 contains_match = len(flow['match'].keys()) > 1
-
-                # print('Flow statistics - flow: ', flow)
 
                 if contains_match:
                     is_tcp_flow = False
@@ -636,8 +626,12 @@ class LoadBalanceEnv(gym.Env):
 
         self.state = next_state
 
+        next_state_flatten = next_state.flatten()
+        print('next_state', next_state)
         print('next_state.shape', next_state.shape)
-        print('self.state.shape', self.state.shape)
+        print('next_state flatten', next_state_flatten)
+        print('next_state.shape flatten', next_state_flatten.shape)
+
 
 
         return next_state, reward, done, info

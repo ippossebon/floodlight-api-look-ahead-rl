@@ -46,6 +46,21 @@ time.sleep(10)
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 print()
 
+"""
+Env methods tests
+"""
+
+response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
+    host=CONTROLLER_HOST,
+    src='00:00:00:00:00:00:00:01',
+    dst='00:00:00:00:00:00:00:03'
+),
+data={ 'max_fast_paths': '9' }) # pois o default é 3
+response_data = response.json()
+print('Resposta setando max paths ', response_data)
+
+paths = env.discoverPossiblePaths(src_switch='00:00:00:00:00:00:00:01', dst_switch='00:00:00:00:00:00:00:03')
+print('Numero de caminhos descobertos: ', len(paths))
 # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 # print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
 #
@@ -86,11 +101,20 @@ print()
 # print('-----')
 
 
+
+"""
+Env Validation
+"""
+
 # print('************** Validacao da env: *************')
 # print(check_env(env, warn=True))
 # # env = make_vec_env(lambda: env, n_envs=1)
 # print('************************************************')
 
+
+"""
+ACKTR
+"""
 
 # print('Treinando o agente com ACKTR...')
 # model = ACKTR('MlpPolicy', env, verbose=1).learn(25)
@@ -108,27 +132,32 @@ print()
 #   print('obs=', obs, 'reward=', reward, 'done=', done)
 #   env.render()
 
-print('Treinando o agente com PPO2...')
-model = PPO2(MlpPolicy, env, verbose=1)
-model.learn(total_timesteps=1000)
-model.save('ppo2_load_balance')
 
-del model # remove to demonstrate saving and loading
+"""
+PPO2
+"""
 
-model = PPO2.load('ppo2_load_balance')
-
-print('Testando o agente gerado...')
-state = env.reset()
-n_steps = 150
-print('State: ', state)
-
-for step in range(n_steps):
-  action, _ = model.predict(state, deterministic=True)
-  print('Step: ', step + 1)
-  print('Action: ', action)
-  state, reward, done, info = env.step(action)
-
-  print('state=', state, 'reward=', reward, 'done=', done)
+# print('Treinando o agente com PPO2...')
+# model = PPO2(MlpPolicy, env, verbose=1)
+# model.learn(total_timesteps=1000)
+# model.save('ppo2_load_balance_1000')
+#
+# del model # remove to demonstrate saving and loading
+#
+# model = PPO2.load('ppo2_load_balance_1000')
+#
+# print('Testando o agente gerado...')
+# state = env.reset()
+# n_steps = 150
+# print('State: ', state)
+#
+# for step in range(n_steps):
+#   action, _ = model.predict(state, deterministic=True)
+#   print('Step: ', step + 1)
+#   print('Action: ', action)
+#   state, reward, done, info = env.step(action)
+#
+#   print('state=', state, 'reward=', reward, 'done=', done)
   # env.render()
 
 

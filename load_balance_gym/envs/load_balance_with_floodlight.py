@@ -74,7 +74,6 @@ class LoadBalanceEnv(gym.Env):
             shape=(self.num_ports,), # array com o RX de cada porta
             dtype=numpy.float16
         )
-        print('self.observation_space.shape', self.observation_space.shape)
 
         # Ação = (flow_id, switch_id, in_port, out_port)
         # Ação = (flow_index, switch_index, in_port, out_port)
@@ -202,14 +201,14 @@ class LoadBalanceEnv(gym.Env):
         # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
         # Get an ordered list of paths from the shortest to the longest path
 
-        response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
-            host=CONTROLLER_HOST,
-            src=src_switch,
-            dst=dst_switch
-        ),
-        data={ 'max_fast_paths': '9' }) # pois o default é 3
-        response_data = response.json()
-        print('Resposta setando max paths ', response_data)
+        # response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
+        #     host=CONTROLLER_HOST,
+        #     src=src_switch,
+        #     dst=dst_switch
+        # ),
+        # data={ 'max_fast_paths': '9' }) # pois o default é 3
+        # response_data = response.json()
+        # print('Resposta setando max paths ', response_data)
 
         response = requests.get('{host}/wm/routing/paths/{src}/{dst}/10/json'.format(
             host=CONTROLLER_HOST,
@@ -354,7 +353,7 @@ class LoadBalanceEnv(gym.Env):
                             flows_cookies[flow_id] = flow_cookie
 
 
-        print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
+        # print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
         # print('-> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
 
         return sorted(flows_ids), flows_cookies
@@ -615,7 +614,7 @@ class LoadBalanceEnv(gym.Env):
             flow_id
         )
 
-        print('Regra a ser instalada = ', rule)
+        # print('Regra a ser instalada = ', rule)
         self.installRule(rule)
 
         time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
@@ -624,10 +623,6 @@ class LoadBalanceEnv(gym.Env):
         reward = self.calculateReward(next_state)
 
         self.state = next_state
-
-        print('self.observation_space.shape ', self.observation_space.shape)
-        print('next_state.shape ', next_state.shape)
-        print('next_state, reward, done, info', next_state, reward, done, info)
 
         return next_state, reward, done, info
 

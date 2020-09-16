@@ -390,7 +390,6 @@ class LoadBalanceEnv(gym.Env):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
-            # print('Usage data - item: ', item)
 
             if item['dpid'] == self.switch_ids[0] and item['port'] == '1':
                 #S1.1
@@ -451,9 +450,14 @@ class LoadBalanceEnv(gym.Env):
         }
 
         return requests.post(urlPath, data=rule, headers=headers)
-        # return self.flow_pusher.set(rule)
 
     def getFlowIdByCookie(self, cookie):
+        flows_ids, flows_cookies = self.getFlows()
+
+        print('flows na rede = ', flows_ids)
+        print('cookies na rede = ', flows_cookies)
+        print('self.flows_cookies')
+
         for flow_id, flow_cookie in self.flows_cookies.items():
             if flow_cookie == cookie:
                 return flow_id
@@ -463,35 +467,27 @@ class LoadBalanceEnv(gym.Env):
         return None
 
     def getMostCostlyFlow(self, switch_id):
-        # retorna o fluxo que exige mais do switch, pra que esse tenha suas
+        # Retorna o fluxo que exige mais do switch, pra que esse tenha suas
         # rotas recalculadas
         # response = requests.get('{host}/wm/statistics/bandwidth/{switch_id}/all/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
-        # response = requests.get('{host}/wm/staticflowentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
-
         response_data = response.json()
 
-        # print('getMostCostlyFlow ', response_data[switch_id]['flows'])
-
-        max_byte_count = 0
-        max_usage_flow_id = None # preciso de um fallback
-
-        flows_ids = []
-
+        max_byte_count = -1
+        max_usage_flow_id = None
 
         for flow_obj in response_data[switch_id]['flows']:
             flow_cookie = flow_obj['cookie']
             if flow_cookie != '0':
                 flow_obj_keys = flow_obj.keys()
-                flow_id = self.getFlowIdByCookie(flow_cookie) # TODO: como conseguir o ID? deveria olhar pro cookie?
+                flow_id = self.getFlowIdByCookie(flow_cookie)
                 flow_byte_count = int(flow_obj['byte_count'])
 
                 if flow_byte_count > max_byte_count:
                     max_byte_count = flow_byte_count
                     max_usage_flow_id = flow_id
 
-
-        print('[getMostCostlyFlow] max_byte_count: {0} - max_usage_flow_id: {1}'.format(max_byte_count, max_usage_flow_id))
+        print('[getMostCostlyFlow] max_usage_flow_id: {0} - max_byte_count: {1}'.format(max_usage_flow_id, max_byte_count))
 
         return max_usage_flow_id
 
@@ -549,9 +545,6 @@ class LoadBalanceEnv(gym.Env):
 
         in_port = in_port_index + 1
         out_port = out_port_index + 1
-
-        # Deve existir um fluxo com esse indice na lista
-        # contains_flow_index = True if flow_index <= len(self.flows_ids) else False
 
         # Deve existir um switch com o indice
         contains_switch_index = True if switch_index <= len(self.switch_ids) else False

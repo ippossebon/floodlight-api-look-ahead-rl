@@ -46,11 +46,6 @@ time.sleep(10)
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 print()
 
-flow_ids, cookies = env.getFlows()
-print('flow_ids = ', flow_ids)
-print('cookies = ', cookies)
-print()
-#
 max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
 

@@ -454,9 +454,7 @@ class LoadBalanceEnv(gym.Env):
     def getFlowIdByCookie(self, cookie):
         flows_ids, flows_cookies = self.getFlows()
 
-        print('flows na rede = ', flows_ids)
         print('cookies na rede = ', flows_cookies)
-        print('self.flows_cookies')
 
         for flow_id, flow_cookie in self.flows_cookies.items():
             if flow_cookie == cookie:
@@ -465,6 +463,13 @@ class LoadBalanceEnv(gym.Env):
         print('[getFlowIdByCookie] Nao ha match para cookie: ', cookie, ' flows_cookies = ', self.flows_cookies)
 
         return None
+
+    def getPossibleCookies(self):
+        cookies = []
+        for flow_id, flow_cookie in self.flows_cookies.items():
+            cookies.append(flow_cookie)
+
+        return cookies
 
     def getMostCostlyFlow(self, switch_id):
         # Retorna o fluxo que exige mais do switch, pra que esse tenha suas
@@ -475,10 +480,11 @@ class LoadBalanceEnv(gym.Env):
 
         max_byte_count = -1
         max_usage_flow_id = None
+        possible_cookies = self.getPossibleCookies()
 
         for flow_obj in response_data[switch_id]['flows']:
             flow_cookie = flow_obj['cookie']
-            if flow_cookie != '0':
+            if flow_cookie != '0' and flow_cookie in possible_cookies:
                 flow_obj_keys = flow_obj.keys()
                 flow_id = self.getFlowIdByCookie(flow_cookie)
                 flow_byte_count = int(flow_obj['byte_count'])

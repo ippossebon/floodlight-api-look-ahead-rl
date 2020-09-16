@@ -11,7 +11,7 @@ import time
 # https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e
 # https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
 
-LINK_CAPACITY = 10000000000 # TODO: update links capacity when generating network on mininet
+MAX_BITS_CAPACITY = 10000000000 # TODO: update links capacity when generating network on mininet
 
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
@@ -70,7 +70,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.observation_space = spaces.Box(
             low=0,
-            high=LINK_CAPACITY,
+            high=MAX_BITS_CAPACITY,
             shape=(self.num_ports,), # array com o RX de cada porta
             dtype=numpy.float16
         )
@@ -628,9 +628,12 @@ class LoadBalanceEnv(gym.Env):
 
 
     def calculateReward(self, state):
+        # Normalize vector
         for i in range(len(state)):
             if state[i] == 0:
-                state[i] = EPSILON
+                state[i] = EPSILON / MAX_BITS_CAPACITY
+            else:
+                state[i] = state[i] / MAX_BITS_CAPACITY
 
 
         state_values_sum = numpy.sum(1.0/numpy.array(state)) or EPSILON

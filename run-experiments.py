@@ -51,9 +51,7 @@ Env methods tests
 """
 
 response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
-    host=CONTROLLER_HOST,
-    src='00:00:00:00:00:00:00:01',
-    dst='00:00:00:00:00:00:00:03'
+    host=CONTROLLER_HOST
 ),
 data={ "max_fast_paths": "2" }) # pois o default é 3
 response_data = response.json()

@@ -3,7 +3,7 @@ from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
-from stable_baselines import PPO2, ACKTR, DQN
+from stable_baselines import PPO2, ACKTR, DQN, A2C
 
 from flowPusher import addFlows, deleteFlows
 

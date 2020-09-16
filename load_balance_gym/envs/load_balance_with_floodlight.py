@@ -71,7 +71,7 @@ class LoadBalanceEnv(gym.Env):
         self.observation_space = spaces.Box(
             low=0,
             high=LINK_CAPACITY,
-            shape=(self.num_ports, 1), # array com o RX de cada porta
+            shape=(self.num_ports,), # array com o RX de cada porta
             dtype=numpy.float16
         )
         print('self.observation_space.shape', self.observation_space.shape)

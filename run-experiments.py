@@ -46,20 +46,20 @@ time.sleep(10)
 env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 print()
 
-max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
-
-max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
-print('* max_usage_flow_id de 00:00:00:00:00:00:00:02 = ', max_usage_flow_id)
-
-max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
-print('* max_usage_flow_id de 00:00:00:00:00:00:00:03 = ', max_usage_flow_id)
-
-max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
-print('* max_usage_flow_id de 00:00:00:00:00:00:00:04 = ', max_usage_flow_id)
-
-max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
-print('* max_usage_flow_id de 00:00:00:00:00:00:00:05 = ', max_usage_flow_id)
+# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+# print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
+#
+# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
+# print('* max_usage_flow_id de 00:00:00:00:00:00:00:02 = ', max_usage_flow_id)
+#
+# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
+# print('* max_usage_flow_id de 00:00:00:00:00:00:00:03 = ', max_usage_flow_id)
+#
+# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
+# print('* max_usage_flow_id de 00:00:00:00:00:00:00:04 = ', max_usage_flow_id)
+#
+# max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
+# print('* max_usage_flow_id de 00:00:00:00:00:00:00:05 = ', max_usage_flow_id)
 
 # print('Todas devem ser TRUE')
 # print(env.actionBelongsToPath(action=numpy.array([0,0,2])))
@@ -86,7 +86,7 @@ print('* max_usage_flow_id de 00:00:00:00:00:00:00:05 = ', max_usage_flow_id)
 # print('-----')
 
 
-# print(check_env(env, warn=True))
+print(check_env(env, warn=True))
 # env = make_vec_env(lambda: env, n_envs=1)
 
 

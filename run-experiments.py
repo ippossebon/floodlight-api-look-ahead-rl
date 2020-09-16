@@ -86,7 +86,7 @@ print()
 # print('-----')
 
 
-print('************** Validação da env: *************')
+print('************** Validacao da env: *************')
 print(check_env(env, warn=True))
 # env = make_vec_env(lambda: env, n_envs=1)
 print('************************************************')

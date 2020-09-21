@@ -604,7 +604,7 @@ class LoadBalanceEnv(gym.Env):
             flow_id
         )
 
-        # print('Regra a ser instalada = ', rule)
+        print('Regra instalada = ', rule)
         self.installRule(rule)
 
         time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente

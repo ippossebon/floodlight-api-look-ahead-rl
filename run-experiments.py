@@ -143,7 +143,7 @@ print('Modelo treinado e salvo.')
 #
 del model # remove to demonstrate saving and loading
 #
-model = PPO2.load('PPO2_100')
+model = PPO2.load('PPO2_100', env=env)
 
 print('Testando o agente gerado...')
 state = env.reset()

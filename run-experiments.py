@@ -99,10 +99,10 @@ Env methods tests
 """
 Env Validation
 """
-
-print('************** Validacao da env: *************')
-print(check_env(env, warn=True))
-print('************************************************')
+#
+# print('************** Validacao da env: *************')
+# print(check_env(env, warn=True))
+# print('************************************************')
 
 
 """
@@ -130,22 +130,20 @@ ACKTR
 PPO2
 """
 
-print('Treinando o agente com PPO2...')
+# print('Treinando o agente com PPO2...')
 # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
 env = make_vec_env(lambda: env, n_envs=1)
 print('Env = ', env)
 print('env.action_space = ', env.action_space)
 print('env.action_space.sample()', env.action_space)
-# model = A2C(MlpPolicy, env).learn(total_timesteps=100)
-# exit(0)
-# model = PPO2(policy=MlpPolicy, env=env, verbose=1)
-# model.learn(total_timesteps=50)
-# model.save('./PPO2_100')
-# print('Modelo treinado e salvo.')
+model = PPO2(policy=MlpPolicy, env=env, verbose=1)
+model.learn(total_timesteps=50)
+model.save('./PPO2_50')
+print('Modelo treinado e salvo.')
 #
 # del model # remove to demonstrate saving and loading
 #
-model = PPO2.load(load_path='./PPO2_100', env=env)
+model = PPO2.load(load_path='./PPO2_50', env=env)
 
 print('Testando o agente gerado...')
 state = env.reset()

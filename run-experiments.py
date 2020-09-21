@@ -138,12 +138,12 @@ print('Env = ', env)
 # exit(0)
 model = PPO2(policy=MlpPolicy, env=env, verbose=1)
 model.learn(total_timesteps=50)
-model.save('PPO2_100')
+model.save('./PPO2_100')
 print('Modelo treinado e salvo.')
 #
 del model # remove to demonstrate saving and loading
 #
-model = PPO2.load('PPO2_100', env=env)
+model = PPO2.load(load_path='./PPO2_100', env=env)
 
 print('Testando o agente gerado...')
 state = env.reset()

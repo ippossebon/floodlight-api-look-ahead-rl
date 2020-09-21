@@ -2,6 +2,7 @@ import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 
+import json
 import numpy
 import pandas
 import requests
@@ -42,17 +43,6 @@ class LoadBalanceEnv(gym.Env):
 
         # TODO: será que o if de fluxos vai ficar aqui dentro?
 
-        # For debugging!
-        self.links_map = {
-            'b': {'00:00:00:00:00:00:00:01' : '2'},
-            'c': {'00:00:00:00:00:00:00:01' : '3'},
-            'd': {'00:00:00:00:00:00:00:02' : '2'},
-            'e': {'00:00:00:00:00:00:00:04' : '2'},
-            'f': {'00:00:00:00:00:00:00:02' : '3'},
-            'g': {'00:00:00:00:00:00:00:04' : '3'},
-            'h': {'00:00:00:00:00:00:00:05' : '3'},
-            'i': {'00:00:00:00:00:00:00:03' : '1'}
-        }
 
         self.switch_ids = []
         self.switch_links = {}
@@ -75,8 +65,8 @@ class LoadBalanceEnv(gym.Env):
             dtype=numpy.float16
         )
 
-        # Ação = (flow_id, switch_id, in_port, out_port)
-        # Ação = (flow_index, switch_index, in_port, out_port)
+        # Ação = (switch_id, in_port, out_port)
+        # Ação = (switch_index, in_port_index, out_port_index)
         max_path_index = len(self.possible_paths)-1
         max_switch_index = len(self.switch_ids)-1
         max_port_index = MAX_PORTS_SWITCH - 1
@@ -86,7 +76,7 @@ class LoadBalanceEnv(gym.Env):
             dtype=numpy.int8
         )
 
-        self.state = None
+        self.state = numpy.zeros(shape=self.observation_space.shape)
         self.reward_range = (0, 1)
 
 
@@ -496,7 +486,7 @@ class LoadBalanceEnv(gym.Env):
             "actions": "output={0}".format(numpy.int64(out_port))
         }
 
-        return rule
+        return json.dumps(rule)
 
     def switchContainsPort(self, switch_id, port):
         """

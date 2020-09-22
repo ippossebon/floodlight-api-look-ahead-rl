@@ -66,7 +66,8 @@ port_15 = []
 
 def updatePortStatistics(state):
     print('state = ', state)
-    
+    state = state.flatten()
+
     port_0.append(state[0])
     port_1.append(state[1])
     port_2.append(state[2])

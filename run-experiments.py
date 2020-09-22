@@ -180,6 +180,21 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     print('Gerando grafico...')
     print(p0)
     print(p1)
+    print(p2)
+    print(p3)
+    print(p4)
+    print(p5)
+    print(p6)
+    print(p7)
+    print(p8)
+    print(p9)
+    print(p10)
+    print(p11)
+    print(p12)
+    print(p13)
+    print(p14)
+    print(p15)
+
 
     plt.plot(p0, '-', color="#ef476f", label = "port 0") # paradise pink
     plt.plot(p1, '-', color="#ffd166", label = "port 1") # orange yellow crayola

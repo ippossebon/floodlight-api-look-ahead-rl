@@ -581,6 +581,10 @@ class LoadBalanceEnv(gym.Env):
 
         # Garante que só vamos executar ações válidas.
         while not (is_valid_action and flow_id):
+            print('-> Agente escolheu acao invalida ou flow id nao existe')
+            print('- action = ', action)
+            print('- flow_id = ', flow_id)
+
             # Se a ação for inválida, pedimos uma nova ação.
             action = self.action_space.sample() # TODO: rever!!!!
             is_valid_action = self.isValidAction(action)
@@ -604,6 +608,7 @@ class LoadBalanceEnv(gym.Env):
             flow_id
         )
 
+        print('Action aplicada = ', action)
         print('Regra instalada = ', rule)
         self.installRule(rule)
 

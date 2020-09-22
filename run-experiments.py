@@ -132,7 +132,7 @@ def testAgent(env):
     plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15)
 
 
-def runExperiments:
+def runExperiments():
     print('Rodando experimentos...')
     model = PPO2.load(load_path='./PPO2_500', env=env)
     env.reset()
@@ -207,7 +207,7 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
 """
 Env methods tests
 """
-def testEnvMethods:
+def testEnvMethods():
     max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
     print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
 

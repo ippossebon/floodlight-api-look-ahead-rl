@@ -123,7 +123,7 @@ def testAgent(env):
         print('Step: ', step)
 
         action, _ = model.predict(state, deterministic=True)
-        print('Action: ', action)
+        # print('Action: ', action)
 
         state, reward, done, info = env.step(action)
         print('Reward = ', reward)
@@ -178,24 +178,6 @@ Graficos
 """
 def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15):
     print('Gerando grafico...')
-    print(p0)
-    print(p1)
-    print(p2)
-    print(p3)
-    print(p4)
-    print(p5)
-    print(p6)
-    print(p7)
-    print(p8)
-    print(p9)
-    print(p10)
-    print(p11)
-    print(p12)
-    print(p13)
-    print(p14)
-    print(p15)
-
-
     plt.plot(p0, '-', color="#ef476f", label = "port 0") # paradise pink
     plt.plot(p1, '-', color="#ffd166", label = "port 1") # orange yellow crayola
     plt.plot(p2, '-', color="#06d6a0", label = "port 2") # caribeen green
@@ -220,7 +202,7 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     plt.title('Incoming bits per step')
 
     # show a legend on the plot
-    plt.legend('Legenda.')
+    # plt.legend('Legenda.')
 
     plt.savefig('PPO2_500-10_steps-21_set.pdf')
 

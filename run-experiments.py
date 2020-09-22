@@ -5,7 +5,7 @@ from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines import PPO2, ACKTR, DQN, A2C
 
-from matplotlib.pylab import plt #load plot library
+from matplotlib import pyplot as plt #load plot library
 
 from flowPusher import addFlows, deleteFlows
 
@@ -205,7 +205,7 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     # show a legend on the plot
     plt.legend('Legenda.')
 
-    plt.show()
+    plt.savefig('PPO2_500-10_steps-21_set.pdf')
 
 
 """

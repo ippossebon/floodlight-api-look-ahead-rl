@@ -65,7 +65,6 @@ port_14 = []
 port_15 = []
 
 def updatePortStatistics(state):
-    print('state = ', state)
     state = state.flatten()
 
     port_0.append(state[0])
@@ -178,7 +177,10 @@ def containsTraffic(state):
 Graficos
 """
 def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15):
-    print('Exibindo grafico')
+    print('Gerando grafico...')
+    print(p0)
+    print(p1)
+
     plt.plot(p0, '-', color="#ef476f", label = "port 0") # paradise pink
     plt.plot(p1, '-', color="#ffd166", label = "port 1") # orange yellow crayola
     plt.plot(p2, '-', color="#06d6a0", label = "port 2") # caribeen green
@@ -196,8 +198,8 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     plt.plot(p14, '-', color="#FF0000", label = "port 14") # red
     plt.plot(p15, '-', color="#FFFF00", label = "port 15") # yellow
 
-    plt.xlabel('in bits')
-    plt.ylabel('step')
+    plt.xlabel('Step')
+    plt.ylabel('In bits')
 
     # Set a title of the current axes.
     plt.title('Incoming bits per step')
@@ -206,6 +208,8 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     plt.legend('Legenda.')
 
     plt.savefig('PPO2_500-10_steps-21_set.pdf')
+
+    print('Grafico gerado')
 
 
 """

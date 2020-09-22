@@ -579,27 +579,32 @@ class LoadBalanceEnv(gym.Env):
         is_valid_action = self.isValidAction(action)
         flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
 
-        # Garante que só vamos executar ações válidas.
-        while not (is_valid_action and flow_id):
-            print('-> Agente escolheu acao invalida ou flow id nao existe')
-            print('- action = ', action)
-            print('- flow_id = ', flow_id)
-
-            # Se a ação for inválida, pedimos uma nova ação.
-            action = self.action_space.sample() # TODO: rever!!!!
-            is_valid_action = self.isValidAction(action)
-            switch_index = int(action[0])
-            switch_id = self.switch_ids[switch_index]
-            flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
+        if not (is_valid_action or flow_id):
+            next_state = self.getState()
+            return next_state, reward, done, info
 
 
-        switch_index = int(action[0])
-        in_port_index = action[1]
-        out_port_index = action[2]
+        # # Garante que só vamos executar ações válidas.
+        # while not (is_valid_action and flow_id):
+        #     print('-> Agente escolheu acao invalida ou flow id nao existe')
+        #     print('- action = ', action)
+        #     print('- flow_id = ', flow_id)
+        #
+        #     # Se a ação for inválida, pedimos uma nova ação.
+        #     action = self.action_space.sample() # TODO: rever!!!!
+        #     is_valid_action = self.isValidAction(action)
+        #     switch_index = int(action[0])
+        #     switch_id = self.switch_ids[switch_index]
+        #     flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
 
-        switch_id = self.switch_ids[switch_index]
-        in_port = in_port_index + 1
-        out_port = out_port_index + 1
+
+        # switch_index = int(action[0])
+        # in_port_index = action[1]
+        # out_port_index = action[2]
+        #
+        # switch_id = self.switch_ids[switch_index]
+        # in_port = in_port_index + 1
+        # out_port = out_port_index + 1
 
         rule = self.actionToRule(
             switch_id,
@@ -619,6 +624,7 @@ class LoadBalanceEnv(gym.Env):
 
         self.state = next_state
 
+        ## TODo: muito errado!!! Esta entendendo que aquela action tem uma recompensa
         return next_state, reward, done, info
 
 

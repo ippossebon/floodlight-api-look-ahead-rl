@@ -1,9 +1,9 @@
 from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
 
 from stable_baselines.common.env_checker import check_env
-from stable_baselines.common.policies import MlpPolicy
+from stable_baselines.common.policies import MlpPolicy, CnnPolicy
 from stable_baselines.common import make_vec_env
-from stable_baselines import PPO2, ACKTR, DQN, A2C
+from stable_baselines import PPO2, ACKTR, DDPG, A2C
 
 from matplotlib import pyplot as plt #load plot library
 
@@ -104,18 +104,18 @@ def startEnv():
 
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
-    model = PPO2(policy=MlpPolicy, env=env, verbose=1)
+    model = PPO2(policy=CnnPolicy, env=env, verbose=1)
     model.learn(total_timesteps=100000)
-    model.save('./PPO2_100000')
+    model.save('./PPO2_10000')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = PPO2.load(load_path='./PPO2_100000', env=env)
+    model = PPO2.load(load_path='./PPO2_10000', env=env)
 
     state = env.reset()
-    num_steps = 100
+    num_steps = 1000
 
     print('State: ', state)
 

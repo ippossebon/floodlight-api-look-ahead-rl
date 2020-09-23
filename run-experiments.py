@@ -105,17 +105,17 @@ def startEnv():
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     model = A2C(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.05, gamma=0.97)
-    model.learn(total_timesteps=10000)
-    model.save('./A2C_10000_lr_005_gamma_097')
+    model.learn(total_timesteps=100000)
+    model.save('./A2C_100000_lr_005_gamma_097')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = A2C.load(load_path='./A2C_10000_lr_005_gamma_097', env=env)
+    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097', env=env)
 
     state = env.reset()
-    num_steps = 100
+    num_steps = 1000
 
     print('State: ', state)
 
@@ -137,7 +137,7 @@ def testAgent(env):
 
 def runExperiments():
     print('Rodando experimentos...')
-    model = A2C.load(load_path='./A2C_10000_lr_005_gamma_097', env=env)
+    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097', env=env)
     env.reset()
     update_count = 0
 

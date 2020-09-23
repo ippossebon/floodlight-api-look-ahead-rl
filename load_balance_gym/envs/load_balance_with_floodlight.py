@@ -24,6 +24,7 @@ EPSILON = 0.001
 
 NUM_PORTS = 16
 MAX_PORTS_SWITCH = 4 # numero maximo de portas de um swithc
+MULT_VALUE = 10000000
 
 MEGABITS_CONVERSION = 1048576
 
@@ -77,7 +78,7 @@ class LoadBalanceEnv(gym.Env):
         )
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, 1)
+        self.reward_range = (0, MULT_VALUE)
 
 
     def enableSwitchStatisticsEndpoit(self):
@@ -613,8 +614,8 @@ class LoadBalanceEnv(gym.Env):
             flow_id
         )
 
-        print('Action aplicada = ', action)
-        print('Regra instalada = ', rule)
+        # print('Action aplicada = ', action)
+        # print('Regra instalada = ', rule)
         self.installRule(rule)
 
         time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
@@ -629,15 +630,11 @@ class LoadBalanceEnv(gym.Env):
 
 
     def calculateReward(self, state):
-        for i in range(len(state)):
-            if state[i] == 0:
-                state[i] = EPSILON
 
+        state_var = numpy.var(state) or EPSILON
+        reward = (1/state_var) * MULT_VALUE
 
-        state_values_sum = numpy.sum(1.0/numpy.array(state)) or EPSILON
-        harmonic_mean = float(len(state) / state_values_sum)
-
-        return harmonic_mean
+        return reward
 
     def render(self, render='console'):
         self.state = self.getState()

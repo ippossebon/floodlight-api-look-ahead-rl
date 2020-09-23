@@ -105,17 +105,17 @@ def startEnv():
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     model = PPO2(policy=MlpPolicy, env=env, verbose=1)
-    model.learn(total_timesteps=500)
-    model.save('./PPO2_500')
+    model.learn(total_timesteps=1000)
+    model.save('./PPO2_1000')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = PPO2.load(load_path='./PPO2_500', env=env)
+    model = PPO2.load(load_path='./PPO2_1000', env=env)
 
     state = env.reset()
-    num_steps = 10
+    num_steps = 100
 
     print('State: ', state)
 
@@ -123,7 +123,7 @@ def testAgent(env):
         print('Step: ', step)
 
         action, _ = model.predict(state, deterministic=True)
-        # print('Action: ', action)
+        print('Action: ', action)
 
         state, reward, done, info = env.step(action)
         print('Reward = ', reward)
@@ -204,7 +204,7 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     # show a legend on the plot
     plt.legend()
 
-    plt.savefig('PPO2_500-10_steps-22_set.pdf')
+    plt.savefig('PPO2_1000-100_steps-23_set.pdf')
 
     print('Grafico gerado')
 

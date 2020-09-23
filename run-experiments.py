@@ -105,14 +105,14 @@ def startEnv():
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     model = PPO2(policy=MlpPolicy, env=env, verbose=1)
-    model.learn(total_timesteps=1000)
-    model.save('./PPO2_1000')
+    model.learn(total_timesteps=100000)
+    model.save('./PPO2_100000')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = PPO2.load(load_path='./PPO2_1000', env=env)
+    model = PPO2.load(load_path='./PPO2_100000', env=env)
 
     state = env.reset()
     num_steps = 100

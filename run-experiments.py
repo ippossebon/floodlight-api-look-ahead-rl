@@ -189,7 +189,7 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     plt.plot(p8, '-', color="#E36414", label = "port 8") # spanish orange
     plt.plot(p9, '-', color="#00FF00", label = "port 9") # lime
     plt.plot(p10, '-', color="#800080", label = "port 10") # purple
-    plt.plot(p11, '-', color="#FFFFFF", label = "port 11") # white
+    plt.plot(p11, '-', color="#000000", label = "port 11") # black ?
     plt.plot(p12, '-', color="#FF00FF", label = "port 12") # fuchsia
     plt.plot(p13, '-', color="#800000", label = "port 13") # maroon
     plt.plot(p14, '-', color="#FF0000", label = "port 14") # red
@@ -204,7 +204,7 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     # show a legend on the plot
     plt.legend()
 
-    plt.savefig('PPO2_500-10_steps-21_set.pdf')
+    plt.savefig('PPO2_500-10_steps-22_set.pdf')
 
     print('Grafico gerado')
 

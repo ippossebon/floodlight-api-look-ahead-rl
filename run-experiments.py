@@ -137,7 +137,7 @@ def testAgent(env):
 
 def runExperiments():
     print('Rodando experimentos...')
-    model = A2C.load(load_path='./A2C_500', env=env)
+    model = A2C.load(load_path='./A2C_10000', env=env)
     env.reset()
     update_count = 0
 

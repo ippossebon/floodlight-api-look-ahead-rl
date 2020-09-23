@@ -3,7 +3,7 @@ from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy, CnnPolicy
 from stable_baselines.common import make_vec_env
-from stable_baselines import PPO2, ACKTR, DDPG, A2C
+from stable_baselines import PPO2, A2C
 
 from matplotlib import pyplot as plt #load plot library
 
@@ -115,7 +115,7 @@ def testAgent(env):
     model = PPO2.load(load_path='./PPO2_10000', env=env)
 
     state = env.reset()
-    num_steps = 1000
+    num_steps = 100
 
     print('State: ', state)
 

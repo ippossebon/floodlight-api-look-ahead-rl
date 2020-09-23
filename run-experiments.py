@@ -5,7 +5,7 @@ from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines import PPO2, A2C
 
-from matplotlib import pyplot as plt #load plot library
+from matplotlib import pyplot as plt
 
 from flowPusher import addFlows, deleteFlows
 
@@ -104,15 +104,15 @@ def startEnv():
 
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
-    model = A2C(policy=MlpPolicy, env=env, verbose=1)
+    model = A2C(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.05, gamma=0.97)
     model.learn(total_timesteps=10000)
-    model.save('./A2C_10000')
+    model.save('./A2C_10000_lr_005_gamma_097')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = A2C.load(load_path='./A2C_10000', env=env)
+    model = A2C.load(load_path='./A2C_10000_lr_005_gamma_097', env=env)
 
     state = env.reset()
     num_steps = 100
@@ -137,7 +137,7 @@ def testAgent(env):
 
 def runExperiments():
     print('Rodando experimentos...')
-    model = A2C.load(load_path='./A2C_10000', env=env)
+    model = A2C.load(load_path='./A2C_10000_lr_005_gamma_097', env=env)
     env.reset()
     update_count = 0
 
@@ -204,7 +204,7 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
     # show a legend on the plot
     plt.legend()
 
-    plt.savefig('A2C_1000-100_steps-23_set.pdf')
+    plt.savefig('A2C_1000-100_steps-005-097-23_set.pdf')
 
     print('Grafico gerado')
 

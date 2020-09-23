@@ -105,7 +105,7 @@ def startEnv():
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     model = A2C(policy=MlpPolicy, env=env, verbose=1)
-    model.learn(total_timesteps=100000)
+    model.learn(total_timesteps=10000)
     model.save('./A2C_10000')
     print('Modelo treinado e salvo.')
 

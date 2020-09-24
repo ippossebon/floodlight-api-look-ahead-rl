@@ -113,6 +113,8 @@ def trainAgent(env):
 def testAgent(env):
     print('Testando o agente...')
     model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097', env=env)
+    # model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097-sem_acao_inv', env=env)
+
 
     state = env.reset()
     num_steps = 1000
@@ -257,7 +259,7 @@ def run():
     env = startEnv()
     # validateEnvOpenAI()
     # testEnvMethods()
-    trainAgent(env)
+    # trainAgent(env)
     testAgent(env)
 
     # runExperiments()

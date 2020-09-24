@@ -205,7 +205,7 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
 def run():
     # env = startEnv()
 
-    """Keras """"
+    """Keras """
 
     env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     gamma   = 0.9

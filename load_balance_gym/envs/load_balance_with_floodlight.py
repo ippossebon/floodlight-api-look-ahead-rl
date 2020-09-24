@@ -572,16 +572,15 @@ class LoadBalanceEnv(gym.Env):
         reward = 0
         info = {}
 
-        switch_index = int(action[0])
-        in_port_index = action[1]
-        out_port_index = action[2]
-
-        switch_id = self.switch_ids[switch_index]
-        in_port = in_port_index + 1
-        out_port = out_port_index + 1
-
         is_valid_action = self.isValidAction(action)
-        flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
+
+        flow_id = None
+        switch_id = None
+
+        if is_valid_action:
+            switch_index = int(action[0])
+            switch_id = self.switch_ids[switch_index]
+            flow_id = self.getMostCostlyFlow(switch_id)
 
         if not (is_valid_action or flow_id):
             next_state = self.getState()
@@ -609,6 +608,12 @@ class LoadBalanceEnv(gym.Env):
         # switch_id = self.switch_ids[switch_index]
         # in_port = in_port_index + 1
         # out_port = out_port_index + 1
+
+        in_port_index = action[1]
+        out_port_index = action[2]
+
+        in_port = in_port_index + 1
+        out_port = out_port_index + 1
 
         rule = self.actionToRule(
             switch_id,

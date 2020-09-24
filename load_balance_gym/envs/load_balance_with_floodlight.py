@@ -303,6 +303,7 @@ class LoadBalanceEnv(gym.Env):
             paths.append(path)
 
         print('Caminhos possiveis: ', paths)
+        exit(0)
         return paths
 
 

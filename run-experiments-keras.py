@@ -1,4 +1,5 @@
 from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
+from agent.DQNKeras import DQNKeras
 
 import json
 import random
@@ -215,7 +216,7 @@ def run():
     trial_len = 500
 
     # updateTargetNetwork = 1000
-    dqn_agent = DQN(env=env)
+    dqn_agent = DQNKeras(env=env)
     steps = []
     for trial in range(trials):
         cur_state = env.reset().reshape(1,2)

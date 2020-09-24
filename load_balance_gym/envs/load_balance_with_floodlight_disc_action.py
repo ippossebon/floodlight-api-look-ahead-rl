@@ -2,6 +2,8 @@ import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 
+from actionRulesMap import actionMap
+
 import json
 import numpy
 import pandas
@@ -28,12 +30,12 @@ MULT_VALUE = 10000000
 
 MEGABITS_CONVERSION = 1048576
 
-class LoadBalanceEnv(gym.Env):
+class LoadBalanceEnvDiscAction(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, source_port_index, source_switch_index, target_port_index, target_switch_index):
         # Quero acomodar N fluxos na rede. Como?
-        super(LoadBalanceEnv, self).__init__()
+        super(LoadBalanceEnvDiscAction, self).__init__()
 
         self.src_switch_index = source_switch_index
         self.src_port_index = source_port_index
@@ -41,6 +43,8 @@ class LoadBalanceEnv(gym.Env):
         self.dst_port_index = target_port_index
 
         self.flows_ids, self.flows_cookies = self.getFlows()
+
+        # TODO: será que o if de fluxos vai ficar aqui dentro?
 
 
         self.switch_ids = []
@@ -66,14 +70,15 @@ class LoadBalanceEnv(gym.Env):
 
         # Ação = (switch_id, in_port, out_port)
         # Ação = (switch_index, in_port_index, out_port_index)
-        max_path_index = len(self.possible_paths)-1
-        max_switch_index = len(self.switch_ids)-1
-        max_port_index = MAX_PORTS_SWITCH - 1
-        self.action_space = spaces.Box(
-            low=numpy.array([0, 0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
-            high=numpy.array([max_switch_index, max_port_index, max_port_index]), # primeiro: maior indice do fluxo, maior indice do caminho
-            dtype=numpy.int8
-        )
+        # max_path_index = len(self.possible_paths)-1
+        # max_switch_index = len(self.switch_ids)-1
+        # max_port_index = MAX_PORTS_SWITCH - 1
+        # self.action_space = spaces.Box(
+        #     low=numpy.array([0, 0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
+        #     high=numpy.array([max_switch_index, max_port_index, max_port_index]), # primeiro: maior indice do fluxo, maior indice do caminho
+        #     dtype=numpy.int8
+        # )
+        self.action_space = spaces.Discrete(14)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.reward_range = (0, MULT_VALUE)
@@ -566,21 +571,20 @@ class LoadBalanceEnv(gym.Env):
 
     def step(self, action):
         # Preciso conectar com o floodlight, instalar o caminho e analisar de novo
-
-
-
         done = False # Aprendizado continuado
         next_state = []
         reward = 0
         info = {}
 
-        is_valid_action = self.isValidAction(action)
+        action_vec = actionMap(action)
+
+        is_valid_action = self.isValidAction(action_vec)
 
         flow_id = None
         switch_id = None
 
         if is_valid_action:
-            switch_index = int(action[0])
+            switch_index = int(action_vec[0])
             switch_id = self.switch_ids[switch_index]
             flow_id = self.getMostCostlyFlow(switch_id)
 
@@ -611,8 +615,8 @@ class LoadBalanceEnv(gym.Env):
         # in_port = in_port_index + 1
         # out_port = out_port_index + 1
 
-        in_port_index = action[1]
-        out_port_index = action[2]
+        in_port_index = action_vec[1]
+        out_port_index = action_vec[2]
 
         in_port = in_port_index + 1
         out_port = out_port_index + 1

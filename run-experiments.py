@@ -1,4 +1,6 @@
 from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
+from load_balance_gym.envs.load_balance_with_floodlight_disc_action import LoadBalanceEnvDiscAction
+
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy
@@ -97,7 +99,7 @@ def startEnv():
     time.sleep(10)
 
     # Fluxo sai de H1 e vai para H2
-    env = LoadBalanceEnv(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     env = make_vec_env(lambda: env, n_envs=1)
 
     return env
@@ -107,14 +109,14 @@ def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     model = A2C(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.05, gamma=0.97)
     model.learn(total_timesteps=100000)
-    model.save('./A2C_100000_lr_005_gamma_097')
+    model.save('./A2C_100000_lr_005_gamma_097-disc-env')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097', env=env)
-    # model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097-sem_acao_inv', env=env)
+    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097-disc-env', env=env)
+    # model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097-disc-env-sem_acao_inv', env=env)
 
 
     state = env.reset()
@@ -140,7 +142,7 @@ def testAgent(env):
 
 def runExperiments():
     print('Rodando experimentos...')
-    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097', env=env)
+    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097-disc-env', env=env)
     env.reset()
     update_count = 0
 
@@ -258,16 +260,15 @@ def testEnvMethods():
 
 def run():
     env = startEnv()
-    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097', env=env)
+    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097-disc-env', env=env)
 
-    # validateEnvOpenAI()
+    validateEnvOpenAI()
     # testEnvMethods()
-    # trainAgent(env)
+    trainAgent(env)
     testAgent(env)
-    # evaluate_policy(model=model, env=env, n_eval_episodes=100)
 
     # runExperiments()
-    # plotGraphs()
+    plotGraphs()
 
 
 ##################################################################################

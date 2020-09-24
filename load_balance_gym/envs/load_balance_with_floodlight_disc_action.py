@@ -485,7 +485,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             "switch": switch_id,
             "name": flow_id,
             "priority": priority,
-            "ingress-port": str(numpy.int8(in_port)),
+            "in_port": str(numpy.int8(in_port)),
             "active": "true",
             "actions": "output={0}".format(numpy.int8(out_port))
         }

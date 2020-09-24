@@ -260,7 +260,6 @@ def testEnvMethods():
 
 def run():
     env = startEnv()
-    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097-disc-env', env=env)
 
     validateEnvOpenAI()
     # testEnvMethods()

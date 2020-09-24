@@ -305,8 +305,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
             paths.append(path)
 
-        print('Caminhos possiveis: ', paths)
-        exit(0)
+        # print('Caminhos possiveis: ', paths)
         return paths
 
 

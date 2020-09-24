@@ -566,8 +566,6 @@ class LoadBalanceEnv(gym.Env):
     def step(self, action):
         # Preciso conectar com o floodlight, instalar o caminho e analisar de novo
 
-
-
         done = False # Aprendizado continuado
         next_state = []
         reward = 0

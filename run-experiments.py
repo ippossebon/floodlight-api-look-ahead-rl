@@ -1,6 +1,5 @@
-from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
+# from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
 from load_balance_gym.envs.load_balance_with_floodlight_disc_action import LoadBalanceEnvDiscAction
-
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy
@@ -261,7 +260,7 @@ def testEnvMethods():
 def run():
     env = startEnv()
 
-    validateEnvOpenAI()
+    # validateEnvOpenAI()
     # testEnvMethods()
     trainAgent(env)
     testAgent(env)

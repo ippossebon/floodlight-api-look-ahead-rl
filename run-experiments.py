@@ -4,6 +4,7 @@ from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines import PPO2, A2C
+from stable_baselines.common.evaluation import evaluate_policy
 
 from matplotlib import pyplot as plt
 
@@ -257,10 +258,13 @@ def testEnvMethods():
 
 def run():
     env = startEnv()
+    model = A2C.load(load_path='./A2C_100000_lr_005_gamma_097', env=env)
+
     # validateEnvOpenAI()
     # testEnvMethods()
     # trainAgent(env)
     testAgent(env)
+    evaluate_policy(model=model, env=env, n_eval_episodes=100)
 
     # runExperiments()
     # plotGraphs()

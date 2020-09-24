@@ -264,7 +264,7 @@ def run():
     # testEnvMethods()
     # trainAgent(env)
     testAgent(env)
-    evaluate_policy(model=model, env=env, n_eval_episodes=100)
+    # evaluate_policy(model=model, env=env, n_eval_episodes=100)
 
     # runExperiments()
     # plotGraphs()

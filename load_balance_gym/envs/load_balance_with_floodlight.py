@@ -523,9 +523,12 @@ class LoadBalanceEnv(gym.Env):
         return False
 
     def isValidAction(self, action):
-        switch_index = int(action[0])
-        in_port_index = action[1]
-        out_port_index = action[2]
+        try:
+            switch_index = int(action[0])
+            in_port_index = action[1]
+            out_port_index = action[2]
+        except:
+            return False
 
         in_port = in_port_index + 1
         out_port = out_port_index + 1

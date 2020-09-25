@@ -627,8 +627,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
             flow_id
         )
 
-        # print('Action aplicada = ', action)
-        # print('Regra instalada = ', rule)
+        print('Action aplicada = ', action)
+        print('Regra instalada = ', rule)
         self.installRule(rule)
 
         time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
@@ -638,7 +638,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.state = next_state
 
-        ## TODo: muito errado!!! Esta entendendo que aquela action tem uma recompensa
         return next_state, reward, done, info
 
 

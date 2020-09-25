@@ -587,7 +587,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             switch_id = self.switch_ids[switch_index]
             flow_id = self.getMostCostlyFlow(switch_id)
 
-        if not (is_valid_action or flow_id):
+        if not (is_valid_action and flow_id):
             next_state = self.getState()
             return next_state, reward, done, info
 
@@ -638,6 +638,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.state = next_state
 
+        ## TODo: muito errado!!! Esta entendendo que aquela action tem uma recompensa
         return next_state, reward, done, info
 
 

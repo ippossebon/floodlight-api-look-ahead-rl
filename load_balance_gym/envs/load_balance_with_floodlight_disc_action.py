@@ -167,7 +167,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             self.saveItemSwitchIds(item)
 
         self.switch_ids = sorted(self.switch_ids)
-        # print('-> [discoverTopology] Switch IDs: ', self.switch_ids)
+        print('-> [discoverTopology] Switch IDs: ', self.switch_ids)
 
         # print('-> [discoverTopology] Switch Links: ', self.switch_links)
         # print('-> [discoverTopology] Numero de portas: ', self.num_links + 2) # + 2 dos switches conectados aos hosts
@@ -486,6 +486,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
         for flow_obj in response_data[switch_id]['flows']:
+
+            print('flow_obj', flow_obj)
             flow_cookie = flow_obj['cookie']
             if flow_cookie != '0' and flow_cookie in possible_cookies:
                 flow_obj_keys = flow_obj.keys()

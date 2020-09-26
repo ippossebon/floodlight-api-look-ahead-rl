@@ -19,7 +19,6 @@ MAX_BITS_CAPACITY = 10000000000 # TODO: update links capacity when generating ne
 
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
-LLDP_PACKAGE_SIZE = 60
 
 MAX_PRIORITY = "32768"
 
@@ -44,8 +43,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.dst_port_index = target_port_index
 
         self.flows_ids, self.flows_cookies = self.getFlows()
-
-        # TODO: será que o if de fluxos vai ficar aqui dentro?
 
 
         self.switch_ids = []
@@ -323,13 +320,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
         flows_ids = []
         flows_cookies = {}
         for switch_address in response_data:
-            print('switch_address', switch_address)
             for flow in response_data[switch_address]['flows']:
-                print('flow ', flow)
                 contains_match = len(flow['match'].keys()) > 1
 
                 if contains_match:
-                    print('contains match')
                     is_tcp_flow = False
                     tcp_src_port = None
                     is_h1_to_h2_flow = None
@@ -337,9 +331,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     try:
                         tcp_src_port = flow['match']['tcp_src']
                         tcp_dst_port = flow['match']['tcp_dst']
-
-                        print('tcp_src_port = ', tcp_src_port)
-                        print('tcp_dst_port = ', tcp_dst_port)
 
                         if tcp_src_port:
                             is_tcp_flow = True
@@ -358,9 +349,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
                             flow_cookie = flow['cookie']
                             flows_ids.append(flow_id)
                             flows_cookies[flow_id] = flow_cookie
-                    else:
-                        print('caiu no else is_tcp_flow', is_tcp_flow)
-                        print('caiu no else is_h1_to_h2_flow', is_h1_to_h2_flow)
+                    # else:
+                    #     print('caiu no else is_tcp_flow', is_tcp_flow)
+                    #     print('caiu no else is_h1_to_h2_flow', is_h1_to_h2_flow)
 
 
 

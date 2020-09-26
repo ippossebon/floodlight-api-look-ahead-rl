@@ -471,16 +471,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
         max_usage_flow_id = None
 
         for flow_obj in response_data[switch_id]['flows']:
-            flow_cookie = flow_obj['cookie']
-            print('flow cookie')
-
             try:
                 flow_in_port = flow_obj['match']['tcp_src']
             except:
                 print('Nao tem tcp_src')
                 flow_in_port = None
 
-            if flow_cookie != '0' and flow_in_port:
+            if flow_in_port:
                 flow_id = 'flow-{flow_in_port}'.format(flow_in_port=flow_in_port)
                 flow_byte_count = int(flow_obj['byte_count'])
 

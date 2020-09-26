@@ -223,7 +223,7 @@ def testEnvMethods():
 
     max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
     print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
-    # 
+    #
     # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
     # print('* max_usage_flow_id de 00:00:00:00:00:00:00:02 = ', max_usage_flow_id)
     #
@@ -262,11 +262,11 @@ def testEnvMethods():
 
 
 def run():
-    # env = startEnv()
+    env = startEnv()
 
     # validateEnvOpenAI()
-    testEnvMethods()
-    # trainAgent(env)
+    # testEnvMethods()
+    trainAgent(env)
     # testAgent(env)
 
     # runExperiments()

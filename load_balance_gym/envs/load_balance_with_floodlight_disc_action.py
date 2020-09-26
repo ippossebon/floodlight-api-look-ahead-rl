@@ -355,8 +355,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
 
-        print('----> [getFlows] Fluxos na rede: ', sorted(flows_ids))
-        print('----> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
+        # print('----> [getFlows] Fluxos na rede: ', sorted(flows_ids))
+        # print('----> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
 
         return sorted(flows_ids), flows_cookies
 
@@ -472,17 +472,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         max_byte_count = -1
         max_usage_flow_id = None
-
-        print()
-        print('---------- getMostCostlyFlow ----------')
-        print('possible_cookies = ', possible_cookies)
-        print('self.flows_cookies = ', self.flows_cookies)
-        print('self.getFlows() = ', self.getFlows())
-        print('switch_id = ', switch_id)
-        print("response_data[switch_id]['flows'] = ", response_data[switch_id]['flows'])
-        print('----------------------------------------')
-        print()
-
 
         for flow_obj in response_data[switch_id]['flows']:
 

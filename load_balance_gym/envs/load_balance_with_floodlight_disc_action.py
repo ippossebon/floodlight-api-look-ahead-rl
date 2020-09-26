@@ -465,12 +465,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print('response_data', response_data)
+        print('switch_id', switch_id)
 
         max_byte_count = -1
         max_usage_flow_id = None
 
         for flow_obj in response_data[switch_id]['flows']:
+            print('response', response_data[switch_id]['flows'])
             try:
                 flow_in_port = flow_obj['match']['tcp_src']
             except:

@@ -637,11 +637,11 @@ class LoadBalanceEnv(gym.Env):
 
 
     def calculateReward(self, state):
+        harmonic_mean = len(state) / numpy.sum(state)
+        # state_var = numpy.var(state) or EPSILON
+        # reward = (1/state_var) * MULT_VALUE
 
-        state_var = numpy.var(state) or EPSILON
-        reward = (1/state_var) * MULT_VALUE
-
-        return reward
+        return harmonic_mean
 
     def render(self, render='console'):
         self.state = self.getState()

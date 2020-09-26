@@ -464,6 +464,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
         max_byte_count = -1
         max_usage_flow_id = None
 
+        print('---------- getMostCostlyFlow ----------')
+        print('possible_cookies = ', possible_cookies)
+        print('switch_id = ', switch_id)
+        print("response_data[switch_id]['flows'] = ", response_data[switch_id]['flows'])
+        print('----------------------------------------')
+
+
         for flow_obj in response_data[switch_id]['flows']:
             flow_cookie = flow_obj['cookie']
             if flow_cookie != '0' and flow_cookie in possible_cookies:

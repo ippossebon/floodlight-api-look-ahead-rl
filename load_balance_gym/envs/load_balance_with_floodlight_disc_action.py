@@ -465,24 +465,23 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        possible_cookies = self.getPossibleCookies()
-
         max_byte_count = -1
         max_usage_flow_id = None
 
         for flow_obj in response_data[switch_id]['flows']:
-
             flow_cookie = flow_obj['cookie']
-            if flow_cookie != '0' and flow_cookie in possible_cookies:
-                flow_obj_keys = flow_obj.keys()
-                flow_id = self.getFlowIdByCookie(flow_cookie)
+            flow_in_port = flow_obj['match']['tcp_src']
+            print('floow cookie = ', flow_cookie)
+
+            if flow_cookie != '0':
+                flow_id = 'flow-{flow_in_port}'.format(flow_in_port=flow_in_port)
                 flow_byte_count = int(flow_obj['byte_count'])
 
                 if flow_byte_count > max_byte_count:
                     max_byte_count = flow_byte_count
                     max_usage_flow_id = flow_id
 
-        # print('[getMostCostlyFlow] max_usage_flow_id: {0} - max_byte_count: {1}'.format(max_usage_flow_id, max_byte_count))
+        print('[getMostCostlyFlow] max_usage_flow_id: {0} - max_byte_count: {1}'.format(max_usage_flow_id, max_byte_count))
 
         return max_usage_flow_id
 

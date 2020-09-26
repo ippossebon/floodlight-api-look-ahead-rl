@@ -3,6 +3,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 from .action_rules_map import actionMap
+# from scipy.stats import hmean
 
 import json
 import numpy
@@ -592,6 +593,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             return next_state, reward, done, info
 
 
+            # Deve ficar fora da função step
         # # Garante que só vamos executar ações válidas.
         # while not (is_valid_action and flow_id):
         #     print('-> Agente escolheu acao invalida ou flow id nao existe')
@@ -638,14 +640,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.state = next_state
 
-        ## TODo: muito errado!!! Esta entendendo que aquela action tem uma recompensa
         return next_state, reward, done, info
 
 
     def calculateReward(self, state):
-
-        state_var = numpy.var(state) or EPSILON
-        reward = (1/state_var) * MULT_VALUE
+        state_var = numpy.var(state)
+        # state_h_mean = hmean (state)
+        # reward = state_h_mean
 
         return reward
 

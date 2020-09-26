@@ -465,6 +465,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+        print('response_data', response_data)
+
         max_byte_count = -1
         max_usage_flow_id = None
 
@@ -626,7 +628,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         else:
             print('Acao invalida OU nao existe fluxo. is_valid_action = {0}, flow_id = {1}'.format(is_valid_action, flow_id))
-            next_state = self.getState()
+            next_state = self.state
+            exit(0)
             return next_state, reward, done, info
 
 
@@ -657,7 +660,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
     def calculateReward(self, state):
-        harmonic_mean = len(state) / numpy.sum(state)
+        harmonic_mean = len(state) / (numpy.sum(state) or EPSILON)
         # state_var = numpy.var(state) or EPSILON
         # reward = (1/state_var) * MULT_VALUE
 

@@ -465,8 +465,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print('response', response_data)
-
         max_byte_count = -1
         max_usage_flow_id = None
 
@@ -474,7 +472,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
             try:
                 flow_in_port = flow_obj['match']['tcp_src']
             except:
-                print('Nao tem tcp_src')
                 flow_in_port = None
 
             if flow_in_port:
@@ -615,7 +612,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 flow_id
             )
 
-            print('Action aplicada = ', action)
             print('Regra instalada = ', rule)
             self.installRule(rule)
 
@@ -623,8 +619,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
             next_state = self.getState()
             reward = self.calculateReward(next_state)
-
-            print('next_state = {0} -- reward = {1}'.format(next_state, reward))
 
             self.state = next_state
 

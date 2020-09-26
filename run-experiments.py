@@ -261,9 +261,9 @@ def run():
     env = startEnv()
 
     # validateEnvOpenAI()
-    # testEnvMethods()
-    trainAgent(env)
-    testAgent(env)
+    testEnvMethods()
+    # trainAgent(env)
+    # testAgent(env)
 
     # runExperiments()
 

@@ -5,7 +5,7 @@ while True:
     response = requests.get('http://localhost:8080/wm/core/switch/all/flow/json')
     response_data = response.json()
 
-    switch_ids = sort(response_data.keys())
+    switch_ids = sorted(response_data.keys())
     statistics = {}
 
     for switch_id in switch_ids:

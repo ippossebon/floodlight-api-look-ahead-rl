@@ -219,22 +219,22 @@ Env methods tests
 def testEnvMethods():
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 
-    # flows_ids, cookies = env.getFlows()
+    flows_ids, cookies = env.getFlows()
 
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
-    #
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:02 = ', max_usage_flow_id)
-    #
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:03 = ', max_usage_flow_id)
-    #
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:04 = ', max_usage_flow_id)
-    #
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:05 = ', max_usage_flow_id)
+    max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+    print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
+
+    max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
+    print('* max_usage_flow_id de 00:00:00:00:00:00:00:02 = ', max_usage_flow_id)
+
+    max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
+    print('* max_usage_flow_id de 00:00:00:00:00:00:00:03 = ', max_usage_flow_id)
+
+    max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
+    print('* max_usage_flow_id de 00:00:00:00:00:00:00:04 = ', max_usage_flow_id)
+
+    max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
+    print('* max_usage_flow_id de 00:00:00:00:00:00:00:05 = ', max_usage_flow_id)
 
     # print('Todas devem ser TRUE')
     # print(env.actionBelongsToPath(action=numpy.array([0,0,2])))
@@ -262,12 +262,12 @@ def testEnvMethods():
 
 
 def run():
-    env = startEnv()
+    # env = startEnv()
 
     # validateEnvOpenAI()
-    # testEnvMethods()
-    trainAgent(env)
-    testAgent(env)
+    testEnvMethods()
+    # trainAgent(env)
+    # testAgent(env)
 
     # runExperiments()
 

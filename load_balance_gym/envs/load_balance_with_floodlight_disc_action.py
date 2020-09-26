@@ -343,6 +343,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
                         is_h1_to_h2_flow = tcp_dst_port == '5001'
                     except:
+                        print('caiu no except')
                         is_tcp_flow = False
                         is_h1_to_h2_flow = False
 
@@ -354,6 +355,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
                             flow_cookie = flow['cookie']
                             flows_ids.append(flow_id)
                             flows_cookies[flow_id] = flow_cookie
+                    else:
+                        print('caiu no else is_tcp_flow', is_tcp_flow)
+                        print('caiu no else is_h1_to_h2_flow', is_h1_to_h2_flow)
+
 
 
         print('----> [getFlows] Fluxos na rede: ', sorted(flows_ids))

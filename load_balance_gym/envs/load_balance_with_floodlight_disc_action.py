@@ -591,19 +591,14 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         action_vec = actionMap(action)
 
-        is_valid_action = self.isValidAction(action_vec)
-
         flow_id = None
         switch_id = None
 
-        if is_valid_action:
-            switch_index = int(action_vec[0])
-            switch_id = self.switch_ids[switch_index]
-            flow_id = self.getMostCostlyFlow(switch_id)
-            print('flow_id = ', flow_id)
+        switch_index = int(action_vec[0])
+        switch_id = self.switch_ids[switch_index]
+        flow_id = self.getMostCostlyFlow(switch_id)
 
-
-        if is_valid_action and flow_id:
+        if flow_id:
             in_port_index = action_vec[1]
             out_port_index = action_vec[2]
 
@@ -630,7 +625,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             return next_state, reward, done, info
 
         else:
-            print('Acao invalida OU nao existe fluxo. is_valid_action = {0}, flow_id = {1}'.format(is_valid_action, flow_id))
+            print('Nao existe fluxo.flow_id = {0}'.format(flow_id))
             next_state = self.state
             exit(0)
             return next_state, reward, done, info

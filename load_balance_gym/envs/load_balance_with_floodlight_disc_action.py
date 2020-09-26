@@ -466,18 +466,20 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response_data = response.json()
 
         print('switch_id', switch_id)
+        print('response', response_data[switch_id]['flows'])
+
 
         max_byte_count = -1
         max_usage_flow_id = None
 
         for flow_obj in response_data[switch_id]['flows']:
-            print('response', response_data[switch_id]['flows'])
             try:
                 flow_in_port = flow_obj['match']['tcp_src']
+                flow_src = flow_obj['match']['ipv4_src']
             except:
                 flow_in_port = None
 
-            if flow_in_port and flow_in_port != '5001':
+            if flow_in_port and flow_src != '10.0.0.2':
                 flow_id = 'flow-{flow_in_port}'.format(flow_in_port=flow_in_port)
                 flow_byte_count = int(flow_obj['byte_count'])
 

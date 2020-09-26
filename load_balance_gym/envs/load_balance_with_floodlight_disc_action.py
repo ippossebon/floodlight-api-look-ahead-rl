@@ -356,8 +356,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
                             flows_cookies[flow_id] = flow_cookie
 
 
-        print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
-        print('-> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
+        print('----> [getFlows] Fluxos na rede: ', sorted(flows_ids))
+        print('----> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
 
         return sorted(flows_ids), flows_cookies
 

@@ -467,6 +467,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+        print('response_data', response_data)
+
         possible_cookies = self.getPossibleCookies()
 
         max_byte_count = -1

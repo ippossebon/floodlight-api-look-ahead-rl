@@ -216,7 +216,9 @@ def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p
 """
 Env methods tests
 """
-def testEnvMethods(env):
+def testEnvMethods():
+    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+
     max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
     print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
 
@@ -258,10 +260,10 @@ def testEnvMethods(env):
 
 
 def run():
-    env = startEnv()
+    # env = startEnv()
 
     # validateEnvOpenAI()
-    testEnvMethods(env)
+    testEnvMethods()
     # trainAgent(env)
     # testAgent(env)
 

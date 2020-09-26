@@ -589,7 +589,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
             flow_id = self.getMostCostlyFlow(switch_id)
 
         if not (is_valid_action and flow_id):
+            print('Acao invalida. is_valid_action = {0}, flow_id = {1}'.format(is_valid_action, flow_id))
             next_state = self.getState()
+            print('next_state = ', next_state)
             return next_state, reward, done, info
 
 
@@ -637,6 +639,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         next_state = self.getState()
         reward = self.calculateReward(next_state)
+
+        print('next_state = {0} -- reward = {1}'.format(next_state, reward))
+
 
         self.state = next_state
 

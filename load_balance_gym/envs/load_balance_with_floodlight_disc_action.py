@@ -474,7 +474,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             except:
                 flow_in_port = None
 
-            if flow_in_port:
+            if flow_in_port and flow_in_port != '5001':
                 flow_id = 'flow-{flow_in_port}'.format(flow_in_port=flow_in_port)
                 flow_byte_count = int(flow_obj['byte_count'])
 

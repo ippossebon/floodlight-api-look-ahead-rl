@@ -337,7 +337,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
                         is_h1_to_h2_flow = tcp_dst_port == '5001'
                     except:
-                        print('caiu no except')
                         is_tcp_flow = False
                         is_h1_to_h2_flow = False
 
@@ -465,8 +464,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         # response = requests.get('{host}/wm/statistics/bandwidth/{switch_id}/all/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
-
-        print('response_data', response_data)
 
         possible_cookies = self.getPossibleCookies()
 

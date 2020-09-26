@@ -470,10 +470,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         for flow_obj in response_data[switch_id]['flows']:
             flow_cookie = flow_obj['cookie']
-            flow_in_port = flow_obj['match']['tcp_src']
-            print('floow cookie = ', flow_cookie)
+            flow_match = flow_obj['match']
 
-            if flow_cookie != '0':
+            if flow_cookie != '0' and flow_match:
+                flow_in_port = flow_match['tcp_src']
                 flow_id = 'flow-{flow_in_port}'.format(flow_in_port=flow_in_port)
                 flow_byte_count = int(flow_obj['byte_count'])
 

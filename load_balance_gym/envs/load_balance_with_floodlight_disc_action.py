@@ -329,14 +329,22 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 if contains_match:
                     is_tcp_flow = False
                     tcp_src_port = None
+                    is_h1_to_h2_flow = None
+
                     try:
                         tcp_src_port = flow['match']['tcp_src']
                         tcp_dst_port = flow['match']['tcp_dst']
 
-                        is_tcp_flow = tcp_src_port or 0
+                        print('tcp_src_port = ', tcp_src_port)
+                        print('tcp_dst_port = ', tcp_dst_port)
+
+                        if tcp_src_port:
+                            is_tcp_flow = True
+
                         is_h1_to_h2_flow = tcp_dst_port == '5001'
                     except:
                         is_tcp_flow = False
+                        is_h1_to_h2_flow = False
 
                     if is_tcp_flow and is_h1_to_h2_flow:
                         flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port=tcp_src_port)
@@ -348,8 +356,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
                             flows_cookies[flow_id] = flow_cookie
 
 
-        # print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
-        # print('-> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
+        print('-> [getFlows] Fluxos na rede: ', sorted(flows_ids))
+        print('-> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
 
         return sorted(flows_ids), flows_cookies
 

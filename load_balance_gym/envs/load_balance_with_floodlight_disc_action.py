@@ -465,10 +465,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print('switch_id', switch_id)
-        print('response', response_data[switch_id]['flows'])
-
-
         max_byte_count = -1
         max_usage_flow_id = None
 
@@ -615,7 +611,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             print('Regra instalada = ', rule)
             self.installRule(rule)
 
-            time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
+            time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 
             next_state = self.getState()
             reward = self.calculateReward(next_state)
@@ -625,7 +621,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             return next_state, reward, done, info
 
         else:
-            print('Nao existe fluxo.flow_id = {0}'.format(flow_id))
+            print('Nao existe fluxo. switch_id = {0}'.format(switch_id))
             next_state = self.state
             return next_state, reward, done, info
 

@@ -323,10 +323,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
         flows_ids = []
         flows_cookies = {}
         for switch_address in response_data:
+            print('switch_address', switch_address)
             for flow in response_data[switch_address]['flows']:
+                print('flow ', flow)
                 contains_match = len(flow['match'].keys()) > 1
 
                 if contains_match:
+                    print('contains match')
                     is_tcp_flow = False
                     tcp_src_port = None
                     is_h1_to_h2_flow = None

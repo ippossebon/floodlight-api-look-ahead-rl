@@ -262,7 +262,7 @@ def testEnvMethods():
 
 
 def run():
-    # env = startEnv()
+    env = startEnv()
 
     # validateEnvOpenAI()
     # testEnvMethods()

@@ -470,10 +470,12 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         for flow_obj in response_data[switch_id]['flows']:
             flow_cookie = flow_obj['cookie']
+            print('flow cookie')
 
             try:
                 flow_in_port = flow_obj['match']['tcp_src']
             except:
+                print('Nao tem tcp_src')
                 flow_in_port = None
 
             if flow_cookie != '0' and flow_in_port:
@@ -596,14 +598,41 @@ class LoadBalanceEnvDiscAction(gym.Env):
         if is_valid_action:
             switch_index = int(action_vec[0])
             switch_id = self.switch_ids[switch_index]
-            print('switch_id = ', switch_id)
-            print('action_vec', action_vec)
             flow_id = self.getMostCostlyFlow(switch_id)
             print('flow_id = ', flow_id)
 
 
-        if not (is_valid_action and flow_id):
-            print('Acao invalida. is_valid_action = {0}, flow_id = {1}'.format(is_valid_action, flow_id))
+        if is_valid_action and flow_id:
+            in_port_index = action_vec[1]
+            out_port_index = action_vec[2]
+
+            in_port = in_port_index + 1
+            out_port = out_port_index + 1
+
+            rule = self.actionToRule(
+                switch_id,
+                in_port,
+                out_port,
+                flow_id
+            )
+
+            print('Action aplicada = ', action)
+            print('Regra instalada = ', rule)
+            self.installRule(rule)
+
+            time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
+
+            next_state = self.getState()
+            reward = self.calculateReward(next_state)
+
+            print('next_state = {0} -- reward = {1}'.format(next_state, reward))
+
+            self.state = next_state
+
+            return next_state, reward, done, info
+
+        else:
+            print('Acao invalida OU nao existe fluxo. is_valid_action = {0}, flow_id = {1}'.format(is_valid_action, flow_id))
             next_state = self.getState()
             print('next_state = ', next_state)
             return next_state, reward, done, info
@@ -632,34 +661,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         # in_port = in_port_index + 1
         # out_port = out_port_index + 1
 
-        in_port_index = action_vec[1]
-        out_port_index = action_vec[2]
 
-        in_port = in_port_index + 1
-        out_port = out_port_index + 1
-
-        rule = self.actionToRule(
-            switch_id,
-            in_port,
-            out_port,
-            flow_id
-        )
-
-        print('Action aplicada = ', action)
-        print('Regra instalada = ', rule)
-        self.installRule(rule)
-
-        time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
-
-        next_state = self.getState()
-        reward = self.calculateReward(next_state)
-
-        print('next_state = {0} -- reward = {1}'.format(next_state, reward))
-
-
-        self.state = next_state
-
-        return next_state, reward, done, info
 
 
     def calculateReward(self, state):

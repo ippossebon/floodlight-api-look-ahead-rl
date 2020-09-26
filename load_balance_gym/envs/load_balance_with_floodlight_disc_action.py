@@ -634,7 +634,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         else:
             print('Acao invalida OU nao existe fluxo. is_valid_action = {0}, flow_id = {1}'.format(is_valid_action, flow_id))
             next_state = self.getState()
-            print('next_state = ', next_state)
             return next_state, reward, done, info
 
 

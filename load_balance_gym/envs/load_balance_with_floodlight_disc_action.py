@@ -627,7 +627,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         else:
             print('Nao existe fluxo.flow_id = {0}'.format(flow_id))
             next_state = self.state
-            exit(0)
             return next_state, reward, done, info
 
 

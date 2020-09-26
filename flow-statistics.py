@@ -13,3 +13,6 @@ while True:
         statistics[switch_id] = num_flows
 
     print(statistics)
+
+    for item in statistics:
+        print(item)

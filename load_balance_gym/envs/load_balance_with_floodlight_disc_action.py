@@ -470,21 +470,20 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         for flow_obj in response_data[switch_id]['flows']:
             flow_cookie = flow_obj['cookie']
-            flow_match = flow_obj['match']
 
-            if flow_cookie != '0' and flow_match:
-                try:
-                    flow_in_port = flow_match['tcp_src']
-                except:
-                    print('flow_obj', flow_obj)
-                    print('flow_match = ', flow_match)
-                    exit(0)
+            try:
+                flow_in_port = flow_obj['match']['tcp_src']
+            except:
+                flow_in_port = None
+
+            if flow_cookie != '0' and flow_in_port:
                 flow_id = 'flow-{flow_in_port}'.format(flow_in_port=flow_in_port)
                 flow_byte_count = int(flow_obj['byte_count'])
 
                 if flow_byte_count > max_byte_count:
                     max_byte_count = flow_byte_count
                     max_usage_flow_id = flow_id
+
 
         print('[getMostCostlyFlow] max_usage_flow_id: {0} - max_byte_count: {1}'.format(max_usage_flow_id, max_byte_count))
 

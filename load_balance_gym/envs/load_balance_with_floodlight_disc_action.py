@@ -595,7 +595,11 @@ class LoadBalanceEnvDiscAction(gym.Env):
         if is_valid_action:
             switch_index = int(action_vec[0])
             switch_id = self.switch_ids[switch_index]
+            print('switch_id = ', switch_id)
+            print('action_vec', action_vec)
             flow_id = self.getMostCostlyFlow(switch_id)
+            print('flow_id = ', flow_id)
+
 
         if not (is_valid_action and flow_id):
             print('Acao invalida. is_valid_action = {0}, flow_id = {1}'.format(is_valid_action, flow_id))

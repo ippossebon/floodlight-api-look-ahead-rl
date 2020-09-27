@@ -501,17 +501,19 @@ class LoadBalanceEnvDiscAction(gym.Env):
        response = requests.get('{host}/wm/staticflowpusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
        response_data = response.json()
 
-       print('response_data[switch_id].items()', response_data[switch_id].items())
+       for item in response_data[switch_id].items():
+           for rule_name, rule in item:
+               print('rule_name', rule_name)
+               print('rule', rule)
 
-       for rule_name, rule in response_data[switch_id].items():
-           try:
-               if rule[rule_name]['match']['in_port'] == str(in_port):
-                   if str(out_port) in rule[rule_name]['instructions']['instruction_apply_actions']['actions']:
-                       print('Regra ja existente para action {0}, in {1}, out {2}: {3}'.format(switch_id, in_port, out_port, rule_name))
-                       return rule_name
-           except:
-               print('Except: ', rule)
-               continue
+               try:
+                   if rule[rule_name]['match']['in_port'] == str(in_port):
+                       if str(out_port) in rule[rule_name]['instructions']['instruction_apply_actions']['actions']:
+                           print('Regra ja existente para action {0}, in {1}, out {2}: {3}'.format(switch_id, in_port, out_port, rule_name))
+                           return rule_name
+               except:
+                   print('Except: ', rule)
+                   continue
 
        return None
 

@@ -155,6 +155,7 @@ def validateEnvOpenAI():
 
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
+    print('Iniciando treinamento do agente.')
     model = A2C(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.05, gamma=0.97)
     model.learn(total_timesteps=1000)
     model.save('./A2C_1000_lr_005_gamma_097-disc-env')
@@ -166,26 +167,21 @@ def testAgent(env):
     model = A2C.load(load_path='./A2C_1000_lr_005_gamma_097-disc-env', env=env)
     # model = A2C.load(load_path='./A2C_100_lr_005_gamma_097-disc-env-sem_acao_inv', env=env)
 
-
     state = env.reset()
     num_steps = 100
 
-    print('State: ', state)
-
     for step in range(num_steps):
-        print('Step: ', step)
-
         action, _ = model.predict(state, deterministic=True)
-        print('Action: ', action)
+        # print('Action: ', action)
 
         state, reward, done, info = env.step(action)
-        print('Reward = ', reward)
-        print('New state = ', state)
+        # print('Reward = ', reward)
+        # print('New state = ', state)
 
-        p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15 = updatePortStatistics(state)
+        # p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15 = updatePortStatistics(state)
         step += 1
 
-    plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15)
+    # plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15)
 
 
 def runExperiments():
@@ -297,10 +293,10 @@ def run():
     changeMaxPaths()
     addInitialEntries()
 
-    testEnvMethods()
+    # testEnvMethods()
 
-    # trainAgent(env)
-    # testAgent(env)
+    trainAgent(env)
+    testAgent(env)
 
     # runExperiments(env)
 

@@ -503,22 +503,19 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
        for item in response_data[switch_id]:
            for rule_name, rule in item.items():
-               print('rule_name', rule_name)
-               print('rule', rule)
-
                try:
                    if rule['match']['in_port'] == str(in_port):
                        if str(out_port) in rule['instructions']['instruction_apply_actions']['actions']:
                            print('Regra ja existente para action {0}, in {1}, out {2}: {3}'.format(switch_id, in_port, out_port, rule_name))
                            return rule_name
                except:
-                   print('Except: ', rule)
                    continue
 
        return None
 
 
     def step(self, action):
+        print('...........')
         done = False # Aprendizado continuado
         next_state = []
         reward = 0
@@ -549,6 +546,11 @@ class LoadBalanceEnvDiscAction(gym.Env):
         next_state = self.getState()
         reward = self.calculateReward(next_state)
         self.state = next_state
+
+        print('State: ', self.state)
+        print('Reward: ', reward)
+        print('...........')
+        print()
 
         return next_state, reward, done, info
 

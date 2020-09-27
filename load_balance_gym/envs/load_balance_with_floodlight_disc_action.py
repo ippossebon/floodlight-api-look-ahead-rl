@@ -551,17 +551,17 @@ class LoadBalanceEnvDiscAction(gym.Env):
         in_port = in_port_index + 1
         out_port = out_port_index + 1
 
-        # rule_name = self.existsRuleWithAction(switch_id, in_port, out_port)
-        #
-        # if rule_name:
-        #     self.uninstallRule(rule_name)
+        rule_name = self.existsRuleWithAction(switch_id, in_port, out_port)
 
-        rule = self.actionToRule(switch_id, in_port, out_port)
+        if not rule_name:
+            # self.uninstallRule(rule_name)
 
-        print('Regra instalada = ', rule)
-        self.installRule(rule)
+            rule = self.actionToRule(switch_id, in_port, out_port)
 
-        time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
+            print('Regra instalada = ', rule)
+            self.installRule(rule)
+
+            time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 
         next_state = self.getState()
         reward = self.calculateReward(next_state)

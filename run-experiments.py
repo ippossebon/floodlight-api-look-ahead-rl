@@ -158,14 +158,14 @@ def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     print('Iniciando treinamento do agente.')
     model = A2C(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.05, gamma=0.97)
-    model.learn(total_timesteps=1000)
-    model.save('./A2C_1000_lr_005_gamma_097-disc-env')
+    model.learn(total_timesteps=500)
+    model.save('./A2C_500_lr_005_gamma_097-disc-env')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = A2C.load(load_path='./A2C_1000_lr_005_gamma_097-disc-env', env=env)
+    model = A2C.load(load_path='./A2C_500_lr_005_gamma_097-disc-env', env=env)
     # model = A2C.load(load_path='./A2C_100_lr_005_gamma_097-disc-env-sem_acao_inv', env=env)
 
     state = env.reset()
@@ -188,7 +188,7 @@ def testAgent(env):
 
 def runExperiments():
     print('Rodando experimentos...')
-    model = A2C.load(load_path='./A2C_1000_lr_005_gamma_097-disc-env', env=env)
+    model = A2C.load(load_path='./A2C_500_lr_005_gamma_097-disc-env', env=env)
     env.reset()
     update_count = 0
 
@@ -258,7 +258,7 @@ def plotGraphs():
     plt.ylabel('Reward')
     plt.title('Reward per step')
 
-    plt.savefig('A2C_1000-100_steps-005-097-27_set-links_usage_reward.pdf')
+    plt.savefig('A2C_500-100_steps-005-097-27_set-links_usage_reward.pdf')
 
     print('Grafico gerado.')
 
@@ -302,7 +302,7 @@ def run():
     # testEnvMethods()
 
     trainAgent(env)
-    # testAgent(env)
+    testAgent(env)
 
     # runExperiments(env)
 

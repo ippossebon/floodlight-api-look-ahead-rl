@@ -501,7 +501,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
        response = requests.get('{host}/wm/staticflowpusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
        response_data = response.json()
 
-       for item in response_data[switch_id].items():
+       for item in response_data[switch_id]:
            for rule_name, rule in item:
                print('rule_name', rule_name)
                print('rule', rule)

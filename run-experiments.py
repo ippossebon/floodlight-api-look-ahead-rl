@@ -302,7 +302,7 @@ def run():
     # testEnvMethods()
 
     trainAgent(env)
-    testAgent(env)
+    # testAgent(env)
 
     # runExperiments(env)
 

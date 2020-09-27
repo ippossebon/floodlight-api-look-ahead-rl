@@ -71,6 +71,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.reward_range = (0, 100001)
 
+        self.previous_tx_snapshot = numpy.zeros(shape=self.observation_space.shape)
+        self.previous_timestamp = time.time() # seconds
+
 
     def enableSwitchStatisticsEndpoit(self):
         # Enable statistics collection
@@ -310,7 +313,12 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        state = numpy.zeros(shape=self.observation_space.shape)
+        now_timestamp = time.time() # seconds
+        diff_seconds = self.previous_timestamp - now_timestamp
+        self.previous_timestamp = now_timestamp
+
+        current_tx = numpy.zeros(shape=self.observation_space.shape)
+        new_state = numpy.zeros(shape=self.observation_space.shape)
 
         for item in response_data:
             switch_dpid = item['dpid']
@@ -328,7 +336,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S1.1
                 # state[0] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link A
-                state[0] = float(item['bits-per-second-rx']) / 1024
+                current_tx[0] = float(item['bits-per-second-rx'])
+                new_state[0] = (current_tx[0] - self.previous_tx_snapshot[0]) / diff_seconds
+                self.previous_tx_snapshot[0] = current_tx[0]
+
             # elif item['dpid'] == self.switch_ids[0] and item['port'] == '2':
             #     #S1.2
             #     # state[1] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
@@ -342,13 +353,18 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 # state[3] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link b
-                state[1] = float(item['bits-per-second-tx']) / 1024
+                current_tx[1] = float(item['bits-per-second-tx'])
+                new_state[1] = (current_tx[1] - self.previous_tx_snapshot[1]) / diff_seconds
+                self.previous_tx_snapshot[1] = current_tx[1]
+
 
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
                 #S2.2
                 # state[4] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link e
-                state[4] = float(item['bits-per-second-tx']) / 1024
+                current_tx[4] = float(item['bits-per-second-tx'])
+                new_state[4] = (current_tx[4] - self.previous_tx_snapshot[4]) / diff_seconds
+                self.previous_tx_snapshot[4] = current_tx[4]
 
             # elif item['dpid'] == self.switch_ids[1] and item['port'] == '3':
             #     #S2.3
@@ -360,32 +376,43 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S3.1
                 # state[7] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link i
-                state[8] = float(item['bits-per-second-rx']) / 1024
+                current_tx[8] = float(item['bits-per-second-rx'])
+                new_state[8] = (current_tx[8] - self.previous_tx_snapshot[8]) / diff_seconds
+                self.previous_tx_snapshot[8] = current_tx[8]
+
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '2':
                 #S3.2
                 # state[8] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link f
-                state[5] = float(item['bits-per-second-tx']) / 1024
+                current_tx[5] = float(item['bits-per-second-tx'])
+                new_state[5] = (current_tx[5] - self.previous_tx_snapshot[5]) / diff_seconds
+                self.previous_tx_snapshot[5] = current_tx[5]
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
                 #S3.3
                 # state[9] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link g
-                state[6] = float(item['bits-per-second-tx']) / 1024
+                current_tx[6] = float(item['bits-per-second-tx'])
+                new_state[6] = (current_tx[6] - self.previous_tx_snapshot[6]) / diff_seconds
+                self.previous_tx_snapshot[6] = current_tx[6]
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
                 #S3.4
                 # state[10] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link h
-                state[7] = float(item['bits-per-second-tx']) / 1024
+                current_tx[7] = float(item['bits-per-second-tx'])
+                new_state[7] = (current_tx[7] - self.previous_tx_snapshot[7]) / diff_seconds
+                self.previous_tx_snapshot[7] = current_tx[7]
 
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
                 #S4.1
                 # state[11] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link c
-                state[2] = float(item['bits-per-second-tx']) / 1024
+                current_tx[2] = float(item['bits-per-second-tx'])
+                new_state[2] = (current_tx[2] - self.previous_tx_snapshot[2]) / diff_seconds
+                self.previous_tx_snapshot[2] = current_tx[2]
 
             # elif item['dpid'] == self.switch_ids[3] and item['port'] == '2':
             #     #S4.2
@@ -397,13 +424,16 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S5.1
                 # state[14] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link d
-                state[3] = float(item['bits-per-second-tx']) / 1024
+                current_tx[3] = float(item['bits-per-second-tx'])
+                new_state[3] = (current_tx[3] - self.previous_tx_snapshot[3]) / diff_seconds
+                self.previous_tx_snapshot[3] = current_tx[3]
 
             # elif item['dpid'] == self.switch_ids[4] and item['port'] == '2':
             #     #S5.2
             #     state[15] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
-        return state.flatten()
+
+        return new_state.flatten()
 
     def installRule(self, rule):
         urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)

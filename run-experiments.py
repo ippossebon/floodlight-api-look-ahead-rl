@@ -66,6 +66,56 @@ port_13 = []
 port_14 = []
 port_15 = []
 
+def startEnv():
+    # Aguarda scripts iniciarem.
+    time.sleep(3)
+
+    # Fluxo sai de H1 e vai para H2
+    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+    env = make_vec_env(lambda: env, n_envs=1)
+
+    return env
+
+def addInitialEntries(env):
+    # Inicialmente, todos os fluxos serguirão o caminho S1 -> S2 -> S3.
+    # O trabalho do agente é identificar que isso é um problema e encontrar as melhores regras
+    entry1 = {
+        "switch": "00:00:00:00:00:00:00:01",
+        "name": "switch-1-initial-entry",
+        "priority": "32760",
+        "in_port": "1",
+        "active": "true",
+        "actions": "output=2"
+    }
+
+    entry2 = {
+        "switch": "00:00:00:00:00:00:00:02",
+        "name": "switch-2-initial-entry",
+        "priority": "32760",
+        "in_port": "1",
+        "active": "true",
+        "actions": "output=4"
+    }
+
+    entry3 = {
+        "switch": "00:00:00:00:00:00:00:03",
+        "name": "switch-3-initial-entry",
+        "priority": "32760",
+        "in_port": "2",
+        "active": "true",
+        "actions": "output=1"
+    }
+
+    response_entry1 = env.installRule(entry1)
+    response_entry2 = env.installRule(entry2)
+    response_entry3 = env.installRule(entry3)
+
+    print('Adding initial entry 1: ', response_entry1.json())
+    print('Adding initial entry 2: ', response_entry2.json())
+    print('Adding initial entry 3: ', response_entry3.json())
+
+
+
 def updatePortStatistics(state):
     state = state.flatten()
 
@@ -92,16 +142,6 @@ def validateEnvOpenAI():
     print('************** Validacao da env: *************')
     print(check_env(env, warn=True))
     print('************************************************')
-
-def startEnv():
-    # Aguarda scripts iniciarem.
-    time.sleep(10)
-
-    # Fluxo sai de H1 e vai para H2
-    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-    env = make_vec_env(lambda: env, n_envs=1)
-
-    return env
 
 
 def trainAgent(env):
@@ -263,10 +303,16 @@ def testEnvMethods():
 
 def run():
     env = startEnv()
+    addInitialEntries(env)
+
+    flows_ids, cookies = env.getFlows()
+    print()
+    print()
+    
+    max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 
     # validateEnvOpenAI()
     # testEnvMethods()
-    trainAgent(env)
     # testAgent(env)
 
     # runExperiments()

@@ -319,6 +319,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         flows_ids = []
         flows_cookies = {}
+
+        print('GET FLOWS: ', response_data)
+        exit(0)
         for switch_address in response_data:
             for flow in response_data[switch_address]['flows']:
                 contains_match = len(flow['match'].keys()) > 1
@@ -465,13 +468,33 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+        print('response_data S1', response_data['00:00:00:00:00:00:00:01'])
+        print()
+
+        print('response_data S2', response_data['00:00:00:00:00:00:00:02'])
+        print()
+
+        print('response_data S3', response_data['00:00:00:00:00:00:00:03'])
+        print()
+
+        exit(0)
+
         max_byte_count = -1
         max_usage_flow_id = None
+        flow_match = {
+             'tcp_src': None,
+             'tcp_dst': None,
+             'ipv4_src': None,
+             'ipv4_dst': None
+        }
 
         for flow_obj in response_data[switch_id]['flows']:
             try:
-                flow_in_port = flow_obj['match']['tcp_src']
-                flow_src = flow_obj['match']['ipv4_src']
+                flow_match['tcp_src'] = flow_obj['match']['tcp_src']
+                flow_match['tcp_dst'] = flow_obj['match']['tcp_dst']
+                flow_match['ipv4_src'] = flow_obj['match']['ipv4_src']
+                flow_match['ipv4_dst'] = flow_obj['match']['ipv4_dst']
+
             except:
                 flow_in_port = None
 

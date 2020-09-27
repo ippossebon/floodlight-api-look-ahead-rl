@@ -303,12 +303,17 @@ def testEnvMethods():
 
 def run():
     env = startEnv()
+
+    print('Initial entries: ')
     addInitialEntries(env)
 
+    print('Get flows:')
     flows_ids, cookies = env.getFlows()
     print()
     print()
-    
+
+    print('Most costly flow:')
+
     max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 
     # validateEnvOpenAI()

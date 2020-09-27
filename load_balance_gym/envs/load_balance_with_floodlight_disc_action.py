@@ -350,7 +350,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S2.1
                 # link b
                 current_tx[1] = float(item['bits-per-second-tx'])
-                if current_tx[1] != != self.previous_tx[1]:
+                if current_tx[1] != self.previous_tx[1]:
                     # Atualizo o estado
                     new_state[1] = (current_tx[1] - self.previous_tx[1]) / diff_seconds
                     self.previous_tx[1] = current_tx[1]
@@ -363,7 +363,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S2.2
                 # link e
                 current_tx[4] = float(item['bits-per-second-tx'])
-                if current_tx[4] != != self.previous_tx[4]:
+                if current_tx[4] != self.previous_tx[4]:
                     # Atualizo o estado
                     new_state[4] = (current_tx[4] - self.previous_tx[4]) / diff_seconds
                     self.previous_tx[4] = current_tx[4]
@@ -376,7 +376,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S3.1
                 # link i
                 current_tx[8] = float(item['bits-per-second-tx'])
-                if current_tx[8] != != self.previous_tx[8]:
+                if current_tx[8] != self.previous_tx[8]:
                     # Atualizo o estado
                     new_state[8] = (current_tx[8] - self.previous_tx[8]) / diff_seconds
                     self.previous_tx[8] = current_tx[8]
@@ -389,7 +389,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S3.2
                 # link f
                 current_tx[5] = float(item['bits-per-second-tx'])
-                if current_tx[5] != != self.previous_tx[5]:
+                if current_tx[5] != self.previous_tx[5]:
                     # Atualizo o estado
                     new_state[5] = (current_tx[5] - self.previous_tx[5]) / diff_seconds
                     self.previous_tx[5] = current_tx[5]
@@ -402,7 +402,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S3.3
                 # link g
                 current_tx[6] = float(item['bits-per-second-tx'])
-                if current_tx[6] != != self.previous_tx[6]:
+                if current_tx[6] != self.previous_tx[6]:
                     # Atualizo o estado
                     new_state[6] = (current_tx[6] - self.previous_tx[6]) / diff_seconds
                     self.previous_tx[6] = current_tx[6]
@@ -415,7 +415,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S3.4
                 # link h
                 current_tx[7] = float(item['bits-per-second-tx'])
-                if current_tx[7] != != self.previous_tx[7]:
+                if current_tx[7] != self.previous_tx[7]:
                     # Atualizo o estado
                     new_state[7] = (current_tx[7] - self.previous_tx[7]) / diff_seconds
                     self.previous_tx[7] = current_tx[7]
@@ -428,7 +428,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S4.1
                 # link c
                 current_tx[2] = float(item['bits-per-second-tx'])
-                if current_tx[2] != != self.previous_tx[2]:
+                if current_tx[2] != self.previous_tx[2]:
                     # Atualizo o estado
                     new_state[2] = (current_tx[2] - self.previous_tx[2]) / diff_seconds
                     self.previous_tx[2] = current_tx[2]
@@ -441,7 +441,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S5.1
                 # link d
                 current_tx[3] = float(item['bits-per-second-tx'])
-                if current_tx[3] != != self.previous_tx[3]:
+                if current_tx[3] != self.previous_tx[3]:
                     # Atualizo o estado
                     new_state[3] = (current_tx[3] - self.previous_tx[3]) / diff_seconds
                     self.previous_tx[3] = current_tx[3]

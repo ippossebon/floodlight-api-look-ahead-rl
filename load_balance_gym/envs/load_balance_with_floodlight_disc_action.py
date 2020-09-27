@@ -336,7 +336,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S1.1
                 # state[0] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link A
-                print('current[0] = {0} -- previous[0] = {1} -- bandwidth[0] = {2}'.format(current_tx[0], self.previous_tx_snapshot[0], new_state[0]))
+                print('current[0] = {0} -- previous[0] = {1} -- bandwidth[0] = {2} -- diff_seconds = {3}'.format(current_tx[0], self.previous_tx_snapshot[0], new_state[0], diff_seconds))
                 current_tx[0] = float(item['bits-per-second-rx'])
                 new_state[0] = (current_tx[0] - self.previous_tx_snapshot[0]) / diff_seconds
                 self.previous_tx_snapshot[0] = current_tx[0]
@@ -354,7 +354,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 # state[3] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link b
-                print('current[1] = {0} -- previous[1] = {1} -- bandwidth[1] = {2}'.format(current_tx[1], self.previous_tx_snapshot[1], new_state[1]))
+                print('current[1] = {0} -- previous[1] = {1} -- bandwidth[1] = {2} -- diff_seconds = {3}'.format(current_tx[1], self.previous_tx_snapshot[1], new_state[1], diff_seconds))
 
                 current_tx[1] = float(item['bits-per-second-tx'])
                 new_state[1] = (current_tx[1] - self.previous_tx_snapshot[1]) / diff_seconds

@@ -501,6 +501,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
        response = requests.get('{host}/wm/staticflowpusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
        response_data = response.json()
 
+       print('response_data[switch_id].items()', response_data[switch_id].items())
+
        for rule_name, rule in response_data[switch_id].items():
            try:
                if rule[rule_name]['match']['in_port'] == str(in_port):

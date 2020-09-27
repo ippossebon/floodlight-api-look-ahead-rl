@@ -320,8 +320,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         flows_ids = []
         flows_cookies = {}
 
-        print('GET FLOWS: ', response_data)
-        exit(0)
         for switch_address in response_data:
             for flow in response_data[switch_address]['flows']:
                 contains_match = len(flow['match'].keys()) > 1

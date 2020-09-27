@@ -307,10 +307,10 @@ def run():
     print('Initial entries: ')
     addInitialEntries(env)
 
-    print('Get flows:')
+    # print('Get flows:')
     # flows_ids, cookies = env.getFlows()
-    print()
-    print()
+    # print()
+    # print()
 
     print('Most costly flow:')
 

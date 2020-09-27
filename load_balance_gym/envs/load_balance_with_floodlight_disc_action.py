@@ -71,7 +71,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.reward_range = (0, 100001)
 
-        self.previous_tx_snapshot = numpy.zeros(shape=self.observation_space.shape)
+        self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = time.time() # seconds
         self.previous_state = numpy.zeros(shape=self.observation_space.shape)
 
@@ -335,107 +335,120 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
             if item['dpid'] == self.switch_ids[0] and item['port'] == '1':
                 #S1.1
-                # state[0] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link A
                 current_tx[0] = float(item['bits-per-second-rx'])
-                new_state[0] = (current_tx[0] - self.previous_tx_snapshot[0]) / diff_seconds
-                print('current[0] = {0} -- previous[0] = {1} -- bandwidth[0] = {2} -- diff_seconds = {3}'.format(current_tx[0], self.previous_tx_snapshot[0], new_state[0], diff_seconds))
+                if current_tx[0] != self.previous_tx[0]:
+                    # Atualizo o estado
+                    new_state[0] = (current_tx[0] - self.previous_tx[0]) / diff_seconds
+                    self.previous_tx[0] = current_tx[0]
+                    self.previous_state[0] = self.state[0]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[0] = self.state[0]
 
-                self.previous_tx_snapshot[0] = current_tx[0]
-
-            # elif item['dpid'] == self.switch_ids[0] and item['port'] == '2':
-            #     #S1.2
-            #     # state[1] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            #
-
-            # elif item['dpid'] == self.switch_ids[0] and item['port'] == '3':
-            #     #S1.3
-            #     state[2] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '1':
                 #S2.1
-                # state[3] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-
                 # link b
                 current_tx[1] = float(item['bits-per-second-tx'])
-                new_state[1] = (current_tx[1] - self.previous_tx_snapshot[1]) / diff_seconds
-                print('current[1] = {0} -- previous[1] = {1} -- bandwidth[1] = {2} -- diff_seconds = {3}'.format(current_tx[1], self.previous_tx_snapshot[1], new_state[1], diff_seconds))
-
-                self.previous_tx_snapshot[1] = current_tx[1]
-
+                if current_tx[1] != != self.previous_tx[1]:
+                    # Atualizo o estado
+                    new_state[1] = (current_tx[1] - self.previous_tx[1]) / diff_seconds
+                    self.previous_tx[1] = current_tx[1]
+                    self.previous_state[1] = self.state[1]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[1] = self.state[1]
 
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
                 #S2.2
-                # state[4] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link e
                 current_tx[4] = float(item['bits-per-second-tx'])
-                new_state[4] = (current_tx[4] - self.previous_tx_snapshot[4]) / diff_seconds
-                self.previous_tx_snapshot[4] = current_tx[4]
+                if current_tx[4] != != self.previous_tx[4]:
+                    # Atualizo o estado
+                    new_state[4] = (current_tx[4] - self.previous_tx[4]) / diff_seconds
+                    self.previous_tx[4] = current_tx[4]
+                    self.previous_state[4] = self.state[4]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[4] = self.state[4]
 
-            # elif item['dpid'] == self.switch_ids[1] and item['port'] == '3':
-            #     #S2.3
-            #     state[5] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            # elif item['dpid'] == self.switch_ids[1] and item['port'] == '4':
-            #     #S2.4
-            #     state[6] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '1':
                 #S3.1
-                # state[7] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link i
-                current_tx[8] = float(item['bits-per-second-rx'])
-                new_state[8] = (current_tx[8] - self.previous_tx_snapshot[8]) / diff_seconds
-                self.previous_tx_snapshot[8] = current_tx[8]
+                current_tx[8] = float(item['bits-per-second-tx'])
+                if current_tx[8] != != self.previous_tx[8]:
+                    # Atualizo o estado
+                    new_state[8] = (current_tx[8] - self.previous_tx[8]) / diff_seconds
+                    self.previous_tx[8] = current_tx[8]
+                    self.previous_state[8] = self.state[8]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[8] = self.state[8]
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '2':
                 #S3.2
-                # state[8] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link f
                 current_tx[5] = float(item['bits-per-second-tx'])
-                new_state[5] = (current_tx[5] - self.previous_tx_snapshot[5]) / diff_seconds
-                self.previous_tx_snapshot[5] = current_tx[5]
+                if current_tx[5] != != self.previous_tx[5]:
+                    # Atualizo o estado
+                    new_state[5] = (current_tx[5] - self.previous_tx[5]) / diff_seconds
+                    self.previous_tx[5] = current_tx[5]
+                    self.previous_state[5] = self.state[5]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[5] = self.state[5]
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
                 #S3.3
-                # state[9] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link g
                 current_tx[6] = float(item['bits-per-second-tx'])
-                new_state[6] = (current_tx[6] - self.previous_tx_snapshot[6]) / diff_seconds
-                self.previous_tx_snapshot[6] = current_tx[6]
+                if current_tx[6] != != self.previous_tx[6]:
+                    # Atualizo o estado
+                    new_state[6] = (current_tx[6] - self.previous_tx[6]) / diff_seconds
+                    self.previous_tx[6] = current_tx[6]
+                    self.previous_state[6] = self.state[6]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[6] = self.state[6]
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
                 #S3.4
-                # state[10] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-
                 # link h
                 current_tx[7] = float(item['bits-per-second-tx'])
-                new_state[7] = (current_tx[7] - self.previous_tx_snapshot[7]) / diff_seconds
-                self.previous_tx_snapshot[7] = current_tx[7]
+                if current_tx[7] != != self.previous_tx[7]:
+                    # Atualizo o estado
+                    new_state[7] = (current_tx[7] - self.previous_tx[7]) / diff_seconds
+                    self.previous_tx[7] = current_tx[7]
+                    self.previous_state[7] = self.state[7]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[7] = self.state[7]
 
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
                 #S4.1
-                # state[11] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-
                 # link c
                 current_tx[2] = float(item['bits-per-second-tx'])
-                new_state[2] = (current_tx[2] - self.previous_tx_snapshot[2]) / diff_seconds
-                self.previous_tx_snapshot[2] = current_tx[2]
+                if current_tx[2] != != self.previous_tx[2]:
+                    # Atualizo o estado
+                    new_state[2] = (current_tx[2] - self.previous_tx[2]) / diff_seconds
+                    self.previous_tx[2] = current_tx[2]
+                    self.previous_state[2] = self.state[2]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[2] = self.state[2]
 
-            # elif item['dpid'] == self.switch_ids[3] and item['port'] == '2':
-            #     #S4.2
-            #     state[12] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            # elif item['dpid'] == self.switch_ids[3] and item['port'] == '3':
-            #     #S4.3
-            #     state[13] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[4] and item['port'] == '1':
                 #S5.1
-                # state[14] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link d
                 current_tx[3] = float(item['bits-per-second-tx'])
-                new_state[3] = (current_tx[3] - self.previous_tx_snapshot[3]) / diff_seconds
-                self.previous_tx_snapshot[3] = current_tx[3]
-
-            # elif item['dpid'] == self.switch_ids[4] and item['port'] == '2':
-            #     #S5.2
-            #     state[15] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                if current_tx[3] != != self.previous_tx[3]:
+                    # Atualizo o estado
+                    new_state[3] = (current_tx[3] - self.previous_tx[3]) / diff_seconds
+                    self.previous_tx[3] = current_tx[3]
+                    self.previous_state[3] = self.state[3]
+                else:
+                    # Mantem o mesmo estado
+                    new_state[3] = self.state[3]
 
         self.state = new_state.flatten()
 

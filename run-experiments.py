@@ -76,7 +76,18 @@ def startEnv():
 
     return env
 
-def addInitialEntries(env):
+
+
+def installRule(rule):
+    urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
+    headers = {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+    }
+
+    return requests.post(urlPath, data=rule, headers=headers)
+
+def addInitialEntries():
     # Inicialmente, todos os fluxos serguirão o caminho S1 -> S2 -> S3.
     # O trabalho do agente é identificar que isso é um problema e encontrar as melhores regras
     entry1 = {
@@ -106,9 +117,9 @@ def addInitialEntries(env):
         "actions": "output=1"
     }
 
-    response_entry1 = env.installRule(entry1)
-    response_entry2 = env.installRule(entry2)
-    response_entry3 = env.installRule(entry3)
+    response_entry1 = installRule(entry1)
+    response_entry2 = installRule(entry2)
+    response_entry3 = installRule(entry3)
 
     print('Adding initial entry 1: ', response_entry1.json())
     print('Adding initial entry 2: ', response_entry2.json())
@@ -305,7 +316,7 @@ def run():
     env = startEnv()
 
     print('Initial entries: ')
-    addInitialEntries(env)
+    addInitialEntries()
 
     # print('Get flows:')
     # flows_ids, cookies = env.getFlows()

@@ -502,13 +502,17 @@ class LoadBalanceEnvDiscAction(gym.Env):
        response_data = response.json()
 
        for rule in response_data[switch_id]:
-           if rule['match']['in_port'] == str(in_port):
-               if str(out_port) in rule['instructions']['instruction_apply_actions']['actions']:
-                   rule_name = rule.keys()[0]
-                   for key in rule:
-                       rule_name = key
-                       print('Regra ja existente para action {0}, in {1}, out {2}: {3}'.format(switch_id, in_port, out_port, rule_name))
-                       return rule_name
+           try:
+               if rule['match']['in_port'] == str(in_port):
+                   if str(out_port) in rule['instructions']['instruction_apply_actions']['actions']:
+                       rule_name = rule.keys()[0]
+                       for key in rule:
+                           rule_name = key
+                           print('Regra ja existente para action {0}, in {1}, out {2}: {3}'.format(switch_id, in_port, out_port, rule_name))
+                           return rule_name
+            except:
+                print('Except: ', rule)
+                continue
 
        return None
 

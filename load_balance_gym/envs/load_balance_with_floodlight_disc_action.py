@@ -510,9 +510,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
                            rule_name = key
                            print('Regra ja existente para action {0}, in {1}, out {2}: {3}'.format(switch_id, in_port, out_port, rule_name))
                            return rule_name
-            except:
-                print('Except: ', rule)
-                continue
+           except:
+               print('Except: ', rule)
+               continue
 
        return None
 

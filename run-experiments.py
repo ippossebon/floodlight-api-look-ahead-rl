@@ -45,6 +45,17 @@ dst_port: 1
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
+link_a_rx = []
+link_b_rx = []
+link_c_rx = []
+link_d_rx = []
+link_e_rx = []
+link_f_rx = []
+link_g_rx = []
+link_h_rx = []
+link_i_rx = []
+
+rewards = []
 
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
@@ -127,25 +138,15 @@ def addInitialEntries():
 def updatePortStatistics(state):
     state = state.flatten()
 
-    port_0.append(state[0])
-    port_1.append(state[1])
-    port_2.append(state[2])
-    port_3.append(state[3])
-    port_4.append(state[4])
-    port_5.append(state[5])
-    port_6.append(state[6])
-    port_7.append(state[7])
-    port_8.append(state[8])
-    port_9.append(state[9])
-    port_10.append(state[10])
-    port_11.append(state[11])
-    port_12.append(state[12])
-    port_13.append(state[13])
-    port_14.append(state[14])
-    port_15.append(state[15])
-
-    return port_0, port_1, port_2, port_3, port_4, port_5, port_6, port_7, port_8, port_9, port_10, port_11, port_12, port_13, port_14, port_15
-
+    link_a_rx.append(state[0])
+    link_b_rx.append(state[1])
+    link_c_rx.append(state[2])
+    link_d_rx.append(state[3])
+    link_e_rx.append(state[4])
+    link_f_rx.append(state[5])
+    link_g_rx.append(state[6])
+    link_h_rx.append(state[7])
+    link_i_rx.append(state[8])
 
 def validateEnvOpenAI():
     print('************** Validacao da env: *************')
@@ -178,10 +179,11 @@ def testAgent(env):
         # print('Reward = ', reward)
         # print('New state = ', state)
 
-        # p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15 = updatePortStatistics(state)
+        updatePortStatistics(state)
+        rewards.append(reward)
         step += 1
 
-    # plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15)
+    plotGraphs()
 
 
 def runExperiments():
@@ -225,37 +227,41 @@ def containsTraffic(state):
 """
 Graficos
 """
-def plotGraphs(p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15):
-    print('Gerando grafico...')
-    plt.plot(p0, '-', color="#ef476f", label = "port 0") # paradise pink
-    plt.plot(p1, '-', color="#ffd166", label = "port 1") # orange yellow crayola
-    plt.plot(p2, '-', color="#06d6a0", label = "port 2") # caribeen green
-    plt.plot(p3, '-', color="#118AB2", label = "port 3") # blue NCS
-    plt.plot(p4, '-', color="#073B4C", label = "port 4") # midnight green eagle green
-    plt.plot(p5, '-', color="#5f0f40", label = "port 5") # tryian purple
-    plt.plot(p6, '-', color="#9A031E", label = "port 6") # ruby red
-    plt.plot(p7, '-', color="#FB8B24", label = "port 7") # dark orange
-    plt.plot(p8, '-', color="#E36414", label = "port 8") # spanish orange
-    plt.plot(p9, '-', color="#00FF00", label = "port 9") # lime
-    plt.plot(p10, '-', color="#800080", label = "port 10") # purple
-    plt.plot(p11, '-', color="#000000", label = "port 11") # black ?
-    plt.plot(p12, '-', color="#FF00FF", label = "port 12") # fuchsia
-    plt.plot(p13, '-', color="#800000", label = "port 13") # maroon
-    plt.plot(p14, '-', color="#FF0000", label = "port 14") # red
-    plt.plot(p15, '-', color="#FFFF00", label = "port 15") # yellow
+def plotGraphs():
+    print('Gerando graficos...')
+
+    plt.figure()
+    plt.subplot(1)
+    plt.plot(link_a_rx, '-', color="#ef476f", label = "Link a") # paradise pink
+    plt.plot(link_b_rx, '-', color="#ffd166", label = "Link b") # orange yellow crayola
+    plt.plot(link_c_rx, '-', color="#06d6a0", label = "Link c") # caribeen green
+    plt.plot(link_d_rx, '-', color="#118AB2", label = "Link d") # blue NCS
+    plt.plot(link_e_rx, '-', color="#073B4C", label = "Link e") # midnight green eagle green
+    plt.plot(link_f_rx, '-', color="#5f0f40", label = "Link f") # tryian purple
+    plt.plot(link_g_rx, '-', color="#9A031E", label = "Link g") # ruby red
+    plt.plot(link_h_rx, '-', color="#FB8B24", label = "Link h") # dark orange
+    plt.plot(link_i_rx, '-', color="#E36414", label = "Link i") # spanish orange
 
     plt.xlabel('Step')
-    plt.ylabel('In bits')
+    plt.ylabel('Link RX')
 
     # Set a title of the current axes.
-    plt.title('Incoming bits per step')
+    plt.title('Links RX per step')
 
     # show a legend on the plot
     plt.legend()
 
-    plt.savefig('A2C_1000-100_steps-005-097-26_set.pdf')
+    plt.subplot(2)
+    plt.plot(rewards)
+    plt.plot(rewards)
+    plt.xlabel('Step')
+    plt.ylabel('Reward')
+    plt.title('Reward per step')
 
-    print('Grafico gerado')
+    plt.savefig('A2C_1000-100_steps-005-097-27_set-links_usage_reward.pdf')
+
+    print('Grafico gerado.')
+
 
 
 """

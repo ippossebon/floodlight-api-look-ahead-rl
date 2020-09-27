@@ -61,21 +61,11 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.observation_space = spaces.Box(
             low=0,
-            high=MAX_BITS_CAPACITY,
-            shape=(self.num_ports,), # array com o RX de cada porta
+            high=10240,
+            shape=(9,), # array com o RX de cada porta
             dtype=numpy.float16
         )
 
-        # Ação = (switch_id, in_port, out_port)
-        # Ação = (switch_index, in_port_index, out_port_index)
-        # max_path_index = len(self.possible_paths)-1
-        # max_switch_index = len(self.switch_ids)-1
-        # max_port_index = MAX_PORTS_SWITCH - 1
-        # self.action_space = spaces.Box(
-        #     low=numpy.array([0, 0, 0]), # primeiro indica o valor mais baixo para o fluxo. segundo = valor mais baixo para caminho
-        #     high=numpy.array([max_switch_index, max_port_index, max_port_index]), # primeiro: maior indice do fluxo, maior indice do caminho
-        #     dtype=numpy.int8
-        # )
         self.action_space = spaces.Discrete(14)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
@@ -336,52 +326,82 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
             if item['dpid'] == self.switch_ids[0] and item['port'] == '1':
                 #S1.1
-                state[0] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            elif item['dpid'] == self.switch_ids[0] and item['port'] == '2':
-                #S1.2
-                state[1] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            elif item['dpid'] == self.switch_ids[0] and item['port'] == '3':
-                #S1.3
-                state[2] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[0] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # link A
+                state[0] = float(item['bits-per-second-rx'])
+            # elif item['dpid'] == self.switch_ids[0] and item['port'] == '2':
+            #     #S1.2
+            #     # state[1] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+            #
+
+            # elif item['dpid'] == self.switch_ids[0] and item['port'] == '3':
+            #     #S1.3
+            #     state[2] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '1':
                 #S2.1
-                state[3] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[3] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+
+                # link b
+                state[1] = float(item['bits-per-second-rx'])
+
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
                 #S2.2
-                state[4] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            elif item['dpid'] == self.switch_ids[1] and item['port'] == '3':
-                #S2.3
-                state[5] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            elif item['dpid'] == self.switch_ids[1] and item['port'] == '4':
-                #S2.4
-                state[6] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[4] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # link e
+                state[4] = float(item['bits-per-second-rx'])
+
+            # elif item['dpid'] == self.switch_ids[1] and item['port'] == '3':
+            #     #S2.3
+            #     state[5] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+            # elif item['dpid'] == self.switch_ids[1] and item['port'] == '4':
+            #     #S2.4
+            #     state[6] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '1':
                 #S3.1
-                state[7] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[7] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # link i
+                state[8] = float(item['bits-per-second-rx'])
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '2':
                 #S3.2
-                state[8] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[8] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # link f
+                state[5] = float(item['bits-per-second-rx'])
+
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
                 #S3.3
-                state[9] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[9] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # link g
+                state[6] = float(item['bits-per-second-rx'])
+
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
                 #S3.4
-                state[10] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[10] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+
+                # link h
+                state[7] = float(item['bits-per-second-rx'])
+
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
                 #S4.1
-                state[11] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            elif item['dpid'] == self.switch_ids[3] and item['port'] == '2':
-                #S4.2
-                state[12] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            elif item['dpid'] == self.switch_ids[3] and item['port'] == '3':
-                #S4.3
-                state[13] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[11] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+
+                # link c
+                state[2] = float(item['bits-per-second-rx'])
+
+            # elif item['dpid'] == self.switch_ids[3] and item['port'] == '2':
+            #     #S4.2
+            #     state[12] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+            # elif item['dpid'] == self.switch_ids[3] and item['port'] == '3':
+            #     #S4.3
+            #     state[13] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
             elif item['dpid'] == self.switch_ids[4] and item['port'] == '1':
                 #S5.1
-                state[14] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
-            elif item['dpid'] == self.switch_ids[4] and item['port'] == '2':
-                #S5.2
-                state[15] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # state[14] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
+                # link d
+                state[3] = float(item['bits-per-second-rx'])
+
+            # elif item['dpid'] == self.switch_ids[4] and item['port'] == '2':
+            #     #S5.2
+            #     state[15] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
         return state.flatten()
 
@@ -531,10 +551,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
         in_port = in_port_index + 1
         out_port = out_port_index + 1
 
-        rule_name = self.existsRuleWithAction(switch_id, in_port, out_port)
-
-        if rule_name:
-            self.uninstallRule(rule_name)
+        # rule_name = self.existsRuleWithAction(switch_id, in_port, out_port)
+        #
+        # if rule_name:
+        #     self.uninstallRule(rule_name)
 
         rule = self.actionToRule(switch_id, in_port, out_port)
 
@@ -556,11 +576,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
     def calculateReward(self, state):
-        harmonic_mean = len(state) / (numpy.sum(state) or EPSILON)
+        mean = numpy.sum(state) / len(state)
+
+        # harmonic_mean = len(state) / (numpy.sum(state) or EPSILON)
         # state_var = numpy.var(state) or EPSILON
         # reward = (1/state_var) * MULT_VALUE
 
-        return harmonic_mean
+        return mean
 
 
     def render(self, render='console'):

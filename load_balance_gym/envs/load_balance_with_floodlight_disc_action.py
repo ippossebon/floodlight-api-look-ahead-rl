@@ -502,6 +502,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
        response_data = response.json()
 
        for item in response_data[switch_id]:
+           print('item', item)
            for rule_name, rule in item:
                print('rule_name', rule_name)
                print('rule', rule)

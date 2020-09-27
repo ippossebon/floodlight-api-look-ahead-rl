@@ -277,15 +277,17 @@ def testEnvMethods():
     rule_name3 = env.existsRuleWithAction(switch_id='00:00:00:00:00:00:00:03', in_port=2, out_port=1)
     print('Regra encontrada para o switch 3:', rule_name3)
 
+    if rule_name1:
+        delete_rule_1_response = env.uninstallRule(rule_name1)
+        print('Resposta apagando regra 1: ', delete_rule_1_response.json())
 
-    delete_rule_1_response = env.uninstallRule(rule_name1)
-    print('Resposta apagando regra 1: ', delete_rule_1_response.json())
+    if rule_name2:
+        delete_rule_2_response = env.uninstallRule(rule_name2)
+        print('Resposta apagando regra 2: ', delete_rule_2_response.json())
 
-    delete_rule_2_response = env.uninstallRule(rule_name2)
-    print('Resposta apagando regra 2: ', delete_rule_2_response.json())
-
-    delete_rule_3_response = env.uninstallRule(rule_name3)
-    print('Resposta apagando regra 3: ', delete_rule_3_response.json())
+    if rule_name3:
+        delete_rule_3_response = env.uninstallRule(rule_name3)
+        print('Resposta apagando regra 3: ', delete_rule_3_response.json())
 
 
 def run():

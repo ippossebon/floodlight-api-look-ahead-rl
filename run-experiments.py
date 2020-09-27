@@ -98,6 +98,7 @@ def addInitialEntries():
         "active": "true",
         "actions": "output=2"
     }
+    rule1 = json.dumps(entry1)
 
     entry2 = {
         "switch": "00:00:00:00:00:00:00:02",
@@ -107,6 +108,8 @@ def addInitialEntries():
         "active": "true",
         "actions": "output=4"
     }
+    rule2 = json.dumps(entry2)
+
 
     entry3 = {
         "switch": "00:00:00:00:00:00:00:03",
@@ -116,14 +119,15 @@ def addInitialEntries():
         "active": "true",
         "actions": "output=1"
     }
+    rule3 = json.dumps(entry3)
 
-    response_entry1 = installRule(entry1)
-    response_entry2 = installRule(entry2)
-    response_entry3 = installRule(entry3)
+    response_rule1 = installRule(rule1)
+    response_rule2 = installRule(rule2)
+    response_rule3 = installRule(rule3)
 
-    print('Adding initial entry 1: ', response_entry1.json())
-    print('Adding initial entry 2: ', response_entry2.json())
-    print('Adding initial entry 3: ', response_entry3.json())
+    print('Adding initial rule 1: ', response_rule1.json())
+    print('Adding initial rule 2: ', response_rule2.json())
+    print('Adding initial rule 3: ', response_rule3.json())
 
 
 
@@ -322,10 +326,6 @@ def run():
     # flows_ids, cookies = env.getFlows()
     # print()
     # print()
-
-    print('Most costly flow:')
-
-    max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
 
     # validateEnvOpenAI()
     # testEnvMethods()

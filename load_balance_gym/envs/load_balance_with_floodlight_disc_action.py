@@ -69,7 +69,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.action_space = spaces.Discrete(14)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, MULT_VALUE)
+        self.reward_range = (0, 1000001)
 
 
     def enableSwitchStatisticsEndpoit(self):
@@ -342,13 +342,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 # state[3] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link b
-                state[1] = float(item['bits-per-second-rx'])
+                state[1] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
                 #S2.2
                 # state[4] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link e
-                state[4] = float(item['bits-per-second-rx'])
+                state[4] = float(item['bits-per-second-tx'])
 
             # elif item['dpid'] == self.switch_ids[1] and item['port'] == '3':
             #     #S2.3
@@ -365,27 +365,27 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S3.2
                 # state[8] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link f
-                state[5] = float(item['bits-per-second-rx'])
+                state[5] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
                 #S3.3
                 # state[9] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link g
-                state[6] = float(item['bits-per-second-rx'])
+                state[6] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
                 #S3.4
                 # state[10] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link h
-                state[7] = float(item['bits-per-second-rx'])
+                state[7] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
                 #S4.1
                 # state[11] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link c
-                state[2] = float(item['bits-per-second-rx'])
+                state[2] = float(item['bits-per-second-tx'])
 
             # elif item['dpid'] == self.switch_ids[3] and item['port'] == '2':
             #     #S4.2
@@ -397,7 +397,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S5.1
                 # state[14] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link d
-                state[3] = float(item['bits-per-second-rx'])
+                state[3] = float(item['bits-per-second-tx'])
 
             # elif item['dpid'] == self.switch_ids[4] and item['port'] == '2':
             #     #S5.2
@@ -551,17 +551,17 @@ class LoadBalanceEnvDiscAction(gym.Env):
         in_port = in_port_index + 1
         out_port = out_port_index + 1
 
-        rule_name = self.existsRuleWithAction(switch_id, in_port, out_port)
+        # rule_name = self.existsRuleWithAction(switch_id, in_port, out_port)
 
-        if not rule_name:
+        # if not rule_name:
             # self.uninstallRule(rule_name)
 
-            rule = self.actionToRule(switch_id, in_port, out_port)
+        rule = self.actionToRule(switch_id, in_port, out_port)
 
-            print('Regra instalada = ', rule)
-            self.installRule(rule)
+        print('Regra instalada = ', rule)
+        self.installRule(rule)
 
-            time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
+        time.sleep(1) # aguarda regras refletirem e pacotes serem enviados novamente
 
         next_state = self.getState()
         reward = self.calculateReward(next_state)
@@ -576,13 +576,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
     def calculateReward(self, state):
-        mean = numpy.sum(state) / len(state)
 
         # harmonic_mean = len(state) / (numpy.sum(state) or EPSILON)
-        # state_var = numpy.var(state) or EPSILON
+        state_var = numpy.var(state) or EPSILON
         # reward = (1/state_var) * MULT_VALUE
+        reward = 1000000 - state_var
 
-        return mean
+        return reward
 
 
     def render(self, render='console'):

@@ -231,7 +231,7 @@ def plotGraphs():
     print('Gerando graficos...')
 
     plt.figure()
-    plt.subplot(1)
+    # plt.subplot(1)
     plt.plot(link_a_rx, '-', color="#ef476f", label = "Link a") # paradise pink
     plt.plot(link_b_rx, '-', color="#ffd166", label = "Link b") # orange yellow crayola
     plt.plot(link_c_rx, '-', color="#06d6a0", label = "Link c") # caribeen green
@@ -251,14 +251,14 @@ def plotGraphs():
     # show a legend on the plot
     plt.legend()
 
-    plt.subplot(2)
-    plt.plot(rewards)
-    plt.plot(rewards)
-    plt.xlabel('Step')
-    plt.ylabel('Reward')
-    plt.title('Reward per step')
+    # plt.subplot(2)
+    # plt.plot(rewards)
+    # plt.plot(rewards)
+    # plt.xlabel('Step')
+    # plt.ylabel('Reward')
+    # plt.title('Reward per step')
 
-    plt.savefig('A2C_500-100_steps-005-097-27_set-links_usage_reward.pdf')
+    plt.savefig('A2C_500-100_steps-005-097-27_set-links_usage.pdf')
 
     print('Grafico gerado.')
 

@@ -61,7 +61,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.observation_space = spaces.Box(
             low=0,
-            high=10240,
+            high=10,
             shape=(9,), # array com o RX de cada porta
             dtype=numpy.float16
         )
@@ -69,7 +69,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.action_space = spaces.Discrete(14)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, 1000001)
+        self.reward_range = (0, 100001)
 
 
     def enableSwitchStatisticsEndpoit(self):
@@ -328,7 +328,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S1.1
                 # state[0] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link A
-                state[0] = float(item['bits-per-second-rx'])
+                state[0] = float(item['bits-per-second-rx']) / 1024
             # elif item['dpid'] == self.switch_ids[0] and item['port'] == '2':
             #     #S1.2
             #     # state[1] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
@@ -342,13 +342,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 # state[3] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link b
-                state[1] = float(item['bits-per-second-tx'])
+                state[1] = float(item['bits-per-second-tx']) / 1024
 
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
                 #S2.2
                 # state[4] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link e
-                state[4] = float(item['bits-per-second-tx'])
+                state[4] = float(item['bits-per-second-tx']) / 1024
 
             # elif item['dpid'] == self.switch_ids[1] and item['port'] == '3':
             #     #S2.3
@@ -360,32 +360,32 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S3.1
                 # state[7] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link i
-                state[8] = float(item['bits-per-second-rx'])
+                state[8] = float(item['bits-per-second-rx']) / 1024
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '2':
                 #S3.2
                 # state[8] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link f
-                state[5] = float(item['bits-per-second-tx'])
+                state[5] = float(item['bits-per-second-tx']) / 1024
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
                 #S3.3
                 # state[9] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link g
-                state[6] = float(item['bits-per-second-tx'])
+                state[6] = float(item['bits-per-second-tx']) / 1024
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
                 #S3.4
                 # state[10] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link h
-                state[7] = float(item['bits-per-second-tx'])
+                state[7] = float(item['bits-per-second-tx']) / 1024
 
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
                 #S4.1
                 # state[11] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
 
                 # link c
-                state[2] = float(item['bits-per-second-tx'])
+                state[2] = float(item['bits-per-second-tx']) / 1024
 
             # elif item['dpid'] == self.switch_ids[3] and item['port'] == '2':
             #     #S4.2
@@ -397,7 +397,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 #S5.1
                 # state[14] = float(item['bits-per-second-rx']) / MEGABITS_CONVERSION
                 # link d
-                state[3] = float(item['bits-per-second-tx'])
+                state[3] = float(item['bits-per-second-tx']) / 1024
 
             # elif item['dpid'] == self.switch_ids[4] and item['port'] == '2':
             #     #S5.2
@@ -580,7 +580,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         # harmonic_mean = len(state) / (numpy.sum(state) or EPSILON)
         state_var = numpy.var(state) or EPSILON
         # reward = (1/state_var) * MULT_VALUE
-        reward = 1000000 - state_var
+        reward = 100000 - state_var
 
         return reward
 

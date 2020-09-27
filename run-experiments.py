@@ -40,33 +40,13 @@ source_port: 1
 dst_switch: 00:00:00:00:00:00:00:03
 dst_port: 1
 
-Setup do experimento:
-Todos os fluxos começam por a, b, f, i
-
 """
 
 CONTROLLER_IP = 'http://localhost'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
-env = None
 
-port_0 = []
-port_1 = []
-port_2 = []
-port_3 = []
-port_4 = []
-port_5 = []
-port_6 = []
-port_7 = []
-port_8 = []
-port_9 = []
-port_10 = []
-port_11 = []
-port_12 = []
-port_13 = []
-port_14 = []
-port_15 = []
 
-def startEnv():
+def createVectorizedEnv():
     # Aguarda scripts iniciarem.
     time.sleep(3)
 
@@ -76,6 +56,21 @@ def startEnv():
 
     return env
 
+
+def changeMaxPaths():
+    data = json.dumps({"max_fast_paths": "10"})
+    headers = {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+    }
+    response = requests.post(
+        '{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST),
+        data=data,
+        headers=headers
+    )
+    response_data = response.json()
+
+    print('Changing max paths value: ', response_data)
 
 
 def installRule(rule):
@@ -129,8 +124,6 @@ def addInitialEntries():
     print('Adding initial rule 2: ', response_rule2.json())
     print('Adding initial rule 3: ', response_rule3.json())
 
-
-
 def updatePortStatistics(state):
     state = state.flatten()
 
@@ -152,6 +145,7 @@ def updatePortStatistics(state):
     port_15.append(state[15])
 
     return port_0, port_1, port_2, port_3, port_4, port_5, port_6, port_7, port_8, port_9, port_10, port_11, port_12, port_13, port_14, port_15
+
 
 def validateEnvOpenAI():
     print('************** Validacao da env: *************')
@@ -274,64 +268,39 @@ Env methods tests
 def testEnvMethods():
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 
-    flows_ids, cookies = env.getFlows()
+    rule_name1 = env.existsRuleWithAction(switch_id='00:00:00:00:00:00:00:01', in_port=1, out_port=2)
+    print('Regra encontrada para o switch 1:', rule_name1)
 
-    max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-    print('* max_usage_flow_id de 00:00:00:00:00:00:00:01 = ', max_usage_flow_id)
-    #
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:02 = ', max_usage_flow_id)
-    #
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:03 = ', max_usage_flow_id)
-    #
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:04 = ', max_usage_flow_id)
-    #
-    # max_usage_flow_id = env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
-    # print('* max_usage_flow_id de 00:00:00:00:00:00:00:05 = ', max_usage_flow_id)
+    rule_name2 = env.existsRuleWithAction(switch_id='00:00:00:00:00:00:00:02', in_port=1, out_port=4)
+    print('Regra encontrada para o switch 2:', rule_name2)
 
-    # print('Todas devem ser TRUE')
-    # print(env.actionBelongsToPath(action=numpy.array([0,0,2])))
-    # print(env.actionBelongsToPath(action=numpy.array([3,0,2])))
-    # print(env.actionBelongsToPath(action=numpy.array([2,2,0])))
-    # print(env.actionBelongsToPath(action=numpy.array([0,0,1])))
-    # print(env.actionBelongsToPath(action=numpy.array([1,0,3])))
-    # print(env.actionBelongsToPath(action=numpy.array([2,1,0])))
-    # print(env.actionBelongsToPath(action=numpy.array([1,0,2])))
-    # print(env.actionBelongsToPath(action=numpy.array([4,0,1])))
-    # print(env.actionBelongsToPath(action=numpy.array([2,3,0])))
-    # print('-----')
-    #
-    # print('Todas devem ser FALSE')
-    # print(env.actionBelongsToPath(action=numpy.array([0,1,2])))
-    # print(env.actionBelongsToPath(action=numpy.array([4,0,2])))
-    # print(env.actionBelongsToPath(action=numpy.array([4,2,3])))
-    # print(env.actionBelongsToPath(action=numpy.array([4,1,1])))
-    # print(env.actionBelongsToPath(action=numpy.array([1,2,2])))
-    # print(env.actionBelongsToPath(action=numpy.array([1,1,1])))
-    # print(env.actionBelongsToPath(action=numpy.array([2,2,2])))
-    # print(env.actionBelongsToPath(action=numpy.array([3,4,5])))
-    # print(env.actionBelongsToPath(action=numpy.array([1,5,5])))
-    # print('-----')
+    rule_name3 = env.existsRuleWithAction(switch_id='00:00:00:00:00:00:00:03', in_port=2, out_port=1)
+    print('Regra encontrada para o switch 3:', rule_name3)
+
+
+    delete_rule_1_response = env.uninstallRule(rule_name1)
+    print('Resposta apagando regra 1: ', delete_rule_1_response.json())
+
+    delete_rule_2_response = env.uninstallRule(rule_name2)
+    print('Resposta apagando regra 2: ', delete_rule_2_response.json())
+
+    delete_rule_3_response = env.uninstallRule(rule_name3)
+    print('Resposta apagando regra 3: ', delete_rule_3_response.json())
 
 
 def run():
-    env = startEnv()
+    env = createVectorizedEnv()
+    # validateEnvOpenAI(env)
 
-    print('Initial entries: ')
+    changeMaxPaths()
     addInitialEntries()
 
-    # print('Get flows:')
-    # flows_ids, cookies = env.getFlows()
-    # print()
-    # print()
+    testEnvMethods()
 
-    # validateEnvOpenAI()
-    # testEnvMethods()
+    # trainAgent(env)
     # testAgent(env)
 
-    # runExperiments()
+    # runExperiments(env)
 
 
 ##################################################################################

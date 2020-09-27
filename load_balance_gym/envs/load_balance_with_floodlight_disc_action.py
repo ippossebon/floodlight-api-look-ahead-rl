@@ -42,7 +42,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.dst_switch_index = target_switch_index
         self.dst_port_index = target_port_index
 
-        self.flows_ids, self.flows_cookies = self.getFlows()
+        # self.flows_ids, self.flows_cookies = self.getFlows()
 
 
         self.switch_ids = []
@@ -312,55 +312,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         return self.state
 
-
-    def getFlows(self):
-        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
-
-        flows_ids = []
-        flows_cookies = {}
-
-        for switch_address in response_data:
-            for flow in response_data[switch_address]['flows']:
-                contains_match = len(flow['match'].keys()) > 1
-
-                if contains_match:
-                    is_tcp_flow = False
-                    tcp_src_port = None
-                    is_h1_to_h2_flow = None
-
-                    try:
-                        tcp_src_port = flow['match']['tcp_src']
-                        tcp_dst_port = flow['match']['tcp_dst']
-
-                        if tcp_src_port:
-                            is_tcp_flow = True
-
-                        is_h1_to_h2_flow = tcp_dst_port == '5001'
-                    except:
-                        is_tcp_flow = False
-                        is_h1_to_h2_flow = False
-
-                    if is_tcp_flow and is_h1_to_h2_flow:
-                        flow_id = 'flow-{tcp_src_port}'.format(tcp_src_port=tcp_src_port)
-
-                        # Se não existir na lista de fluxos ativos, adiciona
-                        if flow_id not in flows_ids:
-                            flow_cookie = flow['cookie']
-                            flows_ids.append(flow_id)
-                            flows_cookies[flow_id] = flow_cookie
-                    # else:
-                    #     print('caiu no else is_tcp_flow', is_tcp_flow)
-                    #     print('caiu no else is_h1_to_h2_flow', is_h1_to_h2_flow)
-
-
-
-        # print('----> [getFlows] Fluxos na rede: ', sorted(flows_ids))
-        # print('----> [getFlows] Cookies dos fluxos na rede: ', flows_cookies)
-
-        return sorted(flows_ids), flows_cookies
-
-
     def getState(self):
         # IMPORTANTE: o estado não pode ser guardado em bits. Será guardado em Mbits
         response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
@@ -443,79 +394,26 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         return requests.post(urlPath, data=rule, headers=headers)
 
-    def getFlowIdByCookie(self, cookie):
-        flows_ids, flows_cookies = self.getFlows()
-
-        for flow_id, flow_cookie in self.flows_cookies.items():
-            if flow_cookie == cookie:
-                return flow_id
-
-        return None
-
-    def getPossibleCookies(self):
-        cookies = []
-        for flow_id, flow_cookie in self.flows_cookies.items():
-            cookies.append(flow_cookie)
-
-        return cookies
-
-    def getMostCostlyFlow(self, switch_id):
-        # Retorna o fluxo que exige mais do switch, pra que esse tenha suas
-        # rotas recalculadas
-        # response = requests.get('{host}/wm/statistics/bandwidth/{switch_id}/all/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
-        response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
-
-        print('response_data S1', response_data['00:00:00:00:00:00:00:01'])
-        print()
-
-        print('response_data S2', response_data['00:00:00:00:00:00:00:02'])
-        print()
-
-        print('response_data S3', response_data['00:00:00:00:00:00:00:03'])
-        print()
-
-        exit(0)
-
-        max_byte_count = -1
-        max_usage_flow_id = None
-        flow_match = {
-             'tcp_src': None,
-             'tcp_dst': None,
-             'ipv4_src': None,
-             'ipv4_dst': None
+    def uninstallRule(self, rule_name):
+        urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
+        headers = {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
         }
 
-        for flow_obj in response_data[switch_id]['flows']:
-            try:
-                flow_match['tcp_src'] = flow_obj['match']['tcp_src']
-                flow_match['tcp_dst'] = flow_obj['match']['tcp_dst']
-                flow_match['ipv4_src'] = flow_obj['match']['ipv4_src']
-                flow_match['ipv4_dst'] = flow_obj['match']['ipv4_dst']
+        rule = json.dumps({ "name": rule_name })
 
-            except:
-                flow_in_port = None
+        return requests.delete(urlPath, data=rule, headers=headers)
 
-            if flow_in_port and flow_src != '10.0.0.2':
-                flow_id = 'flow-{flow_in_port}'.format(flow_in_port=flow_in_port)
-                flow_byte_count = int(flow_obj['byte_count'])
-
-                if flow_byte_count > max_byte_count:
-                    max_byte_count = flow_byte_count
-                    max_usage_flow_id = flow_id
-
-
-        print('[getMostCostlyFlow] max_usage_flow_id: {0} - max_byte_count: {1}'.format(max_usage_flow_id, max_byte_count))
-
-        return max_usage_flow_id
-
-    def actionToRule(self, switch_id, in_port, out_port, flow_id, priority=MAX_PRIORITY):
+    def actionToRule(self, switch_id, in_port, out_port, priority=MAX_PRIORITY):
         # Só recebe ações possíveis
         # Ação = (flow_index, switch_index, in_port, out_port)
+        timestamp = time.time()
+        rule_name = 'regra-{0}-in_{1}-out_{2}--{3}'.format(switch_id, in_port, out_port, timestamp)
         rule = {
             "switch": switch_id,
-            "name": flow_id,
-            "priority": priority,
+            "name": rule_name,
+            "priority": MAX_PRIORITY,
             "in_port": str(numpy.int8(in_port)),
             "active": "true",
             "actions": "output={0}".format(numpy.int8(out_port))
@@ -599,8 +497,23 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         return is_valid
 
+    def existsRuleWithAction(self, switch_id, in_port, out_port):
+       response = requests.get('{host}/wm/staticflowpusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+       response_data = response.json()
+
+       for rule in response_data[switch_id]:
+           if rule['match']['in_port'] == str(in_port):
+               if str(out_port) in rule['instructions']['instruction_apply_actions']['actions']:
+                   rule_name = rule.keys()[0]
+                   for key in rule:
+                       rule_name = key
+                       print('Regra ja existente para action {0}, in {1}, out {2}: {3}'.format(switch_id, in_port, out_port, rule_name))
+                       return rule_name
+
+       return None
+
+
     def step(self, action):
-        # Preciso conectar com o floodlight, instalar o caminho e analisar de novo
         done = False # Aprendizado continuado
         next_state = []
         reward = 0
@@ -608,69 +521,31 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         action_vec = actionMap(action)
 
-        flow_id = None
-        switch_id = None
+        switch_index = action_vec[0]
+        in_port_index = action_vec[1]
+        out_port_index = action_vec[2]
 
-        switch_index = int(action_vec[0])
         switch_id = self.switch_ids[switch_index]
-        flow_id = self.getMostCostlyFlow(switch_id)
+        in_port = in_port_index + 1
+        out_port = out_port_index + 1
 
-        if flow_id:
-            in_port_index = action_vec[1]
-            out_port_index = action_vec[2]
+        rule_name = self.existsRuleWithAction(switch_id, in_port, out_port)
 
-            in_port = in_port_index + 1
-            out_port = out_port_index + 1
+        if rule_name:
+            self.uninstallRule(rule_name)
 
-            rule = self.actionToRule(
-                switch_id,
-                in_port,
-                out_port,
-                flow_id
-            )
+        rule = self.actionToRule(switch_id, in_port, out_port)
 
-            print('Regra instalada = ', rule)
-            self.installRule(rule)
+        print('Regra instalada = ', rule)
+        self.installRule(rule)
 
-            time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
+        time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 
-            next_state = self.getState()
-            reward = self.calculateReward(next_state)
+        next_state = self.getState()
+        reward = self.calculateReward(next_state)
+        self.state = next_state
 
-            self.state = next_state
-
-            return next_state, reward, done, info
-
-        else:
-            print('Nao existe fluxo. switch_id = {0}'.format(switch_id))
-            next_state = self.state
-            return next_state, reward, done, info
-
-
-            # Deve ficar fora da função step
-        # # Garante que só vamos executar ações válidas.
-        # while not (is_valid_action and flow_id):
-        #     print('-> Agente escolheu acao invalida ou flow id nao existe')
-        #     print('- action = ', action)
-        #     print('- flow_id = ', flow_id)
-        #
-        #     # Se a ação for inválida, pedimos uma nova ação.
-        #     action = self.action_space.sample() # TODO: rever!!!!
-        #     is_valid_action = self.isValidAction(action)
-        #     switch_index = int(action[0])
-        #     switch_id = self.switch_ids[switch_index]
-        #     flow_id = self.getMostCostlyFlow(switch_id) if is_valid_action else None
-
-
-        # switch_index = int(action[0])
-        # in_port_index = action[1]
-        # out_port_index = action[2]
-        #
-        # switch_id = self.switch_ids[switch_index]
-        # in_port = in_port_index + 1
-        # out_port = out_port_index + 1
-
-
+        return next_state, reward, done, info
 
 
     def calculateReward(self, state):
@@ -684,6 +559,3 @@ class LoadBalanceEnvDiscAction(gym.Env):
     def render(self, render='console'):
         self.state = self.getState()
         print('State = ', self.state)
-
-        self.flows_ids, self.flows_cookies = self.getFlows()
-        print('Flow ids = ', self.flows_ids)

@@ -44,7 +44,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         # self.flows_ids, self.flows_cookies = self.getFlows()
 
-
         self.switch_ids = []
         self.switch_links = {}
         self.switch_possible_ports = {}
@@ -69,11 +68,21 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.action_space = spaces.Discrete(14)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
+        self.prev_state = numpy.zeros(shape=self.observation_space.shape)
         self.reward_range = (0, 100001)
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
-        self.previous_timestamp = time.time() # seconds
+        self.previous_timestamp = None
+        self.initializeState()
 
+    def initializeState(self):
+        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data=json.dumps({''}))
+        response_data = response.json()
+
+        statistics_tx, timestamp = self.getStatisticsBandwidth()
+
+        self.previous_tx = statistics_tx
+        self.previous_timestamp = timestamp
 
     def enableSwitchStatisticsEndpoit(self):
         # Enable statistics collection
@@ -305,20 +314,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         return self.state
 
-    def getState(self):
-        # IMPORTANTE: o estado não pode ser guardado em bits. Será guardado em Mbits
-        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
-        response_data = response.json()
 
+    def getStatisticsBandwidth(self):
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        now_timestamp = time.time() # seconds
-        diff_seconds = now_timestamp - self.previous_timestamp
-        self.previous_timestamp = now_timestamp
-
-        current_tx = numpy.zeros(shape=self.observation_space.shape)
-        new_state = numpy.zeros(shape=self.observation_space.shape)
+        timestamp = time.time() # seconds
+        statistics_tx = numpy.zeros(shape=self.observation_space.shape)
 
         for item in response_data:
             switch_dpid = item['dpid']
@@ -335,114 +337,70 @@ class LoadBalanceEnvDiscAction(gym.Env):
             if item['dpid'] == self.switch_ids[0] and item['port'] == '1':
                 #S1.1
                 # link A
-                current_tx[0] = float(item['bits-per-second-rx'])
-                if current_tx[0] != self.previous_tx[0]:
-                    # Atualizo o estado
-                    new_state[0] = (current_tx[0] - self.previous_tx[0]) / diff_seconds
-                    self.previous_tx[0] = current_tx[0]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[0] = self.state[0]
+                statistics_tx[0] = float(item['bits-per-second-rx'])
 
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '1':
                 #S2.1
                 # link b
-                current_tx[1] = float(item['bits-per-second-tx'])
-                if current_tx[1] != self.previous_tx[1]:
-                    # Atualizo o estado
-                    new_state[1] = (current_tx[1] - self.previous_tx[1]) / diff_seconds
-                    self.previous_tx[1] = current_tx[1]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[1] = self.state[1]
+                statistics_tx[1] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
                 #S2.2
                 # link e
-                current_tx[4] = float(item['bits-per-second-tx'])
-                if current_tx[4] != self.previous_tx[4]:
-                    # Atualizo o estado
-                    new_state[4] = (current_tx[4] - self.previous_tx[4]) / diff_seconds
-                    self.previous_tx[4] = current_tx[4]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[4] = self.state[4]
+                statistics_tx[4] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '1':
                 #S3.1
                 # link i
-                current_tx[8] = float(item['bits-per-second-tx'])
-                if current_tx[8] != self.previous_tx[8]:
-                    # Atualizo o estado
-                    new_state[8] = (current_tx[8] - self.previous_tx[8]) / diff_seconds
-                    self.previous_tx[8] = current_tx[8]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[8] = self.state[8]
+                statistics_tx[8] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '2':
                 #S3.2
                 # link f
-                current_tx[5] = float(item['bits-per-second-tx'])
-                if current_tx[5] != self.previous_tx[5]:
-                    # Atualizo o estado
-                    new_state[5] = (current_tx[5] - self.previous_tx[5]) / diff_seconds
-                    self.previous_tx[5] = current_tx[5]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[5] = self.state[5]
+                statistics_tx[5] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
                 #S3.3
                 # link g
-                current_tx[6] = float(item['bits-per-second-tx'])
-                if current_tx[6] != self.previous_tx[6]:
-                    # Atualizo o estado
-                    new_state[6] = (current_tx[6] - self.previous_tx[6]) / diff_seconds
-                    self.previous_tx[6] = current_tx[6]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[6] = self.state[6]
+                statistics_tx[6] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
                 #S3.4
                 # link h
-                current_tx[7] = float(item['bits-per-second-tx'])
-                if current_tx[7] != self.previous_tx[7]:
-                    # Atualizo o estado
-                    new_state[7] = (current_tx[7] - self.previous_tx[7]) / diff_seconds
-                    self.previous_tx[7] = current_tx[7]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[7] = self.state[7]
+                statistics_tx[7] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
                 #S4.1
                 # link c
-                current_tx[2] = float(item['bits-per-second-tx'])
-                if current_tx[2] != self.previous_tx[2]:
-                    # Atualizo o estado
-                    new_state[2] = (current_tx[2] - self.previous_tx[2]) / diff_seconds
-                    self.previous_tx[2] = current_tx[2]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[2] = self.state[2]
+                statistics_tx[2] = float(item['bits-per-second-tx'])
 
             elif item['dpid'] == self.switch_ids[4] and item['port'] == '1':
                 #S5.1
                 # link d
-                current_tx[3] = float(item['bits-per-second-tx'])
-                if current_tx[3] != self.previous_tx[3]:
-                    # Atualizo o estado
-                    new_state[3] = (current_tx[3] - self.previous_tx[3]) / diff_seconds
-                    self.previous_tx[3] = current_tx[3]
-                else:
-                    # Mantem o mesmo estado
-                    new_state[3] = self.state[3]
+                statistics_tx[3] = float(item['bits-per-second-tx'])
 
-        self.state = new_state.flatten()
+        statistics_tx.flatten()
 
-        return new_state.flatten()
+        return statistics_tx, timestamp
+
+
+    def getState(self):
+        new_state = numpy.zeros(shape=self.observation_space.shape)
+
+        statistics_tx, timestamp = self.getStatisticsBandwidth()
+        diff_seconds = timestamp - self.previous_timestamp
+        self.previous_timestamp = timestamp
+
+        for i in range(len(statistics_tx)):
+            if current_tx[i] > self.previous_tx[i]:
+                state[i] = (current_tx[i] - self.previous_tx[i]) / diff_seconds
+            else:
+                state[i] = self.prev_state[i]
+
+        state = state.flatten()
+        self.prev_state = state
+
+        return state
 
     def installRule(self, rule):
         urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)

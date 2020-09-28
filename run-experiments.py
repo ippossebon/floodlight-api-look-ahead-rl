@@ -293,15 +293,20 @@ def testEnvMethods():
 
 
 def run():
-    env = createVectorizedEnv()
+    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+
+    # env = createVectorizedEnv()
     # validateEnvOpenAI(env)
 
-    changeMaxPaths()
-    addInitialEntries()
+    # changeMaxPaths()
+    # addInitialEntries()
+
+    while True:
+        print('state = ', env.getState())
 
     # testEnvMethods()
 
-    trainAgent(env)
+    # trainAgent(env)
     # testAgent(env)
 
     # runExperiments(env)

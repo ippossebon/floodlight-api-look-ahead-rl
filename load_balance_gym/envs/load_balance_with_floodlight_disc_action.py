@@ -73,7 +73,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = time.time() # seconds
-        self.previous_state = numpy.zeros(shape=self.observation_space.shape)
 
 
     def enableSwitchStatisticsEndpoit(self):
@@ -341,7 +340,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[0] = (current_tx[0] - self.previous_tx[0]) / diff_seconds
                     self.previous_tx[0] = current_tx[0]
-                    self.previous_state[0] = self.state[0]
                 else:
                     # Mantem o mesmo estado
                     new_state[0] = self.state[0]
@@ -354,7 +352,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[1] = (current_tx[1] - self.previous_tx[1]) / diff_seconds
                     self.previous_tx[1] = current_tx[1]
-                    self.previous_state[1] = self.state[1]
                 else:
                     # Mantem o mesmo estado
                     new_state[1] = self.state[1]
@@ -367,7 +364,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[4] = (current_tx[4] - self.previous_tx[4]) / diff_seconds
                     self.previous_tx[4] = current_tx[4]
-                    self.previous_state[4] = self.state[4]
                 else:
                     # Mantem o mesmo estado
                     new_state[4] = self.state[4]
@@ -380,7 +376,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[8] = (current_tx[8] - self.previous_tx[8]) / diff_seconds
                     self.previous_tx[8] = current_tx[8]
-                    self.previous_state[8] = self.state[8]
                 else:
                     # Mantem o mesmo estado
                     new_state[8] = self.state[8]
@@ -393,7 +388,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[5] = (current_tx[5] - self.previous_tx[5]) / diff_seconds
                     self.previous_tx[5] = current_tx[5]
-                    self.previous_state[5] = self.state[5]
                 else:
                     # Mantem o mesmo estado
                     new_state[5] = self.state[5]
@@ -406,7 +400,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[6] = (current_tx[6] - self.previous_tx[6]) / diff_seconds
                     self.previous_tx[6] = current_tx[6]
-                    self.previous_state[6] = self.state[6]
                 else:
                     # Mantem o mesmo estado
                     new_state[6] = self.state[6]
@@ -419,7 +412,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[7] = (current_tx[7] - self.previous_tx[7]) / diff_seconds
                     self.previous_tx[7] = current_tx[7]
-                    self.previous_state[7] = self.state[7]
                 else:
                     # Mantem o mesmo estado
                     new_state[7] = self.state[7]
@@ -432,7 +424,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[2] = (current_tx[2] - self.previous_tx[2]) / diff_seconds
                     self.previous_tx[2] = current_tx[2]
-                    self.previous_state[2] = self.state[2]
                 else:
                     # Mantem o mesmo estado
                     new_state[2] = self.state[2]
@@ -445,7 +436,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     # Atualizo o estado
                     new_state[3] = (current_tx[3] - self.previous_tx[3]) / diff_seconds
                     self.previous_tx[3] = current_tx[3]
-                    self.previous_state[3] = self.state[3]
                 else:
                     # Mantem o mesmo estado
                     new_state[3] = self.state[3]

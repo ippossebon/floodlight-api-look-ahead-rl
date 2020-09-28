@@ -393,7 +393,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         for i in range(len(statistics_tx)):
             if statistics_tx[i] > self.previous_tx[i]:
-                mbits_transfered = (statistics_tx[i] - self.previous_tx[i]) / 1024 * 1024
+                mbits_transfered = (statistics_tx[i] - self.previous_tx[i]) / (1024 * 1024)
                 state[i] = mbits_transfered / diff_seconds
             else:
                 state[i] = self.prev_state[i]

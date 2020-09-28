@@ -392,7 +392,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.previous_timestamp = timestamp
 
         for i in range(len(statistics_tx)):
-            if current_tx[i] > self.previous_tx[i]:
+            if statistics_tx[i] > self.previous_tx[i]:
                 state[i] = (statistics_tx[i] - self.previous_tx[i]) / diff_seconds
             else:
                 state[i] = self.prev_state[i]

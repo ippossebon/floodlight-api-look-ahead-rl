@@ -303,6 +303,7 @@ def run():
 
     while True:
         print('state = ', env.getState())
+        time.sleep(1)
 
     # testEnvMethods()
 

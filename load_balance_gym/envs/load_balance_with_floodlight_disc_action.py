@@ -76,7 +76,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.initializeState()
 
     def initializeState(self):
-        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data=json.dumps({''}))
+        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
         response_data = response.json()
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()

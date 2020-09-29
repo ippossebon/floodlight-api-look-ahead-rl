@@ -109,10 +109,12 @@ def addInitialEntries():
             ],
             "thresholds" : [
                 {
-                    "oxs_type" : "byte_count"
+                    "oxs_type" : "byte_count",
+                    "value": "60"
                 },
                 {
-                    "oxs_type" : "duration"
+                    "oxs_type" : "duration",
+                    "value": "10"
                 }
             ]
         }
@@ -132,10 +134,12 @@ def addInitialEntries():
             ],
             "thresholds" : [
                 {
-                    "oxs_type" : "byte_count"
+                    "oxs_type" : "byte_count",
+                    "value": "60"
                 },
                 {
-                    "oxs_type" : "duration"
+                    "oxs_type" : "duration",
+                    "value": "10"
                 }
             ]
         }
@@ -156,10 +160,12 @@ def addInitialEntries():
             ],
             "thresholds" : [
                 {
-                    "oxs_type" : "byte_count"
+                    "oxs_type" : "byte_count",
+                    "value": "60"
                 },
                 {
-                    "oxs_type" : "duration"
+                    "oxs_type" : "duration",
+                    "value": "10"
                 }
             ]
         }

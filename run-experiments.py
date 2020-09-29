@@ -59,7 +59,7 @@ rewards = []
 
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
-    time.sleep(3)
+    time.sleep(1)
 
     # Fluxo sai de H1 e vai para H2
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)

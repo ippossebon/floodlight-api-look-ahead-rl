@@ -411,7 +411,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             'Accept': 'application/json',
         }
 
-        return requests.post(urlPath, data=json.dumps(rule), headers=headers)
+        return requests.post(urlPath, data=rule, headers=headers)
 
     def uninstallRule(self, rule_name):
         urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
@@ -557,8 +557,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
                         continue
 
             if rule_to_remove:
-                print('Removendo regra {0}: {1}'.format(rule_to_remove, response_remove.json()))
                 response_remove = self.uninstallRule(rule_to_remove)
+                print('Removeu regra {0}: {1}'.format(rule_to_remove, response_remove.json()))
         except:
             return
 
@@ -589,7 +589,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.removeIfConflict(group_rule)
 
         print('Regra instalada = ', group_rule)
-        self.installRule(group_rule)
+        group_rule_to_install = json.dumps(group_rule)
+
+        response_install = self.installRule(group_rule_to_install)
+        print('Instalando regra: ', response_install.json())
 
         time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 

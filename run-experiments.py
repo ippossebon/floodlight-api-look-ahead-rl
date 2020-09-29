@@ -102,7 +102,20 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "1",
         "active": "true",
-        "actions": "output=2"
+        "actions": "output=2",
+        "instruction_stat_trigger": {
+            "flags" : [
+                "periodic"
+            ],
+            "thresholds" : [
+                {
+                    "oxs_type" : "byte_count"
+                },
+                {
+                    "oxs_type" : "duration"
+                }
+            ]
+        }
     }
     rule1 = json.dumps(entry1)
 
@@ -112,7 +125,20 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "1",
         "active": "true",
-        "actions": "output=4"
+        "actions": "output=4",
+        "instruction_stat_trigger": {
+            "flags" : [
+                "periodic"
+            ],
+            "thresholds" : [
+                {
+                    "oxs_type" : "byte_count"
+                },
+                {
+                    "oxs_type" : "duration"
+                }
+            ]
+        }
     }
     rule2 = json.dumps(entry2)
 
@@ -123,7 +149,20 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "2",
         "active": "true",
-        "actions": "output=1"
+        "actions": "output=1",
+        "instruction_stat_trigger": {
+            "flags" : [
+                "periodic"
+            ],
+            "thresholds" : [
+                {
+                    "oxs_type" : "byte_count"
+                },
+                {
+                    "oxs_type" : "duration"
+                }
+            ]
+        }
     }
     rule3 = json.dumps(entry3)
 

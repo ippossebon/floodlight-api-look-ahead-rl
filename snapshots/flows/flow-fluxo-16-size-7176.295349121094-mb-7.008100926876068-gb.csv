@@ -1,2 +1,0 @@
-timestamp,switch_id,eth_dst,eth_src,eth_type,ipv4_src,ipv4_dst,in_port,packet_count,byte_count,duration_sec,idle_timeout_s,hard_timeout_s,priority,flow_id
-"10/01/2019, 10:22:23",00:00:00:00:00:00:00:04,00:00:00:00:00:04,00:00:00:00:00:03,0x800,10.0.0.3,10.0.0.4,2,131792,7524891072,9,5,0,1,00:00:00:00:00:03-00:00:00:00:00:04-0x800-10.0.0.3-10.0.0.4-2

@@ -1,3 +1,0 @@
-timestamp,switch_id,eth_dst,eth_src,eth_type,ipv4_src,ipv4_dst,in_port,packet_count,byte_count,duration_sec,idle_timeout_s,hard_timeout_s,priority,flow_id
-4,2,3,800,3,2,2,94156,5374923448,6,5,0,1
-2,2,3,800,3,2,1,94155,5374923374,6,5,0,1

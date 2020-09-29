@@ -532,6 +532,27 @@ class LoadBalanceEnvDiscAction(gym.Env):
        return None
 
 
+    def removeIfConflict(self, group_rule):
+        response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
+
+        new_group_switch_id = group_rule['switch']
+        new_group_watch_port = group_rule['group_buckets'][0]['bucket_watch_port']
+
+        switch_rules = response_data[new_group_switch_id]
+        rule_to_remove = None
+
+        for rule_name, rule in switch_rules.items():
+            group_buckets = rule['group_buckets']
+            for bucket in group_buckets:
+                if bucket['bucket_watch_port'] == new_group_watch_port:
+                    rule_to_remove = rule_name
+                    break
+
+        if rule_to_remove:
+            self.uninstallRule(rule_to_remove)
+
+
     def step(self, action):
         print('...........')
         done = False # Aprendizado continuado
@@ -555,6 +576,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             # self.uninstallRule(rule_name)
 
         # rule = self.actionToRule(switch_id, in_port, out_port)
+        self.removeIfConflict(group_rule)
 
         print('Regra instalada = ', group_rule)
         self.installRule(group_rule)
@@ -589,7 +611,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             if state[i] > 1:
                 total_usage_links += state[i]
 
-        # Desconta o tempo de processamento para nao privilegiar caminhos enormes
+        # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
         reward = total_usage_links - forwarding_avg_time
 
         return reward

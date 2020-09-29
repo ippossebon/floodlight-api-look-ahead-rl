@@ -102,22 +102,7 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "1",
         "active": "true",
-        "actions": "output=2",
-        "instruction_stat_trigger": {
-            "flags" : [
-                "periodic"
-            ],
-            "thresholds" : [
-                {
-                    "oxs_type" : "byte_count",
-                    "value": "60"
-                },
-                {
-                    "oxs_type" : "duration",
-                    "value": "10"
-                }
-            ]
-        }
+        "actions": "output=2"
     }
     rule1 = json.dumps(entry1)
 
@@ -127,22 +112,7 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "1",
         "active": "true",
-        "actions": "output=4",
-        "instruction_stat_trigger": {
-            "flags" : [
-                "periodic"
-            ],
-            "thresholds" : [
-                {
-                    "oxs_type" : "byte_count",
-                    "value": "60"
-                },
-                {
-                    "oxs_type" : "duration",
-                    "value": "10"
-                }
-            ]
-        }
+        "actions": "output=4"
     }
     rule2 = json.dumps(entry2)
 
@@ -153,32 +123,45 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "2",
         "active": "true",
-        "actions": "output=1",
-        "instruction_stat_trigger": {
-            "flags" : [
-                "periodic"
-            ],
-            "thresholds" : [
-                {
-                    "oxs_type" : "byte_count",
-                    "value": "60"
-                },
-                {
-                    "oxs_type" : "duration",
-                    "value": "10"
-                }
-            ]
-        }
+        "actions": "output=1"
     }
     rule3 = json.dumps(entry3)
+
+    group_test = {
+        "switch" : "00:00:00:00:00:00:00:01",
+        "entry_type" : "group",
+        "name" : "group-mod-1",
+        "active" : "true",
+        "group_type" : "select",
+        "group_id" : "1",
+        "group_buckets" : [
+            {
+                "bucket_id" : "1",
+                "bucket_watch_port" : "1",
+                "bucket_watch_group" : "any",
+                "bucket_weight" : "50",
+                "bucket_actions":"output=2"
+            },
+            {
+                "bucket_id" : "2",
+                "bucket_watch_port" : "2",
+                "bucket_watch_group" : "any",
+                "bucket_weight" : "50",
+                "bucket_actions":"output=3"
+            }
+        ]
+    }
+    group_rule = json.dumps(group_test)
 
     response_rule1 = installRule(rule1)
     response_rule2 = installRule(rule2)
     response_rule3 = installRule(rule3)
+    response_group = installRule(group_rule)
 
     print('Adding initial rule 1: ', response_rule1.json())
     print('Adding initial rule 2: ', response_rule2.json())
     print('Adding initial rule 3: ', response_rule3.json())
+    print('Adding GROUP: ', response_group.json())
 
 def updatePortStatistics(state):
     state = state.flatten()

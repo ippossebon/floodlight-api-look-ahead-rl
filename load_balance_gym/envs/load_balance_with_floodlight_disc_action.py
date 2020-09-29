@@ -537,26 +537,30 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
+
         new_group_switch_id = group_rule['switch']
         new_group_watch_port = group_rule['group_buckets'][0]['bucket_watch_port']
 
-        switch_rules = response_data[new_group_switch_id]
-        rule_to_remove = None
+        try:
+            switch_rules = response_data[new_group_switch_id]
+            rule_to_remove = None
 
-        for item in switch_rules:
-            for rule_name, rule in item.items():
-                try:
-                    group_buckets = rule['group_buckets']
-                    for bucket in group_buckets:
-                        if bucket['bucket_watch_port'] == new_group_watch_port:
-                            rule_to_remove = rule_name
-                            break
-                except:
-                    continue
+            for item in switch_rules:
+                for rule_name, rule in item.items():
+                    try:
+                        group_buckets = rule['group_buckets']
+                        for bucket in group_buckets:
+                            if bucket['bucket_watch_port'] == new_group_watch_port:
+                                rule_to_remove = rule_name
+                                break
+                    except:
+                        continue
 
-        if rule_to_remove:
-            print('Removeu regra ', rule_to_remove)
-            self.uninstallRule(rule_to_remove)
+            if rule_to_remove:
+                print('Removeu regra ', rule_to_remove)
+                self.uninstallRule(rule_to_remove)
+        except:
+            return
 
 
     def step(self, action):

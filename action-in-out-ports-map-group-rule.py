@@ -21,8 +21,9 @@ def actionInOutPortMapToGroupRule(action):
                 }
             ]
         }
+
     elif action == 1:
-        # IN = 1, Out = 3
+        # S1, IN = 1, Out = 3
         return {
             "switch" : "00:00:00:00:00:00:00:01",
             "entry_type" : "group",
@@ -311,7 +312,7 @@ def actionInOutPortMapToGroupRule(action):
         }
 
     elif action == 13:
-        # Swiitch 4, IN 2, out 2
+        # Swiitch 4, IN 1, out 2
         return {
             "switch" : "00:00:00:00:00:00:00:04",
             "entry_type" : "group",

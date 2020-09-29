@@ -563,7 +563,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         reward = 0
         info = {}
 
-        group_rule = json.dumps(actionInOutPortMapToGroupRule(action))
+        group_rule = actionInOutPortMapToGroupRule(action)
 
         # switch_index = action_vec[0]
         # in_port_index = action_vec[1]
@@ -582,7 +582,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.removeIfConflict(group_rule)
 
         print('Regra instalada = ', group_rule)
-        self.installRule(group_rule)
+        self.installRule(json.dumps(group_rule))
 
         time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 

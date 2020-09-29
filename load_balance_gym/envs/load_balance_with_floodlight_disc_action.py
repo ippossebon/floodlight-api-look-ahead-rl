@@ -310,7 +310,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
     def reset(self):
-        self.state = getState()
+        self.state = self.getState()
 
         return self.state
 

@@ -65,7 +65,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Discrete(14)
+        self.action_space = spaces.Discrete(34)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
@@ -539,25 +539,25 @@ class LoadBalanceEnvDiscAction(gym.Env):
         reward = 0
         info = {}
 
-        action_vec = actionMap(action)
+        group_rule = json.dumps(actionInOutPortMapToGroupRule(action))
 
-        switch_index = action_vec[0]
-        in_port_index = action_vec[1]
-        out_port_index = action_vec[2]
-
-        switch_id = self.switch_ids[switch_index]
-        in_port = in_port_index + 1
-        out_port = out_port_index + 1
+        # switch_index = action_vec[0]
+        # in_port_index = action_vec[1]
+        # out_port_index = action_vec[2]
+        #
+        # switch_id = self.switch_ids[switch_index]
+        # in_port = in_port_index + 1
+        # out_port = out_port_index + 1
 
         # rule_name = self.existsRuleWithAction(switch_id, in_port, out_port)
 
         # if not rule_name:
             # self.uninstallRule(rule_name)
 
-        rule = self.actionToRule(switch_id, in_port, out_port)
+        # rule = self.actionToRule(switch_id, in_port, out_port)
 
-        print('Regra instalada = ', rule)
-        self.installRule(rule)
+        print('Regra instalada = ', group_rule)
+        self.installRule(group_rule)
 
         time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 
@@ -574,11 +574,23 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
     def calculateReward(self, state):
+        # Pega métricas de performance do controlador
+        response = requests.get('{host}/wm/performance/data/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
 
-        # harmonic_mean = len(state) / (numpy.sum(state) or EPSILON)
-        state_var = numpy.var(state) or EPSILON
-        # reward = (1/state_var) * MULT_VALUE
-        reward = 100000 - state_var
+        for item in response_data['modules']:
+            if item['module-name'] == "net.floodlightcontroller.forwarding.Forwarding":
+                forwarding_avg_time = item['average']
+                break
+
+
+        total_usage_links = 0
+        for i in range(len(state)):
+            if state[i] > 1:
+                total_usage_links += state[i]
+
+        # Desconta o tempo de processamento para nao privilegiar caminhos enormes
+        reward = total_usage_links - forwarding_avg_time
 
         return reward
 

@@ -537,7 +537,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/staticentrypusher/list/all/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
-        print('group_rule = ', group_rule)
+        print("group_rule['switch'] = ", group_rule['switch'])
         new_group_switch_id = group_rule['switch']
         new_group_watch_port = group_rule['group_buckets'][0]['bucket_watch_port']
 

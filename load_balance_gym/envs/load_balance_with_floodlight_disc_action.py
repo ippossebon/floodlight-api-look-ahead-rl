@@ -3,6 +3,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 from .action_rules_map import actionMap
+from .action_in_out_ports_map_group_rule import actionInOutPortMapToGroupRule
 # from scipy.stats import hmean
 
 import json

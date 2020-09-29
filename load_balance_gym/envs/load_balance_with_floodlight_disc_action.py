@@ -557,8 +557,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
                         continue
 
             if rule_to_remove:
-                print('Removeu regra ', rule_to_remove)
-                self.uninstallRule(rule_to_remove)
+                print('Removendo regra {0}: {1}'.format(rule_to_remove, response_remove.json()))
+                response_remove = self.uninstallRule(rule_to_remove)
         except:
             return
 

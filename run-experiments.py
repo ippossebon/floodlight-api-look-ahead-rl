@@ -185,15 +185,15 @@ def validateEnvOpenAI():
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     print('Iniciando treinamento do agente.')
-    model = A2C(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.05, gamma=0.97)
-    model.learn(total_timesteps=500)
-    model.save('./A2C_500_lr_005_gamma_097-disc-env')
+    model = A2C(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.1, gamma=0.96)
+    model.learn(total_timesteps=100)
+    model.save('./A2C_100_lr_01_gamma_096-disc-env')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = A2C.load(load_path='./A2C_500_lr_005_gamma_097-disc-env', env=env)
+    model = A2C.load(load_path='./A2C_100_lr_01_gamma_096-disc-env', env=env)
     # model = A2C.load(load_path='./A2C_100_lr_005_gamma_097-disc-env-sem_acao_inv', env=env)
 
     state = env.reset()
@@ -216,7 +216,7 @@ def testAgent(env):
 
 def runExperiments():
     print('Rodando experimentos...')
-    model = A2C.load(load_path='./A2C_500_lr_005_gamma_097-disc-env', env=env)
+    model = A2C.load(load_path='./A2C_100_lr_01_gamma_096-disc-env', env=env)
     env.reset()
     update_count = 0
 
@@ -271,10 +271,10 @@ def plotGraphs():
     plt.plot(link_i_rx, '-', color="#E36414", label = "Link i") # spanish orange
 
     plt.xlabel('Step')
-    plt.ylabel('Link RX')
+    plt.ylabel('Mbits/seg')
 
     # Set a title of the current axes.
-    plt.title('Links RX per step')
+    plt.title('Mbits/seg RX per step')
 
     # show a legend on the plot
     plt.legend()
@@ -286,7 +286,7 @@ def plotGraphs():
     # plt.ylabel('Reward')
     # plt.title('Reward per step')
 
-    plt.savefig('A2C_500-100_steps-005-097-27_set-links_usage.pdf')
+    plt.savefig('A2C_100_lr_01_gamma_096-30-set-links_usage.pdf')
 
     print('Grafico gerado.')
 
@@ -321,16 +321,21 @@ def testEnvMethods():
 
 
 def run():
-    env = createVectorizedEnv()
+    # env = createVectorizedEnv()
     # validateEnvOpenAI(env)
+    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 
-    changeMaxPaths()
-    addInitialEntries()
+    while True:
+        print(env.getState())
+        time.sleep(1)
+
+    # changeMaxPaths()
+    # addInitialEntries()
 
     # testEnvMethods()
-
-    trainAgent(env)
-    testAgent(env)
+    #
+    # trainAgent(env)
+    # testAgent(env)
 
     # runExperiments(env)
 

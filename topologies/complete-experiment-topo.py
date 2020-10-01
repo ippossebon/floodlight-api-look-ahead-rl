@@ -26,7 +26,7 @@ class MastersSwitchTopo(Topo):
  	        node2 = s1,
  	        port1 = 1,
  	        port2 = 1,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
         self.addLink(
@@ -34,7 +34,7 @@ class MastersSwitchTopo(Topo):
  	        node2 = s3,
  	        port1 = 1,
  	        port2 = 1,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
 
@@ -44,7 +44,7 @@ class MastersSwitchTopo(Topo):
             node2 = s2,
             port1 = 2,
             port2 = 1,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
         self.addLink(
@@ -52,7 +52,7 @@ class MastersSwitchTopo(Topo):
             node2 = s4,
             port1 = 3,
             port2 = 1,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
         self.addLink(
@@ -60,7 +60,7 @@ class MastersSwitchTopo(Topo):
             node2 = s4,
             port1 = 2,
             port2 = 2,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
         self.addLink(
@@ -68,7 +68,7 @@ class MastersSwitchTopo(Topo):
             node2 = s5,
             port1 = 3,
             port2 = 1,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
         self.addLink(
@@ -76,7 +76,7 @@ class MastersSwitchTopo(Topo):
             node2 = s3,
             port1 = 4,
             port2 = 2,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
         self.addLink(
@@ -84,7 +84,7 @@ class MastersSwitchTopo(Topo):
             node2 = s3,
             port1 = 3,
             port2 = 3,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
         self.addLink(
@@ -92,7 +92,7 @@ class MastersSwitchTopo(Topo):
             node2 = s3,
             port1 = 2,
             port2 = 4,
-            bw=1, # bw = Mbits/seg,
+            bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
 

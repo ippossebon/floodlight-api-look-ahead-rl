@@ -381,6 +381,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 statistics_tx[3] = float(item['bits-per-second-tx'])
 
         statistics_tx.flatten()
+        print(statistics_tx)
 
         return statistics_tx, timestamp
 
@@ -594,7 +595,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response_install = self.installRule(group_rule_to_install)
         print('Instalando regra: ', response_install.json())
 
-        time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
+        time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
 
         next_state = self.getState()
         reward = self.calculateReward(next_state)

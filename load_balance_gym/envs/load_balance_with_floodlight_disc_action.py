@@ -593,6 +593,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         response_install = self.installRule(group_rule_to_install)
         print('Instalando regra: ', response_install.json())
+        print('type(group_rule)', type(group_rule))
+        print('type(group_rule_to_install)', type(group_rule_to_install))
 
         time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 

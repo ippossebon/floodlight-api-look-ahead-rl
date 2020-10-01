@@ -610,13 +610,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
     def calculateReward(self, state):
         # Pega métricas de performance do controlador
-        response = requests.get('{host}/wm/performance/data/json'.format(host=CONTROLLER_HOST))
-        response_data = response.json()
-
-        for item in response_data['modules']:
-            if item['module-name'] == "net.floodlightcontroller.forwarding.Forwarding":
-                forwarding_avg_time = item['average']
-                break
+        # response = requests.get('{host}/wm/performance/data/json'.format(host=CONTROLLER_HOST))
+        # response_data = response.json()
+        #
+        # for item in response_data['modules']:
+        #     if item['module-name'] == "net.floodlightcontroller.forwarding.Forwarding":
+        #         forwarding_avg_time = item['average']
+        #         break
 
 
         total_usage_links = 0

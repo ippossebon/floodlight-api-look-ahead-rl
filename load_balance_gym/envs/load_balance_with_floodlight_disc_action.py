@@ -381,7 +381,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 statistics_tx[3] = float(item['bits-per-second-tx'])
 
         statistics_tx.flatten()
-        print(statistics_tx)
 
         return statistics_tx, timestamp
 

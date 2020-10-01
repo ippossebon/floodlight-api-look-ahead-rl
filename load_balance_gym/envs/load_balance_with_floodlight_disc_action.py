@@ -593,8 +593,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         response_install = self.installRule(group_rule_to_install)
         print('Instalando regra: ', response_install.json())
-        print('type(group_rule)', type(group_rule))
-        print('type(group_rule_to_install)', type(group_rule_to_install))
 
         time.sleep(2) # aguarda regras refletirem e pacotes serem enviados novamente
 
@@ -627,7 +625,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 total_usage_links += state[i]
 
         # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
-        reward = total_usage_links - forwarding_avg_time
+        reward = total_usage_links
 
         return reward
 

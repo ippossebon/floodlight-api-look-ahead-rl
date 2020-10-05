@@ -102,6 +102,8 @@ def addInitialEntries():
         "priority": "0",
         "in_port": "1",
         "active": "true",
+        "ipv4_src": "10.0.0.1",
+        "ipv4_dst": "10.0.0.2",
         "actions": "output=normal"
     }
     rule1 = json.dumps(entry1)
@@ -112,6 +114,8 @@ def addInitialEntries():
         "priority": "0",
         "in_port": "1",
         "active": "true",
+        "ipv4_src": "10.0.0.1",
+        "ipv4_dst": "10.0.0.2",
         "actions": "output=normal"
     }
     rule2 = json.dumps(entry2)
@@ -123,6 +127,8 @@ def addInitialEntries():
         "priority": "0",
         "in_port": "2",
         "active": "true",
+        "ipv4_src": "10.0.0.1",
+        "ipv4_dst": "10.0.0.2",
         "actions": "output=normal"
     }
     rule3 = json.dumps(entry3)

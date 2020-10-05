@@ -538,7 +538,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             except:
                 print('Fluxo sem match = ', flow_obj)
 
-            if flow_cookie != '0' and flow_match:
+            if flow_match:
                 flow_byte_count = int(flow_obj['byte_count'])
                 if flow_byte_count > max_byte_count:
                     max_byte_count = flow_byte_count

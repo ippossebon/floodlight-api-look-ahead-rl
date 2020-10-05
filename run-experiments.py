@@ -1,5 +1,4 @@
-# from load_balance_gym.envs.load_balance_with_floodlight import LoadBalanceEnv
-from load_balance_gym.envs.load_balance_with_floodlight_disc_action import LoadBalanceEnvDiscAction
+from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy
@@ -127,41 +126,13 @@ def addInitialEntries():
     }
     rule3 = json.dumps(entry3)
 
-    group_test = {
-        "switch" : "00:00:00:00:00:00:00:01",
-        "entry_type" : "group",
-        "name" : "group-mod-1",
-        "active" : "true",
-        "group_type" : "select",
-        "group_id" : "1",
-        "group_buckets" : [
-            {
-                "bucket_id" : "1",
-                "bucket_watch_port" : "1",
-                "bucket_watch_group" : "any",
-                "bucket_weight" : "50",
-                "bucket_actions":"output=2"
-            },
-            {
-                "bucket_id" : "2",
-                "bucket_watch_port" : "2",
-                "bucket_watch_group" : "any",
-                "bucket_weight" : "50",
-                "bucket_actions":"output=3"
-            }
-        ]
-    }
-    group_rule = json.dumps(group_test)
-
     response_rule1 = installRule(rule1)
     response_rule2 = installRule(rule2)
     response_rule3 = installRule(rule3)
-    response_group = installRule(group_rule)
 
     print('Adding initial rule 1: ', response_rule1.json())
     print('Adding initial rule 2: ', response_rule2.json())
     print('Adding initial rule 3: ', response_rule3.json())
-    print('Adding GROUP: ', response_group.json())
 
 def updatePortStatistics(state):
     state = state.flatten()
@@ -324,10 +295,61 @@ def run():
     # env = createVectorizedEnv()
     # validateEnvOpenAI(env)
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+    changeMaxPaths()
 
-    while True:
-        print(env.getState())
-        time.sleep(1)
+
+    print('getMostCostlyFlow S1')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+    print()
+
+    print('getMostCostlyFlow S2')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
+    print()
+
+    print('getMostCostlyFlow S3')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
+    print()
+
+    print('getMostCostlyFlow S4')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
+    print()
+
+    print('getMostCostlyFlow S5')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
+    print()
+
+    print('Aplicando regras do staticflowpusher')
+
+    addInitialEntries()
+
+    time.sleep(10)
+
+    print('Depois')
+    print()
+
+    print('getMostCostlyFlow S1')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+    print()
+
+    print('getMostCostlyFlow S2')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
+    print()
+
+    print('getMostCostlyFlow S3')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
+    print()
+
+    print('getMostCostlyFlow S4')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
+    print()
+
+    print('getMostCostlyFlow S5')
+    env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
+    print()
+
+    # while True:
+    #     print(env.getState())
+    #     time.sleep(1)
 
     # changeMaxPaths()
     # addInitialEntries()

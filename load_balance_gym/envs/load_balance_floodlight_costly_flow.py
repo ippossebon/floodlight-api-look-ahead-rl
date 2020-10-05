@@ -530,7 +530,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         max_usage_flow_match = None
         flow_match = None
 
-        for flow_obj in response_data[switch_id]['flows']:
+        for flow_obj in response_data['flows']:
             flow_cookie = flow_obj['cookie']
             try:
                 flow_match = flow_obj['match']

@@ -296,7 +296,7 @@ def run():
     # validateEnvOpenAI(env)
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     changeMaxPaths()
-    addInitialEntries()
+    # addInitialEntries()
     time.sleep(10)
 
 

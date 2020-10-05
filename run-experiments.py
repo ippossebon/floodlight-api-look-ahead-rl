@@ -101,7 +101,7 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "1",
         "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2"
+        "ipv4_dst": "10.0.0.2",
         "tcp_src": "50974",
         "tcp_dst": "5001",
         "active": "true",
@@ -115,7 +115,7 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "1",
         "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2"
+        "ipv4_dst": "10.0.0.2",
         "tcp_src": "50974",
         "tcp_dst": "5001",
         "active": "true",
@@ -130,7 +130,7 @@ def addInitialEntries():
         "priority": "32760",
         "in_port": "2",
         "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2"
+        "ipv4_dst": "10.0.0.2",
         "tcp_src": "50974",
         "tcp_dst": "5001",
         "active": "true",

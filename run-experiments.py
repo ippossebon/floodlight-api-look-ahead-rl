@@ -95,46 +95,35 @@ def installRule(rule):
 def addInitialEntries():
     # Inicialmente, todos os fluxos serguirão o caminho S1 -> S2 -> S3.
     # O trabalho do agente é identificar que isso é um problema e encontrar as melhores regras
+
     entry1 = {
         "switch": "00:00:00:00:00:00:00:01",
-        "name": "switch-1-initial-entry",
-        "priority": "32760",
+        "name": "normal-drain-s1",
+        "priority": "0",
         "in_port": "1",
-        "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2",
-        "tcp_src": "50974",
-        "tcp_dst": "5001",
         "active": "true",
-        "actions": "output=2"
+        "actions": "output=normal"
     }
     rule1 = json.dumps(entry1)
 
     entry2 = {
         "switch": "00:00:00:00:00:00:00:02",
-        "name": "switch-2-initial-entry",
-        "priority": "32760",
+        "name": "normal-drain-s2",
+        "priority": "0",
         "in_port": "1",
-        "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2",
-        "tcp_src": "50974",
-        "tcp_dst": "5001",
         "active": "true",
-        "actions": "output=4"
+        "actions": "output=normal"
     }
     rule2 = json.dumps(entry2)
 
 
     entry3 = {
         "switch": "00:00:00:00:00:00:00:03",
-        "name": "switch-3-initial-entry",
-        "priority": "32760",
+        "name": "normal-drain-s3",
+        "priority": "0",
         "in_port": "2",
-        "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2",
-        "tcp_src": "50974",
-        "tcp_dst": "5001",
         "active": "true",
-        "actions": "output=1"
+        "actions": "output=normal"
     }
     rule3 = json.dumps(entry3)
 

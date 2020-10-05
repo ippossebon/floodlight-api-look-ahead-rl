@@ -517,7 +517,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         return is_valid
 
     def existsRuleWithAction(self, switch_id, in_port, out_port):
-       response = requests.get('{host}/wm/staticflowpusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+       response = requests.get('{host}/wm/staticentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
        response_data = response.json()
 
        for item in response_data[switch_id]:

@@ -322,10 +322,11 @@ def run():
     # env = createVectorizedEnv()
     # validateEnvOpenAI(env)
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-    changeMaxPaths()
-    addInitialEntries()
-    time.sleep(10)
 
+    # changeMaxPaths()
+    print('Add initial entries')
+    addInitialEntries()
+    print('voltou')
 
     print('getMostCostlyFlow S1')
     env.getMostCostlyFlow('00:00:00:00:00:00:00:01')

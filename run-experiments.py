@@ -156,6 +156,7 @@ def addInitialEntries():
 
     for entry in entries:
         rule = json.dumps(entry)
+        print('chama install rule')
         response = installRule(rule)
         print('Adding rule {0}: {1}'.format(rule, response.json()))
 

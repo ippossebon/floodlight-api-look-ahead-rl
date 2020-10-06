@@ -92,54 +92,67 @@ def installRule(rule):
 
     return requests.post(urlPath, data=rule, headers=headers)
 
+def getInitialEntries():
+    client_ports = ['46110', '46112', '46114', '46116', '46118', '46120', '46122', '46124', '46126', '46128']
+    entries = []
+
+    for client_port in client_ports:
+        entry1 = {
+            "switch": "00:00:00:00:00:00:00:01",
+            "name": "s1-flow-{client_port}".format(client_port=client_port),
+            "priority": "0",
+            "in_port": "1",
+            "active": "true",
+            "ipv4_src": "10.0.0.1",
+            "ipv4_dst": "10.0.0.2",
+            "tcp_src": client_port,
+            "tcp_dst": "5201",
+            "actions": "output=normal"
+        }
+
+        entry2 = {
+            "switch": "00:00:00:00:00:00:00:02",
+            "name": "s2-flow-{client_port}".format(client_port=client_port),
+            "priority": "0",
+            "in_port": "1",
+            "active": "true",
+            "ipv4_src": "10.0.0.1",
+            "ipv4_dst": "10.0.0.2",
+            "tcp_src": client_port,
+            "tcp_dst": "5201",
+            "actions": "output=normal"
+        }
+
+        entry3 = {
+            "switch": "00:00:00:00:00:00:00:03",
+            "name": "s3-flow-{client_port}".format(client_port=client_port),
+            "priority": "0",
+            "in_port": "2",
+            "active": "true",
+            "ipv4_src": "10.0.0.1",
+            "ipv4_dst": "10.0.0.2",
+            "tcp_src": client_port,
+            "tcp_dst": "5201",
+            "actions": "output=normal"
+        }
+
+
+        entries.append(entry1)
+        entries.append(entry2)
+        entries.append(entry3)
+
+    return entries
+
+
 def addInitialEntries():
     # Inicialmente, todos os fluxos serguirão o caminho S1 -> S2 -> S3.
     # O trabalho do agente é identificar que isso é um problema e encontrar as melhores regras
+    entries = getInitialEntries()
+    for entry in entries:
+        rule = json.dumps(entry)
+        response = installRule(rule)
+        print('Adding rule {0}: {1}'.format(rule, response.json()))
 
-    entry1 = {
-        "switch": "00:00:00:00:00:00:00:01",
-        "name": "normal-drain-s1",
-        "priority": "0",
-        "in_port": "1",
-        "active": "true",
-        "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2",
-        "actions": "output=normal"
-    }
-    rule1 = json.dumps(entry1)
-
-    entry2 = {
-        "switch": "00:00:00:00:00:00:00:02",
-        "name": "normal-drain-s2",
-        "priority": "0",
-        "in_port": "1",
-        "active": "true",
-        "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2",
-        "actions": "output=normal"
-    }
-    rule2 = json.dumps(entry2)
-
-
-    entry3 = {
-        "switch": "00:00:00:00:00:00:00:03",
-        "name": "normal-drain-s3",
-        "priority": "0",
-        "in_port": "2",
-        "active": "true",
-        "ipv4_src": "10.0.0.1",
-        "ipv4_dst": "10.0.0.2",
-        "actions": "output=normal"
-    }
-    rule3 = json.dumps(entry3)
-
-    response_rule1 = installRule(rule1)
-    response_rule2 = installRule(rule2)
-    response_rule3 = installRule(rule3)
-
-    print('Adding initial rule 1: ', response_rule1.json())
-    print('Adding initial rule 2: ', response_rule2.json())
-    print('Adding initial rule 3: ', response_rule3.json())
 
 def updatePortStatistics(state):
     state = state.flatten()
@@ -303,7 +316,7 @@ def run():
     # validateEnvOpenAI(env)
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     changeMaxPaths()
-    # addInitialEntries()
+    addInitialEntries()
     time.sleep(10)
 
 

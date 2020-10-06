@@ -108,7 +108,7 @@ def getInitialEntries():
             "ipv4_dst": "10.0.0.2",
             "tcp_src": client_port,
             "tcp_dst": "5201",
-            "actions": "output=normal"
+            "actions": "output=2"
         }
 
         entry2 = {
@@ -122,7 +122,7 @@ def getInitialEntries():
             "ipv4_dst": "10.0.0.2",
             "tcp_src": client_port,
             "tcp_dst": "5201",
-            "actions": "output=normal"
+            "actions": "output=4"
         }
 
         entry3 = {
@@ -136,7 +136,7 @@ def getInitialEntries():
             "ipv4_dst": "10.0.0.2",
             "tcp_src": client_port,
             "tcp_dst": "5201",
-            "actions": "output=normal"
+            "actions": "output=1"
         }
 
 
@@ -151,6 +151,9 @@ def addInitialEntries():
     # Inicialmente, todos os fluxos serguirão o caminho S1 -> S2 -> S3.
     # O trabalho do agente é identificar que isso é um problema e encontrar as melhores regras
     entries = getInitialEntries()
+
+    print('vai instalar regras')
+
     for entry in entries:
         rule = json.dumps(entry)
         response = installRule(rule)

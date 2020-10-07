@@ -120,7 +120,7 @@ if __name__ == '__main__':
     topo = MastersSwitchTopo()
     # c1 = RemoteController('c1', ip='127.0.0.1') #usando RYU
     # c1 = RemoteController('c1', ip='0.0.0.0', port=6653) #usando Floodlight
-    c1 = RemoteController('c1', ip='172.17.0.3', port=6653) #usando Floodlight
+    c1 = RemoteController('onos', ip='172.17.0.3', port=6653) #usando Floodlight
 
     net = Mininet(topo=topo, controller=c1)
     net.start()

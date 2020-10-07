@@ -58,8 +58,6 @@ rewards = []
 
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
-    time.sleep(1)
-
     # Fluxo sai de H1 e vai para H2
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     env = make_vec_env(lambda: env, n_envs=1)
@@ -91,6 +89,8 @@ def installRule(rule):
     }
 
     print('dentro de install rule')
+    print('post', requests.post(urlPath, data=rule, headers=headers))
+
 
     response = requests.post(urlPath, data=rule, headers=headers)
 

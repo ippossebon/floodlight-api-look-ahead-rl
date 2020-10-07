@@ -90,7 +90,13 @@ def installRule(rule):
         'Accept': 'application/json',
     }
 
-    return requests.post(urlPath, data=rule, headers=headers)
+    print('dentro de install rule')
+
+    response = requests.post(urlPath, data=rule, headers=headers)
+
+    print('response da instalacao', response)
+
+    return response
 
 def getInitialEntries():
     client_ports = ['46110', '46112', '46114', '46116', '46118', '46120', '46122', '46124', '46126', '46128']
@@ -156,7 +162,7 @@ def addInitialEntries():
 
     for entry in entries:
         rule = json.dumps(entry)
-        print('chama install rule')
+        print('chama install rule', rule)
         response = installRule(rule)
         print('Adding rule {0}: {1}'.format(rule, response.json()))
 

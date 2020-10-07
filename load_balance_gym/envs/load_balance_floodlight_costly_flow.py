@@ -37,7 +37,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.switch_possible_ports = {}
         self.num_links = 0
 
-        self.num_ports = 16 # fixo neste primeiro momento
         self.discoverTopology()
         self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch_index], dst_switch=self.switch_ids[target_switch_index])
         self.enableSwitchStatisticsEndpoit()

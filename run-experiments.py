@@ -152,7 +152,7 @@ def addInitialEntries():
     # O trabalho do agente é identificar que isso é um problema e encontrar as melhores regras
     entries = getInitialEntries()
 
-    print('vai instalar regras')
+    print('vai instalar regras', entries)
 
     for entry in entries:
         rule = json.dumps(entry)
@@ -328,7 +328,7 @@ def run():
     print('voltou')
 
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-    
+
 
     print('getMostCostlyFlow S1')
     env.getMostCostlyFlow('00:00:00:00:00:00:00:01')

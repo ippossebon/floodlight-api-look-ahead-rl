@@ -19,6 +19,9 @@ class MastersSwitchTopo(Topo):
 
         h1 = self.addHost('H1', mac="00:00:00:00:00:11", ip="10.0.0.1/12")
         h2 = self.addHost('H2', mac="00:00:00:00:00:12", ip="10.0.0.2/12")
+        # h3 = self.addHost('H3', mac="00:00:00:00:00:13", ip="10.0.0.3/12")
+        # h4 = self.addHost('H4', mac="00:00:00:00:00:14", ip="10.0.0.4/12")
+
 
         # Adiciona hosts aos switches
         self.addLink(
@@ -37,6 +40,22 @@ class MastersSwitchTopo(Topo):
             bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
+        # self.addLink(
+        #     node1 = h3,
+ 	    #     node2 = s1,
+ 	    #     port1 = 1,
+ 	    #     port2 = 4,
+        #     bw=10, # bw = Mbits/seg,
+        #     cls=TCLink
+        # )
+        # self.addLink(
+        #     node1 = h4,
+ 	    #     node2 = s3,
+ 	    #     port1 = 1,
+ 	    #     port2 = 5,
+        #     bw=10, # bw = Mbits/seg,
+        #     cls=TCLink
+        # )
 
         # Adiciona links entre os switches
         self.addLink(

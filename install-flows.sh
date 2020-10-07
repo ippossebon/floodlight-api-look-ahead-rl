@@ -6,6 +6,7 @@ declare -a ClientPortsArray=("46110" "46112" "46114" "46116" "46118" "46120" "46
 # Iterate the string array using for loop
 for client_port in ${ClientPortsArray[@]}; do
   # Flow entries on S1
+  entry1 = $client_port
   curl -X POST http://localhost:8080//wm/staticentrypusher/json -d '{
         "switch": "00:00:00:00:00:00:00:01",
         "name": "s1-flow-$client_port"
@@ -15,7 +16,7 @@ for client_port in ${ClientPortsArray[@]}; do
         "eth_type": "0x0800",
         "ipv4_src": "10.0.0.1",
         "ipv4_dst": "10.0.0.2",
-        "tcp_src": $client_port,
+        "tcp_src": "$client_port",
         "tcp_dst": "5201",
         "actions": "output=2"
     }'
@@ -30,7 +31,7 @@ for client_port in ${ClientPortsArray[@]}; do
           "eth_type": "0x0800",
           "ipv4_src": "10.0.0.1",
           "ipv4_dst": "10.0.0.2",
-          "tcp_src": $client_port,
+          "tcp_src": "$client_port",
           "tcp_dst": "5201",
           "actions": "output=4"
       }'
@@ -45,7 +46,7 @@ for client_port in ${ClientPortsArray[@]}; do
             "eth_type": "0x0800",
             "ipv4_src": "10.0.0.1",
             "ipv4_dst": "10.0.0.2",
-            "tcp_src": $client_port,
+            "tcp_src": "$client_port",
             "tcp_dst": "5201",
             "actions": "output=1"
       }'

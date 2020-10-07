@@ -1,5 +1,5 @@
 import gym
-from gym import error, spaces, utils
+from gym import spaces, utils
 from gym.utils import seeding
 
 from .action_rules_map import actionMap

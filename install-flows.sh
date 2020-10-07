@@ -8,7 +8,7 @@ for client_port in ${ClientPortsArray[@]}; do
   # Flow entries on S1
   curl -X POST http://localhost:8080//wm/staticentrypusher/json -d '{
         "switch": "00:00:00:00:00:00:00:01",
-        "name": "'s1-flow-$client_port'"
+        "name": "'s1-flow-$client_port'",
         "priority": "0",
         "in_port": "1",
         "active": "true",

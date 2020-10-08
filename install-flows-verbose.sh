@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # declare -a ClientPortsArray=("46110" "46112" "46114" "46116" "46118" "46120" "46122" "46124" "46126" "46128")
-curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
+curl -X POST http://192.168.68.118:8080/wm/staticflowpusher/json -d '{
       "switch": "00:00:00:00:00:00:00:01",
       "name": "s1-flow-46110-to-5201",
       "priority": "0",
@@ -15,7 +15,7 @@ curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
       "actions": "output=2"
   }'
 
-curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
+curl -X POST http://192.168.68.118:8080/wm/staticflowpusher/json -d '{
     "switch": "00:00:00:00:00:00:00:01",
     "name": "s1-flow-5201-to-46110",
     "priority": "0",
@@ -30,7 +30,7 @@ curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
 }'
 
 # Flow entries on S2
-curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
+curl -X POST http://192.168.68.118:8080/wm/staticflowpusher/json -d '{
     switch": "00:00:00:00:00:00:00:02",
     "name": "s2-flow-46110",
     "priority": "0",
@@ -44,7 +44,7 @@ curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
     "actions": "output=4"
 }'
 
-curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
+curl -X POST http://192.168.68.118:8080/wm/staticflowpusher/json -d '{
       switch": "00:00:00:00:00:00:00:02",
       "name": "s2-flow-5201-to-46110",
       "priority": "0",
@@ -59,7 +59,7 @@ curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
   }'
 
 # Flow entries on S3
-curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
+curl -X POST http://192.168.68.118:8080/wm/staticflowpusher/json -d '{
       "switch": "00:00:00:00:00:00:00:03",
       "name": "s3-flow-46110",
       "priority": "0",
@@ -73,7 +73,7 @@ curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
       "actions": "output=1"
 }'
 
-curl -X POST http://192.168.68.127:8080/wm/staticflowpusher/json -d '{
+curl -X POST http://192.168.68.118:8080/wm/staticflowpusher/json -d '{
       "switch": "00:00:00:00:00:00:00:03",
       "name": "s3-flow-5201-to-46110",
       "priority": "0",

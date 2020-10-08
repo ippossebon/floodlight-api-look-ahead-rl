@@ -82,7 +82,7 @@ def changeMaxPaths():
 
 
 def installRule(rule):
-    urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
+    urlPath = '{host}/wm/staticflowpusher/json'.format(host=CONTROLLER_HOST)
     headers = {
         'Content-type': 'application/json',
         'Accept': 'application/json',

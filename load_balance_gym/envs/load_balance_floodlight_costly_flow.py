@@ -386,7 +386,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         return state
 
     def installRule(self, rule):
-        urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
+        urlPath = '{host}/wm/staticflowpusher/json'.format(host=CONTROLLER_HOST)
         headers = {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -395,7 +395,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         return requests.post(urlPath, data=rule, headers=headers)
 
     def uninstallRule(self, rule_name):
-        urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
+        urlPath = '{host}/wm/staticflowpusher/json'.format(host=CONTROLLER_HOST)
         headers = {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -498,7 +498,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         return is_valid
 
     def existsRuleWithAction(self, switch_id, in_port, out_port):
-       response = requests.get('{host}/wm/staticentrypusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+       response = requests.get('{host}/wm/staticflowpusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
        response_data = response.json()
 
        for item in response_data[switch_id]:

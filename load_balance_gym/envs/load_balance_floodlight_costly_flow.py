@@ -38,7 +38,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.num_links = 0
 
         self.discoverTopology()
-        self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch_index], dst_switch=self.switch_ids[target_switch_index])
+        # self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch_index], dst_switch=self.switch_ids[target_switch_index])
         self.enableSwitchStatisticsEndpoit()
 
         # Ao descobrir a topologia, só são adicionadas as portas que conectam switches

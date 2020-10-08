@@ -82,15 +82,11 @@ def changeMaxPaths():
 
 
 def installRule(rule):
-    urlPath = '{host}/wm/staticflowpusher/json'.format(host=CONTROLLER_HOST)
+    urlPath = '{host}/wm/staticentrypusher/json'.format(host=CONTROLLER_HOST)
     headers = {
         'Content-type': 'application/json',
         'Accept': 'application/json',
     }
-
-    print('dentro de install rule')
-    print('post', requests.post(urlPath, data=rule, headers=headers))
-
 
     response = requests.post(urlPath, data=rule, headers=headers)
 
@@ -329,38 +325,36 @@ def run():
     # validateEnvOpenAI(env)
 
     # changeMaxPaths()
-    print('Add initial entries')
-    addInitialEntries()
-    print('voltou')
+    # print('Add initial entries')
+    # addInitialEntries()
+    # print('voltou')
 
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
 
 
-    print('getMostCostlyFlow S1')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-    print()
+    # print('getMostCostlyFlow S1')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+    # print()
+    #
+    # print('getMostCostlyFlow S2')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
+    # print()
+    #
+    # print('getMostCostlyFlow S3')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
+    # print()
+    #
+    # print('getMostCostlyFlow S4')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
+    # print()
+    #
+    # print('getMostCostlyFlow S5')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
+    # print()
 
-    print('getMostCostlyFlow S2')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
-    print()
-
-    print('getMostCostlyFlow S3')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
-    print()
-
-    print('getMostCostlyFlow S4')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
-    print()
-
-    print('getMostCostlyFlow S5')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
-    print()
-
-
-
-    # while True:
-    #     print(env.getState())
-    #     time.sleep(1)
+    while True:
+        print(env.getState())
+        time.sleep(1)
 
     # changeMaxPaths()
     # addInitialEntries()

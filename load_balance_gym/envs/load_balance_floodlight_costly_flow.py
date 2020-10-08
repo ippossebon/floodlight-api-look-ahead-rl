@@ -367,9 +367,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
     def getState(self):
         state = numpy.zeros(shape=self.observation_space.shape)
 
-        print('statistics_tx = ', statistics_tx)
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()
+        print('statistics_tx = ', statistics_tx)
+        
         diff_seconds = timestamp - self.previous_timestamp
         self.previous_timestamp = timestamp
 

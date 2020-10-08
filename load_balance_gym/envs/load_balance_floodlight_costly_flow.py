@@ -12,7 +12,7 @@ import time
 
 MAX_BITS_CAPACITY = 10000000000 # TODO: update links capacity when generating network on mininet
 
-CONTROLLER_IP = 'http://192.168.68.118'
+CONTROLLER_IP = 'http://192.168.68.127'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
 MAX_PRIORITY = "32768"
@@ -370,7 +370,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()
         print('statistics_tx = ', statistics_tx)
-        
+
         diff_seconds = timestamp - self.previous_timestamp
         self.previous_timestamp = timestamp
 

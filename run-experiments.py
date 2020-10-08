@@ -19,7 +19,7 @@ import numpy
 """
 Antes de iniciar o experimento, rodar:
 
-curl -X POST 'http://192.168.68.118:8080//wm/routing/paths/max-fast-paths/json' -d '{"max_fast_paths": "10"}'
+curl -X POST 'http://192.168.68.127:8080//wm/routing/paths/max-fast-paths/json' -d '{"max_fast_paths": "10"}'
 
 
 Ideia do experimento: iniciar com 5 fluxos.
@@ -41,7 +41,7 @@ dst_port: 1
 
 """
 
-CONTROLLER_IP = 'http://192.168.68.118'
+CONTROLLER_IP = 'http://192.168.68.127'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
 link_a_rx = []

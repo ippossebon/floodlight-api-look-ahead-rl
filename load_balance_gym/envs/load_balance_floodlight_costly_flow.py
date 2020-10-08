@@ -369,15 +369,14 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()
-        print('statistics_tx = ', statistics_tx)
 
         diff_seconds = timestamp - self.previous_timestamp
         self.previous_timestamp = timestamp
 
         for i in range(len(statistics_tx)):
             if statistics_tx[i] > self.previous_tx[i]:
-                mbits_transfered = (statistics_tx[i] - self.previous_tx[i]) / (1024 * 1024) # valor em Mbits
-                state[i] = mbits_transfered / diff_seconds
+                bits_transfered = (statistics_tx[i] - self.previous_tx[i]) #/ (1024 * 1024) # valor em Mbits
+                state[i] = bits_transfered / diff_seconds
             else:
                 state[i] = self.prev_state[i]
 

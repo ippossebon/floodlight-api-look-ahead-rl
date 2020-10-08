@@ -113,6 +113,20 @@ def getInitialEntries():
             "actions": "output=2"
         }
 
+        entry1_reverse = {
+            "switch": "00:00:00:00:00:00:00:01",
+            "name": "s1-flow-{client_port}-reverse".format(client_port=client_port),
+            "priority": "0",
+            "in_port": "1",
+            "active": "true",
+            "eth_type": "0x0800",
+            "ipv4_src": "10.0.0.1",
+            "ipv4_dst": "10.0.0.2",
+            "tcp_dst": client_port,
+            "tcp_src": "5201",
+            "actions": "output=2"
+        }
+
         entry2 = {
             "switch": "00:00:00:00:00:00:00:02",
             "name": "s2-flow-{client_port}".format(client_port=client_port),
@@ -124,6 +138,20 @@ def getInitialEntries():
             "ipv4_dst": "10.0.0.2",
             "tcp_src": client_port,
             "tcp_dst": "5201",
+            "actions": "output=4"
+        }
+
+        entry2_reverse = {
+            "switch": "00:00:00:00:00:00:00:02",
+            "name": "s2-flow-{client_port}-reverse".format(client_port=client_port),
+            "priority": "0",
+            "in_port": "1",
+            "active": "true",
+            "eth_type": "0x0800",
+            "ipv4_src": "10.0.0.1",
+            "ipv4_dst": "10.0.0.2",
+            "tcp_dst": client_port,
+            "tcp_src": "5201",
             "actions": "output=4"
         }
 
@@ -141,10 +169,27 @@ def getInitialEntries():
             "actions": "output=1"
         }
 
+        entry3_reverse = {
+            "switch": "00:00:00:00:00:00:00:03",
+            "name": "s3-flow-{client_port}-reverse".format(client_port=client_port),
+            "priority": "0",
+            "in_port": "2",
+            "active": "true",
+            "eth_type": "0x0800",
+            "ipv4_src": "10.0.0.1",
+            "ipv4_dst": "10.0.0.2",
+            "tcp_dst": client_port,
+            "tcp_src": "5201",
+            "actions": "output=1"
+        }
+
 
         entries.append(entry1)
         entries.append(entry2)
         entries.append(entry3)
+        entries.append(entry1_reverse)
+        entries.append(entry2_reverse)
+        entries.append(entry3_reverse)
 
     return entries
 

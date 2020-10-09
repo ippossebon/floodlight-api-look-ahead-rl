@@ -367,7 +367,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
     def getState(self):
         state = numpy.zeros(shape=self.observation_space.shape)
 
-
         statistics_tx, timestamp = self.getStatisticsBandwidth()
 
         diff_seconds = timestamp - self.previous_timestamp
@@ -391,8 +390,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
             'Content-type': 'application/json',
             'Accept': 'application/json',
         }
+        data = json.dumps(rule)
 
-        return requests.post(urlPath, data=rule, headers=headers)
+        return requests.post(urlPath, data=data, headers=headers)
 
     def uninstallRule(self, rule_name):
         urlPath = '{host}/wm/staticflowpusher/json'.format(host=CONTROLLER_HOST)
@@ -405,21 +405,29 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         return requests.delete(urlPath, data=rule, headers=headers)
 
-    def actionToRule(self, switch_id, in_port, out_port, priority=MAX_PRIORITY):
+    def actionToRule(self, switch_id, in_port, out_port, priority=MAX_PRIORITY, flow_match):
         # Só recebe ações possíveis
-        # Ação = (flow_index, switch_index, in_port, out_port)
-        timestamp = time.time()
-        rule_name = 'regra-{0}-in_{1}-out_{2}--{3}'.format(switch_id, in_port, out_port, timestamp)
+        # Ação = (switch_index, in_port, out_port)
+        tcp_src = flow_match['tcp_src']
+        tcp_dst = flow_match['tcp_dst']
+        ipv4_src = flow_match['ipv4_src']
+        ipv4_dst = flow_match['ipv4_dst']
+
+        rule_name = 'regra-{0}-in_{1}-out_{2}--{3}:{4}-to-{5}:{6}'.format(switch_id, in_port, out_port, ipv4_src, tcp_src, ipva4_dst, tcp_dst)
         rule = {
             "switch": switch_id,
             "name": rule_name,
             "priority": MAX_PRIORITY,
             "in_port": str(numpy.int8(in_port)),
             "active": "true",
+            "eth_type": "0x0800",
+            "ipv4_src": ipv4_src,
+            "ipv4_dst": ipv4_dst,
+            "ip_proto": "0x06",
             "actions": "output={0}".format(numpy.int8(out_port))
         }
 
-        return json.dumps(rule)
+        return rule
 
     def switchContainsPort(self, switch_id, port):
         """
@@ -520,10 +528,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         response = requests.get('{host}/wm/core/switch/{switch_id}/flow/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
         response_data = response.json()
 
-        print()
-        print('Response = ', response_data)
-        print()
-
         max_byte_count = -1
         max_usage_flow_match = None
         flow_match = None
@@ -532,12 +536,11 @@ class LoadBalanceEnvDiscAction(gym.Env):
             flow_cookie = flow_obj['cookie']
             try:
                 flow_match = flow_obj['match']
-                print('flow_match', flow_match)
             except:
                 print('Fluxo sem match = ', flow_obj)
 
             if flow_match:
-                flow_byte_count = int(flow_obj['byte_count'])
+                flow_byte_count = int(flow_obj['byteCount'])
                 if flow_byte_count > max_byte_count:
                     max_byte_count = flow_byte_count
                     max_usage_flow_match = flow_match
@@ -562,24 +565,38 @@ class LoadBalanceEnvDiscAction(gym.Env):
         switch_id = self.switch_ids[switch_index]
         in_port = in_port_index + 1
         out_port = out_port_index + 1
+        flow_match = self.getMostCostlyFlow(switch_id)
 
-        rule = self.actionToRule(switch_id, in_port, out_port)
+        if flow_match:
+            rule = self.actionToRule(switch_id, in_port, out_port, flow_match)
+            print('Regra a ser instalada: ', rule)
+            response_install = self.installRule(rule)
+            print('Resposta instalação: ', response_install.json())
 
-        response_install = self.installRule(rule)
-        print('Instalando regra: ', response_install.json())
+            time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
 
-        time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
+            next_state = self.getState()
+            reward = self.calculateReward(next_state)
+            self.state = next_state
 
-        next_state = self.getState()
-        reward = self.calculateReward(next_state)
-        self.state = next_state
+            print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            print('...........')
+            print()
 
-        print('State: ', self.state)
-        print('Reward: ', reward)
-        print('...........')
-        print()
+            return next_state, reward, done, info
+        else:
+            # Não ha fluxo onerando o switch escolhido
+            # O estado não será alterado e a recompensa é zero
+            print('Sem regra a ser instalada.')
 
-        return next_state, reward, done, info
+            next_state = self.state
+            reward = 0
+
+            print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            print('...........')
+            print()
+
+            return next_state, reward, done, info
 
 
     def calculateReward(self, state):

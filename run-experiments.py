@@ -393,6 +393,7 @@ def run():
     # env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
     # print()
 
+    print('.....')
     while True:
         print(env.getState())
         time.sleep(1)

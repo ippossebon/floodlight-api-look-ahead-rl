@@ -432,7 +432,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                     max_byte_count = flow_byte_count
                     max_usage_flow_match = flow_match
 
-        print('[getMostCostlyFlow] max_usage_flow_match: {0} - max_byte_count: {1}'.format(max_usage_flow_match, max_byte_count))
+        # print('[getMostCostlyFlow] max_usage_flow_match: {0} - max_byte_count: {1}'.format(max_usage_flow_match, max_byte_count))
 
         return max_usage_flow_match
 
@@ -456,11 +456,11 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         if flow_match:
             rule = self.actionToRule(switch_id, in_port, out_port, flow_match)
-            print('Regra a ser instalada: ', rule)
+            # print('Regra a ser instalada: ', rule)
             response_install = self.installRule(rule)
-            print('Resposta instalação: ', response_install.json())
+            # print('Resposta instalação: ', response_install.json())
 
-            time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
+            time.sleep(10) # aguarda regras refletirem e pacotes serem enviados novamente
 
             next_state = self.getState()
             reward = self.calculateReward(next_state)
@@ -474,7 +474,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         else:
             # Não ha fluxo onerando o switch escolhido
             # O estado não será alterado e a recompensa é zero
-            print('Sem regra a ser instalada.')
+            # print('Sem regra a ser instalada.')
 
             next_state = self.state
             reward = 0
@@ -496,12 +496,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
         #         forwarding_avg_time = item['average']
         #         break
 
-        # print(range(len(state)))
-        # print('state', state)
-        # print('state[0]', state[0])
         total_usage_links = 0
         for i in range(len(state)):
-            if state[i]:
+            if state[i] > 1:
                 total_usage_links += state[i] * 2
             else:
                 # link não está sendo usado

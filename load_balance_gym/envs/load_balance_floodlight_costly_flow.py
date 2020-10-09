@@ -434,7 +434,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         print('[getMostCostlyFlow] max_usage_flow_match: {0} - max_byte_count: {1}'.format(max_usage_flow_match, max_byte_count))
 
-        return flow_match
+        return max_usage_flow_match
 
     def step(self, action):
         print('...........')
@@ -496,9 +496,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
         #         forwarding_avg_time = item['average']
         #         break
 
-        print(range(len(state)))
-        print('state', state)
-        print('state[0]', state[0])
+        # print(range(len(state)))
+        # print('state', state)
+        # print('state[0]', state[0])
         total_usage_links = 0
         for i in range(len(state)):
             if state[i]:

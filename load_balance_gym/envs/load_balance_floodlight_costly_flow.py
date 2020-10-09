@@ -460,7 +460,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             response_install = self.installRule(rule)
             print('Resposta instalação: ', response_install.json())
 
-            time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
+            time.sleep(3) # aguarda regras refletirem e pacotes serem enviados novamente
 
             next_state = self.getState()
             reward = self.calculateReward(next_state)

@@ -95,8 +95,7 @@ def trainAgent(env):
 
 def testAgent(env):
     print('Testando o agente...')
-    model = A2C.load(load_path='./A2C_100_lr_01_gamma_096-disc-env', env=env)
-    # model = A2C.load(load_path='./A2C_100_lr_005_gamma_097-disc-env-sem_acao_inv', env=env)
+    model = DQN.load(load_path='./DQN_1000_lr_01_gamma_096', env=env)
 
     state = env.reset()
     num_steps = 100
@@ -106,14 +105,14 @@ def testAgent(env):
         # print('Action: ', action)
 
         state, reward, done, info = env.step(action)
-        # print('Reward = ', reward)
+        print('Step {0}. Reward = {1}'.format(step, reward))
         # print('New state = ', state)
 
         updatePortStatistics(state)
         rewards.append(reward)
         step += 1
 
-    plotGraphs()
+    # plotGraphs()
 
 
 def runExperiments():
@@ -223,22 +222,22 @@ def testEnvMethods():
 
 
 def run():
-    # env = createVectorizedEnv()
+    env = createVectorizedEnv()
     # validateEnvOpenAI(env)
-    # print('Iniciando treinamento do agente.')
-    # trainAgent(env)
+    print('Iniciando treinamento do agente.')
+    trainAgent(env)
 
-    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-    while True:
-        print(env.getState())
-        time.sleep(1)
+    # env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+    # while True:
+    #     print(env.getState())
+    #     time.sleep(1)
 
     # changeMaxPaths()
     # addInitialEntries()
 
     # testEnvMethods()
     #
-    # testAgent(env)
+    testAgent(env)
 
     # runExperiments(env)
 

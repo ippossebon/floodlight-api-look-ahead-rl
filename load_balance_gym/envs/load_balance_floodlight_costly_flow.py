@@ -443,6 +443,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         reward = 0
         info = {}
 
+        print('Action =', action)
         action_vec = actionMap(action)
 
         switch_index = action_vec[0]

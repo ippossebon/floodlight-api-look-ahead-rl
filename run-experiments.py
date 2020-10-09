@@ -366,36 +366,36 @@ def run():
     # env = createVectorizedEnv()
     # validateEnvOpenAI(env)
 
-    changeMaxPaths()
-    print('Add initial entries')
-    addInitialEntries()
+    # changeMaxPaths()
+    # print('Add initial entries')
+    # addInitialEntries()
+    #
+    # env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+    #
+    #
+    # print('getMostCostlyFlow S1')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
+    # print()
+    #
+    # print('getMostCostlyFlow S2')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
+    # print()
+    #
+    # print('getMostCostlyFlow S3')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
+    # print()
+    #
+    # print('getMostCostlyFlow S4')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
+    # print()
+    #
+    # print('getMostCostlyFlow S5')
+    # env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
+    # print()
 
-    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-
-
-    print('getMostCostlyFlow S1')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-    print()
-
-    print('getMostCostlyFlow S2')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
-    print()
-
-    print('getMostCostlyFlow S3')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
-    print()
-
-    print('getMostCostlyFlow S4')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
-    print()
-
-    print('getMostCostlyFlow S5')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
-    print()
-
-    # while True:
-    #     print(env.getState())
-    #     time.sleep(1)
+    while True:
+        print(env.getState())
+        time.sleep(1)
 
     # changeMaxPaths()
     # addInitialEntries()

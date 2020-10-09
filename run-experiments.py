@@ -87,7 +87,7 @@ def validateEnvOpenAI():
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     print('Iniciando treinamento do agente.')
-    model = DQN(policy=DQNPolicy., env=env, verbose=1, learning_rate=0.1, gamma=0.96)
+    model = DQN(policy=DQNPolicy, env=env, verbose=1, learning_rate=0.1, gamma=0.96)
     model.learn(total_timesteps=1000)
     model.save('./DQN_1000_lr_01_gamma_096')
     print('Modelo treinado e salvo.')

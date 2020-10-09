@@ -210,7 +210,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
             elif item['dpid'] == "00:00:00:00:00:00:00:02" and item['port'] == '3':
                 #S2.3
                 statistics_tx[5] = float(item['bits-per-second-rx'])
-            elif item['dpid'] == "00:00:00:00:00:00:00:02" and item['port'] == '3':
+
+            elif item['dpid'] == "00:00:00:00:00:00:00:02" and item['port'] == '4':
                 #S2.4
                 statistics_tx[6] = float(item['bits-per-second-rx'])
 
@@ -409,9 +410,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
        return None
 
     def getMostCostlyFlow(self, switch_id):
-        # Retorna o fluxo que exige mais do switch, pra que esse tenha suas
-        # rotas recalculadas
-        # response = requests.get('{host}/wm/statistics/bandwidth/{switch_id}/all/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
+        # Retorna o fluxo que exige mais do switch
         response = requests.get('{host}/wm/core/switch/{switch_id}/flow/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
         response_data = response.json()
 

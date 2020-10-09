@@ -9,8 +9,6 @@ from stable_baselines.common.evaluation import evaluate_policy
 
 from matplotlib import pyplot as plt
 
-from flowPusher import addFlows, deleteFlows
-
 import json
 import time
 import requests
@@ -18,20 +16,8 @@ import gym
 import numpy
 
 """
-Antes de iniciar o experimento, rodar:
-
-curl -X POST 'http://192.168.68.127:8080//wm/routing/paths/max-fast-paths/json' -d '{"max_fast_paths": "10"}'
-
-
-Ideia do experimento: iniciar com 5 fluxos.
-
-sleep(30)
-
-Mais um fluxo. Mais um fluxo, e assim por diante.
-
-O objetivo é fazer com que o sistema acomode os fluxos na rede. Para um número N
-de fluxos, em qualquer topologia (dado que utilizamos a aplicação para descobrir
-os caminhos possíveis.)
+O objetivo é fazer com que o sistema acomode os fluxos na rede de forma a usar
+melhor os seus recursos.
 
 Entrada para o sistema: source_switch, source_port, dst_switch, dst_port
 
@@ -40,22 +26,27 @@ source_port: 1
 dst_switch: 00:00:00:00:00:00:00:03
 dst_port: 1
 
+
+Setup do experimento:
+1. Executar controlador
+2. Executar mininet com a topologia topologies/complete-experiment-topo.py
+3. Instalar flows iniciais com Postman (arquivo initial_flows_entries.csv)
+4. Para treinamento
+    4.1 Iniciar 3 clients em H1 e 3 servers em H2 (iperf3)
+        a. iperf3 -s -p 5201
+        b. iperf3 -c 10.0.0.2 -B 10.0.0.1 5201 --cport 46110 -n 2G > client-46110-2G.txt
+        c. iperf3 -s -p 5202
+        d. iperf3 -c 10.0.0.2 -B 10.0.0.1 5202 --cport 46112 -n 1G > client-46112-1G.txt
+        e. iperf3 -s -p 5203
+        f. iperf3 -c 10.0.0.2 -B 10.0.0.1 5203 --cport 46114 -n 4G > client-46114-4G.txt
+5. Para testar o agente
+6. Para rodar os experimentos + coleta de estatísticas para avaliação
+
 """
 
 CONTROLLER_IP = 'http://192.168.68.127'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
-link_a_rx = []
-link_b_rx = []
-link_c_rx = []
-link_d_rx = []
-link_e_rx = []
-link_f_rx = []
-link_g_rx = []
-link_h_rx = []
-link_i_rx = []
-
-rewards = []
 
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
@@ -65,20 +56,6 @@ def createVectorizedEnv():
 
     return env
 
-
-def updatePortStatistics(state):
-    state = state.flatten()
-
-    link_a_rx.append(state[0])
-    link_b_rx.append(state[1])
-    link_c_rx.append(state[2])
-    link_d_rx.append(state[3])
-    link_e_rx.append(state[4])
-    link_f_rx.append(state[5])
-    link_g_rx.append(state[6])
-    link_h_rx.append(state[7])
-    link_i_rx.append(state[8])
-
 def validateEnvOpenAI():
     print('************** Validacao da env: *************')
     print(check_env(env, warn=True))
@@ -86,17 +63,27 @@ def validateEnvOpenAI():
 
 
 def trainAgent(env):
-    # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     print('Iniciando treinamento do agente.')
-    model = DQN(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.1, gamma=0.96)
+    model = DQN(
+        env=env,
+        policy=MlpPolicy,
+        verbose=1,
+        learning_rate=0.005, # alpha
+        gamma=0.96,
+        exploration_initial_eps=1.0,
+        exploration_fraction=0.995,
+        exploration_final_eps=0.01,
+        buffer_size=56,
+        batch_size=100
+    )
     model.learn(total_timesteps=1000)
-    model.save('./DQN_1000_lr_01_gamma_096')
+    model.save('./DQN_1000_lr_005_gamma_095_expldecay_0995')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     print('Testando o agente...')
-    model = DQN.load(load_path='./DQN_1000_lr_01_gamma_096', env=env)
+    model = DQN.load(load_path='./DQN_1000_lr_005_gamma_095_expldecay_0995', env=env)
 
     state = env.reset()
     num_steps = 100
@@ -192,34 +179,6 @@ def plotGraphs():
 
     print('Grafico gerado.')
 
-
-
-"""
-Env methods tests
-"""
-def testEnvMethods():
-    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-
-    rule_name1 = env.existsRuleWithAction(switch_id='00:00:00:00:00:00:00:01', in_port=1, out_port=2)
-    print('Regra encontrada para o switch 1:', rule_name1)
-
-    rule_name2 = env.existsRuleWithAction(switch_id='00:00:00:00:00:00:00:02', in_port=1, out_port=4)
-    print('Regra encontrada para o switch 2:', rule_name2)
-
-    rule_name3 = env.existsRuleWithAction(switch_id='00:00:00:00:00:00:00:03', in_port=2, out_port=1)
-    print('Regra encontrada para o switch 3:', rule_name3)
-
-    if rule_name1:
-        delete_rule_1_response = env.uninstallRule(rule_name1)
-        print('Resposta apagando regra 1: ', delete_rule_1_response.json())
-
-    if rule_name2:
-        delete_rule_2_response = env.uninstallRule(rule_name2)
-        print('Resposta apagando regra 2: ', delete_rule_2_response.json())
-
-    if rule_name3:
-        delete_rule_3_response = env.uninstallRule(rule_name3)
-        print('Resposta apagando regra 3: ', delete_rule_3_response.json())
 
 
 def run():

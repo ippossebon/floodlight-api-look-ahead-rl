@@ -30,16 +30,12 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.dst_switch_index = target_switch_index
         self.dst_port_index = target_port_index
 
-        # self.flows_ids, self.flows_cookies = self.getFlows()
-
         self.switch_ids = []
         self.switch_links = {}
         self.switch_possible_ports = {}
         self.num_links = 0
 
         self.discoverTopology()
-        # self.possible_paths = self.discoverPossiblePaths(src_switch=self.switch_ids[source_switch_index], dst_switch=self.switch_ids[target_switch_index])
-        self.enableSwitchStatisticsEndpoit()
 
         # Ao descobrir a topologia, só são adicionadas as portas que conectam switches
         self.switch_possible_ports[self.switch_ids[source_switch_index]].append(str(source_port_index + 1))
@@ -67,11 +63,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.previous_tx = statistics_tx
         self.previous_timestamp = timestamp
-
-    def enableSwitchStatisticsEndpoit(self):
-        # Enable statistics collection
-        response = requests.post('{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST), data={})
-        response_data = response.json()
 
 
     def saveItemLinks(self, item):
@@ -139,9 +130,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
 
     def discoverTopology(self):
-        response = requests.get('{host}/wm/topology/links/json'.format(
-            host=CONTROLLER_HOST
-        ))
+        response = requests.get('{host}/wm/topology/links/json'.format(host=CONTROLLER_HOST))
         response_data = response.json()
 
         # Guarda mapeamento de switches e portas
@@ -169,124 +158,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
             'S5.1': 14,
             'S5.2': 15,
         }
-
-
-    def discoverPossiblePaths(self, src_switch, dst_switch):
-        # GET /wm/routing/paths/<src-dpid>/<dst-dpid>/<num-paths>/json
-        # Get an ordered list of paths from the shortest to the longest path
-
-        # response = requests.post('{host}/wm/routing/paths/max-fast-paths/json'.format(
-        #     host=CONTROLLER_HOST,
-        #     src=src_switch,
-        #     dst=dst_switch
-        # ),
-        # data={ 'max_fast_paths': '9' }) # pois o default é 3
-        # response_data = response.json()
-        # print('Resposta setando max paths ', response_data)
-
-        response = requests.get('{host}/wm/routing/paths/{src}/{dst}/10/json'.format(
-            host=CONTROLLER_HOST,
-            src=src_switch,
-            dst=dst_switch
-        ))
-        response_data = response.json()
-        paths = []
-
-        # Paths tem o formato: [
-        #    [switch_index, in_port_index, out_port_index]
-        # ]
-
-        # "results":[
-        #     {
-        #         "src_dpid":"00:00:00:00:00:00:00:01",
-        #         "dst_dpid":"00:00:00:00:00:00:00:03",
-        #         "hop_count":"2",
-        #         "latency":"9",
-        #         "path_index":"0",
-        #         "path":[
-        #         {
-        #             "dpid":"00:00:00:00:00:00:00:01",
-        #             "port":"3"
-        #         },
-        #         {
-        #             "dpid":"00:00:00:00:00:00:00:04",
-        #             "port":"1"
-        #         },
-        #         {
-        #             "dpid":"00:00:00:00:00:00:00:04",
-        #             "port":"3"
-        #         },
-        #         {
-        #             "dpid":"00:00:00:00:00:00:00:03",
-        #             "port":"3"
-        #         }]
-        #     },
-
-        # saida esperada: [
-        #      [0, 0, 2]      ==       [00:00:00:00:00:00:00:01, 1, 3],  -- [self.src_switch, self.src_port_index, item[port]-1]
-        #     [3, 0, 2],      ==       [00:00:00:00:00:00:00:04, 1, 3],
-        #     [2, 2, 0]       ==       [00:00:00:00:00:00:00:03, 3, 1]   -- [item[dpid], item[port], self.dst_port_index]
-        # ]
-
-        paths_with_ids = []
-        for item in response_data['results']:
-            # path = {
-            #  '00:00:01':  [1, 4],
-            #  '00:00:02': [3, 2]
-            # }
-            path = {}
-
-            for hop in item['path']:
-                switch_id = hop['dpid']
-                port_id = hop['port']
-                if switch_id not in path.keys():
-                    path[switch_id] = []
-                path[switch_id].append(port_id)
-
-            paths_with_ids.append(path)
-
-        # paths_with_ids =  [
-        #     {'00:00:00:00:00:00:00:01': ['3'], '00:00:00:00:00:00:00:04': ['1', '3'], '00:00:00:00:00:00:00:03': ['3']},
-        #     {'00:00:00:00:00:00:00:01': ['2'], '00:00:00:00:00:00:00:02': ['1', '4'], '00:00:00:00:00:00:00:03': ['2']},
-        #     {'00:00:00:00:00:00:00:01': ['3'], '00:00:00:00:00:00:00:04': ['1', '2'], '00:00:00:00:00:00:00:02': ['2', '4'], '00:00:00:00:00:00:00:03': ['2']}
-        # ]
-
-        for path_str in paths_with_ids:
-            path = []
-            num_hop = 0
-            last_hop_index = len(path_str.keys()) -1
-
-            for switch_id in path_str.keys():
-                if num_hop == 0:
-                    # É o primeiro hop, então precisa considerar infos da env
-                    switch_index = self.src_switch_index
-                    in_port_index = self.src_port_index
-                    out_port_index = int(path_str[switch_id][0]) - 1
-
-                    path.append(numpy.array([switch_index, in_port_index, out_port_index]))
-                    num_hop += 1
-
-                elif num_hop == last_hop_index:
-                    # ultimo hop
-                    switch_index = self.dst_switch_index
-                    in_port_index = int(path_str[switch_id][0]) - 1
-                    out_port_index = self.dst_port_index
-
-                    path.append(numpy.array([switch_index, in_port_index, out_port_index]))
-                    num_hop += 1
-
-                else:
-                    switch_index = self.switch_ids.index(switch_id)
-                    in_port_index = int(path_str[switch_id][0]) - 1
-                    out_port_index = int(path_str[switch_id][1]) - 1
-
-                    path.append(numpy.array([switch_index, in_port_index, out_port_index]))
-                    num_hop += 1
-
-            paths.append(path)
-
-        # print('Caminhos possiveis: ', paths)
-        return paths
 
 
     def reset(self):
@@ -369,18 +240,12 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()
 
-        diff_seconds = timestamp - self.previous_timestamp
-        self.previous_timestamp = timestamp
 
         for i in range(len(statistics_tx)):
-            if statistics_tx[i] > self.previous_tx[i]:
-                bits_transfered = (statistics_tx[i] - self.previous_tx[i]) #/ (1024 * 1024) # valor em Mbits
-                state[i] = bits_transfered / diff_seconds
-            else:
-                state[i] = self.prev_state[i]
+            state[i] = statistics_tx[i]  / (1024 * 1024) # valor em Mbits
 
-        state = state.flatten()
-        self.prev_state = state
+        # state = state.flatten()
+        # self.prev_state = state
 
         return state
 
@@ -613,7 +478,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
         total_usage_links = 0
         for i in range(len(state)):
             if state[i] > 1:
-                total_usage_links += state[i]
+                total_usage_links += state[i] * 2
+            else:
+                # link não está sendo usado
+                total_usage_links += 1
 
         # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
         reward = total_usage_links

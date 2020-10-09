@@ -3,7 +3,7 @@ from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanc
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
-from stable_baselines import PPO2, A2C
+from stable_baselines import PPO2, A2C, DQN
 from stable_baselines.common.evaluation import evaluate_policy
 
 from matplotlib import pyplot as plt
@@ -65,22 +65,6 @@ def createVectorizedEnv():
     return env
 
 
-def changeMaxPaths():
-    data = json.dumps({"max_fast_paths": "10"})
-    headers = {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-    }
-    response = requests.post(
-        '{host}/wm/statistics/config/enable/json'.format(host=CONTROLLER_HOST),
-        data=data,
-        headers=headers
-    )
-    response_data = response.json()
-
-    print('Changing max paths value: ', response_data)
-
-
 def updatePortStatistics(state):
     state = state.flatten()
 
@@ -103,9 +87,9 @@ def validateEnvOpenAI():
 def trainAgent(env):
     # Parametros adicionais para criar o modelo: gamma (discount_factor), n_steps (numero de steps para rodar para cada env por update), learning_rate
     print('Iniciando treinamento do agente.')
-    model = A2C(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.1, gamma=0.96)
-    model.learn(total_timesteps=100)
-    model.save('./A2C_100_lr_01_gamma_096-disc-env')
+    model = DQN(policy=MlpPolicy, env=env, verbose=1, learning_rate=0.1, gamma=0.96)
+    model.learn(total_timesteps=1000)
+    model.save('./DQN_1000_lr_01_gamma_096')
     print('Modelo treinado e salvo.')
 
 
@@ -241,48 +225,19 @@ def testEnvMethods():
 def run():
     # env = createVectorizedEnv()
     # validateEnvOpenAI(env)
-
-    # changeMaxPaths()
-    # print('Add initial entries')
-    # addInitialEntries()
-    #
-
-    print('Iniciando...')
+    # print('Iniciando treinamento do agente.')
+    # trainAgent(env)
 
     env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-    #
-    #
-    print('getMostCostlyFlow S1')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-    print()
-
-    print('getMostCostlyFlow S2')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:02')
-    print()
-
-    print('getMostCostlyFlow S3')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:03')
-    print()
-
-    print('getMostCostlyFlow S4')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:04')
-    print()
-
-    print('getMostCostlyFlow S5')
-    env.getMostCostlyFlow('00:00:00:00:00:00:00:05')
-    print()
-
-    # print('.....')
-    # while True:
-    #     print(env.getState())
-    #     time.sleep(1)
+    while True:
+        print(env.getState())
+        time.sleep(1)
 
     # changeMaxPaths()
     # addInitialEntries()
 
     # testEnvMethods()
     #
-    # trainAgent(env)
     # testAgent(env)
 
     # runExperiments(env)

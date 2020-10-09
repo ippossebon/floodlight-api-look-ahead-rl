@@ -460,7 +460,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             response_install = self.installRule(rule)
             print('Resposta instalação: ', response_install.json())
 
-            time.sleep(3) # aguarda regras refletirem e pacotes serem enviados novamente
+            time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
 
             next_state = self.getState()
             reward = self.calculateReward(next_state)
@@ -496,10 +496,12 @@ class LoadBalanceEnvDiscAction(gym.Env):
         #         forwarding_avg_time = item['average']
         #         break
 
-
+        print(range(len(state)))
+        print('state', state)
+        print('state[0]', state[0])
         total_usage_links = 0
         for i in range(len(state)):
-            if state[i] > 1:
+            if state[i]:
                 total_usage_links += state[i] * 2
             else:
                 # link não está sendo usado

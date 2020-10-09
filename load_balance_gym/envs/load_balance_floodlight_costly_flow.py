@@ -300,7 +300,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         ipv4_src = flow_match['ipv4_src']
         ipv4_dst = flow_match['ipv4_dst']
 
-        rule_name = 'regra-{0}-in_{1}-out_{2}--{3}:{4}-to-{5}:{6}'.format(switch_id, in_port, out_port, ipv4_src, tcp_src, ipva4_dst, tcp_dst)
+        rule_name = 'regra-{0}-in_{1}-out_{2}--{3}:{4}-to-{5}:{6}'.format(switch_id, in_port, out_port, ipv4_src, tcp_src, ipv4_dst, tcp_dst)
         rule = {
             "switch": switch_id,
             "name": rule_name,

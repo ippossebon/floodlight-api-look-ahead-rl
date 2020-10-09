@@ -43,8 +43,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.observation_space = spaces.Box(
             low=0,
-            high=10,
-            shape=(9,), # array com o RX de cada porta
+            high=10485760, # maximo = 10Mbps = 10 * 1024 * 1024
+            shape=(16,), # array com o RX de cada porta = 16 portas
             dtype=numpy.float16
         )
 
@@ -52,7 +52,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, 100001) # # TODO: rever
+        self.reward_range = (0, 3200) # # TODO: rever
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = None
@@ -185,50 +185,72 @@ class LoadBalanceEnvDiscAction(gym.Env):
             #       "bits-per-second-tx" : "6059"
             #    }
 
-            if item['dpid'] == self.switch_ids[0] and item['port'] == '1':
+            ### S1
+            if item['dpid'] == "00:00:00:00:00:00:00:01" and item['port'] == '1':
                 #S1.1
-                # link A
                 statistics_tx[0] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == self.switch_ids[1] and item['port'] == '1':
+            elif item['dpid'] == "00:00:00:00:00:00:00:01" and item['port'] == '2':
+                #S1.2
+                statistics_tx[1] = float(item['bits-per-second-rx'])
+
+            elif item['dpid'] == "00:00:00:00:00:00:00:01" and item['port'] == '3':
+                #S1.3
+                statistics_tx[2] = float(item['bits-per-second-rx'])
+
+            ### S2
+            elif item['dpid'] == "00:00:00:00:00:00:00:02" and item['port'] == '1':
                 #S2.1
-                # link b
-                statistics_tx[1] = float(item['bits-per-second-tx'])
+                statistics_tx[3] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == self.switch_ids[1] and item['port'] == '2':
+            elif item['dpid'] == "00:00:00:00:00:00:00:02" and item['port'] == '2':
                 #S2.2
-                # link e
-                statistics_tx[4] = float(item['bits-per-second-tx'])
+                statistics_tx[4] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == self.switch_ids[2] and item['port'] == '1':
+            elif item['dpid'] == "00:00:00:00:00:00:00:02" and item['port'] == '3':
+                #S2.3
+                statistics_tx[5] = float(item['bits-per-second-rx'])
+            elif item['dpid'] == "00:00:00:00:00:00:00:02" and item['port'] == '3':
+                #S2.4
+                statistics_tx[6] = float(item['bits-per-second-rx'])
+
+            ### S3
+            elif item['dpid'] == "00:00:00:00:00:00:00:03" and item['port'] == '1':
                 #S3.1
-                # link i
-                statistics_tx[8] = float(item['bits-per-second-tx'])
+                statistics_tx[7] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == self.switch_ids[2] and item['port'] == '2':
+            elif item['dpid'] == "00:00:00:00:00:00:00:03" and item['port'] == '2':
                 #S3.2
-                # link f
-                statistics_tx[5] = float(item['bits-per-second-tx'])
+                statistics_tx[8] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == self.switch_ids[2] and item['port'] == '3':
+            elif item['dpid'] == "00:00:00:00:00:00:00:03" and item['port'] == '3':
                 #S3.3
-                # link g
-                statistics_tx[6] = float(item['bits-per-second-tx'])
-
-            elif item['dpid'] == self.switch_ids[2] and item['port'] == '4':
+                statistics_tx[9] = float(item['bits-per-second-rx'])
+            elif item['dpid'] == "00:00:00:00:00:00:00:03" and item['port'] == '4':
                 #S3.4
-                # link h
-                statistics_tx[7] = float(item['bits-per-second-tx'])
+                statistics_tx[10] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == self.switch_ids[3] and item['port'] == '1':
+            ### S4
+            elif item['dpid'] == "00:00:00:00:00:00:00:04" and item['port'] == '1':
                 #S4.1
-                # link c
-                statistics_tx[2] = float(item['bits-per-second-tx'])
+                statistics_tx[11] = float(item['bits-per-second-rx'])
 
-            elif item['dpid'] == self.switch_ids[4] and item['port'] == '1':
+            elif item['dpid'] == "00:00:00:00:00:00:00:04" and item['port'] == '2':
+                #S4.2
+                statistics_tx[12] = float(item['bits-per-second-rx'])
+
+            elif item['dpid'] == "00:00:00:00:00:00:00:04" and item['port'] == '3':
+                #S4.3
+                statistics_tx[13] = float(item['bits-per-second-rx'])
+
+            ### S1
+            elif item['dpid'] == "00:00:00:00:00:00:00:05" and item['port'] == '1':
                 #S5.1
-                # link d
-                statistics_tx[3] = float(item['bits-per-second-tx'])
+                statistics_tx[14] = float(item['bits-per-second-rx'])
+            elif item['dpid'] == "00:00:00:00:00:00:00:05" and item['port'] == '2':
+                #S5.2
+                statistics_tx[15] = float(item['bits-per-second-rx'])
+
 
         statistics_tx.flatten()
 

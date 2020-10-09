@@ -15,7 +15,7 @@ MAX_BITS_CAPACITY = 10000000000 # TODO: update links capacity when generating ne
 CONTROLLER_IP = 'http://192.168.68.250'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
-MAX_PRIORITY = "32760"
+MAX_PRIORITY = 32760
 
 EPSILON = 0.001
 
@@ -305,7 +305,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         rule = {
             "switch": switch_id,
             "name": rule_name,
-            "priority": MAX_PRIORITY,
+            "priority": str(MAX_PRIORITY),
             "in_port": str(numpy.int8(in_port)),
             "active": "true",
             "eth_type": "0x0800",

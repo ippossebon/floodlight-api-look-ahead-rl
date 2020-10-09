@@ -458,13 +458,13 @@ class LoadBalanceEnvDiscAction(gym.Env):
             rule = self.actionToRule(switch_id, in_port, out_port, flow_match)
             # print('Regra a ser instalada: ', rule)
 
-            existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, match)
+            existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
 
             if existing_rule_name:
                 # Desintala regra para não haver conflito
                 response_uninstall = self.uninstallRule(existing_rule_name)
                 # print('Resposta desinstalação: ', response_uninstall.json())
-                
+
 
             response_install = self.installRule(rule)
             # print('Resposta instalação: ', response_install.json())

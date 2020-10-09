@@ -105,7 +105,7 @@ def testAgent(env):
         # print('Action: ', action)
 
         state, reward, done, info = env.step(action)
-        print('Step {0}. Reward = {1}'.format(step, reward))
+        # print('Step {0}. Reward = {1}'.format(step, reward))
         # print('New state = ', state)
 
         updatePortStatistics(state)

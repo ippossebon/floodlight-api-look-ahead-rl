@@ -405,7 +405,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         return requests.delete(urlPath, data=rule, headers=headers)
 
-    def actionToRule(self, switch_id, in_port, out_port, priority=MAX_PRIORITY, flow_match):
+    def actionToRule(self, switch_id, in_port, out_port, flow_match, priority=MAX_PRIORITY):
         # Só recebe ações possíveis
         # Ação = (switch_index, in_port, out_port)
         tcp_src = flow_match['tcp_src']

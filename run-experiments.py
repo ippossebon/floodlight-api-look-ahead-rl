@@ -1,7 +1,8 @@
 from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
-from stable_baselines.common.policies import MlpPolicy, DQNPolicy
+# from stable_baselines.common.policies import MlpPolicy
+from stable_baselines.deepq.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines import PPO2, A2C, DQN
 from stable_baselines.common.evaluation import evaluate_policy

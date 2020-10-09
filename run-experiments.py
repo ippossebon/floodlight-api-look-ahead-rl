@@ -48,6 +48,7 @@ Setup do experimento:
 CONTROLLER_IP = 'http://192.168.68.127'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
+rewards = []
 
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
@@ -70,9 +71,9 @@ def trainAgent(env):
         policy=MlpPolicy,
         verbose=1,
         learning_rate=0.005, # alpha
-        gamma=0.96,
+        gamma=0.95,
         exploration_initial_eps=1.0,
-        exploration_fraction=0.995,
+        exploration_fraction=0.8,
         exploration_final_eps=0.01,
         buffer_size=56,
         batch_size=100
@@ -97,7 +98,7 @@ def testAgent(env):
         # print('Step {0}. Reward = {1}'.format(step, reward))
         # print('New state = ', state)
 
-        updatePortStatistics(state)
+        # updatePortStatistics(state)
         rewards.append(reward)
         step += 1
 

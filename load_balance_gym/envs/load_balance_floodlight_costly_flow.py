@@ -15,7 +15,7 @@ MAX_BITS_CAPACITY = 10000000000 # TODO: update links capacity when generating ne
 CONTROLLER_IP = 'http://192.168.68.250'
 CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
-MAX_PRIORITY = "32768"
+MAX_PRIORITY = "32760"
 
 EPSILON = 0.001
 
@@ -393,16 +393,17 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         return is_valid
 
-    def existsRuleWithAction(self, switch_id, in_port, out_port):
+    def existsRuleWithAction(self, switch_id, in_port, out_port, match):
+        # Não instala regras repetidas para o mesmo match
        response = requests.get('{host}/wm/staticflowpusher/list/{switch_id}/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
        response_data = response.json()
 
        for item in response_data[switch_id]:
            for rule_name, rule in item.items():
                try:
-                   if rule['match']['in_port'] == str(in_port):
-                       if str(out_port) in rule['instructions']['instruction_apply_actions']['actions']:
-                           print('Regra ja existente para action {0}, in {1}, out {2}: {3}'.format(switch_id, in_port, out_port, rule_name))
+                   if rule['match']['tcp_src'] == match['tcp_src'] and rule['match']['tcp_dst'] == match['tcp_dst']:
+                       if rule['match']['in_port'] == str(in_port):
+                           # if str(out_port) in rule['instructions']['instruction_apply_actions']['actions']:
                            return rule_name
                except:
                    continue
@@ -456,6 +457,15 @@ class LoadBalanceEnvDiscAction(gym.Env):
         if flow_match:
             rule = self.actionToRule(switch_id, in_port, out_port, flow_match)
             # print('Regra a ser instalada: ', rule)
+
+            existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, match)
+
+            if existing_rule_name:
+                # Desintala regra para não haver conflito
+                response_uninstall = self.uninstallRule(existing_rule_name)
+                # print('Resposta desinstalação: ', response_uninstall.json())
+                
+
             response_install = self.installRule(rule)
             # print('Resposta instalação: ', response_install.json())
 
@@ -475,10 +485,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
             # O estado não será alterado e a recompensa é zero
             # print('Sem regra a ser instalada.')
 
-            next_state = self.state
+            next_state = self.getState()
             reward = 0
 
-            print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            print('State*: {0} -- Reward = {1}'.format(self.state, reward))
             print('...........')
             print()
 

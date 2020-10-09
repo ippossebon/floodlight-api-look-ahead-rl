@@ -30,17 +30,18 @@ dst_port: 1
 Setup do experimento:
 1. Executar controlador
 2. Executar mininet com a topologia topologies/complete-experiment-topo.py
-3. Instalar flows iniciais com Postman (arquivo initial_flows_entries.csv)
-4. Para treinamento
-    4.1 Iniciar 3 clients em H1 e 3 servers em H2 (iperf3)
+4. Remover todas as entradas do staticflowpusher
+5. Instalar flows iniciais com Postman (arquivo initial_flows_entries.csv)
+6. Para treinamento
+    6.1 Iniciar 3 clients em H1 e 3 servers em H2 (iperf3)
         a. iperf3 -s -p 5201
-        b. iperf3 -c 10.0.0.2 -B 10.0.0.1 5201 --cport 46110 -n 2G > client-46110-2G.txt
+        b. iperf3 -c 10.0.0.2 -B 10.0.0.1 5201 --cport 46110 -n 1G > client-46110-1G.txt
         c. iperf3 -s -p 5202
-        d. iperf3 -c 10.0.0.2 -B 10.0.0.1 5202 --cport 46112 -n 1G > client-46112-1G.txt
+        d. iperf3 -c 10.0.0.2 -B 10.0.0.1 5202 --cport 46112 -n 2G > client-46112-2G.txt
         e. iperf3 -s -p 5203
         f. iperf3 -c 10.0.0.2 -B 10.0.0.1 5203 --cport 46114 -n 4G > client-46114-4G.txt
-5. Para testar o agente
-6. Para rodar os experimentos + coleta de estatísticas para avaliação
+7. Para testar o agente
+8. Para rodar os experimentos + coleta de estatísticas para avaliação
 
 """
 

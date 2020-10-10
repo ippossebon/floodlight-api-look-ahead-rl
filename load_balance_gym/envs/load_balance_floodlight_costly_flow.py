@@ -422,9 +422,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
         for flow_obj in response_data['flows']:
             flow_cookie = flow_obj['cookie']
             try:
-                flow_match = flow_obj['match']
+                flow_match = flow_obj['match']['tcp_src']
             except:
-                print('Fluxo sem match = ', flow_obj)
+                flow_match = None
+                print('Fluxo sem match tcp = ', flow_obj)
 
             if flow_match:
                 flow_byte_count = int(flow_obj['byteCount'])

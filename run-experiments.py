@@ -184,22 +184,22 @@ def plotGraphs():
 
 
 def run():
-    env = createVectorizedEnv()
+    # env = createVectorizedEnv()
     # validateEnvOpenAI(env)
-    print('Iniciando treinamento do agente.')
-    trainAgent(env)
+    # print('Iniciando treinamento do agente.')
+    # trainAgent(env)
 
-    # env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-    # while True:
-    #     print(env.getState())
-    #     time.sleep(1)
+    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+    while True:
+        print(env.getState())
+        time.sleep(1)
 
     # changeMaxPaths()
     # addInitialEntries()
 
     # testEnvMethods()
     #
-    testAgent(env)
+    # testAgent(env)
 
     # runExperiments(env)
 

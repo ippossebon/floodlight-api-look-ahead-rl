@@ -433,7 +433,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 flow_byte_count = int(flow_obj['byteCount'])
                 if flow_byte_count > max_byte_count:
                     max_byte_count = flow_byte_count
-                    max_usage_flow_match = flow_match
+                    max_usage_flow_match = flow_obj['match']
 
         # print('[getMostCostlyFlow] max_usage_flow_match: {0} - max_byte_count: {1}'.format(max_usage_flow_match, max_byte_count))
 

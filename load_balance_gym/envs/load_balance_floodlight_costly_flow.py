@@ -454,6 +454,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         in_port = in_port_index + 1
         out_port = out_port_index + 1
         flow_match = self.getMostCostlyFlow(switch_id)
+        print('Most costly flow: ', flow_match)
 
         if flow_match:
             rule = self.actionToRule(switch_id, in_port, out_port, flow_match)

@@ -52,7 +52,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, 3200) # # TODO: rever
+        self.reward_range = (0, 320000) # max = 3200 * 100 (100 é capacidade do link S3.1)
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = None
@@ -516,7 +516,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 total_usage_links += 1
 
         # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
-        reward = total_usage_links
+        s3_1_tx_mbps = state[7]
+        reward = total_usage_links * s3_1_tx_mbps
 
         return reward
 

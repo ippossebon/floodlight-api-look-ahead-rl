@@ -418,17 +418,18 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         max_byte_count = -1
         max_usage_flow_match = None
-        flow_match = None
 
         for flow_obj in response_data['flows']:
             flow_cookie = flow_obj['cookie']
+            flow_match = None
+
             try:
                 flow_match = flow_obj['match']['tcp_src']
             except:
                 flow_match = None
                 print('Fluxo sem match tcp = ', flow_obj)
 
-            if flow_match:
+            if flow_match != None:
                 flow_byte_count = int(flow_obj['byteCount'])
                 if flow_byte_count > max_byte_count:
                     max_byte_count = flow_byte_count

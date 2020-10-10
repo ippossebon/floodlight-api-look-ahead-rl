@@ -427,7 +427,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 flow_match = flow_obj['match']['tcp_src']
             except:
                 flow_match = None
-                print('Fluxo sem match tcp = ', flow_obj)
 
             if flow_match != None:
                 flow_byte_count = int(flow_obj['byteCount'])

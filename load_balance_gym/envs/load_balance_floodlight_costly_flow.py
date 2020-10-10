@@ -296,6 +296,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
     def actionToRule(self, switch_id, in_port, out_port, flow_match, priority=MAX_PRIORITY):
         # Só recebe ações possíveis
         # Ação = (switch_index, in_port, out_port)
+        print('flow_match = ', flow_match)
         tcp_src = flow_match['tcp_src']
         tcp_dst = flow_match['tcp_dst']
         ipv4_src = flow_match['ipv4_src']

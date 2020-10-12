@@ -312,6 +312,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 "eth_type": "0x0800",
                 "ipv4_src": ipv4_src,
                 "ipv4_dst": ipv4_dst,
+                "tcp_src": tcp_src,
+                "tcp_dst": tcp_dst,
                 "ip_proto": "0x06",
                 "actions": "output=controller"
             }
@@ -328,6 +330,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 "eth_type": "0x0800",
                 "ipv4_src": ipv4_src,
                 "ipv4_dst": ipv4_dst,
+                "tcp_src": tcp_src,
+                "tcp_dst": tcp_dst,
                 "ip_proto": "0x06",
                 "actions": "output={0}".format(numpy.int8(out_port))
             }

@@ -315,7 +315,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 "tcp_src": tcp_src,
                 "tcp_dst": tcp_dst,
                 "ip_proto": "0x06",
-                "hard_timeout": "10",
+                "hard_timeout": "60",
                 "actions": "output=controller"
             }
 
@@ -334,7 +334,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 "tcp_src": tcp_src,
                 "tcp_dst": tcp_dst,
                 "ip_proto": "0x06",
-                "hard_timeout": "10",
+                "hard_timeout": "60",
                 "actions": "output={0}".format(numpy.int8(out_port))
             }
 

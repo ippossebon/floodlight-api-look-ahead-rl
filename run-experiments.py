@@ -84,8 +84,7 @@ def trainAgent(env):
 
 
 def testAgent(env):
-    print('Testando o agente...')
-    model = DQN.load(load_path='./DQN_1000_lr_005_gamma_095_expldecay_0995', env=env)
+    model = DQN.load(load_path='./DQN_100_lr_005_gamma_095_expldecay_0995', env=env)
 
     state = env.reset()
     num_steps = 100
@@ -96,10 +95,10 @@ def testAgent(env):
 
         state, reward, done, info = env.step(action)
         # print('Step {0}. Reward = {1}'.format(step, reward))
-        # print('New state = ', state)
+        print('State = ', state)
 
         # updatePortStatistics(state)
-        rewards.append(reward)
+        print('Reward = ', reward)
         step += 1
 
     # plotGraphs()
@@ -186,8 +185,7 @@ def plotGraphs():
 def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
-    print('Iniciando treinamento do agente.')
-    trainAgent(env)
+    # trainAgent(env)
 
     # env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     # while True:
@@ -199,7 +197,7 @@ def run():
 
     # testEnvMethods()
     #
-    # testAgent(env)
+    testAgent(env)
 
     # runExperiments(env)
 

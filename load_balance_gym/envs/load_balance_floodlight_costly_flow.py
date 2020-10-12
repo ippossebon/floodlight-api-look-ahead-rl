@@ -307,7 +307,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             return {
                 "switch": switch_id,
                 "name": rule_name,
-                "priority": str(MAX_PRIORITY),
+                "priority": "32760",
                 "active": "true",
                 "eth_type": "0x0800",
                 "ipv4_src": ipv4_src,
@@ -324,7 +324,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             return {
                 "switch": switch_id,
                 "name": rule_name,
-                "priority": str(MAX_PRIORITY),
+                "priority": "32760",
                 "in_port": str(numpy.int8(in_port)),
                 "active": "true",
                 "eth_type": "0x0800",
@@ -345,9 +345,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
            for rule_name, rule in item.items():
                try:
                    if rule['match']['tcp_src'] == match['tcp_src'] and rule['match']['tcp_dst'] == match['tcp_dst']:
-                       if rule['match']['in_port'] == str(in_port):
-                           # if str(out_port) in rule['instructions']['instruction_apply_actions']['actions']:
-                           return rule_name
+                       return rule_name
                except:
                    continue
 
@@ -415,7 +413,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             response_install = self.installRule(rule)
             # print('Resposta instalação: ', response_install.json())
 
-            time.sleep(10) # aguarda regras refletirem e pacotes serem enviados novamente
+            time.sleep(5) # aguarda regras refletirem e pacotes serem enviados novamente
 
             next_state = self.getState()
             reward = self.calculateReward(next_state)

@@ -73,13 +73,13 @@ def trainAgent(env):
         learning_rate=0.005, # alpha
         gamma=0.95,
         exploration_initial_eps=1.0,
-        exploration_fraction=0.8,
+        exploration_fraction=0.9,
         exploration_final_eps=0.01,
         buffer_size=56,
-        batch_size=100
+        batch_size=50
     )
-    model.learn(total_timesteps=1000)
-    model.save('./DQN_1000_lr_005_gamma_095_expldecay_0995')
+    model.learn(total_timesteps=100)
+    model.save('./DQN_100_lr_005_gamma_095_expldecay_0995')
     print('Modelo treinado e salvo.')
 
 

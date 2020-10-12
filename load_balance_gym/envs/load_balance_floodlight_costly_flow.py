@@ -48,7 +48,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Discrete(28)
+        self.action_space = spaces.Discrete(33)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
@@ -296,103 +296,41 @@ class LoadBalanceEnvDiscAction(gym.Env):
     def actionToRule(self, switch_id, in_port, out_port, flow_match, priority=MAX_PRIORITY):
         # Só recebe ações possíveis
         # Ação = (switch_index, in_port, out_port)
-        print('flow_match = ', flow_match)
         tcp_src = flow_match['tcp_src']
         tcp_dst = flow_match['tcp_dst']
         ipv4_src = flow_match['ipv4_src']
         ipv4_dst = flow_match['ipv4_dst']
 
-        rule_name = 'regra-{0}-in_{1}-out_{2}--{3}:{4}-to-{5}:{6}'.format(switch_id, in_port, out_port, ipv4_src, tcp_src, ipv4_dst, tcp_dst)
-        rule = {
-            "switch": switch_id,
-            "name": rule_name,
-            "priority": str(MAX_PRIORITY),
-            "in_port": str(numpy.int8(in_port)),
-            "active": "true",
-            "eth_type": "0x0800",
-            "ipv4_src": ipv4_src,
-            "ipv4_dst": ipv4_dst,
-            "ip_proto": "0x06",
-            "actions": "output={0}".format(numpy.int8(out_port))
-        }
+        if in_port == 0 and out_port == 0:
+            # Regra que envia pacotes para o controlador
+            rule_name = 'regra-{0}-controller--{1}:{2}-to-{3}:{4}'.format(switch_id, ipv4_src, tcp_src, ipv4_dst, tcp_dst)
+            return {
+                "switch": switch_id,
+                "name": rule_name,
+                "priority": str(MAX_PRIORITY),
+                "active": "true",
+                "eth_type": "0x0800",
+                "ipv4_src": ipv4_src,
+                "ipv4_dst": ipv4_dst,
+                "ip_proto": "0x06",
+                "actions": "output=controller"
+            }
 
-        return rule
 
-    def switchContainsPort(self, switch_id, port):
-        """
-        Considera o dicionário:
-        self.switch_possible_ports = {
-            '00:00:01': ['1', '2', '3],
-            '00:00:02': ['1', '2', '3', '4']
-        ...
-        }
-
-        """
-        for possible_port in self.switch_possible_ports[switch_id]:
-            if str(possible_port) == str(port):
-                return True
-
-        return False
-
-    def actionBelongsToPath(self, action):
-        # Deve checar se faz parte de um caminho possível
-        # Possible paths lista as regras de cada switch.
-        """
-        Possible paths: [
-            [[0, 0, 2], [3, 0, 2], [2, 2, 0]],
-            [[0, 0, 1], [1, 0, 3], [2, 1, 0]],
-            [[0, 0, 1], [1, 0, 2], [4, 0, 1], [2, 3, 0]]
-        ]
-        """
-
-        for path in self.possible_paths:
-            for rule in path:
-                if (action==rule).all():
-                    return True
-        return False
-
-    def isValidAction(self, action):
-        try:
-            switch_index = int(action[0])
-            in_port_index = action[1]
-            out_port_index = action[2]
-        except:
-            return False
-
-        in_port = in_port_index + 1
-        out_port = out_port_index + 1
-
-        # Deve existir um switch com o indice
-        contains_switch_index = True if switch_index <= len(self.switch_ids) else False
-
-        # Deve existir in e out port no switch
-        switch_id = self.switch_ids[switch_index]
-        switch_contains_in_port = self.switchContainsPort(switch_id, in_port)
-        switch_contains_out_port = self.switchContainsPort(switch_id, out_port)
-        switch_contains_ports = switch_contains_in_port and switch_contains_out_port
-
-        # Checa se pertence a algum caminho possível. Para evitar loops na rede.
-        belongs_to_path = self.actionBelongsToPath(action) if switch_contains_ports else False
-
-        is_valid = contains_switch_index and belongs_to_path
-
-        ### TODO: Debugging
-        # print('...')
-        # print('--> isValidAction')
-        # print('contains_switch_index = ', contains_switch_index)
-        # print('switch_contains_in_port = ', switch_contains_in_port)
-        # print('switch_contains_out_port = ', switch_contains_out_port)
-        #
-        # print('portas do switch = ', self.switch_possible_ports[switch_id])
-
-        # print('switch_index = ', switch_index)
-        # print('in_port = ', in_port)
-        # print('out_port = ', out_port)
-        # print('belongs_to_path = ', belongs_to_path)
-        # print('is_valid = ', is_valid)
-        # print('...')
-
-        return is_valid
+        else:
+            rule_name = 'regra-{0}-in_{1}-out_{2}--{3}:{4}-to-{5}:{6}'.format(switch_id, in_port, out_port, ipv4_src, tcp_src, ipv4_dst, tcp_dst)
+            return {
+                "switch": switch_id,
+                "name": rule_name,
+                "priority": str(MAX_PRIORITY),
+                "in_port": str(numpy.int8(in_port)),
+                "active": "true",
+                "eth_type": "0x0800",
+                "ipv4_src": ipv4_src,
+                "ipv4_dst": ipv4_dst,
+                "ip_proto": "0x06",
+                "actions": "output={0}".format(numpy.int8(out_port))
+            }
 
     def existsRuleWithAction(self, switch_id, in_port, out_port, match):
         # Não instala regras repetidas para o mesmo match
@@ -464,11 +402,11 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
             existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
 
+            # acho que nao pode ter... posso querer mexer em um fluxo que antes era grande e agora tem um maior
             if existing_rule_name:
                 # Desintala regra para não haver conflito
                 response_uninstall = self.uninstallRule(existing_rule_name)
                 # print('Resposta desinstalação: ', response_uninstall.json())
-
 
             response_install = self.installRule(rule)
             # print('Resposta instalação: ', response_install.json())
@@ -518,7 +456,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 total_usage_links += 1
 
         # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
-        s3_1_tx_mbps = state[7]
+
+        s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
         reward = total_usage_links * s3_1_tx_mbps
 
         return reward

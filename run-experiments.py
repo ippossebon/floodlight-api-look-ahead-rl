@@ -74,17 +74,17 @@ def trainAgent(env):
         gamma=0.95,
         exploration_initial_eps=1.0,
         exploration_fraction=0.9,
-        exploration_final_eps=0.01,
+        exploration_final_eps=0.05,
         buffer_size=56,
         batch_size=50
     )
-    model.learn(total_timesteps=100)
-    model.save('./DQN_100_lr_005_gamma_095_expldecay_0995')
+    model.learn(total_timesteps=500)
+    model.save('./DQN_500_lr_005_gamma_095_expldecay_0995')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
-    model = DQN.load(load_path='./DQN_100_lr_005_gamma_095_expldecay_0995', env=env)
+    model = DQN.load(load_path='./DQN_500_lr_005_gamma_095_expldecay_090', env=env)
 
     state = env.reset()
     num_steps = 100
@@ -186,7 +186,7 @@ def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
     trainAgent(env)
-    
+
 
     # env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     # while True:

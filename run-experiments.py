@@ -87,14 +87,18 @@ def testAgent(env):
     # DQN_500_lr_005_gamma_095_expldecay_0995 -> na veradde era expl decay de 0.9 --> 3 fluxos
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
-    model = DQN.load(load_path='./DQN_500_lr_005_gamma_095_expldecay_0995', env=env)
+
+    # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
+    model = DQN.load(load_path='./DQN_500_lr_0005_gamma_095_expldecay_09_2_flows', env=env)
 
     state = env.reset()
-    num_steps = 100
+    num_steps = 500
+    cumm_reward = 0
 
     for step in range(num_steps):
+        print('Step', step)
         action, _ = model.predict(state, deterministic=True)
-        # print('Action: ', action)
+        print('Action: ', action)
 
         state, reward, done, info = env.step(action)
         # print('Step {0}. Reward = {1}'.format(step, reward))
@@ -103,7 +107,10 @@ def testAgent(env):
         # updatePortStatistics(state)
         print('Reward = ', reward)
         step += 1
+        cumm_reward += reward
+        print('...')
 
+    print('cummulative reward = ', cumm_reward)
     # plotGraphs()
 
 

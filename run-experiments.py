@@ -97,7 +97,7 @@ def testAgent(env):
 
     for step in range(num_steps):
         print('Step', step)
-        action, _ = model.predict(state, deterministic=True)
+        action, _ = model.predict(state, deterministic=False)
         print('Action: ', action)
 
         state, reward, done, info = env.step(action)

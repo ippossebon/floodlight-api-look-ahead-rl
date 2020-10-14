@@ -71,7 +71,7 @@ def trainAgent(env):
         policy=MlpPolicy,
         verbose=1,
         learning_rate=0.005, # alpha
-        gamma=0.98,
+        gamma=0.95,
         exploration_initial_eps=1.0,
         exploration_fraction=0.9,
         exploration_final_eps=0.05,
@@ -79,14 +79,14 @@ def trainAgent(env):
         batch_size=50
     )
     model.learn(total_timesteps=500)
-    model.save('./DQN_500_lr_0005_gamma_098_expldecay_09_3_flows')
+    model.save('./DQN_500_lr_0005_gamma_095_expldecay_09_2_flows')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
     # DQN_500_lr_005_gamma_095_expldecay_0995 -> na veradde era expl decay de 0.9 --> 3 fluxos
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
-    #
+    # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
     model = DQN.load(load_path='./DQN_500_lr_005_gamma_095_expldecay_0995', env=env)
 
     state = env.reset()

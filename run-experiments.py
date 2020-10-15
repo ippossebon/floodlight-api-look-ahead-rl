@@ -13,6 +13,7 @@ import time
 import requests
 import gym
 import numpy
+import datetime
 
 """
 O objetivo é fazer com que o sistema acomode os fluxos na rede de forma a usar

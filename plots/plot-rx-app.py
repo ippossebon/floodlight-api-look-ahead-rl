@@ -29,7 +29,7 @@ dataframe_to_plot = pd.DataFrame({
     },
 index=range(0,500))
 
-dataframe_to_plot.plot.line(figsize=(20, 20), title='RX over time')
+dataframe_to_plot.plot.line(figsize=(10, 10), title='RX over time')
 
 plt.xlabel('Step')
 plt.ylabel('Port RX (bps)')

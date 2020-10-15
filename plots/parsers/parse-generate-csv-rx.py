@@ -26,10 +26,9 @@ def main():
         lines = inputfile.readlines()
 
         for line in lines:
-            if count > 0:
+            if count > 3:
                 if line == '- - - - - - - - - - - - - - - - - - - - - - - - -\n':
                     break
-
                 new_state = parseLine(line)
                 input_lines.append(new_state)
             count += 1

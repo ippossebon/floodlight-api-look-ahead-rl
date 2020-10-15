@@ -3,7 +3,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('./data/output-app-15-set-1.csv', delimiter=';')
+df = pd.read_csv('./data/output-app-15-set-1_new.csv', delimiter=';')
 
 df.plot(kind='line', x='Step', y='Reward', color='blue', title='Reward value over time')
 

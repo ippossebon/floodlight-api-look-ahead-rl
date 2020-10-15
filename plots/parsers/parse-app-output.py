@@ -16,7 +16,7 @@ def parseLine(line):
     reward = reward.replace(']', '')
     reward = reward.replace(' ', '')
 
-    return step, state, reward
+    return step, state, float(reward)
 
 
 

@@ -87,7 +87,7 @@ def testAgent(env):
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
-    model = DQN.load(load_path='./DQN_500_lr_0005_gamma_095_expldecay_09_2_flows', env=env)
+    model = DQN.load(load_path='./DQN_500_lr_0005_gamma_098_expldecay_09_3_flows', env=env)
 
     state = env.reset()
     num_steps = 500

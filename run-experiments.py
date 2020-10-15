@@ -114,8 +114,8 @@ def testAgent(env):
     output_filename = './output-app-{0}.csv'.format(st)
 
     with open(output_filename, 'w+') as output_file:
-    for item in output_file_data:
-        output_file.write("%s\n" % item)
+        for item in output_file_data:
+            output_file.write("%s\n" % item)
 
     print('Arquivo {0} criado.'.format(output_filename))
 

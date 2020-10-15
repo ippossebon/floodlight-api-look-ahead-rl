@@ -73,35 +73,44 @@ def trainAgent(env):
         learning_rate=0.005, # alpha
         gamma=0.95,
         exploration_initial_eps=1.0,
-        exploration_fraction=0.8,
-        exploration_final_eps=0.01,
+        exploration_fraction=0.9,
+        exploration_final_eps=0.05,
         buffer_size=56,
-        batch_size=100
+        batch_size=50
     )
-    model.learn(total_timesteps=1000)
-    model.save('./DQN_1000_lr_005_gamma_095_expldecay_0995')
+    model.learn(total_timesteps=500)
+    model.save('./DQN_500_lr_0005_gamma_095_expldecay_09_2_flows')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env):
-    print('Testando o agente...')
-    model = DQN.load(load_path='./DQN_1000_lr_005_gamma_095_expldecay_0995', env=env)
+    # DQN_500_lr_005_gamma_095_expldecay_0995 -> na veradde era expl decay de 0.9 --> 3 fluxos
+    # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
+    # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
+
+    # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
+    model = DQN.load(load_path='./DQN_500_lr_0005_gamma_095_expldecay_09_2_flows', env=env)
 
     state = env.reset()
-    num_steps = 100
+    num_steps = 500
+    cumm_reward = 0
 
     for step in range(num_steps):
-        action, _ = model.predict(state, deterministic=True)
-        # print('Action: ', action)
+        print('Step', step)
+        action, _ = model.predict(state, deterministic=False)
+        print('Action: ', action)
 
         state, reward, done, info = env.step(action)
         # print('Step {0}. Reward = {1}'.format(step, reward))
-        # print('New state = ', state)
+        print('State = ', state)
 
         # updatePortStatistics(state)
-        rewards.append(reward)
+        print('Reward = ', reward)
         step += 1
+        cumm_reward += reward
+        print('...')
 
+    print('cummulative reward = ', cumm_reward)
     # plotGraphs()
 
 
@@ -186,8 +195,8 @@ def plotGraphs():
 def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
-    print('Iniciando treinamento do agente.')
-    trainAgent(env)
+    # trainAgent(env)
+
 
     # env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     # while True:
@@ -199,7 +208,7 @@ def run():
 
     # testEnvMethods()
     #
-    # testAgent(env)
+    testAgent(env)
 
     # runExperiments(env)
 

@@ -29,4 +29,5 @@ dataframe_to_plot = pd.DataFrame({
     },
 index=range(0,500))
 
-lines = dataframe_to_plot.plot.line()
+dataframe_to_plot.plot.line()
+plt.savefig('./images/rx-time-15-set-1.pdf')

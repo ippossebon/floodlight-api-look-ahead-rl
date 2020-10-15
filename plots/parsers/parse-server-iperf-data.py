@@ -1,7 +1,7 @@
 import csv
 
-txt_filename = '../data/server-iperf-data.txt'
-csv_filename = '../data/server-iperf-data.csv'
+txt_filename = '../data/teste-15-set-3-flows/server-5201.txt'
+csv_filename = '../data/teste-15-set-3-flows/server-5201.csv'
 
 count = 0
 

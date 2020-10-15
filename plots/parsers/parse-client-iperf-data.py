@@ -1,7 +1,7 @@
 import csv
 
-txt_filename = '../data/client-iperf-data.txt'
-csv_filename = '../data/client-iperf-data.csv'
+txt_filename = '../data/teste-15-set-3-flows/client-46110-1g.txt'
+csv_filename = '../data/teste-15-set-3-flows/client-46110-1g.csv'
 
 count = 0
 
@@ -13,7 +13,6 @@ def parseLine(line):
 
     transferred_string = splitted_text[3]
     transfered_split = transferred_string.split(' ')
-    print('transfered_split', transfered_split)
     transferred_value = float(transfered_split[0]) if transfered_split[0] != '' else float(transfered_split[1])
     transferred_unity = transfered_split[1] if transfered_split[0] != '' else transfered_split[2]
 

@@ -1,7 +1,6 @@
 from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
-# from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.deepq.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines import PPO2, A2C, DQN
@@ -87,31 +86,38 @@ def testAgent(env):
     # DQN_500_lr_005_gamma_095_expldecay_0995 -> na veradde era expl decay de 0.9 --> 3 fluxos
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
-
     # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
-    model = DQN.load(load_path='./DQN_500_lr_0005_gamma_095_expldecay_09_2_flows', env=env)
+    model = DQN.load(load_path='./DQN_500_lr_0005_gamma_098_expldecay_09_3_flows', env=env)
 
     state = env.reset()
     num_steps = 500
     cumm_reward = 0
 
+    output_file_data = []
+    output_file_data.append('Step; State; Reward')
+
     for step in range(num_steps):
-        print('Step', step)
         action, _ = model.predict(state, deterministic=False)
-        print('Action: ', action)
 
         state, reward, done, info = env.step(action)
         # print('Step {0}. Reward = {1}'.format(step, reward))
-        print('State = ', state)
 
-        # updatePortStatistics(state)
-        print('Reward = ', reward)
         step += 1
         cumm_reward += reward
-        print('...')
 
-    print('cummulative reward = ', cumm_reward)
-    # plotGraphs()
+        output_data_line = '{0}; {1}; {2}'.format(step, state.tolist(), reward)
+        output_file_data.append(output_data_line)
+
+    print('Cummulative reward = ', cumm_reward)
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    output_filename = './output-app-{0}.csv'.format(st)
+
+    with open(output_filename, 'w+') as output_file:
+    for item in output_file_data:
+        output_file.write("%s\n" % item)
+
+    print('Arquivo {0} criado.'.format(output_filename))
 
 
 def runExperiments():
@@ -152,62 +158,11 @@ def containsElephantFlow(state):
 def containsTraffic(state):
     pass
 
-"""
-Graficos
-"""
-def plotGraphs():
-    print('Gerando graficos...')
-
-    plt.figure()
-    # plt.subplot(1)
-    plt.plot(link_a_rx, '-', color="#ef476f", label = "Link a") # paradise pink
-    plt.plot(link_b_rx, '-', color="#ffd166", label = "Link b") # orange yellow crayola
-    plt.plot(link_c_rx, '-', color="#06d6a0", label = "Link c") # caribeen green
-    plt.plot(link_d_rx, '-', color="#118AB2", label = "Link d") # blue NCS
-    plt.plot(link_e_rx, '-', color="#073B4C", label = "Link e") # midnight green eagle green
-    plt.plot(link_f_rx, '-', color="#5f0f40", label = "Link f") # tryian purple
-    plt.plot(link_g_rx, '-', color="#9A031E", label = "Link g") # ruby red
-    plt.plot(link_h_rx, '-', color="#FB8B24", label = "Link h") # dark orange
-    plt.plot(link_i_rx, '-', color="#E36414", label = "Link i") # spanish orange
-
-    plt.xlabel('Step')
-    plt.ylabel('Mbits/seg')
-
-    # Set a title of the current axes.
-    plt.title('Mbits/seg RX per step')
-
-    # show a legend on the plot
-    plt.legend()
-
-    # plt.subplot(2)
-    # plt.plot(rewards)
-    # plt.plot(rewards)
-    # plt.xlabel('Step')
-    # plt.ylabel('Reward')
-    # plt.title('Reward per step')
-
-    plt.savefig('A2C_100_lr_01_gamma_096-30-set-links_usage.pdf')
-
-    print('Grafico gerado.')
-
-
 
 def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
     # trainAgent(env)
-
-
-    # env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-    # while True:
-    #     print(env.getState())
-    #     time.sleep(1)
-
-    # changeMaxPaths()
-    # addInitialEntries()
-
-    # testEnvMethods()
-    #
     testAgent(env)
 
     # runExperiments(env)

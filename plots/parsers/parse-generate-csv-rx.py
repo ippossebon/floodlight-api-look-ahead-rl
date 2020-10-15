@@ -34,7 +34,7 @@ def main():
                 input_lines.append(new_state)
             count += 1
 
-    with open(csv_filename, 'w+', newline='') as csvfile:
+    with open(new_filename, 'w+', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=';')
         writer.writerow(['S1.1', 'S1.2', 'S1.3', 'S2.1', 'S2.2', 'S2.3', 'S2.4', 'S3.1', 'S3.2', 'S3.3', 'S3.4', 'S4.1', 'S4.2', 'S4.3', 'S5.1', 'S5.2'])
 

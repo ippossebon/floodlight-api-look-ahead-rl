@@ -31,7 +31,7 @@ def main():
                     break
 
                 new_state = parseLine(line)
-                input_lines.append([step, state, reward])
+                input_lines.append(new_state)
             count += 1
 
     with open(csv_filename, 'w+', newline='') as csvfile:

@@ -65,7 +65,6 @@ def validateEnvOpenAI():
 
 
 def trainAgent(env):
-    print('Iniciando treinamento do agente.')
     model = DQN(
         env=env,
         policy=MlpPolicy,
@@ -88,7 +87,7 @@ def testAgent(env):
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
-    model = DQN.load(load_path='./DQN_500_lr_0005_gamma_098_expldecay_09_3_flows', env=env)
+    model = DQN.load(load_path='./trained-agents/DQN_500_lr_0005_gamma_098_expldecay_09_3_flows', env=env)
 
     state = env.reset()
     num_steps = 500
@@ -110,6 +109,12 @@ def testAgent(env):
         output_file_data.append(output_data_line)
 
     print('Cummulative reward = ', cumm_reward)
+
+    # print("* Average reward per thousand episodes *")
+    # for r in rewards_per_thousand_episodes:
+    #     print(count, ": ", str(sum(r/1000)))
+    #     count += 1000
+
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     output_filename = './output-app-{0}.csv'.format(st)
@@ -132,16 +137,10 @@ def runExperiments():
         state = env.getState()
 
         if containsTraffic(state) and containsElephantFlow(state):
-            print('---------------------------------------------')
             print('Update: ', update_count)
 
             action, _ = model.predict(state, deterministic=True)
             state, reward, done, info = env.step(action)
-            print('State: ', state)
-            print('Action: ', action)
-            print('Reward: ', reward)
-
-            p0, p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15 = updatePortStatistics(state)
 
             update_count += 1
         else:

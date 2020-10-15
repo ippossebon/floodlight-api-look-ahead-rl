@@ -1,7 +1,7 @@
 import csv
 
-csv_filename = '../data/output-app-15-set-1_new.csv'
-new_filename = '../data/rx-values/15-set_new.csv'
+csv_filename = '../data/output-app-2.csv'
+new_filename = '../data/rx-values/output-app-2.csv'
 count = 0
 
 def parseLine(line):
@@ -26,10 +26,9 @@ def main():
         lines = inputfile.readlines()
 
         for line in lines:
-            if count > 0:
+            if count > 3:
                 if line == '- - - - - - - - - - - - - - - - - - - - - - - - -\n':
                     break
-
                 new_state = parseLine(line)
                 input_lines.append(new_state)
             count += 1

@@ -1,7 +1,7 @@
 import csv
 
-txt_filename = '../data/output-app-15-set-1.csv'
-csv_filename = '../data/output-app-15-set-1_new.csv'
+txt_filename = '../data/output-app-2.csv'
+csv_filename = '../data/output-app-2_new.csv'
 
 count = 0
 

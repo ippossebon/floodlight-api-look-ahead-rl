@@ -3,11 +3,30 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('./data/teste-app.csv', delimiter=';')
+fig, axes = plt.subplots(2)
 
-df.plot(kind='line', x='Step', y='Reward', color='blue', title='Reward value over time')
+df = pd.read_csv('./data/server-iperf-data.csv', delimiter=';')
+df2 = pd.read_csv('./data/server-iperf-data-2.csv', delimiter=';')
 
-plt.xlabel('Step')
-plt.ylabel('Reward')
+df.plot(
+    kind='line',
+    x='Timestep',
+    y='Bandwidth (Mbps)',
+    color='red',
+    title='Bandwidth over time',
+    ax=axes[0]
+)
 
-plt.savefig('./images/teste-reward-x-time.pdf')
+df2.plot(
+    kind='line',
+    x='Timestep',
+    y='Bandwidth (Mbps)',
+    color='green',
+    title='Bandwidth over time',
+    ax=axes[1]
+)
+
+plt.xlabel('Time step')
+plt.ylabel('Bandwidth (Mbps)')
+
+plt.savefig('./images/server-iperf-data-2.pdf')

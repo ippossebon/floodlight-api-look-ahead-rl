@@ -1,7 +1,7 @@
 import csv
 
-txt_filename = './data/client-iperf-data.txt'
-csv_filename = './data/client-iperf-data.csv'
+txt_filename = '../data/server-iperf-data.txt'
+csv_filename = '../data/server-iperf-data.csv'
 
 count = 0
 
@@ -13,7 +13,6 @@ def parseLine(line):
 
     transferred_string = splitted_text[3]
     transfered_split = transferred_string.split(' ')
-    print('transfered_split', transfered_split)
     transferred_value = float(transfered_split[0]) if transfered_split[0] != '' else float(transfered_split[1])
     transferred_unity = transfered_split[1] if transfered_split[0] != '' else transfered_split[2]
 
@@ -32,14 +31,12 @@ def parseLine(line):
     bandwidth_unity = bandwidth_split[1]
 
     bandwidth_mbps = -1
-    if bandwidth_unity == 'Mbits/sec':
+    if 'Mbits/sec' in bandwidth_unity:
         bandwidth_mbps = bandwidth_value
-    elif bandwidth_unity == 'Kbits/sec':
+    elif 'Kbits/sec' in bandwidth_unity:
         bandwidth_mbps = bandwidth_value / 1024
 
-
     return timestep, transferred_bytes, bandwidth_mbps
-
 
 
 def main():
@@ -50,7 +47,7 @@ def main():
         lines = inputfile.readlines()
 
         for line in lines:
-            if count > 2:
+            if count > 5:
                 if line == '- - - - - - - - - - - - - - - - - - - - - - - - -\n':
                     break
 

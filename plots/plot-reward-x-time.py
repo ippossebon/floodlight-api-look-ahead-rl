@@ -1,10 +1,13 @@
 import pandas as pd
 import numpy as np
 
-import plotly.express as px
+import matplotlib.pyplot as plt
 
-df = pd.read_csv('./teste-app.csv')
+df = pd.read_csv('./teste-app.csv', delimiter=';')
 
-fig = px.line(df, x = 'Step', y = 'Reward', title='Reward over time step')
-fig.show()
-fig.write_image('images/teste-reward-x-time.pdf')
+df.plot(kind='line', x='Step', y='Reward', color='blue', title='Reward value over time')
+
+plt.xlabel('Step')
+plt.ylabel('Reward')
+
+plt.savefig('./images/teste-reward-x-time.pdf')

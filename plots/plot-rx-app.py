@@ -29,5 +29,8 @@ dataframe_to_plot = pd.DataFrame({
     },
 index=range(0,500))
 
-dataframe_to_plot.plot.line()
-plt.savefig('./images/rx-time-15-set-1.pdf')
+dataframe_to_plot.plot.line(figsize=(800, 800), title='RX over time' })
+
+plt.xlabel('Step')
+plt.ylabel('Port RX (bps)')
+plt.savefig('./images/rx-time-15-set-1-temp.pdf')

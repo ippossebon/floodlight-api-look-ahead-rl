@@ -1,5 +1,0 @@
-warning: this system does not seem to support IPv6 - trying IPv4
------------------------------------------------------------
-Server listening on 5201
------------------------------------------------------------
-iperf3: interrupt - the server has terminated

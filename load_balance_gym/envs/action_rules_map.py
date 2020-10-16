@@ -3,7 +3,6 @@ import numpy
 def actionMap(action):
     ## H1 -> H2
     if action == 0:
-        # S1, in 1, out 2
         return numpy.array([0, 0, 1])
     elif action == 1:
         # S1, in 1, out 3
@@ -90,18 +89,18 @@ def actionMap(action):
         return numpy.array([0, 2, 0])
 
     ### Envia para o controlador
-    elif action == 28:
-        # S1
-        return numpy.array([0, -1, -1])
-    elif action == 29:
-        # S2
-        return numpy.array([1, -1, -1])
-    elif action == 30:
-        # S3
-        return numpy.array([2, -1, -1])
-    elif action == 31:
-        # S4
-        return numpy.array([3, -1, -1])
-    elif action == 32:
-        # S5
-        return numpy.array([4, -1, -1])
+    # elif action == 28:
+    #     # S1
+    #     return numpy.array([0, -1, -1])
+    # elif action == 29:
+    #     # S2
+    #     return numpy.array([1, -1, -1])
+    # elif action == 30:
+    #     # S3
+    #     return numpy.array([2, -1, -1])
+    # elif action == 31:
+    #     # S4
+    #     return numpy.array([3, -1, -1])
+    # elif action == 32:
+    #     # S5
+    #     return numpy.array([4, -1, -1])

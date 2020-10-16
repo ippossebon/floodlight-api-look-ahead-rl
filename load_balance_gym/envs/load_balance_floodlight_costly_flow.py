@@ -315,7 +315,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 "tcp_src": tcp_src,
                 "tcp_dst": tcp_dst,
                 "ip_proto": "0x06",
-                "hard_timeout": "60",
+                "hard_timeout": "10", # timeout bem menor pois não queremos usar essa regra por muito tempo, apenas para sair do loop
                 "actions": "output=controller"
             }
 
@@ -461,7 +461,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
 
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
-        reward = total_usage_links * s3_1_tx_mbps
+        reward = float(total_usage_links * s3_1_tx_mbps)
 
         return reward
 

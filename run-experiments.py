@@ -69,16 +69,16 @@ def trainAgent(env):
         env=env,
         policy=MlpPolicy,
         verbose=1,
-        learning_rate=0.005, # alpha
-        gamma=0.95,
+        learning_rate=0.05, # alpha: If your learning rate is set too low, training will progress very slowly as you are making very tiny updates to the weights in your network. However, if your learning rate is set too high, it can cause undesirable divergent behavior in your loss function.
+        gamma=0.95, # It controls the importance of the future rewards versus the immediate ones.
         exploration_initial_eps=1.0,
         exploration_fraction=0.9,
-        exploration_final_eps=0.05,
+        exploration_final_eps=0.01,
         buffer_size=56,
         batch_size=50
     )
-    model.learn(total_timesteps=500)
-    model.save('./DQN_500_lr_0005_gamma_095_expldecay_09_2_flows')
+    model.learn(total_timesteps=700)
+    model.save('./trained-agents/A1')
     print('Modelo treinado e salvo.')
 
 
@@ -91,29 +91,18 @@ def testAgent(env):
 
     state = env.reset()
     num_steps = 500
-    cumm_reward = 0
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
 
     for step in range(num_steps):
         action, _ = model.predict(state, deterministic=False)
-
         state, reward, done, info = env.step(action)
-        # print('Step {0}. Reward = {1}'.format(step, reward))
-
         step += 1
-        cumm_reward += reward
 
-        output_data_line = '{0}; {1}; {2}'.format(step, state.tolist(), reward)
+        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         output_file_data.append(output_data_line)
 
-    print('Cummulative reward = ', cumm_reward)
-
-    # print("* Average reward per thousand episodes *")
-    # for r in rewards_per_thousand_episodes:
-    #     print(count, ": ", str(sum(r/1000)))
-    #     count += 1000
 
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
@@ -162,8 +151,8 @@ def containsTraffic(state):
 def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
-    # trainAgent(env)
-    testAgent(env)
+    trainAgent(env)
+    # testAgent(env)
 
     # runExperiments(env)
 

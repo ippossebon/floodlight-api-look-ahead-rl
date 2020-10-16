@@ -3,7 +3,6 @@ import numpy
 def actionMap(action):
     ## H1 -> H2
     if action == 0:
-        # S1, in 1, out 2
         return numpy.array([0, 0, 1])
     elif action == 1:
         # S1, in 1, out 3

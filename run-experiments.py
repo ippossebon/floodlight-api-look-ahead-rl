@@ -78,7 +78,7 @@ def trainAgent(env):
         batch_size=50
     )
     model.learn(total_timesteps=700)
-    model.save('./trained-agents/A1')
+    model.save('./trained-agents/A1_v2')
     print('Modelo treinado e salvo.')
 
 

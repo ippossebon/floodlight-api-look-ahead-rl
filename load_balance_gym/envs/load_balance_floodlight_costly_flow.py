@@ -48,11 +48,11 @@ class LoadBalanceEnvDiscAction(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Discrete(33)
+        self.action_space = spaces.Discrete(28)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, 320000) # max = 3200 * 100 (100 é capacidade do link S3.1)
+        self.reward_range = (0, 640000) # max = 3200 * (100 + 100) (100 é capacidade do link S3.1)
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = None
@@ -460,8 +460,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
 
+        s1_1_tx_mbps = state[0]
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
-        reward = float(total_usage_links * s3_1_tx_mbps)
+        reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
 
         return reward
 

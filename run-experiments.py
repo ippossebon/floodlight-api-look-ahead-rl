@@ -151,10 +151,10 @@ def containsTraffic(state):
 def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
-    start_time = datetime.now()
+    start_time = datetime.datetime.now()
     trainAgent(env)
     # testAgent(env)
-    training_time = datetime.now() - start_time
+    training_time = datetime.datetime.now() - start_time
     print('Training took: ', training_time)
     # runExperiments(env)
 

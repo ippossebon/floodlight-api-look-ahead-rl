@@ -152,10 +152,10 @@ def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
     start_time = datetime.datetime.now()
-    trainAgent(env)
-    # testAgent(env)
+    # trainAgent(env)
+    testAgent(env)
     training_time = datetime.datetime.now() - start_time
-    print('Training took: ', training_time)
+    print('Test took: ', training_time)
     # runExperiments(env)
 
 

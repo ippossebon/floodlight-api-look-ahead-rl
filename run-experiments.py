@@ -87,10 +87,10 @@ def testAgent(env):
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
-    model = DQN.load(load_path='./trained-agents/DQN_500_lr_0005_gamma_098_expldecay_09_3_flows', env=env)
+    model = DQN.load(load_path='./trained-agents/A1_v2', env=env)
 
     state = env.reset()
-    num_steps = 500
+    num_steps = 700
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
@@ -106,7 +106,7 @@ def testAgent(env):
 
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    output_filename = './output-app-{0}.csv'.format(st)
+    output_filename = './A1_v2-{0}.csv'.format(st)
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:

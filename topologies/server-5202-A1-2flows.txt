@@ -1360,3 +1360,7 @@ Accepted connection from 10.0.0.1, port 47361
 [ ID] Interval           Transfer     Bandwidth
 [ 23]   0.00-1351.83 sec  0.00 Bytes  0.00 bits/sec                  sender
 [ 23]   0.00-1351.83 sec  1.49 GBytes  9.47 Mbits/sec                  receiver
+-----------------------------------------------------------
+Server listening on 5202
+-----------------------------------------------------------
+iperf3: interrupt - the server has terminated

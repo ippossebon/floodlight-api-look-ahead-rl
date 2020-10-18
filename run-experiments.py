@@ -90,7 +90,7 @@ def testAgent(env):
     model = DQN.load(load_path='./trained-agents/A1_v2', env=env)
 
     state = env.reset()
-    num_steps = 700
+    num_steps = 100
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
@@ -102,7 +102,6 @@ def testAgent(env):
 
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         output_file_data.append(output_data_line)
-
 
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')

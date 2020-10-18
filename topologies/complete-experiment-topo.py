@@ -29,7 +29,7 @@ class MastersSwitchTopo(Topo):
  	        node2 = s1,
  	        port1 = 1,
  	        port2 = 1,
-            bw=100, # bw = Mbits/seg,
+            bw=50, # bw = Mbits/seg,
             cls=TCLink
         )
         self.addLink(
@@ -37,7 +37,7 @@ class MastersSwitchTopo(Topo):
  	        node2 = s3,
  	        port1 = 1,
  	        port2 = 1,
-            bw=100, # bw = Mbits/seg,
+            bw=50, # bw = Mbits/seg,
             cls=TCLink
         )
         # self.addLink(

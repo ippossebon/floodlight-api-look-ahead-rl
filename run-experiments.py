@@ -90,7 +90,7 @@ def testAgent(env):
     model = DQN.load(load_path='./trained-agents/A1', env=env)
 
     state = env.reset()
-    num_steps = 100
+    num_steps = 500
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
@@ -151,10 +151,10 @@ def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
     start_time = datetime.datetime.now()
-    trainAgent(env)
-    # testAgent(env)
+    # trainAgent(env)
+    testAgent(env)
     training_time = datetime.datetime.now() - start_time
-    print('Training took: ', training_time)
+    print('Test took: ', training_time)
     # runExperiments(env)
 
 

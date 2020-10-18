@@ -73,12 +73,10 @@ def trainAgent(env):
         gamma=0.95, # It controls the importance of the future rewards versus the immediate ones.
         exploration_initial_eps=1.0,
         exploration_fraction=0.9,
-        exploration_final_eps=0.01,
-        buffer_size=56,
-        batch_size=50
+        exploration_final_eps=0.01
     )
     model.learn(total_timesteps=700)
-    model.save('./trained-agents/A1')
+    model.save('./trained-agents/D2')
     print('Modelo treinado e salvo.')
 
 
@@ -87,7 +85,7 @@ def testAgent(env):
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
-    model = DQN.load(load_path='./trained-agents/A1', env=env)
+    model = DQN.load(load_path='./trained-agents/D2', env=env)
 
     state = env.reset()
     num_steps = 500
@@ -106,7 +104,7 @@ def testAgent(env):
 
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    output_filename = './A1-{0}-2flows.csv'.format(st)
+    output_filename = './D2.csv'.format(st)
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:
@@ -152,8 +150,8 @@ def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
     start_time = datetime.datetime.now()
-    # trainAgent(env)
-    testAgent(env)
+    trainAgent(env)
+    # testAgent(env)
     training_time = datetime.datetime.now() - start_time
     print('Test took: ', training_time)
     # runExperiments(env)

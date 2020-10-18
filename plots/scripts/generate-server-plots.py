@@ -6,10 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 filenames = [
-    '../data/teste-1-A1_v2/server-5201-A1_v2',
-    '../data/teste-1-A1_v2/server-5202-A1_v2',
-    '../data/teste-1-A1_v2/server-5203-A1_v2',
-    '../data/teste-1-A1_v2/server-5204-A1_v2'
+    '../../experiments-data/A1-2-flows/server-5201-2flows',
+    '../../experiments-data/A1-2-flows/server-5202-2flows'
 ]
 generateServerCSVs(filenames)
 
@@ -33,4 +31,4 @@ plt.xlabel('Time step')
 plt.ylabel('Bandwidth (Mbps)')
 # plt.ylim(top=100)
 # plt.show()
-plt.savefig('../images/A1_v2-servers.pdf')
+plt.savefig('../../experiments-data/A1-2-flows/bandwidth-servers.pdf')

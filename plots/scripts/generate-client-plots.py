@@ -6,11 +6,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 filenames = [
-    '../data/teste-1-A1_v2/46110-A1_v2',
-    '../data/teste-1-A1_v2/46112-A1_v2',
-    '../data/teste-1-A1_v2/46114-A1_v2',
-    '../data/teste-1-A1_v2/46116-A1_v2',
-    '../data/teste-1-A1_v2/46118-A1_v2'
+    '../../experiments-data/A1-2-flows/46110-A1_v2',
+    '../../experiments-data/A1-2-flows/46112-A1_v2',
+    '../../experiments-data/A1-2-flows/46114-A1_v2',
+    '../../experiments-data/A1-2-flows/46116-A1_v2',
+    '../../experiments-data/A1-2-flows/46118-A1_v2'
 ]
 # generateClientCSVs(filenames)
 
@@ -34,4 +34,4 @@ plt.xlabel('Time step')
 plt.ylabel('Bandwidth (Mbps)')
 # plt.ylim(top=100)
 # plt.show()
-plt.savefig('../images/A1_v2-clients.pdf')
+plt.savefig('../../experiments-data/A1-2-flows/bandwidth-clients.pdf')

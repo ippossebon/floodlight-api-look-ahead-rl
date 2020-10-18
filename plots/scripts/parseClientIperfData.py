@@ -1,6 +1,6 @@
 import csv
 
-def generateServerCSVs(filenames):
+def generateClientCSVs(filenames):
     for filename in filenames:
         count = 0
         input_lines = []
@@ -12,7 +12,7 @@ def generateServerCSVs(filenames):
             lines = inputfile.readlines()
 
             for line in lines:
-                if count > 5:
+                if count > 3:
                     end_of_info = line == '- - - - - - - - - - - - - - - - - - - - - - - - -\n'
                     error_line = 'error' in line
                     end_of_content = end_of_info or error_line

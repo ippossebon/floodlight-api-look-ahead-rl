@@ -78,7 +78,7 @@ def trainAgent(env):
         batch_size=50
     )
     model.learn(total_timesteps=700)
-    model.save('./trained-agents/A1_v2')
+    model.save('./trained-agents/A1')
     print('Modelo treinado e salvo.')
 
 
@@ -87,7 +87,7 @@ def testAgent(env):
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
-    model = DQN.load(load_path='./trained-agents/A1_v2', env=env)
+    model = DQN.load(load_path='./trained-agents/A1', env=env)
 
     state = env.reset()
     num_steps = 100
@@ -105,7 +105,7 @@ def testAgent(env):
 
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    output_filename = './A1_v2-{0}.csv'.format(st)
+    output_filename = './A1-{0}.csv'.format(st)
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:
@@ -151,10 +151,10 @@ def run():
     env = createVectorizedEnv()
     # validateEnvOpenAI(env)
     start_time = datetime.datetime.now()
-    # trainAgent(env)
-    testAgent(env)
+    trainAgent(env)
+    # testAgent(env)
     training_time = datetime.datetime.now() - start_time
-    print('Test took: ', training_time)
+    print('Training took: ', training_time)
     # runExperiments(env)
 
 

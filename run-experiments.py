@@ -96,6 +96,7 @@ def testAgent(env):
     output_file_data.append('Step; State; Reward')
 
     for step in range(num_steps):
+        print('Step ', step)
         action, _ = model.predict(state, deterministic=False)
         state, reward, done, info = env.step(action)
         step += 1
@@ -105,7 +106,7 @@ def testAgent(env):
 
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    output_filename = './A1-{0}.csv'.format(st)
+    output_filename = './A1-{0}-3flows.csv'.format(st)
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:

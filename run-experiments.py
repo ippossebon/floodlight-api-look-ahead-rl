@@ -78,7 +78,7 @@ def trainAgent(env):
         batch_size=50
     )
     model.learn(total_timesteps=700)
-    model.save('./trained-agents/B1')
+    model.save('./trained-agents/B2')
     print('Modelo treinado e salvo.')
 
 
@@ -87,7 +87,7 @@ def testAgent(env):
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
-    model = DQN.load(load_path='./trained-agents/B1', env=env)
+    model = DQN.load(load_path='./trained-agents/B2', env=env)
 
     state = env.reset()
     num_steps = 500
@@ -106,7 +106,7 @@ def testAgent(env):
 
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    output_filename = './B1.csv'.format(st)
+    output_filename = './B2.csv'.format(st)
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:

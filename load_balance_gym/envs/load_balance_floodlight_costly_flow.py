@@ -462,8 +462,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         s1_1_tx_mbps = state[0]
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
-        harmonic_mean = len(state) / numpy.sum(1.0/state)
-        reward = float(harmonic_mean * (s3_1_tx_mbps + s1_1_tx_mbps))
+        variance = numpy.var(state)
+        reward = float(variance * (s3_1_tx_mbps + s1_1_tx_mbps))
 
         return reward
 

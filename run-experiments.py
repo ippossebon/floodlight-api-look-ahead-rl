@@ -106,7 +106,7 @@ def testAgent(env):
 
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    output_filename = './A1-{0}-3flows.csv'.format(st)
+    output_filename = './A1-{0}-2flows.csv'.format(st)
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:

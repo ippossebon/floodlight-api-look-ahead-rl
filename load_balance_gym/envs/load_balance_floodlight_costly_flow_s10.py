@@ -48,7 +48,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Discrete(28)
+        self.action_space = spaces.Discrete(50)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
@@ -65,62 +65,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         self.previous_timestamp = timestamp
 
 
-    def saveItemLinks(self, item):
-        """
-        Gera um dicionário no formato:
-        self.switch_links = {
-            '00:00:01': [{
-                src_port: 1,
-                dst_port: 2,
-                dst_switch: '00:00:002'
-            },
-            {
-                src_port: 1,
-                dst_port: 3,
-                dst_switch: '00:00:003'
-            }]
-        ...
-        }
-
-        """
-
-        # Adiciona no mapeamento de links na direção 1
-        switch_src = item['src-switch']
-        if switch_src not in self.switch_links.keys():
-            self.switch_links[switch_src] = []
-
-        link1 = {
-            'src_port': item['src-port'],
-            'dst_port': item['dst-port'],
-            'dst_switch': item['dst-switch']
-        }
-        self.switch_links[switch_src].append(link1)
-        self.num_links += 1
-
-        # Adiciona porta possível
-        if switch_src not in self.switch_possible_ports.keys():
-            self.switch_possible_ports[switch_src] = []
-        self.switch_possible_ports[switch_src].append(item['src-port'])
-
-        # Adiciona no mapeamento de links na direção 2
-        switch_dst = item['dst-switch']
-        if switch_dst not in self.switch_links.keys():
-            self.switch_links[switch_dst] = []
-
-        link2 = {
-            'src_port': item['dst-port'],
-            'dst_port': item['src-port'],
-            'dst_switch': item['src-switch']
-        }
-        self.switch_links[switch_dst].append(link2)
-        self.num_links += 1
-
-        # Adiciona porta possível
-        if switch_dst not in self.switch_possible_ports.keys():
-            self.switch_possible_ports[switch_dst] = []
-        self.switch_possible_ports[switch_dst].append(item['dst-port'])
-
-
     def saveItemSwitchIds(self, item):
         # Guarda IDs de switches
         if item['src-switch'] not in self.switch_ids:
@@ -135,29 +79,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         # Guarda mapeamento de switches e portas
         for item in response_data:
-            self.saveItemLinks(item)
             self.saveItemSwitchIds(item)
 
         self.switch_ids = sorted(self.switch_ids)
-
-        self.ports: {
-            'S1.1': 0,
-            'S1.2': 1,
-            'S1.3': 2,
-            'S2.1': 3,
-            'S2.2': 4,
-            'S2.3': 5,
-            'S2.4': 6,
-            'S3.1': 7,
-            'S3.2': 8,
-            'S3.3': 9,
-            'S3.4': 10,
-            'S4.1': 11,
-            'S4.2': 12,
-            'S4.3': 13,
-            'S5.1': 14,
-            'S5.2': 15,
-        }
 
 
     def reset(self):

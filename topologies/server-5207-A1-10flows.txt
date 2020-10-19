@@ -738,3 +738,7 @@ Accepted connection from 10.0.0.1, port 57356
 [ ID] Interval           Transfer     Bandwidth
 [ 23]   0.00-729.48 sec  0.00 Bytes  0.00 bits/sec                  sender
 [ 23]   0.00-729.48 sec  58.9 MBytes   677 Kbits/sec                  receiver
+-----------------------------------------------------------
+Server listening on 5207
+-----------------------------------------------------------
+iperf3: interrupt - the server has terminated

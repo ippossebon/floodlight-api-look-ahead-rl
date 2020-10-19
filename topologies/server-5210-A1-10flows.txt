@@ -776,3 +776,7 @@ Accepted connection from 10.0.0.1, port 39380
 [ ID] Interval           Transfer     Bandwidth
 [ 23]   0.00-767.16 sec  0.00 Bytes  0.00 bits/sec                  sender
 [ 23]   0.00-767.16 sec  86.1 MBytes   942 Kbits/sec                  receiver
+-----------------------------------------------------------
+Server listening on 5210
+-----------------------------------------------------------
+iperf3: interrupt - the server has terminated

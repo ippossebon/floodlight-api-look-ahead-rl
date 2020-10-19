@@ -710,3 +710,7 @@ Accepted connection from 10.0.0.1, port 56219
 [ ID] Interval           Transfer     Bandwidth
 [ 23]   0.00-701.16 sec  0.00 Bytes  0.00 bits/sec                  sender
 [ 23]   0.00-701.16 sec  68.2 MBytes   816 Kbits/sec                  receiver
+-----------------------------------------------------------
+Server listening on 5208
+-----------------------------------------------------------
+iperf3: interrupt - the server has terminated

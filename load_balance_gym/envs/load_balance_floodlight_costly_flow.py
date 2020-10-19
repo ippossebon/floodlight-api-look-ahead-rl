@@ -450,21 +450,20 @@ class LoadBalanceEnvDiscAction(gym.Env):
         #         forwarding_avg_time = item['average']
         #         break
 
-        # total_usage_links = 0
-        # for i in range(len(state)):
-        #     if state[i] > 1:
-        #         total_usage_links += state[i] * 2
-        #     else:
-        #         # link não está sendo usado
-        #         total_usage_links += 1
+        total_usage_links = 0
+        for i in range(len(state)):
+            if state[i] > 1:
+                total_usage_links += state[i] * 2
+            else:
+                # link não está sendo usado
+                total_usage_links += 1
 
         # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
 
         s1_1_tx_mbps = state[0]
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
-        variance = numpy.var(state) or 0.0001
 
-        reward = float(1/variance * (s3_1_tx_mbps + s1_1_tx_mbps))
+        reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
 
         return reward
 

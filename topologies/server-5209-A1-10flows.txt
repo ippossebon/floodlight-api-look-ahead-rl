@@ -517,3 +517,7 @@ Accepted connection from 10.0.0.1, port 52100
 [ ID] Interval           Transfer     Bandwidth
 [ 23]   0.00-508.52 sec  0.00 Bytes  0.00 bits/sec                  sender
 [ 23]   0.00-508.52 sec  79.0 MBytes  1.30 Mbits/sec                  receiver
+-----------------------------------------------------------
+Server listening on 5209
+-----------------------------------------------------------
+iperf3: interrupt - the server has terminated

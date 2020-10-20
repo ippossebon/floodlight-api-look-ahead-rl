@@ -90,7 +90,7 @@ def testAgent(env):
     model = DQN.load(load_path='./trained-agents/B1', env=env)
 
     state = env.reset()
-    num_steps = 700
+    num_steps = 1000
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')

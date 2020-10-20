@@ -7,13 +7,15 @@ from stable_baselines import PPO2, A2C, DQN
 from stable_baselines.common.evaluation import evaluate_policy
 
 from matplotlib import pyplot as plt
+from collections import Counter
 
-import json
 import time
-import requests
 import gym
 import numpy
 import datetime
+import linecache
+import os
+import tracemalloc
 
 """
 O objetivo é fazer com que o sistema acomode os fluxos na rede de forma a usar
@@ -87,7 +89,7 @@ def testAgent(env):
     # DQN_500_lr_001_gamma_095_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_098_expldecay_09_3_flows
     # DQN_500_lr_0005_gamma_095_expldecay_09_2_flows
-    model = DQN.load(load_path='./trained-agents/B1', env=env)
+    model = DQN.load(load_path='./trained-agents/A1', env=env)
 
     state = env.reset()
     num_steps = 1000
@@ -104,7 +106,7 @@ def testAgent(env):
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         output_file_data.append(output_data_line)
 
-    output_filename = './B1-3flows.csv'
+    output_filename = './A1-2flows.csv'
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:
@@ -145,16 +147,47 @@ def containsElephantFlow(state):
 def containsTraffic(state):
     pass
 
+def displayTop(snapshot, key_type='lineno', limit=3):
+    snapshot = snapshot.filter_traces((
+        tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
+        tracemalloc.Filter(False, "<unknown>"),
+    ))
+    top_stats = snapshot.statistics(key_type)
+
+    print("Top %s lines" % limit)
+    for index, stat in enumerate(top_stats[:limit], 1):
+        frame = stat.traceback[0]
+        # replace "/path/to/module/file.py" with "module/file.py"
+        filename = os.sep.join(frame.filename.split(os.sep)[-2:])
+        print("#%s: %s:%s: %.1f KiB"
+              % (index, filename, frame.lineno, stat.size / 1024))
+        line = linecache.getline(frame.filename, frame.lineno).strip()
+        if line:
+            print('    %s' % line)
+
+    other = top_stats[limit:]
+    if other:
+        size = sum(stat.size for stat in other)
+        print("%s other: %.1f KiB" % (len(other), size / 1024))
+    total = sum(stat.size for stat in top_stats)
+    print("Total allocated size: %.1f KiB" % (total / 1024))
 
 def run():
-    env = createVectorizedEnv()
-    # validateEnvOpenAI(env)
+    tracemalloc.start()
     start_time = datetime.datetime.now()
+
+    env = createVectorizedEnv()
+
+    # validateEnvOpenAI(env)
     # trainAgent(env)
+
     testAgent(env)
-    training_time = datetime.datetime.now() - start_time
-    print('Test took: ', training_time)
-    # runExperiments(env)
+    time_interval = datetime.datetime.now() - start_time
+
+    print('Test took: ', time_interval)
+
+    snapshot = tracemalloc.take_snapshot()
+    displayTop(snapshot)
 
 
 ##################################################################################

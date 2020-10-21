@@ -52,7 +52,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, 640000) # max = 3200 * (100 + 100) (100 é capacidade do link S3.1)
+        self.reward_range = (0, 320000) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = None

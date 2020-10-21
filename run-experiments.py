@@ -88,7 +88,7 @@ def testAgent(env):
     model = DQN.load(load_path='./trained-agents/D1', env=env)
 
     state = env.reset()
-    num_steps = 1200
+    num_steps = 2500
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
@@ -102,7 +102,7 @@ def testAgent(env):
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         output_file_data.append(output_data_line)
 
-    output_filename = './D1-5flows.csv'
+    output_filename = './D1-10flows.csv'
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:

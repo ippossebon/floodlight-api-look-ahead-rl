@@ -7,23 +7,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 client_filenames = [
-    '../../experiments-data/A1-2-flows/client-46110-A1-2flows',
-    '../../experiments-data/A1-2-flows/client-46112-A1-2flows'
+    '../../experiments-data/A1-3-flows/client-46110-A1-3flows',
+    '../../experiments-data/A1-3-flows/client-46112-A1-3flows',
+    '../../experiments-data/A1-3-flows/client-46114-A1-3flows'
 ]
 generateClientCSVs(client_filenames)
 
 
 server_filenames = [
-    '../../experiments-data/A1-2-flows/server-5201-A1-2flows',
-    '../../experiments-data/A1-2-flows/server-5202-A1-2flows'
+    '../../experiments-data/A1-3-flows/server-5201-A1-3flows',
+    '../../experiments-data/A1-3-flows/server-5202-A1-3flows',
+    '../../experiments-data/A1-3-flows/server-5203-A1-3flows'
 ]
 generateServerCSVs(server_filenames)
 
-num_clients = 2
-num_servers = 2
+num_clients = 3
+num_servers = 3
 fig, axes = plt.subplots(num_clients, num_servers, figsize=(15, 10))
 
-colors = ['yellow', 'orange', 'red', 'blue', 'purple']
+colors = ['orange', 'red', 'pink', 'blue', 'purple']
 index_data = 0
 
 for filename in client_filenames:
@@ -56,4 +58,4 @@ for filename in server_filenames:
     axes[1,index_data].set_title('Server {0} bandwidth'.format(index_data+1))
     index_data = index_data + 1
 
-plt.savefig('../../experiments-data/A1-2-flows/bandwidth-clients.pdf')
+plt.savefig('../../experiments-data/A1-3-flows/A1-3-bandwidth.pdf')

@@ -85,10 +85,10 @@ def trainAgent(env):
 
 
 def testAgent(env):
-    model = DQN.load(load_path='./trained-agents/D1', env=env)
+    model = DQN.load(load_path='./trained-agents/A1', env=env)
 
     state = env.reset()
-    num_steps = 2500
+    num_steps = 2000
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
@@ -102,13 +102,13 @@ def testAgent(env):
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         output_file_data.append(output_data_line)
 
-    output_filename = './D1-10flows.csv'
-
-    with open(output_filename, 'w+') as output_file:
-        for item in output_file_data:
-            output_file.write("%s\n" % item)
-
-    print('Arquivo {0} criado.'.format(output_filename))
+    # output_filename = './D1-10flows.csv'
+    #
+    # with open(output_filename, 'w+') as output_file:
+    #     for item in output_file_data:
+    #         output_file.write("%s\n" % item)
+    #
+    # print('Arquivo {0} criado.'.format(output_filename))
 
 
 def runExperiments():
@@ -178,12 +178,12 @@ def run():
     # trainAgent(env)
 
     testAgent(env)
-    time_interval = datetime.datetime.now() - start_time
-
-    print('Test took: ', time_interval)
-
-    snapshot = tracemalloc.take_snapshot()
-    displayTop(snapshot)
+    # time_interval = datetime.datetime.now() - start_time
+    #
+    # print('Test took: ', time_interval)
+    #
+    # snapshot = tracemalloc.take_snapshot()
+    # displayTop(snapshot)
 
 
 ##################################################################################

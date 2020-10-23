@@ -2,7 +2,6 @@ import csv
 
 def parseLine(line):
     splitted_text = line.split(';')
-
     step = splitted_text[0]
     state = splitted_text[1]
     reward_str = splitted_text[2]

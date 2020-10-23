@@ -106,7 +106,7 @@ def testAgent(env):
     now = datetime.datetime.now()
     timestamp = datetime.datetime.timestamp(now)
 
-    output_filename = './A1-4flows-' + timestamp + '.csv'
+    output_filename = './A1-4flows-' + str(timestamp) + '.csv'
 
     with open(output_filename, 'w+') as output_file:
         for item in output_file_data:

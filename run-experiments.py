@@ -88,7 +88,7 @@ def testAgent(env):
     model = DQN.load(load_path='./trained-agents/A1', env=env)
 
     state = env.reset()
-    num_steps = 20
+    num_steps = 10
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
@@ -103,8 +103,8 @@ def testAgent(env):
         output_file_data.append(output_data_line)
 
 
-    now = datetime.now()
-    timestamp = datetime.timestamp(now)
+    now = datetime.datetime.now()
+    timestamp = datetime.datetime.timestamp(now)
 
     output_filename = './A1-4flows-' + timestamp + '.csv'
 

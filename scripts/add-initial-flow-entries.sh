@@ -1,4 +1,4 @@
-INPUT=initial_flows_entries.cvs
+INPUT=initial_flow_entries.cvs
 
 while IFS=, read -r rule_name, switch_id, tcp_src, tcp_dst, out_port
 do

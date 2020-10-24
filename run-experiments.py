@@ -16,8 +16,11 @@ import datetime
 import linecache
 import os
 import tracemalloc
+import sys, getopt
 
 """
+python3 run-experiments.py -a <agent> -n <numflows> -s <flowsize>
+
 O objetivo é fazer com que o sistema acomode os fluxos na rede de forma a usar
 melhor os seus recursos.
 
@@ -172,16 +175,39 @@ def displayTop(snapshot, key_type='lineno', limit=3):
     total = sum(stat.size for stat in top_stats)
     print("Total allocated size: %.1f KiB" % (total / 1024))
 
-def run():
-    tracemalloc.start()
-    start_time = datetime.datetime.now()
 
-    env = createVectorizedEnv()
 
-    # validateEnvOpenAI(env)
-    # trainAgent(env)
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv, "ha:n:s:", ["agent=", "numflows=", "flowsize="])
+    except getopt.GetoptError:
+        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize>')
+        sys.exit(2)
 
-    testAgent(env)
+    for opt, arg in opts:
+        if opt == '-h':
+            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize>')
+            sys.exit()
+        elif opt in ("-a", "--agent"):
+            agent = arg
+        elif opt in ("-n", "--numflows"):
+            num_flows = arg
+        elif opt in ("-s", "--flowsize"):
+            flows_size = arg
+
+    print('agent: ', agent)
+    print('num_flows: ', num_flows)
+    print('flows_size: ', flows_size)
+
+    # tracemalloc.start()
+    # start_time = datetime.datetime.now()
+    #
+    # env = createVectorizedEnv()
+    #
+    # # validateEnvOpenAI(env)
+    # # trainAgent(env)
+    #
+    # testAgent(env)
     # time_interval = datetime.datetime.now() - start_time
     #
     # print('Test took: ', time_interval)
@@ -191,4 +217,5 @@ def run():
 
 
 ##################################################################################
-run()
+if __name__ == "__main__":
+   main(sys.argv[1:])

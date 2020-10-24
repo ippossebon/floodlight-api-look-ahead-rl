@@ -116,13 +116,9 @@ class MastersSwitchTopo(Topo):
         )
 
 
-        self.runScript()
-
-    def runScript():
         print('Antes')
         self.h1.cmd('python teste.py')
         print('Depois')
-
 
 
 if __name__ == '__main__':

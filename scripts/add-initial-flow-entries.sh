@@ -6,9 +6,11 @@ IFS=','
 
 while read rulename switchid tcpsrc tcpdst outport
 do
-  curl --location --request POST 'http://192.168.68.250:8080/wm/staticflowpusher/json' \
+  wget --no-check-certificate \
+    --method POST \
+    --timeout=0 \
     --header 'Content-Type: application/json' \
-    --data-raw '{
+    --body-data '{
       "name": "{{rulename}}",
       "switch": "{{switchid}}",
       "active": "true",
@@ -19,6 +21,7 @@ do
       "tcp_src": "{{tcpsrc}}",
       "tcp_dst": "{{tcpdst}}",
       "actions": "output={{outport}}"
-    }'
+  }' \
+     'http://192.168.68.250:8080/wm/staticflowpusher/json'
 done < $INPUT
 IFS=$OLDIFS

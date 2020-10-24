@@ -137,7 +137,7 @@ if __name__ == '__main__':
     h1 = net.hosts[0]
     h2 = net.hosts[1]
 
-    h1.cmd('echo "Isadora"')
+    h1.cmd('./teste.sh')
 
 
 
@@ -149,4 +149,5 @@ if __name__ == '__main__':
     # plc1.cmd(plc1_cmd)
 
 
+    print('Parando a rede...')
     net.stop()

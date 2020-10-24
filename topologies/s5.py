@@ -129,12 +129,12 @@ if __name__ == '__main__':
     net.start()
     #net.pingAll()
 
-    script = "teste.sh"
+    time.sleep(2)
+    net['H1'].cmd('./teste.sh')
 
     CLI(mininet=net)
 
-    time.sleep(2)
-    net['H1'].cmd('./teste.sh')
+
 
     # h1, h2 = net.get('H1', 'H2')
 

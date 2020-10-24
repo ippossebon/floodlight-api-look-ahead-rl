@@ -6,11 +6,11 @@ IFS=','
 
 while read rulename switchid tcpsrc tcpdst outport
 do
-  $RULENAME = rulename
-  $SWITCHID = switchid
-  $TCPSRC = tcpsrc
-  $TCPDST = tcpdst
-  $OUTPORT = outport
+  RULENAME=rulename
+  SWITCHID=switchid
+  TCPSRC=tcpsrc
+  TCPDST=tcpdst
+  OUTPORT=outport
 
   wget --no-check-certificate \
     --method POST \

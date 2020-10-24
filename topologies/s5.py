@@ -131,7 +131,7 @@ if __name__ == '__main__':
 
     script = "teste.sh"
 
-    # CLI(mininet=net)
+    CLI(mininet=net)
     time.sleep(2)
 
     h1, h2 = net.get('H1', 'H2')

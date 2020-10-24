@@ -117,6 +117,9 @@ class MastersSwitchTopo(Topo):
             cls=TCLink
         )
 
+    def getHosts(self):
+        return self.h1, self.h2
+
 
 if __name__ == '__main__':
     setLogLevel('info')
@@ -134,17 +137,12 @@ if __name__ == '__main__':
 
     # CLI(mininet=net)
 
-    h1 = net.hosts[0]
-    h2 = net.hosts[1]
+    h1, h2 = net.getHosts()
 
-    h1.cmd('./teste.sh')
-    h1.cmd('./teste.sh')
-
-    h2.cmd('./teste.sh')
-    h2.cmd('./teste.sh')
+    h1.cmd('echo "Hello" > FOO.txt')
+    h2.cmd('echo "Hello 2" > FOO.txt')
 
 
-    time.sleep(5)
     print('fim')
 
 

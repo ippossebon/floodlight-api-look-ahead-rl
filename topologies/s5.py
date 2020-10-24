@@ -130,17 +130,19 @@ if __name__ == '__main__':
     #net.pingAll()
 
     time.sleep(2)
-    net['H1'].cmd('./teste.sh')
 
-    print('deu')
     # CLI(mininet=net)
 
-    print('net.hosts', net.hosts)
+
+    h1 = net.hosts[0]
+    h2 = net.hosts[1]
+
+    h1.cmd('echo "Isadora"')
+
 
 
     # h1, h2 = net.get('H1', 'H2')
 
-    # h1.cmd('./teste.sh')
 
     # plc1_cmd = 'scripts/attacks/arp-mitm.sh %s %s %s' % ( target_ip1,
     #         target_ip2, attacker_interface)

@@ -14,7 +14,7 @@ do
 
   curl --location --request POST 'http://192.168.68.250:8080/wm/staticflowpusher/json' \
   --header 'Content-Type: application/json' \
-  --data-raw '{
+  -d '{
       "name": "'"$RULENAME"'",
       "switch": "'"$SWITCHID"'",
       "active": "true",

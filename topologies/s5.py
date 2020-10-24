@@ -137,11 +137,9 @@ if __name__ == '__main__':
     h2 = net.get('H2')
 
 
-    h1.cmd('echo "Hello" > FOO.txt')
-    h2.cmd('echo "Hello 2" > FOO2.txt')
+    h1.cmd('chmod +x ./teste.sh; ./teste.sh')
 
-
-    CLI(net)
+    # CLI(net)
 
 
     print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')

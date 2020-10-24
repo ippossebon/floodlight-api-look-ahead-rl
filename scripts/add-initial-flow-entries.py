@@ -3,6 +3,7 @@
 
 import requests
 import json
+from csv import reader
 
 urlPath = 'http://192.168.68.250:8080/wm/staticflowpusher/json'
 headers = {

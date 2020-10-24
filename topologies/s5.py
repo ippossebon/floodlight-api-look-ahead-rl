@@ -134,7 +134,7 @@ if __name__ == '__main__':
     CLI(mininet=net)
     time.sleep(2)
 
-    h1, h2 = net.get('h1', 'h2')
+    h1, h2 = net.get('H1', 'H2')
 
     h1.cmd('./teste.sh')
     print('ok')

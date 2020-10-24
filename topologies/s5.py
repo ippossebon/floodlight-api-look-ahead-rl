@@ -144,6 +144,9 @@ if __name__ == '__main__':
     h2.cmd('./teste.sh')
 
 
+    time.sleep(5)
+    print('fim')
+
 
 
     # h1, h2 = net.get('H1', 'H2')
@@ -154,5 +157,5 @@ if __name__ == '__main__':
     # plc1.cmd(plc1_cmd)
 
 
-    print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')
-    net.stop()
+    # print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')
+    # net.stop()

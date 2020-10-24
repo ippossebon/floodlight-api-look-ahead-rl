@@ -1,4 +1,4 @@
-rulename, switchid, tcpsrc, tcpdst, outport
+rule_name, switch_id, tcp_src, tcp_dst, out_port
 rule_s1_46110_to_5201_out_2, 00:00:00:00:00:00:00:01, 46110, 5201, controller
 rule_s2_46110_to_5201_out_4, 00:00:00:00:00:00:00:02, 46110, 5201, controller
 rule_s3_46110_to_5201_out_1, 00:00:00:00:00:00:00:03, 46110, 5201, controller

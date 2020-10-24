@@ -19,7 +19,7 @@ import tracemalloc
 import sys, getopt
 
 """
-python3 run-experiments.py -a <agent> -n <numflows> -s <flowsize>
+python3 run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps>
 
 O objetivo é fazer com que o sistema acomode os fluxos na rede de forma a usar
 melhor os seus recursos.
@@ -87,11 +87,12 @@ def trainAgent(env):
     print('Modelo treinado e salvo.')
 
 
-def testAgent(env):
-    model = DQN.load(load_path='./trained-agents/A1', env=env)
+def testAgent(env, agent, num_flows, flows_size, timesteps):
+    agent_path = './trained-agents/{0}'.format(agent)
+    model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
-    num_steps = 50
+    num_steps = timesteps
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
@@ -106,38 +107,9 @@ def testAgent(env):
         output_file_data.append(output_data_line)
 
 
-    now = datetime.datetime.now()
-    timestamp = datetime.datetime.timestamp(now)
-
-    output_filename = './A1-4flows-' + str(timestamp) + '.csv'
-
-    with open(output_filename, 'w+') as output_file:
-        for item in output_file_data:
-            output_file.write("%s\n" % item)
-
-    print('Arquivo {0} criado.'.format(output_filename))
+    return output_file_data
 
 
-def runExperiments():
-    print('Rodando experimentos...')
-    model = A2C.load(load_path='./A2C_100_lr_01_gamma_096-disc-env', env=env)
-    env.reset()
-    update_count = 0
-
-    # Avaliar o state e identificar se existe algum elephant flow potencial
-    while True:
-        state = env.getState()
-
-        if containsTraffic(state) and containsElephantFlow(state):
-            print('Update: ', update_count)
-
-            action, _ = model.predict(state, deterministic=True)
-            state, reward, done, info = env.step(action)
-
-            update_count += 1
-        else:
-            # Aguarda dois segundos e checa de novo.
-            time.sleep(2)
 
 
 """
@@ -147,10 +119,8 @@ def containsElephantFlow(state):
     pass
 
 
-def containsTraffic(state):
-    pass
 
-def displayTop(snapshot, key_type='lineno', limit=3):
+def getTopMemoryUsage(snapshot, key_type='lineno', limit=3):
     snapshot = snapshot.filter_traces((
         tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
         tracemalloc.Filter(False, "<unknown>"),
@@ -173,25 +143,29 @@ def displayTop(snapshot, key_type='lineno', limit=3):
         size = sum(stat.size for stat in other)
         print("%s other: %.1f KiB" % (len(other), size / 1024))
     total = sum(stat.size for stat in top_stats)
-    print("Total allocated size: %.1f KiB" % (total / 1024))
+    total_allocated_size_kb = total / 1024
+    print("Total allocated size: %.1f KiB" % total_allocated_size_kb)
+
+    return total_allocated_size_kb
 
 
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "ha:n:s:", ["agent=", "numflows=", "flowsize="])
+        opts, args = getopt.getopt(argv, "ha:n:s:t:", ["agent=", "numflows=", "flowsize=", "timesteps="])
     except getopt.GetoptError:
-        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize>')
+        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps>')
         sys.exit(2)
 
 
     agent = None
     num_flows = None
     flows_size = None
+    timesteps = None
 
     for opt, arg in opts:
         if opt == '-h':
-            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize>')
+            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps>'')
             sys.exit()
         elif opt in ("-a", "--agent"):
             agent = arg
@@ -199,26 +173,47 @@ def main(argv):
             num_flows = arg
         elif opt in ("-s", "--flowsize"):
             flows_size = arg
+        elif opt in ("-t", "--timesteps"):
+            timesteps = arg
 
-    print('agent: ', agent)
-    print('num_flows: ', num_flows)
-    print('flows_size: ', flows_size)
+    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}'.format(
+        agent, num_flows, flows_size, timesteps
+    ))
 
     # tracemalloc.start()
     # start_time = datetime.datetime.now()
     #
     # env = createVectorizedEnv()
     #
-    # # validateEnvOpenAI(env)
-    # # trainAgent(env)
+    # output_file_data = testAgent(env, agent, num_flows, flows_size, timesteps)
     #
-    # testAgent(env)
     # time_interval = datetime.datetime.now() - start_time
-    #
-    # print('Test took: ', time_interval)
-    #
     # snapshot = tracemalloc.take_snapshot()
-    # displayTop(snapshot)
+    # memory_usage = getTopMemoryUsage(snapshot)
+    #
+    # timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+    #
+    # output_filename_csv = './{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
+    #     agent, num_flows, flows_size, timesteps, timestamp
+    # )
+    #
+    # with open(output_filename, 'w+') as output_file:
+    #     for item in output_file_data:
+    #         output_file.write("%s\n" % item)
+    #
+    # print('Arquivo {0} criado.'.format(output_filename))
+    #
+    # output_filename_compcosts = './{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+    #     agent, num_flows, flows_size, timesteps, timestamp
+    # )
+    #
+    # with open(output_comp_costs_filename, 'w+') as output_file:
+    #     output_file.write("%s\n" % time_interval)
+    #     output_file.write("%s\n" % memory_usage)
+    #
+    #
+    # print('Arquivo {0} criado.'.format(output_filename_compcosts))
+
 
 
 ##################################################################################

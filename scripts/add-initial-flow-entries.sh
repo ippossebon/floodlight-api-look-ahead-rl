@@ -14,4 +14,4 @@ do
       "tcp_dst": "{{tcp_dst}}",
       "actions": "output={{out_port}}"
     }'
-done < initial_flows_entries.csv
+done < ./initial_flows_entries.csv

@@ -131,5 +131,4 @@ if __name__ == '__main__':
 
     CLI(mininet=net, script=script)
 
-    CLI()
     net.stop()

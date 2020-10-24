@@ -138,7 +138,7 @@ if __name__ == '__main__':
     h2.cmd('chmod +x ./teste.sh; ./teste.sh')
 
 
-    # CLI(net)
+    CLI(net)
 
 
     print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')

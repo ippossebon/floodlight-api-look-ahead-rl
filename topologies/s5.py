@@ -9,6 +9,8 @@ from mininet.cli import CLI
 from mininet.link import TCLink
 from mininet.node import OVSSwitch, Controller, RemoteController
 
+import time
+
 class MastersSwitchTopo(Topo):
     def build(self):
         s1 = self.addSwitch('S1', mac="00:00:00:00:00:01", protocols='OpenFlow13')

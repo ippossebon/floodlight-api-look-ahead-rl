@@ -21,7 +21,7 @@ with open('./initial_flow_entries.csv', 'r') as read_obj:
             switch_id = row[1]
             tcp_src = row[2]
             tcp_dst = row[3]
-            out_port - row[4]
+            out_port = row[4]
 
             rule = {
                 "switch": switch_id,

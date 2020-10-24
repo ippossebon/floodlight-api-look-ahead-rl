@@ -129,6 +129,8 @@ if __name__ == '__main__':
 
     script = "teste.sh"
 
-    CLI(mininet=net, script=script)
+    CLI(mininet=net)
+    CLI.do_px('python teste.py')
+
 
     net.stop()

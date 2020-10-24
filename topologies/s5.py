@@ -129,15 +129,14 @@ if __name__ == '__main__':
     net = Mininet(topo=topo, controller=c1)
     net.start()
     #net.pingAll()
-    print('\n\n\n\n\n\n\n\n\n\n\n\n------------------------')
-
     time.sleep(2)
 
     h1 = net.get('H1')
     h2 = net.get('H2')
 
-
     h1.cmd('chmod +x ./teste.sh; ./teste.sh')
+    h2.cmd('chmod +x ./teste.sh; ./teste.sh')
+
 
     # CLI(net)
 

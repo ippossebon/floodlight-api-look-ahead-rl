@@ -19,8 +19,8 @@ class MastersSwitchTopo(Topo):
         s4 = self.addSwitch('S4', mac="00:00:00:00:00:04", protocols='OpenFlow13')
         s5 = self.addSwitch('S5', mac="00:00:00:00:00:05", protocols='OpenFlow13')
 
-        self.h1 = self.addHost('H1', mac="00:00:00:00:00:11", ip="10.0.0.1/12")
-        self.h2 = self.addHost('H2', mac="00:00:00:00:00:12", ip="10.0.0.2/12")
+        h1 = self.addHost('H1', mac="00:00:00:00:00:11", ip="10.0.0.1/12")
+        h2 = self.addHost('H2', mac="00:00:00:00:00:12", ip="10.0.0.2/12")
         # h3 = self.addHost('H3', mac="00:00:00:00:00:13", ip="10.0.0.3/12")
         # h4 = self.addHost('H4', mac="00:00:00:00:00:14", ip="10.0.0.4/12")
 
@@ -117,8 +117,6 @@ class MastersSwitchTopo(Topo):
             cls=TCLink
         )
 
-    def getHosts(self):
-        return self.h1, self.h2
 
 
 if __name__ == '__main__':
@@ -135,24 +133,15 @@ if __name__ == '__main__':
 
     time.sleep(2)
 
-    # CLI(mininet=net)
+    h1 = net.get('H1')
+    h2 = net.get('H2')
 
-    h1, h2 = topo.getHosts()
 
     h1.cmd('echo "Hello" > FOO.txt')
-    h2.cmd('echo "Hello 2" > FOO.txt')
+    h2.cmd('echo "Hello 2" > FOO2.txt')
 
 
-    print('fim')
-
-
-
-    # h1, h2 = net.get('H1', 'H2')
-
-
-    # plc1_cmd = 'scripts/attacks/arp-mitm.sh %s %s %s' % ( target_ip1,
-    #         target_ip2, attacker_interface)
-    # plc1.cmd(plc1_cmd)
+    CLI(net)
 
 
     print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')

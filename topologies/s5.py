@@ -137,7 +137,6 @@ if __name__ == '__main__':
     h1, h2 = net.get('H1', 'H2')
 
     h1.cmd('./teste.sh')
-    print('ok')
 
     # plc1_cmd = 'scripts/attacks/arp-mitm.sh %s %s %s' % ( target_ip1,
     #         target_ip2, attacker_interface)

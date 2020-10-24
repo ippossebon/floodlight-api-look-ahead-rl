@@ -149,5 +149,5 @@ if __name__ == '__main__':
     # plc1.cmd(plc1_cmd)
 
 
-    print('Parando a rede...')
+    print('\n\n\n\n\n\nParando a rede...')
     net.stop()

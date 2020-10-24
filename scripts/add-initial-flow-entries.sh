@@ -1,3 +1,4 @@
+INPUT=initial_flows_entries.cvs
 
 while IFS=, read -r rule_name, switch_id, tcp_src, tcp_dst, out_port
 do
@@ -15,4 +16,4 @@ do
       "tcp_dst": "{{tcp_dst}}",
       "actions": "output={{out_port}}"
     }'
-done < $initial_flows_entries
+done < $INPUT

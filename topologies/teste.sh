@@ -1,1 +1,1 @@
-echo "Rodou script" > ./saida-server.txt
+echo "Rodou script" > TESTE.txt

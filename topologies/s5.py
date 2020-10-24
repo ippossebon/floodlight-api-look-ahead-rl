@@ -137,11 +137,11 @@ if __name__ == '__main__':
     h1 = net.hosts[0]
     h2 = net.hosts[1]
 
-    h1.cmd('echo "Isadora h1 1"')
-    h1.cmd('echo "Isadora h1 2"')
+    h1.cmd('./teste.sh')
+    h1.cmd('./teste.sh')
 
-    h2.cmd('echo "Isadora h2 1"')
-    h2.cmd('echo "Isadora h2 2"')
+    h2.cmd('./teste.sh')
+    h2.cmd('./teste.sh')
 
 
 

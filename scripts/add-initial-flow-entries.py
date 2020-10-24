@@ -23,6 +23,8 @@ with open('./initial_flow_entries.csv', 'r') as read_obj:
             tcp_dst = row[3]
             out_port = str(row[4])
 
+            print(switch_id)
+
             rule = {
                 "switch": switch_id,
                 "name": rule_name,

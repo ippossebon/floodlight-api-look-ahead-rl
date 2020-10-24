@@ -128,6 +128,7 @@ if __name__ == '__main__':
     net = Mininet(topo=topo, controller=c1)
     net.start()
     #net.pingAll()
+    print('\n\n\n\n\n\n\n\n\n\n\n\n------------------------')
 
     time.sleep(2)
 
@@ -149,5 +150,5 @@ if __name__ == '__main__':
     # plc1.cmd(plc1_cmd)
 
 
-    print('\n\n\n\n\n\nParando a rede...')
+    print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')
     net.stop()

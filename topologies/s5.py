@@ -137,7 +137,7 @@ if __name__ == '__main__':
 
     # CLI(mininet=net)
 
-    h1, h2 = net.getHosts()
+    h1, h2 = topo.getHosts()
 
     h1.cmd('echo "Hello" > FOO.txt')
     h2.cmd('echo "Hello 2" > FOO.txt')
@@ -155,5 +155,5 @@ if __name__ == '__main__':
     # plc1.cmd(plc1_cmd)
 
 
-    # print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')
-    # net.stop()
+    print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')
+    net.stop()

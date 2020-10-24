@@ -106,9 +106,7 @@ def testAgent(env, agent, num_flows, flows_size, timesteps):
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         output_file_data.append(output_data_line)
 
-
     return output_file_data
-
 
 
 
@@ -127,16 +125,16 @@ def getTopMemoryUsage(snapshot, key_type='lineno', limit=3):
     ))
     top_stats = snapshot.statistics(key_type)
 
-    print("Top %s lines" % limit)
+    # print("Top %s lines" % limit)
     for index, stat in enumerate(top_stats[:limit], 1):
         frame = stat.traceback[0]
         # replace "/path/to/module/file.py" with "module/file.py"
         filename = os.sep.join(frame.filename.split(os.sep)[-2:])
-        print("#%s: %s:%s: %.1f KiB"
-              % (index, filename, frame.lineno, stat.size / 1024))
+        # print("#%s: %s:%s: %.1f KiB"
+        #       % (index, filename, frame.lineno, stat.size / 1024))
         line = linecache.getline(frame.filename, frame.lineno).strip()
         if line:
-            print('    %s' % line)
+            # print('    %s' % line)
 
     other = top_stats[limit:]
     if other:
@@ -144,7 +142,7 @@ def getTopMemoryUsage(snapshot, key_type='lineno', limit=3):
         print("%s other: %.1f KiB" % (len(other), size / 1024))
     total = sum(stat.size for stat in top_stats)
     total_allocated_size_kb = total / 1024
-    print("Total allocated size: %.1f KiB" % total_allocated_size_kb)
+    # print("Total allocated size: %.1f KiB" % total_allocated_size_kb)
 
     return total_allocated_size_kb
 
@@ -180,39 +178,39 @@ def main(argv):
         agent, num_flows, flows_size, timesteps
     ))
 
-    # tracemalloc.start()
-    # start_time = datetime.datetime.now()
-    #
-    # env = createVectorizedEnv()
-    #
-    # output_file_data = testAgent(env, agent, num_flows, flows_size, timesteps)
-    #
-    # time_interval = datetime.datetime.now() - start_time
-    # snapshot = tracemalloc.take_snapshot()
-    # memory_usage = getTopMemoryUsage(snapshot)
-    #
-    # timestamp = datetime.datetime.timestamp(datetime.datetime.now())
-    #
-    # output_filename_csv = './{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
-    #     agent, num_flows, flows_size, timesteps, timestamp
-    # )
-    #
-    # with open(output_filename, 'w+') as output_file:
-    #     for item in output_file_data:
-    #         output_file.write("%s\n" % item)
-    #
-    # print('Arquivo {0} criado.'.format(output_filename))
-    #
-    # output_filename_compcosts = './{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-    #     agent, num_flows, flows_size, timesteps, timestamp
-    # )
-    #
-    # with open(output_comp_costs_filename, 'w+') as output_file:
-    #     output_file.write("%s\n" % time_interval)
-    #     output_file.write("%s\n" % memory_usage)
-    #
-    #
-    # print('Arquivo {0} criado.'.format(output_filename_compcosts))
+    tracemalloc.start()
+    start_time = datetime.datetime.now()
+
+    env = createVectorizedEnv()
+
+    output_file_data = testAgent(env, agent, num_flows, flows_size, timesteps)
+
+    time_interval = datetime.datetime.now() - start_time
+    snapshot = tracemalloc.take_snapshot()
+    memory_usage = getTopMemoryUsage(snapshot)
+
+    timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+
+    output_filename_csv = './{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
+        agent, num_flows, flows_size, timesteps, timestamp
+    )
+
+    with open(output_filename, 'w+') as output_file:
+        for item in output_file_data:
+            output_file.write("%s\n" % item)
+
+    print('Arquivo {0} criado.'.format(output_filename))
+
+    output_filename_compcosts = './{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+        agent, num_flows, flows_size, timesteps, timestamp
+    )
+
+    with open(output_comp_costs_filename, 'w+') as output_file:
+        output_file.write("%s\n" % time_interval)
+        output_file.write("%s\n" % memory_usage)
+
+
+    print('Arquivo {0} criado.'.format(output_filename_compcosts))
 
 
 

@@ -1,6 +1,10 @@
+#!/bin/bash
 INPUT=initial_flow_entries.csv
+OLDIFS=$IFS
+IFS=','
+[ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
 
-while IFS=, read -r rulename, switchid, tcpsrc, tcpdst, outport
+while read rulename switchid tcpsrc tcpdst outport
 do
   curl --location --request POST 'http://192.168.68.250:8080/wm/staticflowpusher/json' \
     --header 'Content-Type: application/json' \
@@ -17,3 +21,4 @@ do
       "actions": "output={{outport}}"
     }'
 done < $INPUT
+IFS=$OLDIFS

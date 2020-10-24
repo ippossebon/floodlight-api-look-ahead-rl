@@ -18,7 +18,7 @@ do
       \"ip_proto\": \"0x06\",
       \"tcp_src\": \"$tcpsrc\",
       \"tcp_dst\": \"$tcpdst\",
-      \"actions\": \"output\=$outport\"
+      \"actions\": \"output=controller\"
   }"
 
 done < $INPUT

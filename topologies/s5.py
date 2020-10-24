@@ -117,6 +117,8 @@ class MastersSwitchTopo(Topo):
             cls=TCLink
         )
 
+    def
+
 
 if __name__ == '__main__':
     setLogLevel('info')
@@ -132,11 +134,13 @@ if __name__ == '__main__':
     script = "teste.sh"
 
     CLI(mininet=net)
+
     time.sleep(2)
+    net['H1'].cmd('./teste.sh')
 
-    h1, h2 = net.get('H1', 'H2')
+    # h1, h2 = net.get('H1', 'H2')
 
-    h1.cmd('./teste.sh')
+    # h1.cmd('./teste.sh')
 
     # plc1_cmd = 'scripts/attacks/arp-mitm.sh %s %s %s' % ( target_ip1,
     #         target_ip2, attacker_interface)

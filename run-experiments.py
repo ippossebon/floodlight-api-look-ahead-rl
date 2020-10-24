@@ -184,6 +184,11 @@ def main(argv):
         print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize>')
         sys.exit(2)
 
+
+    agent = None
+    num_flows = None
+    flows_size = None
+
     for opt, arg in opts:
         if opt == '-h':
             print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize>')

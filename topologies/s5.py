@@ -115,6 +115,9 @@ class MastersSwitchTopo(Topo):
             cls=TCLink
         )
 
+
+        self.runScript()
+
     def runScript():
         print('Antes')
         self.h1.cmd('python teste.py')
@@ -132,7 +135,6 @@ if __name__ == '__main__':
     net = Mininet(topo=topo, controller=c1)
     net.start()
     #net.pingAll()
-    topo.runScript()
-    
+
     CLI(net)
     net.stop()

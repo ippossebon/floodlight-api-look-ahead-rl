@@ -116,11 +116,6 @@ class MastersSwitchTopo(Topo):
         )
 
 
-        print('Antes')
-        self.h1.cmd('python teste.py')
-        print('Depois')
-
-
 if __name__ == '__main__':
     setLogLevel('info')
     topo = MastersSwitchTopo()
@@ -132,5 +127,9 @@ if __name__ == '__main__':
     net.start()
     #net.pingAll()
 
-    CLI(net)
+    script = "teste.sh"
+
+    CLI(mininet=net, script=script)
+
+    CLI()
     net.stop()

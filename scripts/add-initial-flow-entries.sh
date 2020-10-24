@@ -17,7 +17,8 @@ do
       \"ipv4_dst\": \"10.0.0.2\",
       \"ip_proto\": \"0x06\",
       \"tcp_src\": \"$tcpsrc\",
-      \"tcp_dst\": \"$tcpdst\"
+      \"tcp_dst\": \"$tcpdst\",
+      \"actions\": \"output\=$outport\"
   }"
 
 done < $INPUT

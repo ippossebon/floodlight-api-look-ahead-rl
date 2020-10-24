@@ -12,21 +12,21 @@ do
   TCPDST=tcpdst
   OUTPORT=outport
 
-  wget --no-check-certificate \
+  wget --no-check-certificate --quiet \
     --method POST \
     --timeout=0 \
     --header 'Content-Type: application/json' \
     --body-data '{
-      "name": $RULENAME,
-      "switch": $SWITCHID,
+      "name": "{{rulename}}",
+      "switch": "{{switchid}}",
       "active": "true",
       "eth_type": "0x0800",
       "ipv4_src": "10.0.0.1",
       "ipv4_dst": "10.0.0.2",
       "ip_proto": "0x06",
-      "tcp_src": $TCPSRC,
-      "tcp_dst": $TCPDST,
-      "actions": $OUTPORT
+      "tcp_src": "{{tcpsrc}}",
+      "tcp_dst": "{{tcpdst}}",
+      "actions": "output={{outport}}"
   }' \
      'http://192.168.68.250:8080/wm/staticflowpusher/json'
 done < $INPUT

@@ -27,7 +27,7 @@ class MastersSwitchTopo(Topo):
 
         # Adiciona hosts aos switches
         self.addLink(
-            node1 = self.h1,
+            node1 = h1,
  	        node2 = s1,
  	        port1 = 1,
  	        port2 = 1,
@@ -35,7 +35,7 @@ class MastersSwitchTopo(Topo):
             cls=TCLink
         )
         self.addLink(
-            node1 = self.h2,
+            node1 = h2,
  	        node2 = s3,
  	        port1 = 1,
  	        port2 = 1,

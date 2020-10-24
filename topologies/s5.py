@@ -130,7 +130,16 @@ if __name__ == '__main__':
     script = "teste.sh"
 
     CLI(mininet=net)
-    CLI.do_px('python teste.py')
+    time.sleep(2)
+
+    h1, h2 = net.get('h1', 'h2')
+
+    h1.cmd('./teste.sh')
+    print('ok')
+
+    # plc1_cmd = 'scripts/attacks/arp-mitm.sh %s %s %s' % ( target_ip1,
+    #         target_ip2, attacker_interface)
+    # plc1.cmd(plc1_cmd)
 
 
     net.stop()

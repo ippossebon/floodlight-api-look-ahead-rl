@@ -135,6 +135,7 @@ if __name__ == '__main__':
     print('deu')
     # CLI(mininet=net)
 
+    print('net.hosts', net.hosts)
 
 
     # h1, h2 = net.get('H1', 'H2')

@@ -132,7 +132,8 @@ if __name__ == '__main__':
     time.sleep(2)
     net['H1'].cmd('./teste.sh')
 
-    CLI(mininet=net)
+    print('deu')
+    # CLI(mininet=net)
 
 
 

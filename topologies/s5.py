@@ -117,8 +117,6 @@ class MastersSwitchTopo(Topo):
             cls=TCLink
         )
 
-    def
-
 
 if __name__ == '__main__':
     setLogLevel('info')

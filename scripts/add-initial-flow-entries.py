@@ -18,7 +18,7 @@ with open('./initial_flow_entries.csv', 'r') as read_obj:
     if header != None:
         for row in csv_reader:
             rule_name = str(row[0])
-            switch_id = str(row[1])
+            switch_id = str(row[1]).replace(' ', '')
             tcp_src = row[2]
             tcp_dst = row[3]
             out_port = str(row[4])

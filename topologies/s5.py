@@ -42,22 +42,6 @@ class MastersSwitchTopo(Topo):
             bw=50, # bw = Mbits/seg,
             cls=TCLink
         )
-        # self.addLink(
-        #     node1 = h3,
- 	    #     node2 = s1,
- 	    #     port1 = 1,
- 	    #     port2 = 4,
-        #     bw=10, # bw = Mbits/seg,
-        #     cls=TCLink
-        # )
-        # self.addLink(
-        #     node1 = h4,
- 	    #     node2 = s3,
- 	    #     port1 = 1,
- 	    #     port2 = 5,
-        #     bw=10, # bw = Mbits/seg,
-        #     cls=TCLink
-        # )
 
         # Adiciona links entre os switches
         self.addLink(
@@ -130,7 +114,14 @@ if __name__ == '__main__':
     net.start()
     #net.pingAll()
 
+    cmd = '/usr/sbin/sshd'
+    opts = '-D'
+    for host in net.hosts:
+        host.cmd(cmd + ' ' + opts + '&')
+    info( "*** Waiting for ssh daemons to start\n" )
+
     CLI(net)
 
-    print('\n\n\n\n\n\n\n\n\n\n\n\nParando a rede...')
+
+    print('\n\nParando a rede...')
     net.stop()

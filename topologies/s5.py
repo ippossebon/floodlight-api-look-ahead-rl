@@ -129,12 +129,11 @@ if __name__ == '__main__':
 
     net = Mininet(topo=topo, controller=c1)
     net.start()
-    #net.pingAll()
 
-    # routes = ['10.0.0.0/24']
-    # switch = network['s1']
-    # ip = '10.123.123.1/32'
-    # connectToRootNS(net, switch, ip, routes)
+    routes = ['10.0.0.0/24']
+    switch = network['s1']
+    ip = '10.123.123.1/32'
+    connectToRootNS(net, switch, ip, routes)
 
     cmd = '/usr/sbin/sshd'
     opts = '-D -o UseDNS=no -u0'

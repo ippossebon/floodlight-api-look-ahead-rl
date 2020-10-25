@@ -7,7 +7,7 @@ from mininet.net import Mininet
 from mininet.log import setLogLevel
 from mininet.cli import CLI
 from mininet.link import TCLink
-from mininet.node import OVSSwitch, Controller, RemoteController
+from mininet.node import OVSSwitch, Controller, RemoteController, Node
 
 import time
 
@@ -110,11 +110,13 @@ def connectToRootNS(network, switch, ip, routes):
       ip: IP address for root namespace node
       routes: host networks to route to"""
     # Create a node in root namespace and link to switch 0
-    root = Node( 'root', inNamespace=False )
-    intf = network.addLink( root, switch ).intf1
-    root.setIP( ip, intf=intf )
+    root = Node('root', inNamespace=False)
+    intf = network.addLink(root, switch).intf1
+    root.setIP(ip, intf=intf)
+
     # Start network that now includes link to root namespace
     network.start()
+
     # Add routes from root ns to hosts
     for route in routes:
         root.cmd( 'route add -net ' + route + ' dev ' + str( intf ) )
@@ -123,8 +125,6 @@ def connectToRootNS(network, switch, ip, routes):
 if __name__ == '__main__':
     setLogLevel('info')
     topo = MastersSwitchTopo()
-    # c1 = RemoteController('c1', ip='127.0.0.1') #usando RYU
-    # c1 = RemoteController('c1', ip='0.0.0.0', port=6653) #usando Floodlight
     c1 = RemoteController('c1', ip='192.168.68.250', port=6653) #usando Floodlight
 
     net = Mininet(topo=topo, controller=c1)

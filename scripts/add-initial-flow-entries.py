@@ -11,7 +11,8 @@ headers = {
     'Accept': 'application/json',
 }
 
-with open('./initial_flow_entries.csv', 'r') as read_obj:
+
+with open('floodlight-api-look-ahead-rl/scripts/initial_flow_entries.csv', 'r') as read_obj:
     csv_reader = reader(read_obj)
     header = next(csv_reader)
 

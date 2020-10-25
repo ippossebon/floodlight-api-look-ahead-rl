@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INPUT=experiments_config.cvs
+INPUT=experiments-config.csv
 OLDIFS=$IFS
 IFS=','
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
@@ -16,9 +16,9 @@ chmod +x ./iperf-server.sh
 
 while read agent num_iperfs flow_size timesteps iter
 do
-	for i in $(seq 1 $iter)
+	for i in $(seq 1 10); do
     # Inicia Floodlight
-    ./init-controller.sh
+    # ./init-controller.sh
 
     # Adiciona fluxos iniciais (python2)
     ./add-initial-flow-entries.sh
@@ -32,7 +32,7 @@ do
     docker exec -it lookahead python ~/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
 
     # Inicia iperfs
-    start-iperfs.sh $agent $num_iperfs $flow_size
+    ./start-iperfs.sh $agent $num_iperfs $flow_size
 
     # Espera conclusão do agente e iperfs
     WAIT_TIME = $(($timesteps*7))
@@ -45,5 +45,6 @@ do
     ./kill-controller.sh
 
     sleep 5
+  done
 
 done < $INPUT

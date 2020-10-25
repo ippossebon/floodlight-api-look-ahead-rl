@@ -92,7 +92,7 @@ def testAgent(env, agent, num_flows, flows_size, timesteps):
     model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
-    num_steps = timesteps
+    num_steps = int(timesteps)
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')

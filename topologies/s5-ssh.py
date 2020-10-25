@@ -1,5 +1,6 @@
 import sys
 
+from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.cli import CLI
 from mininet.log import lg, info

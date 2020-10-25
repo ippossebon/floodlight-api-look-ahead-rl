@@ -193,17 +193,17 @@ def main(argv):
         agent, num_flows, flows_size, timesteps, timestamp
     )
 
-    with open(output_filename, 'w+') as output_file:
+    with open(output_filename_csv, 'w+') as output_file:
         for item in output_file_data:
             output_file.write("%s\n" % item)
 
-    print('Arquivo {0} criado.'.format(output_filename))
+    print('Arquivo {0} criado.'.format(output_filename_csv))
 
     output_filename_compcosts = './{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
         agent, num_flows, flows_size, timesteps, timestamp
     )
 
-    with open(output_comp_costs_filename, 'w+') as output_file:
+    with open(output_filename_compcosts, 'w+') as output_file:
         output_file.write("%s\n" % time_interval)
         output_file.write("%s\n" % memory_usage)
 

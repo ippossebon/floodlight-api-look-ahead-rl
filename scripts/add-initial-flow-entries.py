@@ -26,8 +26,8 @@ with open('./initial_flow_entries.csv', 'r') as read_obj:
             print(switch_id)
 
             rule = {
-                "switch": switch_id,
                 "name": rule_name,
+                "switch": switch_id,
                 "active": "true",
                 "eth_type": "0x0800",
                 "ipv4_src": "10.0.0.1",
@@ -39,5 +39,6 @@ with open('./initial_flow_entries.csv', 'r') as read_obj:
             }
 
             data = json.dumps(rule)
+            print(data)
             response = requests.post(urlPath, data=data, headers=headers)
             print(response)

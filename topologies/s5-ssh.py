@@ -147,7 +147,7 @@ if __name__ == '__main__':
 
     topo = MastersSwitchTopo()
     c1 = RemoteController('c1', ip='192.168.68.250', port=6653) #usando Floodlight
-    net = Mininet(topo=topo, controller=c1)
+    net = Mininet(topo=topo)
 
     # get sshd args from the command line or use default args
     # useDNS=no -u0 to avoid reverse DNS lookup timeout

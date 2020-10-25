@@ -201,7 +201,7 @@ if __name__ == '__main__':
     # c1 = RemoteController('c1', ip='0.0.0.0', port=6653) #usando Floodlight
     c1 = RemoteController('c1', ip='192.168.68.250', port=6653) #usando Floodlight
 
-    net = Mininet(topo=topo, controller=c1, ipBase='10.0.0.0/8')
+    net = Mininet(topo=topo, controller=c1)
     net.start()
     #net.pingAll()
     CLI(net)

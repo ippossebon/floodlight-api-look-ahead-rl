@@ -18,8 +18,8 @@ class MastersSwitchTopo(Topo):
         s4 = self.addSwitch('S4', protocols='OpenFlow13')
         s5 = self.addSwitch('S5', protocols='OpenFlow13')
 
-        h1 = self.addHost('H1')
-        h2 = self.addHost('H2')
+        h1 = self.addHost('H1', ip="10.0.0.21/8", defaultRoute='via 10.0.0.1')
+        h2 = self.addHost('H2', ip="10.0.0.22/8", defaultRoute='via 10.0.0.1')
         # h3 = self.addHost('H3', mac="00:00:00:00:00:13", ip="10.0.0.3/12")
         # h4 = self.addHost('H4', mac="00:00:00:00:00:14", ip="10.0.0.4/12")
 

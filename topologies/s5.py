@@ -143,5 +143,5 @@ if __name__ == '__main__':
     CLI(net)
 
 
-    print('\n\nParando a rede...')
-    net.stop()
+    # print('\n\nParando a rede...')
+    # net.stop()

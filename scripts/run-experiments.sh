@@ -27,12 +27,14 @@ do
     ./run-mininet.sh
 
     # Inicia agente
-    cd ../../docker-look-ahead-rl/
-    docker compose up -d
+    cd ~/Documents/UFRGS/Mestrado/projeto/docker-look-ahead-rl/
+    docker-compose up -d
     docker exec -it lookahead python ~/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
 
+    sleep 20
+
     # Inicia iperfs
-    ./start-iperfs.sh $agent $num_iperfs $flow_size
+    ~/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/scripts/start-iperfs.sh $agent $num_iperfs $flow_size
 
     # Espera conclusão do agente e iperfs
     WAIT_TIME = $(($timesteps*7))

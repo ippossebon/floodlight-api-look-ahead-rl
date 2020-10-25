@@ -103,6 +103,23 @@ class MastersSwitchTopo(Topo):
 
 
 
+def connectToRootNS(network, switch, ip, routes):
+    """Connect hosts to root namespace via switch. Starts network.
+      network: Mininet() network object
+      switch: switch to connect to root namespace
+      ip: IP address for root namespace node
+      routes: host networks to route to"""
+    # Create a node in root namespace and link to switch 0
+    root = Node( 'root', inNamespace=False )
+    intf = network.addLink( root, switch ).intf1
+    root.setIP( ip, intf=intf )
+    # Start network that now includes link to root namespace
+    network.start()
+    # Add routes from root ns to hosts
+    for route in routes:
+        root.cmd( 'route add -net ' + route + ' dev ' + str( intf ) )
+
+
 if __name__ == '__main__':
     setLogLevel('info')
     topo = MastersSwitchTopo()
@@ -114,8 +131,13 @@ if __name__ == '__main__':
     net.start()
     #net.pingAll()
 
+    # routes = ['10.0.0.0/24']
+    # switch = network['s1']
+    # ip = '10.123.123.1/32'
+    # connectToRootNS(net, switch, ip, routes)
+
     cmd = '/usr/sbin/sshd'
-    opts = '-D'
+    opts = '-D -o UseDNS=no -u0'
     for host in net.hosts:
         host.cmd(cmd + ' ' + opts + '&')
 

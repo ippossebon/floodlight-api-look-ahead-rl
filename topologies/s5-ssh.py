@@ -142,12 +142,18 @@ def sshd( network, cmd='/usr/sbin/sshd', opts='-D',
         host.cmd( 'kill %' + cmd )
     network.stop()
 
+
+def TopoNet(**kwargs ):
+    "Convenience function for creating tree networks."
+    topo = MastersSwitchTopo()
+    c1 = RemoteController('c1', ip='192.168.68.250', port=6653) #usando Floodlight
+
+    return Mininet(topo, autoSetMacs=True, controller=c1)
+
 if __name__ == '__main__':
     lg.setLogLevel('info')
 
-    topo = MastersSwitchTopo()
-    c1 = RemoteController('c1', ip='192.168.68.250', port=6653) #usando Floodlight
-    net = Mininet(topo=topo)
+    net = TopoNet()
 
     # get sshd args from the command line or use default args
     # useDNS=no -u0 to avoid reverse DNS lookup timeout

@@ -5,11 +5,9 @@ OLDIFS=$IFS
 IFS=','
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
 
-chmod +x ./init-controller.sh
 chmod +x ./add-initial-flow-entries.sh
 chmod +x ./kill-controller.sh
 chmod +x ./delete-flow-entries.sh
-chmod +x ./run-mininet.sh
 chmod +x ./start-iperfs.sh
 chmod +x ./iperf-client.sh
 chmod +x ./iperf-server.sh
@@ -17,34 +15,37 @@ chmod +x ./iperf-server.sh
 while read agent num_iperfs flow_size timesteps iter
 do
 	for i in $(seq 1 10); do
-    # Inicia Floodlight
-    # ./init-controller.sh
+    echo "Iniciando experimento: $agent - $num_iperfs iperfs - $flow_size - $timesteps steps - iteração $i"
 
     # Adiciona fluxos iniciais (python2)
     ./add-initial-flow-entries.sh
 
-    # Inicia arquivo com topologia
-    ./run-mininet.sh
-
     # Inicia agente
     cd ~/Documents/UFRGS/Mestrado/projeto/docker-look-ahead-rl/
-    docker-compose up -d
-    docker exec -it lookahead python ~/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
+    CONTAINER_NAME='lookahead'
+    CID=$(docker ps -q -f status=running -f name=^/${CONTAINER_NAME}$)
+    if [ ! "${CID}" ]; then
+      echo "Container doesn't exist"
+      docker-compose up -d
+    fi
+    unset CID
+    echo "$agent - $num_iperfs iperfs - $flow_size - $timesteps steps"
+    docker exec -it lookahead python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
 
     sleep 10
 
     # Inicia iperfs
+    echo "Iniciando iperfs..."
     ~/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/scripts/start-iperfs.sh $agent $num_iperfs $flow_size
 
+    echo "Aguardando finalização do agente e iperfs..."
     # Espera conclusão do agente e iperfs
-    WAIT_TIME = $(($timesteps*7))
+    WAIT_TIME=$(($timesteps*7))
     sleep $WAIT_TIME
 
+    echo "Removendo todas as entradas estáticas..."
     # Remove fluxos estaticos
     ./delete-flow-entries.sh
-
-    # Mata floodlight
-    ./kill-controller.sh
 
     sleep 5
   done

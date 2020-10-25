@@ -18,3 +18,5 @@ for (( i=0; i < $num_flows; i++ )); do
 
   iperf3 -c iperfs_server_1 -B iperfs_client_1 --cport $client_port -p $server_port -n $flow_size > ~/output/$agent-client-$client_port-$num_flows-$flow_size-v$i.log &
 done
+
+echo "Clients done"

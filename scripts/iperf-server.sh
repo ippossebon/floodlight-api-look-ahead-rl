@@ -17,3 +17,5 @@ for (( i=0; i < $num_flows; i++ )); do
 
   iperf3 -s -p $port -1 > ~/output/$agent-server-$port-$num_flows-$flow_size-v$i.log &
 done
+
+echo "Servers done"

@@ -1,4 +1,3 @@
-agent, num_iperfs, flow_size, timesteps, iter
 A1, 2, 10M, 200, 10
 A1, 2, 50M, 200, 10
 A1, 2, 100M, 200, 10

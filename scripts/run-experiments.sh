@@ -14,38 +14,38 @@ chmod +x ./iperf-server.sh
 
 while read agent num_iperfs flow_size timesteps iter
 do
-	for i in $(seq 1 10); do
+	for (( i=0; i < $iter; i++ )); do
     echo "Iniciando experimento: $agent - $num_iperfs iperfs - $flow_size - $timesteps steps - iteração $i"
 
     # Adiciona fluxos iniciais (python2)
-    ./add-initial-flow-entries.sh
+    # ./add-initial-flow-entries.sh
 
     # Inicia agente
-    cd ~/Documents/UFRGS/Mestrado/projeto/docker-look-ahead-rl/
-    CONTAINER_NAME='lookahead'
-    CID=$(docker ps -q -f status=running -f name=^/${CONTAINER_NAME}$)
-    if [ ! "${CID}" ]; then
-      echo "Container doesn't exist"
-      docker-compose up -d
-    fi
-    unset CID
-    echo "$agent - $num_iperfs iperfs - $flow_size - $timesteps steps"
-    docker exec -it lookahead python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
+    # cd ~/Documents/UFRGS/Mestrado/projeto/docker-look-ahead-rl/
+    # CONTAINER_NAME='lookahead'
+    # CID=$(docker ps -q -f status=running -f name=^/${CONTAINER_NAME}$)
+    # if [ ! "${CID}" ]; then
+    #   echo "Container doesn't exist"
+    #   docker-compose up -d
+    # fi
+    # unset CID
+    # echo "$agent - $num_iperfs iperfs - $flow_size - $timesteps steps"
+    # docker exec -it lookahead python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
+    #
+    # sleep 10
 
-    sleep 10
-
-    # Inicia iperfs
+    # # Inicia iperfs
     echo "Iniciando iperfs..."
     ~/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/scripts/start-iperfs.sh $agent $num_iperfs $flow_size
 
-    echo "Aguardando finalização do agente e iperfs..."
-    # Espera conclusão do agente e iperfs
-    WAIT_TIME=$(($timesteps*7))
-    sleep $WAIT_TIME
-
-    echo "Removendo todas as entradas estáticas..."
-    # Remove fluxos estaticos
-    ./delete-flow-entries.sh
+    # echo "Aguardando finalização do agente e iperfs..."
+    # # Espera conclusão do agente e iperfs
+    # WAIT_TIME=$(($timesteps*7))
+    # sleep $WAIT_TIME
+    #
+    # echo "Removendo todas as entradas estáticas..."
+    # # Remove fluxos estaticos
+    # ./delete-flow-entries.sh
 
     sleep 5
   done

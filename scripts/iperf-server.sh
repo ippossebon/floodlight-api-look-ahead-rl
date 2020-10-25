@@ -15,7 +15,7 @@ flow_size=$3
 for (( i=0; i < $num_flows; i++ )); do
   port=$(($i+5201))
 
-  iperf3 -s -p $port -1 > ~/output/$agent-server-$port-$num_flows-$flow_size-v$i.log &
+  iperf3 -s -p $port -1 > ~/floodlight-api-look-ahead-rl/output-experiments-iperfs/$agent-server-$port-$num_flows-$flow_size-v$i.log &
 done
 
 echo "Servers done"

@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  lookahead:
+    build:
+      context: ./docker-look-ahead-rl
+      dockerfile: Dockerfile
+    container_name: "lookahead"
+    image: "lookahead:latest"
+    network_mode: "bridge"
+    volumes:
+      - "$PWD:/app"

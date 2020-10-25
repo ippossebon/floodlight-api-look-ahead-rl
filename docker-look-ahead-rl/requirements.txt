@@ -1,0 +1,10 @@
+gym==0.17.3
+numpy==1.19.2
+scipy==1.5.2
+pyglet==1.5.0
+cloudpickle==1.6.0
+future==0.18.2
+stable_baselines
+pandas
+requests
+tensorflow==1.15.2

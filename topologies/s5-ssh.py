@@ -4,10 +4,11 @@ from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.cli import CLI
 from mininet.log import lg, info
-from mininet.node import Node
 from mininet.topolib import TreeTopo
 from mininet.util import waitListening
 from mininet.link import TCLink
+from mininet.node import OVSSwitch, Controller, RemoteController, Node
+
 
 class MastersSwitchTopo(Topo):
     def build(self):

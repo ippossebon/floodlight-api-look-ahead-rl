@@ -131,7 +131,7 @@ if __name__ == '__main__':
     net.start()
 
     routes = ['10.0.0.0/24']
-    switch = net['s1']
+    switch = net['S1']
     ip = '10.123.123.1/32'
     connectToRootNS(net, switch, ip, routes)
 

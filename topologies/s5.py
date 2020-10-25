@@ -118,7 +118,6 @@ if __name__ == '__main__':
     opts = '-D'
     for host in net.hosts:
         host.cmd(cmd + ' ' + opts + '&')
-    info( "*** Waiting for ssh daemons to start\n" )
 
     CLI(net)
 

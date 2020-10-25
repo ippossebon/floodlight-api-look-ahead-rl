@@ -27,13 +27,15 @@ do
     if [ ! "${CID}" ]; then
       echo "Container doesn't exist"
       # docker-compose up -d
-      docker run -v $PWD/../:/app --network="bridge" --name="lookahead" -d lookahead:latest "python /app/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps"
+      docker stop lookahead; docker rm lookahead
+      echo "$PWD"
+      docker run -v $PWD/../:/app --network="bridge" --name="lookahead" -d lookahead:latest python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
     fi
     unset CID
     # echo "$agent - $num_iperfs iperfs - $flow_size - $timesteps steps"
     # docker exec -it lookahead python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
 
-    sleep 10
+    sleep 40
 
     # # Inicia iperfs
     echo "Iniciando iperfs..."

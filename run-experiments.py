@@ -88,6 +88,7 @@ def trainAgent(env):
 
 
 def testAgent(env, agent, num_flows, flows_size, timesteps):
+    print("isadora", os.getcwd())
     agent_path = './trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
@@ -189,7 +190,7 @@ def main(argv):
 
     timestamp = datetime.datetime.timestamp(datetime.datetime.now())
 
-    output_filename_csv = './{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
+    output_filename_csv = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
         agent, num_flows, flows_size, timesteps, timestamp
     )
 
@@ -199,7 +200,7 @@ def main(argv):
 
     print('Arquivo {0} criado.'.format(output_filename_csv))
 
-    output_filename_compcosts = './{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+    output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
         agent, num_flows, flows_size, timesteps, timestamp
     )
 

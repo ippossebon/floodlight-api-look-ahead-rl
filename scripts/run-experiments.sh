@@ -31,7 +31,7 @@ do
     docker-compose up -d
     docker exec -it lookahead python ~/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
 
-    sleep 20
+    sleep 10
 
     # Inicia iperfs
     ~/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/scripts/start-iperfs.sh $agent $num_iperfs $flow_size

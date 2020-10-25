@@ -109,7 +109,6 @@ def testAgent(env, agent, num_flows, flows_size, timesteps):
     return output_file_data
 
 
-
 """
 Elephant flow detection
 """
@@ -154,7 +153,6 @@ def main(argv):
     except getopt.GetoptError:
         print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps>')
         sys.exit(2)
-
 
     agent = None
     num_flows = None
@@ -208,7 +206,6 @@ def main(argv):
     with open(output_comp_costs_filename, 'w+') as output_file:
         output_file.write("%s\n" % time_interval)
         output_file.write("%s\n" % memory_usage)
-
 
     print('Arquivo {0} criado.'.format(output_filename_compcosts))
 

@@ -14,7 +14,7 @@ chmod +x ./iperf-server.sh
 
 while read agent num_iperfs flow_size timesteps iter
 do
-	for (( i=0; i < $iter; i++ )); do
+	for (( i=0; i < 1; i++ )); do
     echo "Iniciando experimento: $agent - $num_iperfs iperfs - $flow_size - $timesteps steps - iteração $i"
 
     # Adiciona fluxos iniciais (python2)

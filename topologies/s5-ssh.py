@@ -7,6 +7,7 @@ from mininet.log import lg, info
 from mininet.node import Node
 from mininet.topolib import TreeTopo
 from mininet.util import waitListening
+from mininet.link import TCLink
 
 class MastersSwitchTopo(Topo):
     def build(self):

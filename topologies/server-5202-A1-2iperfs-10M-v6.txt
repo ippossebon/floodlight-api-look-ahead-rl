@@ -1,0 +1,32 @@
+-----------------------------------------------------------
+Server listening on 5202
+-----------------------------------------------------------
+Accepted connection from 10.0.0.1, port 33933
+[ 23] local 10.0.0.2 port 5202 connected to 10.0.0.1 port 46112
+[ ID] Interval           Transfer     Bandwidth
+[ 23]   0.00-1.02   sec   130 KBytes  1.05 Mbits/sec                  
+[ 23]   1.02-2.02   sec   195 KBytes  1.60 Mbits/sec                  
+[ 23]   2.02-3.02   sec   182 KBytes  1.49 Mbits/sec                  
+[ 23]   3.02-4.00   sec   181 KBytes  1.51 Mbits/sec                  
+[ 23]   4.00-5.02   sec   177 KBytes  1.42 Mbits/sec                  
+[ 23]   5.02-6.02   sec   184 KBytes  1.51 Mbits/sec                  
+[ 23]   6.02-7.02   sec   247 KBytes  2.03 Mbits/sec                  
+[ 23]   7.02-8.02   sec   216 KBytes  1.77 Mbits/sec                  
+[ 23]   8.02-9.02   sec   229 KBytes  1.88 Mbits/sec                  
+[ 23]   9.02-10.02  sec   264 KBytes  2.17 Mbits/sec                  
+[ 23]  10.02-11.02  sec   233 KBytes  1.91 Mbits/sec                  
+[ 23]  11.02-12.05  sec  0.00 Bytes  0.00 bits/sec                  
+[ 23]  12.05-13.02  sec   335 KBytes  2.82 Mbits/sec                  
+[ 23]  13.02-14.02  sec   636 KBytes  5.21 Mbits/sec                  
+[ 23]  14.02-15.02  sec   796 KBytes  6.53 Mbits/sec                  
+[ 23]  15.02-16.00  sec   713 KBytes  5.96 Mbits/sec                  
+[ 23]  16.00-17.02  sec   519 KBytes  4.17 Mbits/sec                  
+[ 23]  17.02-17.65  sec   317 KBytes  4.14 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[ 23]   0.00-17.65  sec  0.00 Bytes  0.00 bits/sec                  sender
+[ 23]   0.00-17.65  sec  5.43 MBytes  2.58 Mbits/sec                  receiver
+-----------------------------------------------------------
+Server listening on 5202
+-----------------------------------------------------------
+iperf3: interrupt - the server has terminated

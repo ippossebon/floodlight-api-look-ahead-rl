@@ -1,0 +1,39 @@
+-----------------------------------------------------------
+Server listening on 5202
+-----------------------------------------------------------
+Accepted connection from 10.0.0.1, port 41610
+[ 23] local 10.0.0.2 port 5202 connected to 10.0.0.1 port 46112
+[ ID] Interval           Transfer     Bandwidth
+[ 23]   0.00-1.00   sec  42.4 KBytes   347 Kbits/sec                  
+[ 23]   1.00-2.00   sec   134 KBytes  1.10 Mbits/sec                  
+[ 23]   2.00-3.00   sec   133 KBytes  1.09 Mbits/sec                  
+[ 23]   3.00-4.00   sec   130 KBytes  1.07 Mbits/sec                  
+[ 23]   4.00-5.00   sec   122 KBytes   994 Kbits/sec                  
+[ 23]   5.00-6.00   sec   100 KBytes   824 Kbits/sec                  
+[ 23]   6.00-7.00   sec   109 KBytes   892 Kbits/sec                  
+[ 23]   7.00-8.00   sec   115 KBytes   938 Kbits/sec                  
+[ 23]   8.00-9.00   sec   151 KBytes  1.24 Mbits/sec                  
+[ 23]   9.00-10.00  sec   105 KBytes   854 Kbits/sec                  
+[ 23]  10.00-11.00  sec   189 KBytes  1.56 Mbits/sec                  
+[ 23]  11.00-12.00  sec   143 KBytes  1.17 Mbits/sec                  
+[ 23]  12.00-13.00  sec   249 KBytes  2.04 Mbits/sec                  
+[ 23]  13.00-14.00  sec   133 KBytes  1.09 Mbits/sec                  
+[ 23]  14.00-15.00  sec   276 KBytes  2.26 Mbits/sec                  
+[ 23]  15.00-16.00  sec   226 KBytes  1.85 Mbits/sec                  
+[ 23]  16.00-17.00  sec   180 KBytes  1.47 Mbits/sec                  
+[ 23]  17.00-18.00  sec   314 KBytes  2.57 Mbits/sec                  
+[ 23]  18.00-19.00  sec   257 KBytes  2.11 Mbits/sec                  
+[ 23]  19.00-20.05  sec   191 KBytes  1.49 Mbits/sec                  
+[ 23]  20.05-21.00  sec   117 KBytes  1.01 Mbits/sec                  
+[ 23]  21.00-22.00  sec   151 KBytes  1.24 Mbits/sec                  
+[ 23]  22.00-23.10  sec   480 KBytes  3.59 Mbits/sec                  
+[ 23]  23.10-24.04  sec  91.2 KBytes   791 Kbits/sec                  
+[ 23]  24.04-24.74  sec  0.00 Bytes  0.00 bits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[ 23]   0.00-24.74  sec  0.00 Bytes  0.00 bits/sec                  sender
+[ 23]   0.00-24.74  sec  4.04 MBytes  1.37 Mbits/sec                  receiver
+-----------------------------------------------------------
+Server listening on 5202
+-----------------------------------------------------------
+iperf3: interrupt - the server has terminated

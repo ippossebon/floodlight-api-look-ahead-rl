@@ -1,0 +1,29 @@
+-----------------------------------------------------------
+Server listening on 5201
+-----------------------------------------------------------
+Accepted connection from 10.0.0.1, port 57456
+[ 23] local 10.0.0.2 port 5201 connected to 10.0.0.1 port 46110
+[ ID] Interval           Transfer     Bandwidth
+[ 23]   0.00-1.04   sec   322 KBytes  2.54 Mbits/sec                  
+[ 23]   1.04-2.01   sec   298 KBytes  2.53 Mbits/sec                  
+[ 23]   2.01-3.00   sec   263 KBytes  2.16 Mbits/sec                  
+[ 23]   3.00-4.00   sec   361 KBytes  2.96 Mbits/sec                  
+[ 23]   4.00-5.00   sec   399 KBytes  3.26 Mbits/sec                  
+[ 23]   5.00-6.00   sec   471 KBytes  3.87 Mbits/sec                  
+[ 23]   6.00-7.00   sec   181 KBytes  1.48 Mbits/sec                  
+[ 23]   7.00-8.00   sec   379 KBytes  3.10 Mbits/sec                  
+[ 23]   8.00-9.01   sec   576 KBytes  4.67 Mbits/sec                  
+[ 23]   9.01-10.00  sec   372 KBytes  3.07 Mbits/sec                  
+[ 23]  10.00-11.02  sec   447 KBytes  3.62 Mbits/sec                  
+[ 23]  11.02-12.02  sec   433 KBytes  3.54 Mbits/sec                  
+[ 23]  12.02-13.04  sec   334 KBytes  2.66 Mbits/sec                  
+[ 23]  13.04-14.00  sec   532 KBytes  4.54 Mbits/sec                  
+[ 23]  14.00-14.95  sec   533 KBytes  4.59 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[ 23]   0.00-14.95  sec  0.00 Bytes  0.00 bits/sec                  sender
+[ 23]   0.00-14.95  sec  5.76 MBytes  3.23 Mbits/sec                  receiver
+-----------------------------------------------------------
+Server listening on 5201
+-----------------------------------------------------------
+iperf3: interrupt - the server has terminated

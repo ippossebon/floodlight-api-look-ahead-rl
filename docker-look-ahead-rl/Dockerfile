@@ -16,6 +16,4 @@ RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
-
-
+CMD ["tail", "-f", "/dev/null"]

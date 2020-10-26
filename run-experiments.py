@@ -88,11 +88,12 @@ def trainAgent(env):
 
 
 def testAgent(env, agent, num_flows, flows_size, timesteps):
+    print("isadora", os.getcwd())
     agent_path = './trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
-    num_steps = timesteps
+    num_steps = int(timesteps)
 
     output_file_data = []
     output_file_data.append('Step; State; Reward')
@@ -189,21 +190,21 @@ def main(argv):
 
     timestamp = datetime.datetime.timestamp(datetime.datetime.now())
 
-    output_filename_csv = './{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
+    output_filename_csv = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
         agent, num_flows, flows_size, timesteps, timestamp
     )
 
-    with open(output_filename, 'w+') as output_file:
+    with open(output_filename_csv, 'w+') as output_file:
         for item in output_file_data:
             output_file.write("%s\n" % item)
 
-    print('Arquivo {0} criado.'.format(output_filename))
+    print('Arquivo {0} criado.'.format(output_filename_csv))
 
-    output_filename_compcosts = './{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+    output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
         agent, num_flows, flows_size, timesteps, timestamp
     )
 
-    with open(output_comp_costs_filename, 'w+') as output_file:
+    with open(output_filename_compcosts, 'w+') as output_file:
         output_file.write("%s\n" % time_interval)
         output_file.write("%s\n" % memory_usage)
 

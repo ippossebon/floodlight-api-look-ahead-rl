@@ -15,7 +15,9 @@ replication=$4
 
 for (( i=0; i < $num_flows; i++ )); do
   port=$(($i+5201))
-  ssh -f 10.0.0.2 iperf3 -s -p $port -1 > ~/floodlight-api-look-ahead-rl/output-experiments-iperfs/$agent-server-$port-$num_flows-flows-$flow_size-v$replication.log
+  filename="~/floodlight-api-look-ahead-rl/output-experiments-iperfs/$agent-server-$port-$num_flows-flows-$flow_size-v$replication.log"
+  echo "$filename"
+  ssh mininet@192.168.68.250 "ssh -f 10.0.0.2 iperf3 -s -p $port -1 > $filename"
 done
 
 echo "Servers ready"
@@ -23,4 +25,4 @@ echo "Servers ready"
 sleep 5
 
 
-ssh -f 10.0.0.1 ~/floodlight-api-look-ahead-rl/scripts/iperf-client.sh $agent $num_flows $flow_size $replication
+ssh mininet@192.168.68.250 "ssh -f 10.0.0.1 ~/floodlight-api-look-ahead-rl/scripts/iperf-client.sh $agent $num_flows $flow_size $replication"

@@ -18,6 +18,7 @@ import os
 import tracemalloc
 import sys, getopt
 
+
 """
 python3 run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps>
 
@@ -88,8 +89,7 @@ def trainAgent(env):
 
 
 def testAgent(env, agent, num_flows, flows_size, timesteps):
-    print("isadora", os.getcwd())
-    agent_path = './trained-agents/{0}'.format(agent)
+    agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
@@ -149,16 +149,19 @@ def getTopMemoryUsage(snapshot, key_type='lineno', limit=3):
 
 
 def main(argv):
+    start1 = datetime.datetime.now()
+
     try:
-        opts, args = getopt.getopt(argv, "ha:n:s:t:", ["agent=", "numflows=", "flowsize=", "timesteps="])
+        opts, args = getopt.getopt(argv, "ha:n:s:t:i:", ["agent=", "numflows=", "flowsize=", "timesteps=", "iter="])
     except getopt.GetoptError:
-        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps>')
+        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
         sys.exit(2)
 
     agent = None
     num_flows = None
     flows_size = None
     timesteps = None
+    iter = None
 
     for opt, arg in opts:
         if opt == '-h':
@@ -172,9 +175,11 @@ def main(argv):
             flows_size = arg
         elif opt in ("-t", "--timesteps"):
             timesteps = arg
+        elif opt in ("-i", "--iter"):
+            iter = arg
 
-    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}'.format(
-        agent, num_flows, flows_size, timesteps
+    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
+        agent, num_flows, flows_size, timesteps, iter
     ))
 
     tracemalloc.start()
@@ -182,16 +187,17 @@ def main(argv):
 
     env = createVectorizedEnv()
 
+    print('Inicia execução do agente.')
+
     output_file_data = testAgent(env, agent, num_flows, flows_size, timesteps)
 
     time_interval = datetime.datetime.now() - start_time
     snapshot = tracemalloc.take_snapshot()
     memory_usage = getTopMemoryUsage(snapshot)
 
-    timestamp = datetime.datetime.timestamp(datetime.datetime.now())
 
     output_filename_csv = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
-        agent, num_flows, flows_size, timesteps, timestamp
+        agent, num_flows, flows_size, timesteps, iter
     )
 
     with open(output_filename_csv, 'w+') as output_file:
@@ -201,7 +207,7 @@ def main(argv):
     print('Arquivo {0} criado.'.format(output_filename_csv))
 
     output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-        agent, num_flows, flows_size, timesteps, timestamp
+        agent, num_flows, flows_size, timesteps, iter
     )
 
     with open(output_filename_compcosts, 'w+') as output_file:

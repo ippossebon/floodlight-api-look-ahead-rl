@@ -14,29 +14,31 @@ chmod +x ./iperf-server.sh
 
 while read agent num_iperfs flow_size timesteps iter
 do
-	for (( i=0; i < 1; i++ )); do
+	for (( i=0; i < $iter; i++ )); do
     echo "Iniciando experimento: $agent - $num_iperfs iperfs - $flow_size - $timesteps steps - iteração $i"
 
     # Adiciona fluxos iniciais (python2)
     ./add-initial-flow-entries.sh
 
     # Inicia agente
-    cd ~/Documents/UFRGS/Mestrado/projeto/docker-look-ahead-rl/
     CONTAINER_NAME='lookahead'
-    CID=$(docker ps -q -f status=running -f name=^/${CONTAINER_NAME}$)
-    if [ ! "${CID}" ]; then
-      echo "Container doesn't exist"
+    # CID=$(docker ps -q -f status=running -f name=^/${CONTAINER_NAME}$)
+    # if [ ! "${CID}" ]; then
+      # echo "Container doesn't exist"
+      # cd ..
       # docker-compose up -d
-      docker stop lookahead; docker rm lookahead
-      echo "$PWD"
-      docker run -v $PWD/../:/app --network="bridge" --name="lookahead" -d lookahead:latest python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
-    fi
+      # cd scripts
+      docker stop lookahead
+      docker rm lookahead
+
+
+      docker run -v $PWD/../:/app/ --network="bridge" --name="lookahead" -d lookahead python /app/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps -i $i
+    # fi
     unset CID
-    # echo "$agent - $num_iperfs iperfs - $flow_size - $timesteps steps"
-    # docker exec -it lookahead python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps
 
-    sleep 40
-
+    # docker exec -it lookahead "python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps >> /tmp/agent.log"
+    sleep 20
+    #
     # # Inicia iperfs
     echo "Iniciando iperfs..."
     ~/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/scripts/start-iperfs.sh $agent $num_iperfs $flow_size $i

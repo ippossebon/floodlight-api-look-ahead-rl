@@ -56,6 +56,8 @@ CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 
 rewards = []
 
+csv_output_filename = None
+
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
     # Fluxo sai de H1 e vai para H2
@@ -95,8 +97,8 @@ def testAgent(env, agent, num_flows, flows_size, timesteps):
     state = env.reset()
     num_steps = int(timesteps)
 
-    output_file_data = []
-    output_file_data.append('Step; State; Reward')
+
+    writeLineToFile('Step; State; Reward', csv_output_filename)
 
     for step in range(num_steps):
         print('Step ', step)
@@ -105,10 +107,12 @@ def testAgent(env, agent, num_flows, flows_size, timesteps):
         step += 1
 
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-        output_file_data.append(output_data_line)
+        writeLineToFile(output_data_line, csv_output_filename)
 
-    return output_file_data
-
+def writeLineToFile(line, filename):
+    print(csv_output_filename)
+    with open(filename, 'a') as file:
+        file.write("%s\n" % line)
 
 """
 Elephant flow detection
@@ -149,6 +153,7 @@ def getTopMemoryUsage(snapshot, key_type='lineno', limit=3):
 
 
 def main(argv):
+    global csv_output_filename
     start1 = datetime.datetime.now()
 
     try:
@@ -178,6 +183,10 @@ def main(argv):
         elif opt in ("-i", "--iter"):
             iter = arg
 
+    csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
+        agent, num_flows, flows_size, timesteps, iter
+    )
+
     print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
         agent, num_flows, flows_size, timesteps, iter
     ))
@@ -189,22 +198,11 @@ def main(argv):
 
     print('Inicia execução do agente.')
 
-    output_file_data = testAgent(env, agent, num_flows, flows_size, timesteps)
+    testAgent(env, agent, num_flows, flows_size, timesteps)
 
     time_interval = datetime.datetime.now() - start_time
     snapshot = tracemalloc.take_snapshot()
     memory_usage = getTopMemoryUsage(snapshot)
-
-
-    output_filename_csv = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
-        agent, num_flows, flows_size, timesteps, iter
-    )
-
-    with open(output_filename_csv, 'w+') as output_file:
-        for item in output_file_data:
-            output_file.write("%s\n" % item)
-
-    print('Arquivo {0} criado.'.format(output_filename_csv))
 
     output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
         agent, num_flows, flows_size, timesteps, iter
@@ -220,4 +218,4 @@ def main(argv):
 
 ##################################################################################
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])

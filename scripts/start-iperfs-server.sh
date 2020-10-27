@@ -20,4 +20,5 @@ for (( i=0; i < $num_iperfs; i++ )); do
   ssh mininet@192.168.68.250 "ssh -f 10.0.0.2 iperf3 -s -p $port -1 > $filename"
 done
 
+sleep 5
 echo "Servers ready"

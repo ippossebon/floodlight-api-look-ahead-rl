@@ -11,7 +11,7 @@ num_iperfs=$2
 flow_size=$3
 iter=$4
 
-sleep 5
+sleep 10
 
 for (( i=0; i < $num_iperfs; i++ )); do
   server_port=$(($i+5201))

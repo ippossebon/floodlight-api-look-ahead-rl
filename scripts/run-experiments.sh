@@ -20,33 +20,37 @@ do
     # Adiciona fluxos iniciais (python2)
     ./add-initial-flow-entries.sh
 
-    # Inicia agente
-    CONTAINER_NAME='lookahead'
-    # CID=$(docker ps -q -f status=running -f name=^/${CONTAINER_NAME}$)
-    # if [ ! "${CID}" ]; then
-      # echo "Container doesn't exist"
-      # cd ..
-      # docker-compose up -d
-      # cd scripts
-      docker stop lookahead
-      docker rm lookahead
+    ./start-iperfs-server.sh $agent $num_iperfs $flow_size $iter
+
+    ./delayed-start-iperfs-client.sh $agent $num_iperfs $flow_size $iter
+
+    # # Inicia agente
+    # CONTAINER_NAME='lookahead'
+    # # CID=$(docker ps -q -f status=running -f name=^/${CONTAINER_NAME}$)
+    # # if [ ! "${CID}" ]; then
+    #   # echo "Container doesn't exist"
+    #   # cd ..
+    #   # docker-compose up -d
+    #   # cd scripts
+    #   docker stop lookahead
+    #   docker rm lookahead
 
 
-      docker run -v $PWD/../:/app/ --network="bridge" --name="lookahead" -d lookahead python /app/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps -i $i
-    # fi
-    unset CID
+    #   docker run -v $PWD/../:/app/ --network="bridge" --name="lookahead" -d lookahead python /app/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps -i $i
+    # # fi
+    # unset CID
 
     # docker exec -it lookahead "python /app/floodlight-api-look-ahead-rl/run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps >> /tmp/agent.log"
     sleep 20
     #
-    # # Inicia iperfs
-    echo "Iniciando iperfs..."
-    ~/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/scripts/start-iperfs.sh $agent $num_iperfs $flow_size $i
+    # # # Inicia iperfs
+    # echo "Iniciando iperfs..."
+    # ~/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/scripts/start-iperfs.sh $agent $num_iperfs $flow_size $i &
 
-    echo "Aguardando finalização do agente e iperfs..."
-    # Espera conclusão do agente e iperfs
-    WAIT_TIME=$(($timesteps*7))
-    sleep $WAIT_TIME
+    # echo "Aguardando finalização do agente e iperfs..."
+    # # Espera conclusão do agente e iperfs
+    # WAIT_TIME=$(($timesteps*7))
+    # sleep $WAIT_TIME
 
     echo "Removendo todas as entradas estáticas..."
     # Remove fluxos estaticos

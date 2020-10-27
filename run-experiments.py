@@ -170,7 +170,7 @@ def main(argv):
 
     for opt, arg in opts:
         if opt == '-h':
-            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps>')
+            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
             sys.exit()
         elif opt in ("-a", "--agent"):
             agent = arg

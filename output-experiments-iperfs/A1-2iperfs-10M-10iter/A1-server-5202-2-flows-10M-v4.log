@@ -1,0 +1,24 @@
+-----------------------------------------------------------
+Server listening on 5202
+-----------------------------------------------------------
+Accepted connection from 10.0.0.1, port 36068
+[  5] local 10.0.0.2 port 5202 connected to 10.0.0.1 port 46112
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-1.00   sec   226 KBytes  1.85 Mbits/sec                  
+[  5]   1.00-2.00   sec   469 KBytes  3.84 Mbits/sec                  
+[  5]   2.00-3.00   sec   512 KBytes  4.20 Mbits/sec                  
+[  5]   3.00-4.00   sec   587 KBytes  4.80 Mbits/sec                  
+[  5]   4.00-5.00   sec   656 KBytes  5.38 Mbits/sec                  
+[  5]   5.00-6.00   sec   608 KBytes  4.98 Mbits/sec                  
+[  5]   6.00-7.00   sec   443 KBytes  3.63 Mbits/sec                  
+[  5]   7.00-8.00   sec   539 KBytes  4.41 Mbits/sec                  
+[  5]   8.00-9.00   sec   568 KBytes  4.66 Mbits/sec                  
+[  5]   9.00-10.00  sec   634 KBytes  5.19 Mbits/sec                  
+[  5]  10.00-11.00  sec   608 KBytes  4.98 Mbits/sec                  
+[  5]  11.00-12.01  sec   482 KBytes  3.93 Mbits/sec                  
+[  5]  12.01-13.00  sec   612 KBytes  5.04 Mbits/sec                  
+[  5]  13.00-13.17  sec   139 KBytes  6.49 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-13.17  sec  0.00 Bytes  0.00 bits/sec                  sender
+[  5]   0.00-13.17  sec  6.92 MBytes  4.40 Mbits/sec                  receiver

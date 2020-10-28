@@ -181,6 +181,7 @@ def main():
                 timesteps = row[3]
                 iter = row[4]
                 generateIperfCSVFile(agent, iperfs, size)
+
                 # plotCompletionTime()
 
                 # plotRewardOverTime()

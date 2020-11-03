@@ -1,8 +1,9 @@
 #!/bin/bash
 
 INPUT=experiments-config.csv
-OLDIFS=$IFS
 IFS=','
+OLDIFS=$IFS
+
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
 
 chmod +x ./add-initial-flow-entries.sh
@@ -13,18 +14,18 @@ do
 	for (( i=0; i < $iter; i++ )); do
     echo "Iniciando experimento: $agent - $num_iperfs iperfs - $flow_size - $timesteps steps - iteração $i"
 
-    # ./add-initial-flow-entries.sh
+    ./add-initial-flow-entries.sh
 
     ./start-iperfs-server.sh $agent $num_iperfs $flow_size $i
 
     ./delayed-start-iperfs-client.sh $agent $num_iperfs $flow_size $i &
 
-    # docker run -v $PWD/../:/app --network="bridge" lookahead python run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps -i $i
+    docker run -v $PWD/../:/app --network="bridge" lookahead python run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps -i $i
 
 
-    # echo "Removendo todas as entradas estáticas..."
+    echo "Removendo todas as entradas estáticas..."
 
-    # ./delete-flow-entries.sh
+    ./delete-flow-entries.sh
 
     sleep 10
   done

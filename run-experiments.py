@@ -97,7 +97,6 @@ def testAgent(env, agent, num_flows, flows_size, timesteps):
     state = env.reset()
     num_steps = int(timesteps)
 
-
     writeLineToFile('Step; State; Reward', csv_output_filename)
 
     for step in range(num_steps):

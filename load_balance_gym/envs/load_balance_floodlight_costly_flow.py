@@ -185,6 +185,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
             #       "bits-per-second-tx" : "6059"
             #    }
 
+            # 0       1     2       3             4      5        6     7      8    9      10
+            #[0.1781 7.96   0.     0.1758 0.     0.     8.19   8.17   0.1793 4.035 4.035  0.     0.     0.     0.     0.    ]]
+
             ### S1
             if item['dpid'] == "00:00:00:00:00:00:00:01" and item['port'] == '1':
                 #S1.1

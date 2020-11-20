@@ -13,7 +13,7 @@ MODEL, ORIGINAL_SIZE, TRANSFERRED, RETRIES, TIME, NUM_IPERFS
 OUTPUT_IPERFS_DIR_NAME = '../output-experiments-iperfs/'
 OUTPUT_APP_DIR_NAME = '../output-experiments-app/'
 
-OUTPUT_FILENAME = './iperf-consolidated-A1-and-F.csv'
+OUTPUT_FILENAME = './iperf-consolidated-A1-B1-B2-D1-F.csv'
 
 def parseClient(file_path):
     flow_completion_time = None
@@ -126,37 +126,38 @@ def generateIperfCSVFile(agent, num_iperfs, flow_size):
 
     for filename in files_in_dir:
         # Formato filename: A1-client-46112-2-flows-50M-v3.log
-        print(filename)
+        if filename != '.DS_Store':
+            print(filename)
 
-        file_port = None
-        file_iter = None
+            file_port = None
+            file_iter = None
 
-        is_client = 'client' in filename
-        file_path = dir_path + filename
-        flow_completion_time, transferred_mbytes, bandwidth_mbits, retries = parseClient(file_path) if is_client else parseServer(file_path)
+            is_client = 'client' in filename
+            file_path = dir_path + filename
+            flow_completion_time, transferred_mbytes, bandwidth_mbits, retries = parseClient(file_path) if is_client else parseServer(file_path)
 
-        filename_splitted = filename.split('-')
-        port = filename_splitted[2]
-        num_iperfs = filename_splitted[3]
-        original_size = filename_splitted[5]
-        file_iter_string = filename_splitted[len(filename_splitted)-1].replace('.log', '')
-        num_iters = int(file_iter_string.replace('v', ''))
+            filename_splitted = filename.split('-')
+            port = filename_splitted[2]
+            num_iperfs = filename_splitted[3]
+            original_size = filename_splitted[5]
+            file_iter_string = filename_splitted[len(filename_splitted)-1].replace('.log', '')
+            num_iters = int(file_iter_string.replace('v', ''))
 
-        header = 'Agent, Num Iperfs, Port number, Original size (MBytes), Transfered (MBytes), Retries, Flow completion time (sec), Bandwidth (Mbps), Iter'
+            header = 'agent, num_iperfs, port_number, original_size, transfered, retries, flow_completion_time, bandwidth, iter'
 
-        line = '{0},{1},{2},{3},{4},{5},{6},{7},{8}'.format(
-            agent,
-            num_iperfs,
-            port,
-            original_size,
-            transferred_mbytes,
-            retries,
-            flow_completion_time,
-            bandwidth_mbits,
-            num_iters
-        )
+            line = '{0},{1},{2},{3},{4},{5},{6},{7},{8}'.format(
+                agent,
+                num_iperfs,
+                port,
+                original_size,
+                transferred_mbytes,
+                retries,
+                flow_completion_time,
+                bandwidth_mbits,
+                num_iters
+            )
 
-        writeLineToFile(line, OUTPUT_FILENAME)
+            writeLineToFile(line, OUTPUT_FILENAME)
 
 
 def writeLineToFile(line, filename):
@@ -165,7 +166,6 @@ def writeLineToFile(line, filename):
 
 def main():
     experiments_config_file = './experiments-to-plot.csv'
-
 
 
     header = 'Agent, Num Iperfs, Port number, Original size (MBytes), Transfered (MBytes), Retries, Flow completion time (sec), Bandwidth (Mbps), Iter'

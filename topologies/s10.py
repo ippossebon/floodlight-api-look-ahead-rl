@@ -20,7 +20,7 @@ class MastersSwitchTopo(Topo):
         s7 = self.addSwitch('S7', mac="00:00:00:00:00:07", protocols='OpenFlow13')
         s8 = self.addSwitch('S8', mac="00:00:00:00:00:08", protocols='OpenFlow13')
         s9 = self.addSwitch('S9', mac="00:00:00:00:00:09", protocols='OpenFlow13')
-        s10 = self.addSwitch('S10', mac="00:00:00:00:00:010", protocols='OpenFlow13')
+        s10 = self.addSwitch('S10', mac="00:00:00:00:00:10", protocols='OpenFlow13')
 
         h1 = self.addHost('H1', mac="00:00:00:00:00:11", ip="10.0.0.1/12")
         h2 = self.addHost('H2', mac="00:00:00:00:00:12", ip="10.0.0.2/12")
@@ -62,6 +62,25 @@ class MastersSwitchTopo(Topo):
             bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
+
+        self.addLink(
+            node1 = s1,
+            node2 = s7,
+            port1 = 4,
+            port2 = 1,
+            bw=10, # bw = Mbits/seg,
+            cls=TCLink
+        )
+
+        self.addLink(
+            node1 = s1,
+            node2 = s8,
+            port1 = 5,
+            port2 = 1,
+            bw=10, # bw = Mbits/seg,
+            cls=TCLink
+        )
+
         self.addLink(
             node1 = s2,
             node2 = s4,
@@ -86,40 +105,6 @@ class MastersSwitchTopo(Topo):
             bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
-        self.addLink(
-            node1 = s4,
-            node2 = s3,
-            port1 = 3,
-            port2 = 3,
-            bw=10, # bw = Mbits/seg,
-            cls=TCLink
-        )
-        self.addLink(
-            node1 = s5,
-            node2 = s3,
-            port1 = 2,
-            port2 = 4,
-            bw=10, # bw = Mbits/seg,
-            cls=TCLink
-        )
-
-        self.addLink(
-            node1 = s1,
-            node2 = s7,
-            port1 = 4,
-            port2 = 1,
-            bw=10, # bw = Mbits/seg,
-            cls=TCLink
-        )
-
-        self.addLink(
-            node1 = s1,
-            node2 = s8,
-            port1 = 5,
-            port2 = 1,
-            bw=10, # bw = Mbits/seg,
-            cls=TCLink
-        )
 
         self.addLink(
             node1 = s2,
@@ -129,7 +114,6 @@ class MastersSwitchTopo(Topo):
             bw=10, # bw = Mbits/seg,
             cls=TCLink
         )
-
 
         self.addLink(
             node1 = s3,
@@ -141,6 +125,34 @@ class MastersSwitchTopo(Topo):
         )
 
         self.addLink(
+            node1 = s4,
+            node2 = s3,
+            port1 = 3,
+            port2 = 3,
+            bw=10, # bw = Mbits/seg,
+            cls=TCLink
+        )
+
+        self.addLink(
+            node1 = s5,
+            node2 = s3,
+            port1 = 2,
+            port2 = 4,
+            bw=10, # bw = Mbits/seg,
+            cls=TCLink
+        )
+
+        self.addLink(
+            node1 = s4,
+            node2 = s9,
+            port1 = 4,
+            port2 = 2,
+            bw=10, # bw = Mbits/seg,
+            cls=TCLink
+        )
+
+
+        self.addLink(
             node1 = s5,
             node2 = s6,
             port1 = 3,
@@ -149,23 +161,6 @@ class MastersSwitchTopo(Topo):
             cls=TCLink
         )
 
-        self.addLink(
-            node1 = s4,
-            node2 = s8,
-            port1 = 4,
-            port2 = 2,
-            bw=10, # bw = Mbits/seg,
-            cls=TCLink
-        )
-
-        self.addLink(
-            node1 = s4,
-            node2 = s9,
-            port1 = 5,
-            port2 = 2,
-            bw=10, # bw = Mbits/seg,
-            cls=TCLink
-        )
 
         self.addLink(
             node1 = s7,
@@ -179,7 +174,7 @@ class MastersSwitchTopo(Topo):
         self.addLink(
             node1 = s8,
             node2 = s9,
-            port1 = 3,
+            port1 = 2,
             port2 = 1,
             bw=10, # bw = Mbits/seg,
             cls=TCLink

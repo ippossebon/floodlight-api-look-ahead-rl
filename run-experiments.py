@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
+from load_balance_gym.envs.load_balance_floodlight_costly_flow_s10 import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.deepq.policies import MlpPolicy
@@ -85,12 +85,16 @@ def trainAgent(env):
         buffer_size=56,
         batch_size=50
     )
-    model.learn(total_timesteps=700)
-    model.save('./trained-agents/C1')
+    model.learn(total_timesteps=10000)
+    model.save('./trained-agents/A1')
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env, agent, num_flows, flows_size, timesteps):
+    # if agent == 'C1':
+    #     # Na verdade, o agente C1 é o A1 com o if. Não é necessário treinar outro
+    #     agent = 'A1'
+
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
@@ -99,14 +103,17 @@ def testAgent(env, agent, num_flows, flows_size, timesteps):
 
     writeLineToFile('Step; State; Reward', csv_output_filename)
 
+    # Com o IF, acho que preciso rodar com mais steps
     for step in range(num_steps):
         print('Step ', step)
+
         action, _ = model.predict(state, deterministic=False)
         state, reward, done, info = env.step(action)
         step += 1
 
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         writeLineToFile(output_data_line, csv_output_filename)
+
 
 def writeLineToFile(line, filename):
     print(csv_output_filename)

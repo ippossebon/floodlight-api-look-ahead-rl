@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
+from load_balance_gym.envs.load_balance_floodlight_costly_flow_s10 import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.deepq.policies import MlpPolicy
@@ -62,38 +62,15 @@ def trainAgent(env, agent, timesteps):
     print('Modelo {0} treinado e salvo.'.format(agent))
 
 
-"""
-Elephant flow detection
-"""
-def containsElephantFlow(state):
-    pass
-
-
-
 def main(argv):
-    try:
-        opts, args = getopt.getopt(argv, "ha:t:", ["agent=", "timesteps="])
-    except getopt.GetoptError:
-        print ('run-experiments.py -a <agent> -t <timesteps>')
-        sys.exit(2)
-
-    agent = None
-    timesteps = None
-
-    for opt, arg in opts:
-        if opt == '-h':
-            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps>')
-            sys.exit()
-        elif opt in ("-a", "--agent"):
-            agent = arg
-        elif opt in ("-t", "--timesteps"):
-            timesteps = arg
+    agent = 'A2'
+    timesteps = 10000
 
     print('Training: agent = {0}, timesteps = {1}'.format(agent, timesteps))
 
     start_time = datetime.datetime.now()
     env = createVectorizedEnv()
-    output_file_data = testAgent(env, agent, num_flows, flows_size, timesteps)
+    output_file_data = trainAgent(env, agent, timesteps)
     time_interval = datetime.datetime.now() - start_time
 
     print('Training took ', time_interval)

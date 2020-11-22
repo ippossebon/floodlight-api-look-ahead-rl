@@ -11,19 +11,19 @@ from mininet.node import OVSSwitch, Controller, RemoteController
 
 class MastersSwitchTopo(Topo):
     def build(self):
-        s1 = self.addSwitch('S1', mac="00:00:00:00:00:01", protocols='OpenFlow13')
-        s2 = self.addSwitch('S2', mac="00:00:00:00:00:02", protocols='OpenFlow13')
-        s3 = self.addSwitch('S3', mac="00:00:00:00:00:03", protocols='OpenFlow13')
-        s4 = self.addSwitch('S4', mac="00:00:00:00:00:04", protocols='OpenFlow13')
-        s5 = self.addSwitch('S5', mac="00:00:00:00:00:05", protocols='OpenFlow13')
-        s6 = self.addSwitch('S6', mac="00:00:00:00:00:06", protocols='OpenFlow13')
-        s7 = self.addSwitch('S7', mac="00:00:00:00:00:07", protocols='OpenFlow13')
-        s8 = self.addSwitch('S8', mac="00:00:00:00:00:08", protocols='OpenFlow13')
-        s9 = self.addSwitch('S9', mac="00:00:00:00:00:09", protocols='OpenFlow13')
-        s10 = self.addSwitch('S10', mac="00:00:00:00:00:10", protocols='OpenFlow13')
+        s1 = self.addSwitch('S1', protocols='OpenFlow13')
+        s2 = self.addSwitch('S2', protocols='OpenFlow13')
+        s3 = self.addSwitch('S3', protocols='OpenFlow13')
+        s4 = self.addSwitch('S4', protocols='OpenFlow13')
+        s5 = self.addSwitch('S5', protocols='OpenFlow13')
+        s6 = self.addSwitch('S6', protocols='OpenFlow13')
+        s7 = self.addSwitch('S7', protocols='OpenFlow13')
+        s8 = self.addSwitch('S8', protocols='OpenFlow13')
+        s9 = self.addSwitch('S9', protocols='OpenFlow13')
+        s10 = self.addSwitch('S10', protocols='OpenFlow13')
 
-        h1 = self.addHost('H1', mac="00:00:00:00:00:11", ip="10.0.0.1/12")
-        h2 = self.addHost('H2', mac="00:00:00:00:00:12", ip="10.0.0.2/12")
+        h1 = self.addHost('H1')
+        h2 = self.addHost('H2')
 
 
         # Adiciona hosts aos switches

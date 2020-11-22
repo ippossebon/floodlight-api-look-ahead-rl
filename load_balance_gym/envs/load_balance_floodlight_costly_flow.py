@@ -461,8 +461,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 # link não está sendo usado
                 total_usage_links += 1
 
-        # Desconta o tempo de processamento para nao privilegiar caminhos enormes que podem atrasar o fluxo
-
         s1_1_tx_mbps = state[0]
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
 

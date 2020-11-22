@@ -61,10 +61,10 @@ csv_output_filename = None
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
     # Fluxo sai de H1 e vai para H2
-    env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
-    env = make_vec_env(lambda: env, n_envs=1)
+    original_env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+    env = make_vec_env(lambda: original_env, n_envs=1)
 
-    return env
+    return env, original_env
 
 def validateEnvOpenAI():
     print('************** Validacao da env: *************')
@@ -90,7 +90,7 @@ def trainAgent(env):
     print('Modelo treinado e salvo.')
 
 
-def testAgent(env, agent, num_flows, flows_size, timesteps):
+def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
     if agent == 'A3':
         # Na verdade, o agente C1 é o A1 com o if. Não é necessário treinar outro
         agent = 'A1'
@@ -107,7 +107,7 @@ def testAgent(env, agent, num_flows, flows_size, timesteps):
     for step in range(num_steps * 2):
         print('Step ', step)
 
-        if containsElephantFlow(env):
+        if containsElephantFlow(original_env):
             action, _ = model.predict(state, deterministic=False)
             state, reward, done, info = env.step(action)
             step += 1
@@ -205,11 +205,11 @@ def main(argv):
     tracemalloc.start()
     start_time = datetime.datetime.now()
 
-    env = createVectorizedEnv()
+    env, original_env = createVectorizedEnv()
 
     print('Inicia execução do agente.')
 
-    testAgent(env, agent, num_flows, flows_size, timesteps)
+    testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
 
     time_interval = datetime.datetime.now() - start_time
     snapshot = tracemalloc.take_snapshot()

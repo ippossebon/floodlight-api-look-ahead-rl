@@ -19,6 +19,8 @@ MAX_PRIORITY = 32760
 
 EPSILON = 0.001
 
+ELEPHANT_FLOW_THRESHOLD = 5 * 1024 * 1024 # 5MBytes
+
 class LoadBalanceEnvDiscAction(gym.Env):
     metadata = {'render.modes': ['human']}
 
@@ -48,7 +50,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Discrete(28)
+        self.action_space = spaces.Discrete(33)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
@@ -337,7 +339,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
                 "tcp_src": tcp_src,
                 "tcp_dst": tcp_dst,
                 "ip_proto": "0x06",
-                "hard_timeout": "60",
+                "idle_timeout": "60",
                 "actions": "output={0}".format(numpy.int8(out_port))
             }
 
@@ -356,6 +358,26 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
        return None
 
+    def existsElephantFlow(self):
+         response = requests.get('{host}/wm/core/switch/00:00:00:00:00:00:00:01/flow/json'.format(host=CONTROLLER_HOST))
+         response_data = response.json()
+
+         for flow_obj in response_data['flows']:
+             flow_match = None
+
+             try:
+                 flow_match = flow_obj['match']['tcp_src']
+             except:
+                 flow_match = None
+
+             if flow_match != None:
+                 flow_byte_count = int(flow_obj['byteCount'])
+                 print('flow_byte_count = ', flow_byte_count)
+                 if flow_byte_count >= ELEPHANT_FLOW_THRESHOLD:
+                     return True
+
+         return False
+
     def getMostCostlyFlow(self, switch_id):
         # Retorna o fluxo que exige mais do switch
         response = requests.get('{host}/wm/core/switch/{switch_id}/flow/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
@@ -365,7 +387,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
         max_usage_flow_match = None
 
         for flow_obj in response_data['flows']:
-            flow_cookie = flow_obj['cookie']
             flow_match = None
 
             try:
@@ -463,6 +484,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         s1_1_tx_mbps = state[0]
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
+
+        # hmean = len(state) / numpy.sum(1.0/state)
+        # std = numpy.std(state)
 
         reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
 

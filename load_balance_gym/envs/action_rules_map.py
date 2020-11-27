@@ -88,7 +88,7 @@ def actionMap(action):
         # S1, in 3, out 1
         return numpy.array([0, 2, 0])
 
-    ## S10 topology
+    ## Controle de loops
     elif action == 28:
         # S1
         return numpy.array([0, -1, -1])
@@ -104,54 +104,3 @@ def actionMap(action):
     elif action == 32:
         # S5
         return numpy.array([4, -1, -1])
-    elif action == 33:
-        # S1
-        return numpy.array([0, -1, -1])
-    elif action == 34:
-        # S2
-        return numpy.array([1, -1, -1])
-    elif action == 35:
-        # S3
-        return numpy.array([2, -1, -1])
-    elif action == 36:
-        # S4
-        return numpy.array([3, -1, -1])
-    elif action == 37:
-        # S5
-        return numpy.array([4, -1, -1])
-    elif action == 38:
-        # S1
-        return numpy.array([0, -1, -1])
-    elif action == 39:
-        # S2
-        return numpy.array([1, -1, -1])
-    elif action == 40:
-        # S3
-        return numpy.array([2, -1, -1])
-    elif action == 41:
-        # S4
-        return numpy.array([3, -1, -1])
-    elif action == 42:
-        # S5
-        return numpy.array([4, -1, -1])
-    elif action == 43:
-        # S1
-        return numpy.array([0, -1, -1])
-    elif action == 44:
-        # S2
-        return numpy.array([1, -1, -1])
-    elif action == 45:
-        # S3
-        return numpy.array([2, -1, -1])
-    elif action == 46:
-        # S4
-        return numpy.array([3, -1, -1])
-    elif action == 47:
-        # S5
-        return numpy.array([4, -1, -1])
-    elif action == 48:
-        # S3
-        return numpy.array([2, -1, -1])
-    elif action == 49:
-        # S4
-        return numpy.array([3, -1, -1])

@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
+from load_balance_gym.envs.load_balance_floodlight_costly_flow_s10 import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.deepq.policies import MlpPolicy
@@ -72,7 +72,7 @@ def validateEnvOpenAI():
     print('************************************************')
 
 
-def trainAgent(env):
+def trainAgent(env, agent):
     model = DQN(
         env=env,
         policy=MlpPolicy,
@@ -86,14 +86,14 @@ def trainAgent(env):
         batch_size=50
     )
     model.learn(total_timesteps=10000)
-    model.save('./trained-agents/A1')
+    model.save('./trained-agents/' + agent)
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
-    if agent == 'A3':
-        # Na verdade, o agente C1 é o A1 com o if. Não é necessário treinar outro
-        agent = 'A1'
+    # if agent == 'A-LA':
+    #     # Na verdade, o agente C1 é o A1 com o if. Não é necessário treinar outro
+    #     agent = 'A'
 
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
@@ -103,17 +103,30 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
 
     writeLineToFile('Step; State; Reward', csv_output_filename)
 
-    # Com o IF, acho que preciso rodar com mais steps
-    for step in range(num_steps * 2):
+    for step in range(num_steps):
         print('Step ', step)
+        action, _ = model.predict(state, deterministic=False)
+        state, reward, done, info = env.step(action)
 
-        if containsElephantFlow(original_env):
-            action, _ = model.predict(state, deterministic=False)
-            state, reward, done, info = env.step(action)
-            step += 1
+        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+        writeLineToFile(output_data_line, csv_output_filename)
+        step += 1
 
-            output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-            writeLineToFile(output_data_line, csv_output_filename)
+    # Com o IF, acho que preciso rodar com mais steps
+    # for step in range(num_steps * 2):
+    #     print('Step ', step)
+    #     action, _ = model.predict(state, deterministic=False)
+    #     contains_elephant_flow = containsElephantFlow(original_env)
+    #     print('contains_elephant_flow: ', contains_elephant_flow)
+    #     print('state = ', state)
+    #
+    #     if contains_elephant_flow:
+    #         state, reward, done, info = env.step(action)
+    #
+    #         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+    #         writeLineToFile(output_data_line, csv_output_filename)
+    #     step += 1
+
 
 
 def writeLineToFile(line, filename):
@@ -125,12 +138,7 @@ def writeLineToFile(line, filename):
 Elephant flow detection
 """
 def containsElephantFlow(env):
-    flow = env.getMostCostlyFlow('00:00:00:00:00:00:00:01')
-
-    if flow:
-        return True
-    return False
-
+    return env.existsElephantFlow()
 
 
 def getTopMemoryUsage(snapshot, key_type='lineno', limit=3):
@@ -194,36 +202,39 @@ def main(argv):
         elif opt in ("-i", "--iter"):
             iter = arg
 
-    csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
-        agent, num_flows, flows_size, timesteps, iter
-    )
-
-    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
-        agent, num_flows, flows_size, timesteps, iter
-    ))
-
-    tracemalloc.start()
-    start_time = datetime.datetime.now()
+    # csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
+    #     agent, num_flows, flows_size, timesteps, iter
+    # )
+    #
+    # print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
+    #     agent, num_flows, flows_size, timesteps, iter
+    # ))
+    #
+    # tracemalloc.start()
+    # start_time = datetime.datetime.now()
 
     env, original_env = createVectorizedEnv()
 
-    print('Inicia execução do agente.')
+    print('Inicia treinamento do agente.')
+    trainAgent(env, agent)
+    #
+    # print('Inicia execução do agente.')
+    # testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
 
-    testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
 
-    time_interval = datetime.datetime.now() - start_time
-    snapshot = tracemalloc.take_snapshot()
-    memory_usage = getTopMemoryUsage(snapshot)
-
-    output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-        agent, num_flows, flows_size, timesteps, iter
-    )
-
-    with open(output_filename_compcosts, 'w+') as output_file:
-        output_file.write("%s\n" % time_interval)
-        output_file.write("%s\n" % memory_usage)
-
-    print('Arquivo {0} criado.'.format(output_filename_compcosts))
+    # time_interval = datetime.datetime.now() - start_time
+    # snapshot = tracemalloc.take_snapshot()
+    # memory_usage = getTopMemoryUsage(snapshot)
+    #
+    # output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+    #     agent, num_flows, flows_size, timesteps, iter
+    # )
+    #
+    # with open(output_filename_compcosts, 'w+') as output_file:
+    #     output_file.write("%s\n" % time_interval)
+    #     output_file.write("%s\n" % memory_usage)
+    #
+    # print('Arquivo {0} criado.'.format(output_filename_compcosts))
 
 
 

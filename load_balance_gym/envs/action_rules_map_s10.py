@@ -222,3 +222,35 @@ def actionMap(action):
     elif action == 66:
         # S10, in 2, out 1
         return numpy.array([9, 1, 0])
+
+    ## para evitar loops
+    elif action == 67:
+        # S1 controller
+        return numpy.array([0, 0, 0])
+    elif action == 68:
+        # S2 controller
+        return numpy.array([1, 0, 0])
+    elif action == 69:
+        # S3 controller
+        return numpy.array([2, 0, 0])
+    elif action == 70:
+        # S4 controller
+        return numpy.array([3, 0, 0])
+    elif action == 71:
+        # S5 controller
+        return numpy.array([4, 0, 0])
+    elif action == 72:
+        # S6 controller
+        return numpy.array([5, 0, 0])
+    elif action == 73:
+        # S7 controller
+        return numpy.array([6, 0, 0])
+    elif action == 74:
+        # S8 controller
+        return numpy.array([7, 0, 0])
+    elif action == 75:
+        # S9 controller
+        return numpy.array([8, 0, 0])
+    elif action == 76:
+        # S10 controller
+        return numpy.array([9, 0, 0])

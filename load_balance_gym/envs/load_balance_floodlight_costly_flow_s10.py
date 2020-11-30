@@ -32,14 +32,9 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.switch_ids = []
         self.switch_links = {}
-        self.switch_possible_ports = {}
         self.num_links = 0
 
         self.discoverTopology()
-
-        # Ao descobrir a topologia, só são adicionadas as portas que conectam switches
-        self.switch_possible_ports[self.switch_ids[source_switch_index]].append(str(source_port_index + 1))
-        self.switch_possible_ports[self.switch_ids[target_switch_index]].append(str(target_port_index + 1))
 
         self.observation_space = spaces.Box(
             low=0,
@@ -48,11 +43,11 @@ class LoadBalanceEnvDiscAction(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Discrete(67)
+        self.action_space = spaces.Discrete(77)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, 640000) # max = 3200 * (100 + 100) (100 é capacidade do link S3.1)
+        self.reward_range = (0, 1400000) # max = 35 * 2 * 100 * (100 + 100) (100 é capacidade do link S3.1)
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = None
@@ -83,7 +78,6 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         self.switch_ids = sorted(self.switch_ids)
 
-
     def reset(self):
         self.state = self.getState()
 
@@ -108,6 +102,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             #       "port" : "1",
             #       "bits-per-second-tx" : "6059"
             #    }
+
 
             ### S1
             if item['dpid'] == "00:00:00:00:00:00:00:01" and item['port'] == '1':

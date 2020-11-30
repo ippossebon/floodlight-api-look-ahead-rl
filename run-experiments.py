@@ -77,11 +77,11 @@ def trainAgent(env, agent):
         env=env,
         policy=MlpPolicy,
         verbose=1,
-        learning_rate=0.05, # alpha: If your learning rate is set too low, training will progress very slowly as you are making very tiny updates to the weights in your network. However, if your learning rate is set too high, it can cause undesirable divergent behavior in your loss function.
+        learning_rate=0.1, # alpha: If your learning rate is set too low, training will progress very slowly as you are making very tiny updates to the weights in your network. However, if your learning rate is set too high, it can cause undesirable divergent behavior in your loss function.
         gamma=0.95, # It controls the importance of the future rewards versus the immediate ones.
         exploration_initial_eps=1.0,
-        exploration_fraction=0.9,
-        exploration_final_eps=0.01,
+        exploration_fraction=0.8,
+        exploration_final_eps=0.1,
         buffer_size=56,
         batch_size=50
     )
@@ -202,39 +202,39 @@ def main(argv):
         elif opt in ("-i", "--iter"):
             iter = arg
 
-    # csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
-    #     agent, num_flows, flows_size, timesteps, iter
-    # )
-    #
-    # print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
-    #     agent, num_flows, flows_size, timesteps, iter
-    # ))
-    #
-    # tracemalloc.start()
-    # start_time = datetime.datetime.now()
+    csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
+        agent, num_flows, flows_size, timesteps, iter
+    )
+
+    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
+        agent, num_flows, flows_size, timesteps, iter
+    ))
+
+    tracemalloc.start()
+    start_time = datetime.datetime.now()
 
     env, original_env = createVectorizedEnv()
 
-    print('Inicia treinamento do agente.')
-    trainAgent(env, agent)
-    #
-    # print('Inicia execução do agente.')
-    # testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
+    # print('Inicia treinamento do agente.')
+    # trainAgent(env, agent)
+
+    print('Inicia execução do agente.')
+    testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
 
 
-    # time_interval = datetime.datetime.now() - start_time
-    # snapshot = tracemalloc.take_snapshot()
-    # memory_usage = getTopMemoryUsage(snapshot)
-    #
-    # output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-    #     agent, num_flows, flows_size, timesteps, iter
-    # )
-    #
-    # with open(output_filename_compcosts, 'w+') as output_file:
-    #     output_file.write("%s\n" % time_interval)
-    #     output_file.write("%s\n" % memory_usage)
-    #
-    # print('Arquivo {0} criado.'.format(output_filename_compcosts))
+    time_interval = datetime.datetime.now() - start_time
+    snapshot = tracemalloc.take_snapshot()
+    memory_usage = getTopMemoryUsage(snapshot)
+
+    output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+        agent, num_flows, flows_size, timesteps, iter
+    )
+
+    with open(output_filename_compcosts, 'w+') as output_file:
+        output_file.write("%s\n" % time_interval)
+        output_file.write("%s\n" % memory_usage)
+
+    print('Arquivo {0} criado.'.format(output_filename_compcosts))
 
 
 

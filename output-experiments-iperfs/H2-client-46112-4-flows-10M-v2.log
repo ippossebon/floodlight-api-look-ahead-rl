@@ -1,0 +1,29 @@
+Connecting to host 10.0.0.2, port 5202
+[  4] local 10.0.0.1 port 46112 connected to 10.0.0.2 port 5202
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.00   sec   527 KBytes  4.30 Mbits/sec    0   50.9 KBytes       
+[  4]   1.00-2.00   sec   382 KBytes  3.14 Mbits/sec    0   65.0 KBytes       
+[  4]   2.00-3.00   sec   255 KBytes  2.08 Mbits/sec    0   76.4 KBytes       
+[  4]   3.00-4.00   sec   255 KBytes  2.09 Mbits/sec    0   87.7 KBytes       
+[  4]   4.00-5.00   sec   318 KBytes  2.60 Mbits/sec    0   97.6 KBytes       
+[  4]   5.00-6.00   sec   445 KBytes  3.65 Mbits/sec    0    133 KBytes       
+[  4]   6.00-7.00   sec   573 KBytes  4.70 Mbits/sec    0    187 KBytes       
+[  4]   7.00-8.00   sec   827 KBytes  6.78 Mbits/sec    0    263 KBytes       
+[  4]   8.00-9.00   sec   764 KBytes  6.25 Mbits/sec    0    345 KBytes       
+[  4]   9.00-10.00  sec   891 KBytes  7.29 Mbits/sec    0    443 KBytes       
+[  4]  10.00-11.00  sec  1.18 MBytes  9.92 Mbits/sec    0    584 KBytes       
+[  4]  11.00-12.00  sec  1.24 MBytes  10.4 Mbits/sec    0    749 KBytes       
+[  4]  12.00-13.00  sec   573 KBytes  4.68 Mbits/sec   20    769 KBytes       
+[  4]  13.00-14.00  sec  0.00 Bytes  0.00 bits/sec  138    571 KBytes       
+[  4]  14.00-15.00  sec   636 KBytes  5.20 Mbits/sec    0    571 KBytes       
+[  4]  15.00-16.00  sec   827 KBytes  6.78 Mbits/sec    0    600 KBytes       
+[  4]  16.00-17.00  sec   127 KBytes  1.04 Mbits/sec    1    544 KBytes       
+[  4]  17.00-18.00  sec   191 KBytes  1.56 Mbits/sec   11    426 KBytes       
+[  4]  18.00-19.00  sec  1018 KBytes  8.33 Mbits/sec    0    437 KBytes       
+[  4]  19.00-19.00  sec  0.00 Bytes  0.00 bits/sec    0    437 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-19.00  sec  10.8 MBytes  4.78 Mbits/sec  170             sender
+[  4]   0.00-19.00  sec  6.77 MBytes  2.99 Mbits/sec                  receiver
+
+iperf Done.

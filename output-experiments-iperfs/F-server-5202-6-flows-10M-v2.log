@@ -1,0 +1,32 @@
+-----------------------------------------------------------
+Server listening on 5202
+-----------------------------------------------------------
+Accepted connection from 10.0.0.1, port 53460
+[  5] local 10.0.0.2 port 5202 connected to 10.0.0.1 port 46112
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-1.00   sec   255 KBytes  2.08 Mbits/sec                  
+[  5]   1.00-2.00   sec   279 KBytes  2.28 Mbits/sec                  
+[  5]   2.00-3.00   sec   194 KBytes  1.59 Mbits/sec                  
+[  5]   3.00-4.00   sec   240 KBytes  1.97 Mbits/sec                  
+[  5]   4.00-5.00   sec   205 KBytes  1.68 Mbits/sec                  
+[  5]   5.00-6.00   sec   174 KBytes  1.43 Mbits/sec                  
+[  5]   6.00-7.00   sec   257 KBytes  2.11 Mbits/sec                  
+[  5]   7.00-8.00   sec   188 KBytes  1.54 Mbits/sec                  
+[  5]   8.00-9.00   sec   238 KBytes  1.95 Mbits/sec                  
+[  5]   9.00-10.00  sec   310 KBytes  2.54 Mbits/sec                  
+[  5]  10.00-11.00  sec   283 KBytes  2.32 Mbits/sec                  
+[  5]  11.00-12.00  sec   144 KBytes  1.18 Mbits/sec                  
+[  5]  12.00-13.00  sec   406 KBytes  3.33 Mbits/sec                  
+[  5]  13.00-14.00  sec   208 KBytes  1.70 Mbits/sec                  
+[  5]  14.00-15.00  sec  5.66 KBytes  46.3 Kbits/sec                  
+[  5]  15.00-16.00  sec  0.00 Bytes  0.00 bits/sec                  
+[  5]  16.00-17.00  sec  7.07 KBytes  58.0 Kbits/sec                  
+[  5]  17.00-18.00  sec  0.00 Bytes  0.00 bits/sec                  
+[  5]  18.00-19.00  sec  1.23 MBytes  10.4 Mbits/sec                  
+[  5]  19.00-20.00  sec   553 KBytes  4.53 Mbits/sec                  
+[  5]  20.00-21.00  sec   322 KBytes  2.64 Mbits/sec                  
+[  5]  21.00-21.35  sec   216 KBytes  5.03 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-21.35  sec  0.00 Bytes  0.00 bits/sec                  sender
+[  5]   0.00-21.35  sec  5.61 MBytes  2.20 Mbits/sec                  receiver

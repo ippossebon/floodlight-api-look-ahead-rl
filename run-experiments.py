@@ -212,13 +212,14 @@ def main(argv):
     tracemalloc.start()
     start_time = datetime.datetime.now()
 
-    env, original_env = createVectorizedEnv()
+    if agent !== 'F':
+        env, original_env = createVectorizedEnv()
 
-    # print('Inicia treinamento do agente.')
-    # trainAgent(env, agent)
+        # print('Inicia treinamento do agente.')
+        # trainAgent(env, agent)
 
-    print('Inicia execução do agente.')
-    testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
+        print('Inicia execução do agente.')
+        testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
 
 
     time_interval = datetime.datetime.now() - start_time

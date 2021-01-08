@@ -65,56 +65,6 @@ def parseClient(file_path):
 
     return flow_completion_time, transferred_mbytes, bandwidth_mbits, retries
 
-def parseServer(file_path):
-    flow_completion_time = None
-    transferred_mbytes = None
-    bandwidth_mbits = None
-    retries = None
-
-    with open(file_path, 'r') as inputfile:
-        lines = inputfile.readlines()
-
-        for line in lines:
-            if 'receiver' in line:
-                # linha de interesse onde contém todas as infos
-                replaced_line = line.replace('  ', ' ')
-                replaced_line = replaced_line.replace('   ', ' ')
-                replaced_line = replaced_line.replace('             ', ' ')
-                replaced_line = replaced_line.replace('   ', ' ')
-                replaced_line = replaced_line.replace('[', '')
-                replaced_line = replaced_line.replace(']', '')
-
-                splitted_line_raw = replaced_line.split(' ')
-                splitted_line = [item for item in splitted_line_raw if item != '']
-
-                # ['4', '0.00-91.00', 'sec', '50.8', 'MBytes', '4.68', 'Mbits/sec', 'receiver\n']
-                time_interval = splitted_line[1]
-                splitted_time = time_interval.split('-')
-                flow_completion_time = float(splitted_time[1])
-
-                transferred_count = float(splitted_line[3])
-                transferred_unity = splitted_line[4]
-                transferred_mbytes = None
-                if transferred_unity == 'MBytes':
-                    transferred_mbytes = transferred_count
-                elif transferred_unity == 'KBytes':
-                    transferred_mbytes = transferred_count/1024
-
-                bandwidth_count = float(splitted_line[5])
-                bandwidth_unity = splitted_line[6]
-                bandwidth_mbits = None
-
-                if bandwidth_unity == 'Mbits/sec':
-                    bandwidth_mbits = bandwidth_count
-                elif bandwidth_unity == 'Kbits/sec':
-                    bandwidth_mbits = bandwidth_count/1024
-                elif bandwidth_unity == 'bits/sec':
-                    bandwidth_mbits = bandwidth_count/(1024 * 1024)
-
-                retries = -1
-
-    return flow_completion_time, transferred_mbytes, bandwidth_mbits, retries
-
 
 def generateIperfCSVFile(agent, num_iperfs, flow_size):
     dir_path = OUTPUT_IPERFS_DIR_NAME + '{0}-{1}iperfs-{2}/'.format(agent, num_iperfs, flow_size)

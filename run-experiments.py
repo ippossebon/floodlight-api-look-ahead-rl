@@ -212,7 +212,7 @@ def main(argv):
     tracemalloc.start()
     start_time = datetime.datetime.now()
 
-    if agent !== 'F':
+    if agent != 'F':
         env, original_env = createVectorizedEnv()
 
         # print('Inicia treinamento do agente.')

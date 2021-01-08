@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_costly_flow_s10 import LoadBalanceEnvDiscAction
+from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.deepq.policies import MlpPolicy
@@ -91,9 +91,8 @@ def trainAgent(env, agent):
 
 
 def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
-    # if agent == 'A-LA':
-    #     # Na verdade, o agente C1 é o A1 com o if. Não é necessário treinar outro
-    #     agent = 'A'
+    if agent == 'B_LA':
+        agent = 'B'
 
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)

@@ -1,21 +1,22 @@
 library(tidyverse)
 
-csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/plots/data/iperf-consolidated-A1-B1-B2-D1-F.csv'
+csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/plots/iperfs-A-B-C-F.csv'
 
 data <- read_csv(csvPath, col_types = cols(
   agent = col_character(),
   num_iperfs = col_integer(),
   port_number = col_integer(),
   original_size = col_character(),
-  transfered = col_character(),
+  transferred = col_character(),
   retries = col_character(),
   flow_completion_time = col_double(),
   bandwidth = col_character(),
   iter = col_integer()
 )) %>%
   mutate(original_size = as_factor(original_size)) %>%
-  filter(!is.na(flow_completion_time)) %>%
-  print
+  #filter(!is.na(flow_completion_time)) %>%
+  #print
+  View
 
 
 ## Considera flow completion time de CADA fluxo.
@@ -32,6 +33,7 @@ data1 <- data %>%
   ) %>%
   # Agrupamento sem considerar iterações, para plot
   group_by(agent, num_iperfs, original_size) %>%
+  View %>%
   # Média/desvio padrão dos grupos
   summarize(
     average_completion_time = mean(total_completion_time),
@@ -42,9 +44,9 @@ data1 <- data %>%
 
 
 facet_labels <- c(
-  `2` = "4 flows",
-  `4` = "8 flows",
-  `8` = "16 flows"
+  `2` = "2 flows",
+  `4` = "4 flows",
+  `8` = "8 flows"
 )
 
 data1 %>%
@@ -62,7 +64,7 @@ data1 %>%
   theme_bw(base_size = 12) +
   scale_y_continuous(
     'Average flow completion time (sec)',
-    seq(0, 50000, 1000),
+    seq(0, 50000, 100),
     labels = waiver(), 
     limits = c(0, NA)
   ) +

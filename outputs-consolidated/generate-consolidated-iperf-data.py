@@ -10,8 +10,7 @@ MODEL, ORIGINAL_SIZE, TRANSFERRED, RETRIES, TIME, NUM_IPERFS
 
 """
 
-OUTPUT_IPERFS_DIR_NAME = '../output-experiments-iperfs/'
-OUTPUT_APP_DIR_NAME = '../output-experiments-app/'
+OUTPUT_IPERFS_DIR_NAME = '../output-experiments-iperfs-raw/'
 
 OUTPUT_FILENAME = './iperfs-A-B-C-F.csv'
 
@@ -63,27 +62,6 @@ def parseClient(file_path):
                     bandwidth_mbits = bandwidth_count/(1024 * 1024)
 
                 retries = float(splitted_line[7])
-            # elif 'receiver' in line:
-            #     # linha de interesse onde contém todas as infos
-            #     replaced_line = line.replace('  ', ' ')
-            #     replaced_line = replaced_line.replace('   ', ' ')
-            #     replaced_line = replaced_line.replace('             ', ' ')
-            #     replaced_line = replaced_line.replace('   ', ' ')
-            #     replaced_line = replaced_line.replace('[', '')
-            #     replaced_line = replaced_line.replace(']', '')
-            #
-            #     splitted_line_raw = replaced_line.split(' ')
-            #     splitted_line = [item for item in splitted_line_raw if item != '']
-            #
-            #     # ['4', '0.00-91.00', 'sec', '50.8', 'MBytes', '4.68', 'Mbits/sec', 'receiver\n']
-            #
-            #     received_count = float(splitted_line[3])
-            #     received_unity = splitted_line[4]
-            #     received_mbytes = None
-            #     if received_unity == 'MBytes':
-            #         received_mbytes = received_count
-            #     elif received_unity == 'KBytes':
-            #         received_mbytes = received_count/1024
 
     return flow_completion_time, transferred_mbytes, bandwidth_mbits, retries
 
@@ -185,7 +163,7 @@ def writeLineToFile(line, filename):
         file.write("%s\n" % line)
 
 def main():
-    experiments_config_file = './experiments-to-plot.csv'
+    experiments_config_file = './experiments-to-consolidate.csv'
 
     # agent, num_iperfs, port_number, original_size (MB), transferred (MB), retries, flow_completion_time (sec), bandwidth (Mbps), iter
     header = 'agent, num_iperfs, port_number, original_size, transferred, retries, flow_completion_time, bandwidth, iter'

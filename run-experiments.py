@@ -212,29 +212,30 @@ def main(argv):
     tracemalloc.start()
     start_time = datetime.datetime.now()
 
-    if agent != 'F':
+    if agent == 'F':
+        flow_size_bits = int(flows_size.strip('M')) * 8
+        wait_time = (int(num_flows) * flow_size_bits/10 ) * 1.3
+        print('wait_time = ', wait_time)
+        time.sleep(wait_time)
+    else:
         env, original_env = createVectorizedEnv()
 
-        # print('Inicia treinamento do agente.')
-        # trainAgent(env, agent)
+        print('Inicia treinamento do agente.')
+        trainAgent(env, agent)
 
-        print('Inicia execução do agente.')
-        testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
+        time_interval = datetime.datetime.now() - start_time
+        snapshot = tracemalloc.take_snapshot()
+        memory_usage = getTopMemoryUsage(snapshot)
 
+        output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+            agent, num_flows, flows_size, timesteps, iter
+        )
 
-    time_interval = datetime.datetime.now() - start_time
-    snapshot = tracemalloc.take_snapshot()
-    memory_usage = getTopMemoryUsage(snapshot)
+        with open(output_filename_compcosts, 'w+') as output_file:
+            output_file.write("%s\n" % time_interval)
+            output_file.write("%s\n" % memory_usage)
 
-    output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-        agent, num_flows, flows_size, timesteps, iter
-    )
-
-    with open(output_filename_compcosts, 'w+') as output_file:
-        output_file.write("%s\n" % time_interval)
-        output_file.write("%s\n" % memory_usage)
-
-    print('Arquivo {0} criado.'.format(output_filename_compcosts))
+        print('Arquivo {0} criado.'.format(output_filename_compcosts))
 
 
 

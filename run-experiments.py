@@ -214,7 +214,7 @@ def main(argv):
 
     if agent == 'F':
         flow_size_bits = int(flows_size.strip('M')) * 8
-        wait_time = (int(num_flows) * flow_size_bits/10 ) * 1.3
+        wait_time = (int(num_flows) * flow_size_bits/10 ) * 3
         print('wait_time = ', wait_time)
         time.sleep(wait_time)
     else:

@@ -89,8 +89,6 @@ def generateIperfCSVFile(agent, num_iperfs, flow_size):
                 file_iter_string = filename_splitted[len(filename_splitted)-1].replace('.log', '')
                 num_iters = int(file_iter_string.replace('v', ''))
 
-                header = 'agent, num_iperfs, port_number, original_size, transferred, retries, flow_completion_time, bandwidth, iter'
-
                 line = '{0},{1},{2},{3},{4},{5},{6},{7},{8}'.format(
                     agent,
                     num_iperfs,

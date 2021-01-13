@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
+from load_balance_gym.envs.load_balance_floodlight_costly_flow_s10 import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.deepq.policies import MlpPolicy
@@ -212,9 +212,9 @@ def main(argv):
     tracemalloc.start()
     start_time = datetime.datetime.now()
 
-    if agent == 'F':
+    if agent == 'F' or agent == 'F2':
         flow_size_bits = int(flows_size.strip('M')) * 8
-        wait_time = (int(num_flows) * flow_size_bits/10 ) * 3
+        wait_time = (int(num_flows) * flow_size_bits/10 ) * 4
         print('wait_time = ', wait_time)
         time.sleep(wait_time)
     else:

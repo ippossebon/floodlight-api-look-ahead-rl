@@ -16,7 +16,7 @@ data <- read_csv(csvPath, col_types = cols(
   mutate(original_size = as_factor(original_size)) %>%
   #filter(!is.na(flow_completion_time)) %>%
   #print
-  View
+  #View
 
 
 ## Considera flow completion time de CADA fluxo.

@@ -1,0 +1,30 @@
+Connecting to host 10.0.0.2, port 5204
+[  4] local 10.0.0.1 port 46116 connected to 10.0.0.2 port 5204
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.00   sec   382 KBytes  3.13 Mbits/sec    0   45.2 KBytes       
+[  4]   1.00-2.00   sec   255 KBytes  2.09 Mbits/sec    0   53.7 KBytes       
+[  4]   2.00-3.00   sec   318 KBytes  2.61 Mbits/sec    0   69.3 KBytes       
+[  4]   3.00-4.00   sec   382 KBytes  3.13 Mbits/sec    0   83.4 KBytes       
+[  4]   4.00-5.00   sec   382 KBytes  3.13 Mbits/sec    0   97.6 KBytes       
+[  4]   5.00-6.00   sec   382 KBytes  3.13 Mbits/sec    0    120 KBytes       
+[  4]   6.00-7.00   sec   509 KBytes  4.16 Mbits/sec    0    165 KBytes       
+[  4]   7.00-8.00   sec   764 KBytes  6.27 Mbits/sec    0    239 KBytes       
+[  4]   8.00-9.01   sec   509 KBytes  4.15 Mbits/sec    0    298 KBytes       
+[  4]   9.01-10.00  sec   954 KBytes  7.87 Mbits/sec    0    421 KBytes       
+[  4]  10.00-11.00  sec   573 KBytes  4.69 Mbits/sec    0    498 KBytes       
+[  4]  11.00-12.00  sec  1.24 MBytes  10.4 Mbits/sec    0    646 KBytes       
+[  4]  12.00-13.01  sec  0.00 Bytes  0.00 bits/sec  100    454 KBytes       
+[  4]  13.01-14.00  sec  0.00 Bytes  0.00 bits/sec   23    454 KBytes       
+[  4]  14.00-15.00  sec   827 KBytes  6.78 Mbits/sec    0    455 KBytes       
+[  4]  15.00-16.00  sec   636 KBytes  5.21 Mbits/sec    0    488 KBytes       
+[  4]  16.00-17.00  sec   509 KBytes  4.17 Mbits/sec    0    537 KBytes       
+[  4]  17.00-18.00  sec   509 KBytes  4.17 Mbits/sec    0    577 KBytes       
+[  4]  18.00-19.00  sec   509 KBytes  4.17 Mbits/sec    0    607 KBytes       
+[  4]  19.00-20.00  sec   764 KBytes  6.25 Mbits/sec    0    632 KBytes       
+[  4]  20.00-20.00  sec  0.00 Bytes  0.00 bits/sec    0    632 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-20.00  sec  10.2 MBytes  4.27 Mbits/sec  123             sender
+[  4]   0.00-20.00  sec  7.27 MBytes  3.05 Mbits/sec                  receiver
+
+iperf Done.

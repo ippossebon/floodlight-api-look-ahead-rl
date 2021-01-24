@@ -1,0 +1,29 @@
+Connecting to host 10.0.0.2, port 5201
+[  4] local 10.0.0.1 port 46110 connected to 10.0.0.2 port 5201
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.01   sec  1.27 MBytes  10.5 Mbits/sec    0   82.0 KBytes       
+[  4]   1.01-2.01   sec   700 KBytes  5.73 Mbits/sec    0    110 KBytes       
+[  4]   2.01-3.01   sec   636 KBytes  5.24 Mbits/sec    0    134 KBytes       
+[  4]   3.01-4.00   sec   509 KBytes  4.19 Mbits/sec    0    154 KBytes       
+[  4]   4.00-5.01   sec   509 KBytes  4.15 Mbits/sec    0    174 KBytes       
+[  4]   5.01-6.00   sec   382 KBytes  3.13 Mbits/sec    0    189 KBytes       
+[  4]   6.00-7.00   sec   509 KBytes  4.19 Mbits/sec    0    212 KBytes       
+[  4]   7.00-8.00   sec   636 KBytes  5.21 Mbits/sec    0    270 KBytes       
+[  4]   8.00-9.00   sec   764 KBytes  6.25 Mbits/sec    0    355 KBytes       
+[  4]   9.00-10.00  sec   891 KBytes  7.30 Mbits/sec    0    457 KBytes       
+[  4]  10.00-11.00  sec  1.12 MBytes  9.38 Mbits/sec    1    592 KBytes       
+[  4]  11.00-12.00  sec  0.00 Bytes  0.00 bits/sec  111    416 KBytes       
+[  4]  12.00-13.00  sec   318 KBytes  2.61 Mbits/sec   10    416 KBytes       
+[  4]  13.00-14.00  sec   827 KBytes  6.78 Mbits/sec    0    440 KBytes       
+[  4]  14.00-15.01  sec   318 KBytes  2.59 Mbits/sec    0    469 KBytes       
+[  4]  15.01-16.00  sec   318 KBytes  2.63 Mbits/sec    0    505 KBytes       
+[  4]  16.00-17.00  sec   445 KBytes  3.65 Mbits/sec    2    530 KBytes       
+[  4]  17.00-18.00  sec  0.00 Bytes  0.00 bits/sec   25    379 KBytes       
+[  4]  18.00-19.00  sec   445 KBytes  3.65 Mbits/sec    2    379 KBytes       
+[  4]  19.00-19.00  sec  0.00 Bytes  0.00 bits/sec    0    379 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-19.00  sec  10.4 MBytes  4.59 Mbits/sec  151             sender
+[  4]   0.00-19.00  sec  7.98 MBytes  3.52 Mbits/sec                  receiver
+
+iperf Done.

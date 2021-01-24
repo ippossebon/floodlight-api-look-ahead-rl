@@ -1,0 +1,31 @@
+-----------------------------------------------------------
+Server listening on 5202
+-----------------------------------------------------------
+Accepted connection from 10.0.0.1, port 42042
+[  5] local 10.0.0.2 port 5202 connected to 10.0.0.1 port 46112
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-1.01   sec   325 KBytes  2.64 Mbits/sec                  
+[  5]   1.01-2.00   sec   399 KBytes  3.30 Mbits/sec                  
+[  5]   2.00-3.00   sec   385 KBytes  3.15 Mbits/sec                  
+[  5]   3.00-4.00   sec   379 KBytes  3.11 Mbits/sec                  
+[  5]   4.00-5.00   sec   352 KBytes  2.88 Mbits/sec                  
+[  5]   5.00-6.00   sec   379 KBytes  3.10 Mbits/sec                  
+[  5]   6.00-7.00   sec   366 KBytes  3.00 Mbits/sec                  
+[  5]   7.00-8.00   sec   359 KBytes  2.94 Mbits/sec                  
+[  5]   8.00-9.00   sec   348 KBytes  2.85 Mbits/sec                  
+[  5]   9.00-10.00  sec   303 KBytes  2.48 Mbits/sec                  
+[  5]  10.00-11.00  sec   311 KBytes  2.55 Mbits/sec                  
+[  5]  11.00-12.00  sec  0.00 Bytes  0.00 bits/sec                  
+[  5]  12.00-13.00  sec   469 KBytes  3.85 Mbits/sec                  
+[  5]  13.00-14.00  sec   481 KBytes  3.94 Mbits/sec                  
+[  5]  14.00-15.00  sec   230 KBytes  1.89 Mbits/sec                  
+[  5]  15.00-16.00  sec   151 KBytes  1.24 Mbits/sec                  
+[  5]  16.00-17.00  sec   208 KBytes  1.70 Mbits/sec                  
+[  5]  17.00-18.00  sec   766 KBytes  6.28 Mbits/sec                  
+[  5]  18.00-19.00  sec   461 KBytes  3.78 Mbits/sec                  
+[  5]  19.00-20.00  sec   443 KBytes  3.62 Mbits/sec                  
+[  5]  20.00-20.77  sec   373 KBytes  3.96 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-20.77  sec  0.00 Bytes  0.00 bits/sec                  sender
+[  5]   0.00-20.77  sec  7.31 MBytes  2.95 Mbits/sec                  receiver

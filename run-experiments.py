@@ -220,8 +220,8 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        print('Inicia treinamento do agente.')
-        trainAgent(env, agent)
+        # trainAgent(env, agent)
+        testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

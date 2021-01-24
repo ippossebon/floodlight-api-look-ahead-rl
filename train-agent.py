@@ -63,7 +63,7 @@ def trainAgent(env, agent, timesteps):
 
 
 def main(argv):
-    agent = 'A2'
+    agent = 'B2'
     timesteps = 10000
 
     print('Training: agent = {0}, timesteps = {1}'.format(agent, timesteps))
@@ -75,7 +75,7 @@ def main(argv):
 
     print('Training took ', time_interval)
 
-
+cd
 
 ##################################################################################
 if __name__ == "__main__":

@@ -1,0 +1,55 @@
+Connecting to host 10.0.0.2, port 5203
+[  4] local 10.0.0.1 port 46114 connected to 10.0.0.2 port 5203
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.40   sec  82.0 KBytes   480 Kbits/sec    1   14.1 KBytes       
+[  4]   1.40-2.00   sec  0.00 Bytes  0.00 bits/sec    0   14.1 KBytes       
+[  4]   2.00-3.00   sec  14.1 KBytes   116 Kbits/sec    0   28.3 KBytes       
+[  4]   3.00-4.00   sec  0.00 Bytes  0.00 bits/sec    0   28.3 KBytes       
+[  4]   4.00-5.00   sec   208 KBytes  1.70 Mbits/sec    0   42.4 KBytes       
+[  4]   5.00-6.00   sec  7.07 KBytes  57.9 Kbits/sec   10   29.7 KBytes       
+[  4]   6.00-7.00   sec  63.6 KBytes   521 Kbits/sec    0   33.9 KBytes       
+[  4]   7.00-8.00   sec  0.00 Bytes  0.00 bits/sec    0   39.6 KBytes       
+[  4]   8.00-9.00   sec  63.6 KBytes   521 Kbits/sec    0   42.4 KBytes       
+[  4]   9.00-10.00  sec  0.00 Bytes  0.00 bits/sec    0   42.4 KBytes       
+[  4]  10.00-11.00  sec  63.6 KBytes   521 Kbits/sec    0   45.2 KBytes       
+[  4]  11.00-12.00  sec  63.6 KBytes   521 Kbits/sec    0   52.3 KBytes       
+[  4]  12.00-13.00  sec   191 KBytes  1.56 Mbits/sec    0   70.7 KBytes       
+[  4]  13.00-14.00  sec   255 KBytes  2.09 Mbits/sec    0    103 KBytes       
+[  4]  14.00-15.00  sec  0.00 Bytes  0.00 bits/sec    0    106 KBytes       
+[  4]  15.00-16.00  sec   382 KBytes  3.13 Mbits/sec    0    158 KBytes       
+[  4]  16.00-17.00  sec   573 KBytes  4.69 Mbits/sec    0    232 KBytes       
+[  4]  17.00-18.00  sec  0.00 Bytes  0.00 bits/sec    0    238 KBytes       
+[  4]  18.00-19.00  sec   891 KBytes  7.30 Mbits/sec    0    356 KBytes       
+[  4]  19.00-20.00  sec   509 KBytes  4.17 Mbits/sec    0    419 KBytes       
+[  4]  20.00-21.00  sec   827 KBytes  6.78 Mbits/sec    0    535 KBytes       
+[  4]  21.00-22.00  sec   700 KBytes  5.74 Mbits/sec   34    533 KBytes       
+[  4]  22.00-23.00  sec  0.00 Bytes  0.00 bits/sec   55    436 KBytes       
+[  4]  23.00-24.00  sec  0.00 Bytes  0.00 bits/sec   53    436 KBytes       
+[  4]  24.00-25.00  sec  0.00 Bytes  0.00 bits/sec   55    436 KBytes       
+[  4]  25.00-26.00  sec  0.00 Bytes  0.00 bits/sec    4    436 KBytes       
+[  4]  26.00-27.00  sec  1.74 MBytes  14.6 Mbits/sec   50    298 KBytes       
+[  4]  27.00-28.00  sec   255 KBytes  2.08 Mbits/sec    0    317 KBytes       
+[  4]  28.00-29.00  sec   255 KBytes  2.08 Mbits/sec    0    338 KBytes       
+[  4]  29.00-30.00  sec  63.6 KBytes   522 Kbits/sec    0    344 KBytes       
+[  4]  30.00-31.00  sec   318 KBytes  2.61 Mbits/sec    0    358 KBytes       
+[  4]  31.00-32.00  sec  63.6 KBytes   521 Kbits/sec    0    359 KBytes       
+[  4]  32.00-33.00  sec   318 KBytes  2.61 Mbits/sec    0    365 KBytes       
+[  4]  33.00-34.00  sec  0.00 Bytes  0.00 bits/sec    0    366 KBytes       
+[  4]  34.00-35.00  sec   382 KBytes  3.13 Mbits/sec    0    375 KBytes       
+[  4]  35.00-36.00  sec   127 KBytes  1.04 Mbits/sec    0    383 KBytes       
+[  4]  36.00-37.00  sec  63.6 KBytes   521 Kbits/sec   33    313 KBytes       
+[  4]  37.00-38.00  sec  63.6 KBytes   521 Kbits/sec    0    273 KBytes       
+[  4]  38.00-39.00  sec  0.00 Bytes  0.00 bits/sec    5    273 KBytes       
+[  4]  39.00-40.00  sec   318 KBytes  2.61 Mbits/sec    0    264 KBytes       
+[  4]  40.00-41.00  sec   636 KBytes  5.19 Mbits/sec    0    192 KBytes       
+[  4]  41.00-42.00  sec   255 KBytes  2.09 Mbits/sec    0    211 KBytes       
+[  4]  42.00-43.00  sec   255 KBytes  2.08 Mbits/sec    0    222 KBytes       
+[  4]  43.00-44.00  sec   127 KBytes  1.04 Mbits/sec    0    228 KBytes       
+[  4]  44.00-45.00  sec   191 KBytes  1.56 Mbits/sec    0    229 KBytes       
+[  4]  45.00-45.00  sec  0.00 Bytes  0.00 bits/sec    0    229 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-45.00  sec  10.1 MBytes  1.89 Mbits/sec  300             sender
+[  4]   0.00-45.00  sec  6.81 MBytes  1.27 Mbits/sec                  receiver
+
+iperf Done.

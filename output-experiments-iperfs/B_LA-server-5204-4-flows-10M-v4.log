@@ -1,0 +1,31 @@
+-----------------------------------------------------------
+Server listening on 5204
+-----------------------------------------------------------
+Accepted connection from 10.0.0.1, port 57713
+[  5] local 10.0.0.2 port 5204 connected to 10.0.0.1 port 46116
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-1.00   sec   180 KBytes  1.47 Mbits/sec                  
+[  5]   1.00-2.00   sec   211 KBytes  1.73 Mbits/sec                  
+[  5]   2.00-3.00   sec   215 KBytes  1.76 Mbits/sec                  
+[  5]   3.00-4.00   sec   230 KBytes  1.89 Mbits/sec                  
+[  5]   4.00-5.00   sec   232 KBytes  1.90 Mbits/sec                  
+[  5]   5.00-6.00   sec   266 KBytes  2.18 Mbits/sec                  
+[  5]   6.00-7.00   sec   318 KBytes  2.61 Mbits/sec                  
+[  5]   7.00-8.00   sec   266 KBytes  2.18 Mbits/sec                  
+[  5]   8.00-9.00   sec   290 KBytes  2.37 Mbits/sec                  
+[  5]   9.00-10.00  sec   311 KBytes  2.55 Mbits/sec                  
+[  5]  10.00-11.00  sec   313 KBytes  2.56 Mbits/sec                  
+[  5]  11.00-12.00  sec   406 KBytes  3.33 Mbits/sec                  
+[  5]  12.00-13.00  sec   132 KBytes  1.08 Mbits/sec                  
+[  5]  13.00-14.00  sec   585 KBytes  4.79 Mbits/sec                  
+[  5]  14.00-15.00  sec  2.83 KBytes  23.2 Kbits/sec                  
+[  5]  15.00-16.01  sec  0.00 Bytes  0.00 bits/sec                  
+[  5]  16.01-17.00  sec  0.00 Bytes  0.00 bits/sec                  
+[  5]  17.00-18.00  sec  0.00 Bytes  0.00 bits/sec                  
+[  5]  18.00-19.00  sec  25.5 KBytes   209 Kbits/sec                  
+[  5]  19.00-20.00  sec   383 KBytes  3.14 Mbits/sec                  
+[  5]  20.00-20.87  sec  1.38 MBytes  13.3 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-20.87  sec  0.00 Bytes  0.00 bits/sec                  sender
+[  5]   0.00-20.87  sec  5.65 MBytes  2.27 Mbits/sec                  receiver

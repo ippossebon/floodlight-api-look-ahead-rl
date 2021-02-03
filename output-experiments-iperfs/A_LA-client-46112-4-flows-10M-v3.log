@@ -1,0 +1,31 @@
+Connecting to host 10.0.0.2, port 5202
+[  4] local 10.0.0.1 port 46112 connected to 10.0.0.2 port 5202
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.00   sec   430 KBytes  3.52 Mbits/sec    0   25.5 KBytes       
+[  4]   1.00-2.00   sec   255 KBytes  2.08 Mbits/sec    0   36.8 KBytes       
+[  4]   2.00-3.00   sec   318 KBytes  2.61 Mbits/sec    0   49.5 KBytes       
+[  4]   3.00-4.00   sec   318 KBytes  2.61 Mbits/sec    0   60.8 KBytes       
+[  4]   4.00-5.00   sec   318 KBytes  2.61 Mbits/sec    0   74.9 KBytes       
+[  4]   5.00-6.00   sec   509 KBytes  4.17 Mbits/sec    0    119 KBytes       
+[  4]   6.00-7.00   sec   573 KBytes  4.69 Mbits/sec    0    174 KBytes       
+[  4]   7.00-8.00   sec   573 KBytes  4.69 Mbits/sec    0    239 KBytes       
+[  4]   8.00-9.00   sec   954 KBytes  7.82 Mbits/sec    0    344 KBytes       
+[  4]   9.00-10.00  sec   827 KBytes  6.77 Mbits/sec    0    443 KBytes       
+[  4]  10.00-11.00  sec   827 KBytes  6.78 Mbits/sec    0    551 KBytes       
+[  4]  11.00-12.00  sec  1.18 MBytes  9.90 Mbits/sec    0    703 KBytes       
+[  4]  12.00-13.01  sec   700 KBytes  5.71 Mbits/sec    0    799 KBytes       
+[  4]  13.01-14.00  sec  1.25 MBytes  10.5 Mbits/sec    0    980 KBytes       
+[  4]  14.00-15.00  sec   629 KBytes  5.16 Mbits/sec    0   1.03 MBytes       
+[  4]  15.00-16.00  sec   191 KBytes  1.56 Mbits/sec   15   1.01 MBytes       
+[  4]  16.00-17.00  sec  0.00 Bytes  0.00 bits/sec   66    884 KBytes       
+[  4]  17.00-18.00  sec  0.00 Bytes  0.00 bits/sec  141    752 KBytes       
+[  4]  18.00-19.00  sec  0.00 Bytes  0.00 bits/sec   47    752 KBytes       
+[  4]  19.00-20.00  sec  63.6 KBytes   522 Kbits/sec  148    485 KBytes       
+[  4]  20.00-21.00  sec  1.12 MBytes  9.37 Mbits/sec   32    532 KBytes       
+[  4]  21.00-21.00  sec  0.00 Bytes  0.00 bits/sec    0    532 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-21.00  sec  10.9 MBytes  4.34 Mbits/sec  449             sender
+[  4]   0.00-21.00  sec  5.88 MBytes  2.35 Mbits/sec                  receiver
+
+iperf Done.

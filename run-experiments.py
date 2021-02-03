@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_costly_flow_s10 import LoadBalanceEnvDiscAction
+from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.deepq.policies import MlpPolicy
@@ -93,6 +93,8 @@ def trainAgent(env, agent):
 def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
     if agent == 'B_LA':
         agent = 'B'
+    elif agent == 'B2_LA':
+        agent = 'B2'
 
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
@@ -102,29 +104,28 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
 
     writeLineToFile('Step; State; Reward', csv_output_filename)
 
-    for step in range(num_steps):
-        print('Step ', step)
-        action, _ = model.predict(state, deterministic=False)
-        state, reward, done, info = env.step(action)
-
-        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-        writeLineToFile(output_data_line, csv_output_filename)
-        step += 1
-
-    # Com o IF, acho que preciso rodar com mais steps
-    # for step in range(num_steps * 2):
+    # for step in range(num_steps):
     #     print('Step ', step)
     #     action, _ = model.predict(state, deterministic=False)
-    #     contains_elephant_flow = containsElephantFlow(original_env)
-    #     print('contains_elephant_flow: ', contains_elephant_flow)
-    #     print('state = ', state)
+    #     state, reward, done, info = env.step(action)
     #
-    #     if contains_elephant_flow:
-    #         state, reward, done, info = env.step(action)
-    #
-    #         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-    #         writeLineToFile(output_data_line, csv_output_filename)
+    #     output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+    #     writeLineToFile(output_data_line, csv_output_filename)
     #     step += 1
+
+    # Com o IF, acho que preciso rodar com mais steps
+    for step in range(num_steps * 2):
+        print('Step ', step)
+        action, _ = model.predict(state, deterministic=False)
+        contains_elephant_flow = original_env.existsElephantFlow()
+        print('contains_elephant_flow: ', contains_elephant_flow)
+
+        if contains_elephant_flow:
+            state, reward, done, info = env.step(action)
+
+            output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+            writeLineToFile(output_data_line, csv_output_filename)
+        step += 1
 
 
 
@@ -132,12 +133,6 @@ def writeLineToFile(line, filename):
     print(csv_output_filename)
     with open(filename, 'a') as file:
         file.write("%s\n" % line)
-
-"""
-Elephant flow detection
-"""
-def containsElephantFlow(env):
-    return env.existsElephantFlow()
 
 
 def getTopMemoryUsage(snapshot, key_type='lineno', limit=3):

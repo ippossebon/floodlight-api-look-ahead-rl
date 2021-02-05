@@ -87,52 +87,40 @@ def trainAgent(env, agent):
     )
 
     # treinamento com 5 fluxos de 300M
-    model.learn(total_timesteps=10000)
+    model.learn(total_timesteps=700)
     model.save('./trained-agents/' + agent)
-    print('Modelo treinado e salvo.')
+    print('Modelo treinado e salvo: ', agent)
 
 
 def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
-    # if agent == 'B_LA':
-    #     agent = 'B'
-    # elif agent == 'B2_LA':
-    #     agent = 'B2'
-    # elif agent == 'A_LA':
-    #     agent = 'A'
-    # elif agent == 'A2_LA':
-    #     agent = 'A2'
+    num_steps = int(timesteps)
+
+    if '_LA' in agent :
+        num_steps = num_steps * 3
+    if agent == 'B_LA_v2':
+        agent = 'B_LA'
 
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
-    num_steps = int(timesteps)
 
     writeLineToFile('Step; State; Reward', csv_output_filename)
 
-    # for step in range(num_steps):
-    #     print('Step ', step)
-    #     action, _ = model.predict(state, deterministic=False)
-    #     state, reward, done, info = env.step(action)
-    #
-    #     output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-    #     writeLineToFile(output_data_line, csv_output_filename)
-    #     step += 1
-
-    # Com o IF, acho que preciso rodar com mais steps
-    for step in range(num_steps * 5):
+    for step in range(num_steps):
         print('Step ', step)
         action, _ = model.predict(state, deterministic=False)
+
         contains_elephant_flow = original_env.existsElephantFlow()
         print('contains_elephant_flow: ', contains_elephant_flow)
+        if not contains_elephant_flow:
+            action = numpy.array([33]) # void
 
-        if contains_elephant_flow:
-            state, reward, done, info = env.step(action)
+        state, reward, done, info = env.step(action)
 
-            output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-            writeLineToFile(output_data_line, csv_output_filename)
+        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+        writeLineToFile(output_data_line, csv_output_filename)
         step += 1
-
 
 
 def writeLineToFile(line, filename):
@@ -221,22 +209,22 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        trainAgent(env, agent)
-        # testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
+        # trainAgent(env, agent)
+        testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()
         memory_usage = getTopMemoryUsage(snapshot)
 
-        # output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-        #     agent, num_flows, flows_size, timesteps, iter
-        # )
-        #
-        # with open(output_filename_compcosts, 'w+') as output_file:
-        #     output_file.write("%s\n" % time_interval)
-        #     output_file.write("%s\n" % memory_usage)
-        #
-        # print('Arquivo {0} criado.'.format(output_filename_compcosts))
+        output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+            agent, num_flows, flows_size, timesteps, iter
+        )
+
+        with open(output_filename_compcosts, 'w+') as output_file:
+            output_file.write("%s\n" % time_interval)
+            output_file.write("%s\n" % memory_usage)
+
+        print('Arquivo {0} criado.'.format(output_filename_compcosts))
 
 
 

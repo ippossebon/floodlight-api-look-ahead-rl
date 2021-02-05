@@ -1,6 +1,6 @@
 library(tidyverse)
 
-csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/outputs-consolidated/data/comp-costs-A-B-C.csv'
+csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/outputs-consolidated/data/comp-costs-As2-Bs2.csv'
 
 # agent, num_iperfs, flow_size, time, memory, iter
 
@@ -62,7 +62,7 @@ data1 %>%
   theme_bw(base_size = 12) +
   scale_y_continuous(
     'Average memory usage (KB)',
-    seq(0, 40000, 1000),
+    #seq(0, 40000, 1000),
     labels = waiver(), 
     limits = c(0, NA)
   ) +

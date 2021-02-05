@@ -1,0 +1,30 @@
+Connecting to host 10.0.0.2, port 5201
+[  4] local 10.0.0.1 port 46110 connected to 10.0.0.2 port 5201
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.01   sec   355 KBytes  2.88 Mbits/sec    0   46.7 KBytes       
+[  4]   1.01-2.01   sec   191 KBytes  1.56 Mbits/sec    0   52.3 KBytes       
+[  4]   2.01-3.01   sec   127 KBytes  1.05 Mbits/sec    0   58.0 KBytes       
+[  4]   3.01-4.00   sec   191 KBytes  1.57 Mbits/sec    0   66.5 KBytes       
+[  4]   4.00-5.01   sec   255 KBytes  2.06 Mbits/sec    0   83.4 KBytes       
+[  4]   5.01-6.00   sec   318 KBytes  2.63 Mbits/sec    0    115 KBytes       
+[  4]   6.00-7.00   sec   509 KBytes  4.16 Mbits/sec    0    171 KBytes       
+[  4]   7.00-8.00   sec   700 KBytes  5.73 Mbits/sec    0    238 KBytes       
+[  4]   8.00-9.00   sec   827 KBytes  6.79 Mbits/sec    0    331 KBytes       
+[  4]   9.00-10.00  sec   891 KBytes  7.30 Mbits/sec    0    427 KBytes       
+[  4]  10.00-11.00  sec   954 KBytes  7.82 Mbits/sec    0    540 KBytes       
+[  4]  11.00-12.00  sec  1018 KBytes  8.34 Mbits/sec    0    656 KBytes       
+[  4]  12.00-13.01  sec  1.25 MBytes  10.4 Mbits/sec    0    834 KBytes       
+[  4]  13.01-14.00  sec   565 KBytes  4.64 Mbits/sec    0    888 KBytes       
+[  4]  14.00-15.01  sec   191 KBytes  1.56 Mbits/sec  171    642 KBytes       
+[  4]  15.01-16.00  sec  0.00 Bytes  0.00 bits/sec   19    642 KBytes       
+[  4]  16.00-17.00  sec   382 KBytes  3.13 Mbits/sec    0    642 KBytes       
+[  4]  17.00-18.00  sec   827 KBytes  6.77 Mbits/sec    0    662 KBytes       
+[  4]  18.00-19.00  sec   573 KBytes  4.69 Mbits/sec    0    714 KBytes       
+[  4]  19.00-20.00  sec   255 KBytes  2.08 Mbits/sec    0    752 KBytes       
+[  4]  20.00-20.00  sec  0.00 Bytes  0.00 bits/sec    0    752 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-20.00  sec  10.2 MBytes  4.26 Mbits/sec  190             sender
+[  4]   0.00-20.00  sec  5.84 MBytes  2.45 Mbits/sec                  receiver
+
+iperf Done.

@@ -50,7 +50,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Discrete(33)
+        self.action_space = spaces.Discrete(34)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
@@ -412,48 +412,8 @@ class LoadBalanceEnvDiscAction(gym.Env):
         info = {}
 
         print('Action =', action)
-        action_vec = actionMap(action)
 
-        switch_index = action_vec[0]
-        in_port_index = action_vec[1]
-        out_port_index = action_vec[2]
-
-        switch_id = self.switch_ids[switch_index]
-        in_port = in_port_index + 1
-        out_port = out_port_index + 1
-        flow_match = self.getMostCostlyFlow(switch_id)
-
-        if flow_match:
-            rule = self.actionToRule(switch_id, in_port, out_port, flow_match)
-            # print('Regra a ser instalada: ', rule)
-
-            existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
-
-            # acho que nao pode ter... posso querer mexer em um fluxo que antes era grande e agora tem um maior
-            if existing_rule_name:
-                # Desintala regra para não haver conflito
-                response_uninstall = self.uninstallRule(existing_rule_name)
-                # print('Resposta desinstalação: ', response_uninstall.json())
-
-            response_install = self.installRule(rule)
-            # print('Resposta instalação: ', response_install.json())
-
-            time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
-
-            next_state = self.getState()
-            reward = self.calculateReward(next_state)
-            self.state = next_state
-
-            print('State: {0} -- Reward = {1}'.format(self.state, reward))
-            print('...........')
-            print()
-
-            return next_state, reward, done, info
-        else:
-            # Não ha fluxo onerando o switch escolhido
-            # O estado não será alterado e a recompensa é zero
-            # print('Sem regra a ser instalada.')
-
+        if action == 33:
             next_state = self.getState()
             reward = 0
 
@@ -462,6 +422,57 @@ class LoadBalanceEnvDiscAction(gym.Env):
             print()
 
             return next_state, reward, done, info
+        else:
+            action_vec = actionMap(action)
+
+            switch_index = action_vec[0]
+            in_port_index = action_vec[1]
+            out_port_index = action_vec[2]
+
+            switch_id = self.switch_ids[switch_index]
+            in_port = in_port_index + 1
+            out_port = out_port_index + 1
+            flow_match = self.getMostCostlyFlow(switch_id)
+
+            if flow_match:
+                rule = self.actionToRule(switch_id, in_port, out_port, flow_match)
+                # print('Regra a ser instalada: ', rule)
+
+                existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
+
+                # acho que nao pode ter... posso querer mexer em um fluxo que antes era grande e agora tem um maior
+                if existing_rule_name:
+                    # Desintala regra para não haver conflito
+                    response_uninstall = self.uninstallRule(existing_rule_name)
+                    # print('Resposta desinstalação: ', response_uninstall.json())
+
+                response_install = self.installRule(rule)
+                # print('Resposta instalação: ', response_install.json())
+
+                time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
+
+                next_state = self.getState()
+                reward = self.calculateReward(next_state)
+                self.state = next_state
+
+                print('State: {0} -- Reward = {1}'.format(self.state, reward))
+                print('...........')
+                print()
+
+                return next_state, reward, done, info
+            else:
+                # Não ha fluxo onerando o switch escolhido
+                # O estado não será alterado e a recompensa é zero
+                # print('Sem regra a ser instalada.')
+
+                next_state = self.getState()
+                reward = 0
+
+                print('State: {0} -- Reward = {1}'.format(self.state, reward))
+                print('...........')
+                print()
+
+                return next_state, reward, done, info
 
 
     def calculateReward(self, state):
@@ -485,10 +496,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
         s1_1_tx_mbps = state[0]
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
 
-        # hmean = len(state) / numpy.sum(1.0/state)
+        hmean = len(state) / numpy.sum(1.0/state)
         # std = numpy.std(state)
 
-        reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
+        reward = float(hmean * (s3_1_tx_mbps + s1_1_tx_mbps))
 
         return reward
 

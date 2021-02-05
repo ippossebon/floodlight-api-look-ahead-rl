@@ -104,3 +104,7 @@ def actionMap(action):
     elif action == 32:
         # S5
         return numpy.array([4, -1, -1])
+
+    elif action == 33:
+        # action para caso não exista EF
+        return numpy.array([-1, -1, -1])

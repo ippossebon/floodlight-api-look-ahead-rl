@@ -85,16 +85,22 @@ def trainAgent(env, agent):
         buffer_size=56,
         batch_size=50
     )
+
+    # treinamento com 5 fluxos de 300M
     model.learn(total_timesteps=10000)
     model.save('./trained-agents/' + agent)
     print('Modelo treinado e salvo.')
 
 
 def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
-    if agent == 'B_LA':
-        agent = 'B'
-    elif agent == 'B2_LA':
-        agent = 'B2'
+    # if agent == 'B_LA':
+    #     agent = 'B'
+    # elif agent == 'B2_LA':
+    #     agent = 'B2'
+    # elif agent == 'A_LA':
+    #     agent = 'A'
+    # elif agent == 'A2_LA':
+    #     agent = 'A2'
 
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
@@ -114,7 +120,7 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
     #     step += 1
 
     # Com o IF, acho que preciso rodar com mais steps
-    for step in range(num_steps * 2):
+    for step in range(num_steps * 5):
         print('Step ', step)
         action, _ = model.predict(state, deterministic=False)
         contains_elephant_flow = original_env.existsElephantFlow()
@@ -215,22 +221,22 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        # trainAgent(env, agent)
-        testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
+        trainAgent(env, agent)
+        # testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()
         memory_usage = getTopMemoryUsage(snapshot)
 
-        output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-            agent, num_flows, flows_size, timesteps, iter
-        )
-
-        with open(output_filename_compcosts, 'w+') as output_file:
-            output_file.write("%s\n" % time_interval)
-            output_file.write("%s\n" % memory_usage)
-
-        print('Arquivo {0} criado.'.format(output_filename_compcosts))
+        # output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
+        #     agent, num_flows, flows_size, timesteps, iter
+        # )
+        #
+        # with open(output_filename_compcosts, 'w+') as output_file:
+        #     output_file.write("%s\n" % time_interval)
+        #     output_file.write("%s\n" % memory_usage)
+        #
+        # print('Arquivo {0} criado.'.format(output_filename_compcosts))
 
 
 

@@ -11,7 +11,7 @@ chmod +x ./delete-flow-entries.sh
 
 while read agent num_iperfs flow_size timesteps iter
 do
-	for (( i=1; i <= $iter; i++ )); do
+	for (( i=0; i < $iter; i++ )); do
 	# for (( i=55; i < 56; i++ )); do
     echo "Iniciando experimento: $agent - $num_iperfs iperfs - $flow_size - $timesteps steps - iteração $i"
 

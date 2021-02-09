@@ -1,0 +1,44 @@
+Connecting to host 10.0.0.2, port 5207
+[  4] local 10.0.0.1 port 46122 connected to 10.0.0.2 port 5207
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.01   sec  82.0 KBytes   663 Kbits/sec    1   14.1 KBytes       
+[  4]   1.01-2.02   sec  0.00 Bytes  0.00 bits/sec    0   14.1 KBytes       
+[  4]   2.02-3.05   sec  42.4 KBytes   334 Kbits/sec    0   18.4 KBytes       
+[  4]   3.05-4.00   sec  0.00 Bytes  0.00 bits/sec    0   18.4 KBytes       
+[  4]   4.00-5.05   sec  1.41 KBytes  11.0 Kbits/sec    0   18.4 KBytes       
+[  4]   5.05-6.00   sec  0.00 Bytes  0.00 bits/sec    0   18.4 KBytes       
+[  4]   6.00-7.00   sec  63.6 KBytes   523 Kbits/sec    0   26.9 KBytes       
+[  4]   7.00-8.00   sec   144 KBytes  1.18 Mbits/sec    0   41.0 KBytes       
+[  4]   8.00-9.00   sec  0.00 Bytes  0.00 bits/sec    0   41.0 KBytes       
+[  4]   9.00-10.01  sec   127 KBytes  1.04 Mbits/sec    0   60.8 KBytes       
+[  4]  10.01-11.00  sec  0.00 Bytes  0.00 bits/sec    0   60.8 KBytes       
+[  4]  11.00-12.02  sec  0.00 Bytes  0.00 bits/sec    0   63.6 KBytes       
+[  4]  12.02-13.00  sec   191 KBytes  1.60 Mbits/sec    0   84.8 KBytes       
+[  4]  13.00-14.02  sec  0.00 Bytes  0.00 bits/sec    0   84.8 KBytes       
+[  4]  14.02-15.05  sec  0.00 Bytes  0.00 bits/sec    0   84.8 KBytes       
+[  4]  15.05-16.00  sec   318 KBytes  2.74 Mbits/sec    0    127 KBytes       
+[  4]  16.00-17.00  sec  0.00 Bytes  0.00 bits/sec    0    127 KBytes       
+[  4]  17.00-18.00  sec   191 KBytes  1.56 Mbits/sec    0    143 KBytes       
+[  4]  18.00-19.00  sec   573 KBytes  4.69 Mbits/sec    0    211 KBytes       
+[  4]  19.00-20.00  sec  0.00 Bytes  0.00 bits/sec    0    212 KBytes       
+[  4]  20.00-21.00  sec   700 KBytes  5.73 Mbits/sec    0    313 KBytes       
+[  4]  21.00-22.03  sec   127 KBytes  1.01 Mbits/sec    0    325 KBytes       
+[  4]  22.03-23.00  sec   764 KBytes  6.46 Mbits/sec    0    416 KBytes       
+[  4]  23.00-24.02  sec   573 KBytes  4.61 Mbits/sec    0    471 KBytes       
+[  4]  24.02-25.00  sec   445 KBytes  3.72 Mbits/sec    0    515 KBytes       
+[  4]  25.00-26.00  sec   700 KBytes  5.73 Mbits/sec    0    591 KBytes       
+[  4]  26.00-27.00  sec   636 KBytes  5.22 Mbits/sec    0    673 KBytes       
+[  4]  27.00-28.01  sec   255 KBytes  2.07 Mbits/sec    0    699 KBytes       
+[  4]  28.01-29.25  sec  1.25 MBytes  8.43 Mbits/sec    0    863 KBytes       
+[  4]  29.25-30.04  sec   502 KBytes  5.22 Mbits/sec    0    915 KBytes       
+[  4]  30.04-31.00  sec   636 KBytes  5.43 Mbits/sec    0    991 KBytes       
+[  4]  31.00-32.00  sec  1.25 MBytes  10.5 Mbits/sec    0   1.11 MBytes       
+[  4]  32.00-33.00  sec   247 KBytes  2.02 Mbits/sec    0   1.11 MBytes       
+[  4]  33.00-34.02  sec   573 KBytes  4.61 Mbits/sec    0   1.19 MBytes       
+[  4]  34.02-34.02  sec  0.00 Bytes  0.00 bits/sec    0   1.19 MBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-34.02  sec  10.2 MBytes  2.52 Mbits/sec    1             sender
+[  4]   0.00-34.02  sec  3.90 MBytes   962 Kbits/sec                  receiver
+
+iperf Done.

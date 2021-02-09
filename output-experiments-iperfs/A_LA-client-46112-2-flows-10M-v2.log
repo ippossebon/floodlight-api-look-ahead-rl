@@ -1,0 +1,26 @@
+Connecting to host 10.0.0.2, port 5202
+[  4] local 10.0.0.1 port 46112 connected to 10.0.0.2 port 5202
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.00   sec   735 KBytes  6.00 Mbits/sec    0    113 KBytes       
+[  4]   1.00-2.03   sec   827 KBytes  6.63 Mbits/sec    0    185 KBytes       
+[  4]   2.03-3.00   sec   573 KBytes  4.81 Mbits/sec    0    206 KBytes       
+[  4]   3.00-4.00   sec   573 KBytes  4.69 Mbits/sec    0    232 KBytes       
+[  4]   4.00-5.00   sec   573 KBytes  4.69 Mbits/sec    0    253 KBytes       
+[  4]   5.00-6.00   sec   573 KBytes  4.68 Mbits/sec    0    274 KBytes       
+[  4]   6.00-7.00   sec   382 KBytes  3.13 Mbits/sec    0    291 KBytes       
+[  4]   7.00-8.00   sec   636 KBytes  5.21 Mbits/sec    0    324 KBytes       
+[  4]   8.00-9.00   sec   700 KBytes  5.73 Mbits/sec    0    376 KBytes       
+[  4]   9.00-10.03  sec   891 KBytes  7.07 Mbits/sec    0    468 KBytes       
+[  4]  10.03-11.00  sec   509 KBytes  4.31 Mbits/sec    0    523 KBytes       
+[  4]  11.00-12.00  sec   636 KBytes  5.20 Mbits/sec    0    574 KBytes       
+[  4]  12.00-13.19  sec   255 KBytes  1.75 Mbits/sec    0    609 KBytes       
+[  4]  13.19-14.00  sec  0.00 Bytes  0.00 bits/sec    0    609 KBytes       
+[  4]  14.00-15.04  sec  1.25 MBytes  10.1 Mbits/sec    0    798 KBytes       
+[  4]  15.04-16.01  sec  1.17 MBytes  10.1 Mbits/sec    0    913 KBytes       
+[  4]  16.01-16.01  sec  0.00 Bytes  0.00 bits/sec    0    913 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-16.01  sec  10.1 MBytes  5.29 Mbits/sec    0             sender
+[  4]   0.00-16.01  sec  5.72 MBytes  3.00 Mbits/sec                  receiver
+
+iperf Done.

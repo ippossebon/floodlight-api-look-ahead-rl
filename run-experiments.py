@@ -111,6 +111,7 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
         print('Step ', step)
         action, _ = model.predict(state, deterministic=False)
 
+        # O trecho abaixo poderia estar dentro da env...
         contains_elephant_flow = original_env.existsElephantFlow()
         print('contains_elephant_flow: ', contains_elephant_flow)
         if not contains_elephant_flow:

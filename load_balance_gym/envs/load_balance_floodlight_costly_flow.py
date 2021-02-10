@@ -499,7 +499,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
         hmean = len(state) / numpy.sum(1.0/state)
         # std = numpy.std(state)
 
-        reward = float(hmean * (s3_1_tx_mbps + s1_1_tx_mbps))
+        reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
 
         return reward
 

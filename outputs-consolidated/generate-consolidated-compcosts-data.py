@@ -12,7 +12,7 @@ MODEL, ORIGINAL_SIZE, TRANSFERRED, RETRIES, TIME, NUM_IPERFS
 
 OUTPUT_APP_DIR_NAME = '../output-experiments-app/'
 
-OUTPUT_FILENAME = './data/comp-costs-As2-Bs2.csv'
+OUTPUT_FILENAME = './data/comp-costs-B-B_LA.csv'
 
 def parseFile(file_path):
 

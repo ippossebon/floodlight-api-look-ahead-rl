@@ -12,7 +12,7 @@ MODEL, ORIGINAL_SIZE, TRANSFERRED, RETRIES, TIME, NUM_IPERFS
 
 OUTPUT_IPERFS_DIR_NAME = '../output-experiments-iperfs-raw/'
 
-OUTPUT_FILENAME = './data/iperfs-As2-Bs2-Fs2.csv'
+OUTPUT_FILENAME = './data/iperfs-B-B_LA-F.csv'
 
 def parseClient(file_path):
     flow_completion_time = None

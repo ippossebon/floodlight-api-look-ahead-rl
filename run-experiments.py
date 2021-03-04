@@ -124,6 +124,39 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
         step += 1
 
 
+def testAgent2(env, original_env, agent, num_flows, flows_size, timesteps):
+    num_steps = int(timesteps)
+
+    if '_LA' in agent :
+        num_steps = num_steps * 3
+    if agent == 'B_LA_v2':
+        agent = 'B_LA'
+
+    agent_path = 'trained-agents/{0}'.format(agent)
+    model = DQN.load(load_path=agent_path, env=env)
+
+    state = env.reset()
+
+    writeLineToFile('Step; State; Reward', csv_output_filename)
+
+    for step in range(num_steps):
+        print('Step ', step)
+        active_flows = original_env.getActiveFlows()
+
+        for flow in active_flows:
+            action = numpy.array([33]) # void
+
+            if original_env.isElephantFlow(flow):
+                print("It's an elephant flow.")
+                action, _ = model.predict(state, deterministic=False)
+
+            state, reward, done, info = env.step(action)
+
+            output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+            writeLineToFile(output_data_line, csv_output_filename)
+            step += 1
+
+
 def writeLineToFile(line, filename):
     print(csv_output_filename)
     with open(filename, 'a') as file:
@@ -211,7 +244,7 @@ def main(argv):
         env, original_env = createVectorizedEnv()
 
         # trainAgent(env, agent)
-        testAgent(env, original_env, agent, num_flows, flows_size, timesteps)
+        testAgent2(env, original_env, agent, num_flows, flows_size, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

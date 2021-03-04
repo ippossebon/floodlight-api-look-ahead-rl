@@ -167,6 +167,37 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         return self.state
 
+    def getActiveFlows(self):
+        # response = requests.get('{host}/wm/core/switch/all/flow/json'.format(host=CONTROLLER_HOST))
+        response = requests.get('{host}/wm/core/switch/00:00:00:00:00:00:00:01/flow/json'.format(host=CONTROLLER_HOST))
+        response_data = response.json()
+
+        active_flows = []
+
+        for flow_obj in response_data['flows']:
+            flow_match = None
+
+            try:
+                flow_match = flow_obj['match']['tcp_src']
+            except:
+                flow_match = None
+
+            if flow_match != None:
+                flow_byte_count = int(flow_obj['byteCount'])
+                print('flow_byte_count = ', flow_byte_count)
+                active_flows.append(flow_obj)
+
+        return active_flows
+
+
+    def isElephantFlow(self, flow_obj):
+        flow_byte_count = int(flow_obj['byteCount'])
+        print('flow_byte_count = ', flow_byte_count)
+        if flow_byte_count >= ELEPHANT_FLOW_THRESHOLD:
+            return True
+
+        return False
+
 
     def getStatisticsBandwidth(self):
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))

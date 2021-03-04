@@ -15,4 +15,4 @@ B,8,50M,300,5
 B,8,100M,500,5
 B,8,200M,700,5
 B,8,500M,1600,5
-agent, num_flows, initial_flow_size, num_steps, iter
+agent, iter

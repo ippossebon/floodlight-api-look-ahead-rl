@@ -1,6 +1,6 @@
 library(tidyverse)
 
-csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/outputs-consolidated/data/iperfs-B-B_LA-F.csv'
+csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/outputs-consolidated/data/scalability-switches/iperfs-As2-Bs2-Fs2.csv'
 
 data <- read_csv(csvPath, col_types = cols(
   agent = col_character(),

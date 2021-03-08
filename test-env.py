@@ -204,7 +204,16 @@ def main(argv):
     # trainAgent(env, agent)
     while True:
         print('> State: ', original_env.getState())
-        print('> Active flows: ', original_env.getActiveFlows())
+        active_flows = original_env.getActiveFlows()
+
+        print('> Active flows: ')
+        for flow in active_flows:
+            print(flow)
+
+        print()
+
+        time.sleep(10)
+
 
         # testLookAheadAgent(env, original_env, agent, num_flows, timesteps)
 

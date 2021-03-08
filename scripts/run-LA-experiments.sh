@@ -8,6 +8,10 @@ OLDIFS=$IFS
 
 chmod +x ./add-initial-flow-entries.sh
 chmod +x ./delete-flow-entries.sh
+chmod +x ./start-incremental-iperfs-server.sh
+chmod +x ./delayed-start-incremental-iperfs-client.sh
+
+flows_sizes=("25M" "50M" "100M" "200M" "400M" "800M" "1600M")
 
 while read agent iter
 do
@@ -21,9 +25,9 @@ do
 
 	    ./delayed-start-incremental-iperfs-client.sh $agent $i &
 
-	    # docker run -v $PWD/../:/app --network="bridge" lookahead python run-experiments.py -a $agent -n $num_iperfs -s $flow_size -t $timesteps -i $i
+	    docker run -v $PWD/../:/app --network="bridge" lookahead python run-experiments.py -a $agent -n 9 -s ALL_FLOWS -t 4000 -i $i
 
-	    # echo "Removendo todas as entradas estáticas..."
+	    echo "Removendo todas as entradas estáticas..."
 
 	    ./delete-flow-entries.sh
 

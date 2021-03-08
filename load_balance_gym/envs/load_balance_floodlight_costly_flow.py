@@ -193,6 +193,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
     def isElephantFlow(self, flow_obj):
         flow_byte_count = int(flow_obj['byteCount'])
         print('flow_byte_count = ', flow_byte_count)
+
         if flow_byte_count >= ELEPHANT_FLOW_THRESHOLD:
             return True
 

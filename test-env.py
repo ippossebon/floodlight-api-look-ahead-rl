@@ -124,7 +124,7 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
         step += 1
 
 
-def testAgent2(env, original_env, agent, num_flows, timesteps):
+def testLookAheadAgent(env, original_env, agent, num_flows, timesteps):
     num_steps = int(timesteps)
 
     if '_LA' in agent :
@@ -137,13 +137,10 @@ def testAgent2(env, original_env, agent, num_flows, timesteps):
 
     state = env.reset()
 
-    writeLineToFile('Step; State; Reward', csv_output_filename)
-
     for step in range(num_steps):
         print('Step ', step)
         active_flows = original_env.getActiveFlows()
         print('active_flows ', active_flows)
-
 
         for flow in active_flows:
             action = numpy.array([33]) # void
@@ -155,112 +152,61 @@ def testAgent2(env, original_env, agent, num_flows, timesteps):
             state, reward, done, info = env.step(action)
 
             output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-            writeLineToFile(output_data_line, csv_output_filename)
+            print(output_data_line + '\n')
             step += 1
-
-
-def writeLineToFile(line, filename):
-    print(csv_output_filename)
-    with open(filename, 'a') as file:
-        file.write("%s\n" % line)
-
-
-def getTopMemoryUsage(snapshot, key_type='lineno', limit=3):
-    snapshot = snapshot.filter_traces((
-        tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
-        tracemalloc.Filter(False, "<unknown>"),
-    ))
-    top_stats = snapshot.statistics(key_type)
-
-    # print("Top %s lines" % limit)
-    for index, stat in enumerate(top_stats[:limit], 1):
-        frame = stat.traceback[0]
-        # replace "/path/to/module/file.py" with "module/file.py"
-        filename = os.sep.join(frame.filename.split(os.sep)[-2:])
-        # print("#%s: %s:%s: %.1f KiB"
-        #       % (index, filename, frame.lineno, stat.size / 1024))
-        line = linecache.getline(frame.filename, frame.lineno).strip()
-        # if line:
-            # print('    %s' % line)
-
-    other = top_stats[limit:]
-    if other:
-        size = sum(stat.size for stat in other)
-        print("%s other: %.1f KiB" % (len(other), size / 1024))
-    total = sum(stat.size for stat in top_stats)
-    total_allocated_size_kb = total / 1024
-    # print("Total allocated size: %.1f KiB" % total_allocated_size_kb)
-
-    return total_allocated_size_kb
 
 
 
 def main(argv):
-    global csv_output_filename
-    start1 = datetime.datetime.now()
+    # global csv_output_filename
+    # start1 = datetime.datetime.now()
+    #
+    # try:
+    #     opts, args = getopt.getopt(argv, "ha:n:s:t:i:", ["agent=", "numflows=", "flowsize=", "timesteps=", "iter="])
+    # except getopt.GetoptError:
+    #     print ('test-env.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
+    #     sys.exit(2)
+    #
+    # agent = None
+    # num_flows = None
+    # flows_size = None
+    # timesteps = None
+    # iter = None
+    #
+    # for opt, arg in opts:
+    #     if opt == '-h':
+    #         print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
+    #         sys.exit()
+    #     elif opt in ("-a", "--agent"):
+    #         agent = arg
+    #     elif opt in ("-n", "--numflows"):
+    #         num_flows = arg
+    #     elif opt in ("-s", "--flowsize"):
+    #         flows_size = arg
+    #     elif opt in ("-t", "--timesteps"):
+    #         timesteps = arg
+    #     elif opt in ("-i", "--iter"):
+    #         iter = arg
+    #
+    #
+    # print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
+    #     agent, num_flows, flows_size, timesteps, iter
+    # ))
 
-    try:
-        opts, args = getopt.getopt(argv, "ha:n:s:t:i:", ["agent=", "numflows=", "flowsize=", "timesteps=", "iter="])
-    except getopt.GetoptError:
-        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
-        sys.exit(2)
+    # if agent == 'F' or agent == 'F2':
+    #     flow_size_bits = int(flows_size.strip('M')) * 8
+    #     wait_time = (int(num_flows) * flow_size_bits/10 ) * 4
+    #     print('wait_time = ', wait_time)
+    #     time.sleep(wait_time)
+    # else:
+    env, original_env = createVectorizedEnv()
 
-    agent = None
-    num_flows = None
-    flows_size = None
-    timesteps = None
-    iter = None
+    # trainAgent(env, agent)
+    while True:
+        print('> State: ', original_env.getState())
+        print('> Active flows: ', original_env.getActiveFlows())
 
-    for opt, arg in opts:
-        if opt == '-h':
-            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
-            sys.exit()
-        elif opt in ("-a", "--agent"):
-            agent = arg
-        elif opt in ("-n", "--numflows"):
-            num_flows = arg
-        elif opt in ("-s", "--flowsize"):
-            flows_size = arg
-        elif opt in ("-t", "--timesteps"):
-            timesteps = arg
-        elif opt in ("-i", "--iter"):
-            iter = arg
-
-    csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
-        agent, num_flows, flows_size, timesteps, iter
-    )
-
-    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
-        agent, num_flows, flows_size, timesteps, iter
-    ))
-
-    tracemalloc.start()
-    start_time = datetime.datetime.now()
-
-    if agent == 'F' or agent == 'F2':
-        flow_size_bits = int(flows_size.strip('M')) * 8
-        wait_time = (int(num_flows) * flow_size_bits/10 ) * 4
-        print('wait_time = ', wait_time)
-        time.sleep(wait_time)
-    else:
-        env, original_env = createVectorizedEnv()
-
-        # trainAgent(env, agent)
-        testAgent2(env, original_env, agent, num_flows, timesteps)
-
-        time_interval = datetime.datetime.now() - start_time
-        snapshot = tracemalloc.take_snapshot()
-        memory_usage = getTopMemoryUsage(snapshot)
-
-        output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-            agent, num_flows, flows_size, timesteps, iter
-        )
-
-        with open(output_filename_compcosts, 'w+') as output_file:
-            output_file.write("%s\n" % time_interval)
-            output_file.write("%s\n" % memory_usage)
-
-        print('Arquivo {0} criado.'.format(output_filename_compcosts))
+        # testLookAheadAgent(env, original_env, agent, num_flows, timesteps)
 
 
 

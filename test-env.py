@@ -212,7 +212,6 @@ def main(argv):
 
         print()
 
-        time.sleep(10)
 
 
         # testLookAheadAgent(env, original_env, agent, num_flows, timesteps)

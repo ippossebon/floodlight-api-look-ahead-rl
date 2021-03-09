@@ -206,12 +206,12 @@ def main(argv):
         print('> State: ', original_env.getState())
         active_flows = original_env.getActiveFlows()
 
-        print('> Active flows: ')
         for flow in active_flows:
-            print(flow)
+            isEF = original_env.isElephantFlow(flow)
+            print('>> Flow {0} - isEF = {1}'.format(flow, isEF))
 
         print()
-
+        time.sleep(2)
 
 
         # testLookAheadAgent(env, original_env, agent, num_flows, timesteps)

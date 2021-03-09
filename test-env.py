@@ -150,9 +150,7 @@ def main(argv):
     #         iter = arg
     #
     #
-    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
-        agent, num_flows=2, flows_size='ALL', timesteps='LA', iter=12
-    ))
+    print('Running.')
 
     # if agent == 'F' or agent == 'F2':
     #     flow_size_bits = int(flows_size.strip('M')) * 8
@@ -167,5 +165,4 @@ def main(argv):
 
 ##################################################################################
 if __name__ == "__main__":
-    # main(sys.argv[1:])
-    main()
+    main(sys.argv[1:])

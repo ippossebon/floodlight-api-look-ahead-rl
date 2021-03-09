@@ -19,7 +19,7 @@ MAX_PRIORITY = 32760
 
 EPSILON = 0.001
 
-ELEPHANT_FLOW_THRESHOLD = 10 * 1024 * 1024 # 5MBytes
+ELEPHANT_FLOW_THRESHOLD = 50 * 1024 * 1024 # 5MBytes
 
 class LoadBalanceEnvDiscAction(gym.Env):
     metadata = {'render.modes': ['human']}

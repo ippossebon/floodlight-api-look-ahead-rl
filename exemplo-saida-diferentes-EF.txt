@@ -1,0 +1,651 @@
+> State:  [2.03570366e-01 1.01788893e+01 1.14440918e-04 2.03443527e-01
+ 1.14440918e-04 1.14440918e-04 9.31292248e+00 9.31756878e+00
+ 2.03544617e-01 1.14440918e-04 1.14440918e-04 1.14440918e-04
+ 1.14440918e-04 1.14440918e-04 1.14440918e-04 1.14440918e-04]
+
+flow_byte_count =  11166529
+flow_byte_count =  221108
+flow_byte_count =  11166529
+
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992',
+  'tableId': '0x0',
+  'packetCount': '3854',
+  'byteCount': '11166529',
+  'durationSeconds': '14',
+  'durationNSeconds': '237000000',
+  'priority': '1',
+  'idleTimeoutSec': '5',
+  'hardTimeoutSec': '0',
+  'flags': '0',
+  'match': {
+    'in_port': '1',
+    'eth_dst': '00:00:00:00:00:02',
+    'eth_src': '00:00:00:00:00:01',
+    'eth_type': '0x0x800',
+    'ip_proto': '0x6',
+    'ipv4_src': '10.0.0.1',
+    'ipv4_dst': '10.0.0.2',
+    'tcp_src': '46122',
+    'tcp_dst': '5202'
+  },
+  'instructions': {'instruction_apply_actions': {'actions': 'output=2'}
+}}
+- isEF = True
+flow_byte_count =  221108
+
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992',
+  'tableId': '0x0',
+  'packetCount': '3350',
+  'byteCount': '221108',
+  'durationSeconds': '14',
+  'durationNSeconds': '87000000',
+  'priority': '1',
+  'idleTimeoutSec': '5',
+  'hardTimeoutSec': '0',
+  'flags': '0',
+  'match': {
+    'in_port': '2',
+    'eth_dst': '00:00:00:00:00:01',
+    'eth_src': '00:00:00:00:00:02',
+    'eth_type': '0x0x800',
+    'ip_proto': '0x6',
+    'ipv4_src': '10.0.0.2',
+    'ipv4_dst': '10.0.0.1',
+    'tcp_src': '5202',
+    'tcp_dst': '46122'
+  },
+  'instructions': {'instruction_apply_actions': {'actions': 'output=1'}
+}}
+- isEF = False
+
+-------------------------------------------------------------------------------
+
+> State:  [2.03570366e-01 1.01788893e+01 1.14440918e-04 2.03443527e-01
+ 1.14440918e-04 1.14440918e-04 9.31292248e+00 9.31756878e+00
+ 2.03544617e-01 1.14440918e-04 1.14440918e-04 1.14440918e-04
+ 1.14440918e-04 1.14440918e-04 1.14440918e-04 1.14440918e-04]
+
+flow_byte_count =  14137419
+flow_byte_count =  274832
+flow_byte_count =  14137419
+
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '4879', 'byteCount': '14137419', 'durationSeconds': '16', 'durationNSeconds': '255000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  274832
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '4164', 'byteCount': '274832', 'durationSeconds': '16', 'durationNSeconds': '105000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.25567245 14.07158279  0.          0.25554657  0.          0.
+ 11.66084671 11.66084671  0.25554657  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  17222379
+flow_byte_count =  328424
+flow_byte_count =  17222379
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '5943', 'byteCount': '17222379', 'durationSeconds': '18', 'durationNSeconds': '277000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  328424
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '4976', 'byteCount': '328424', 'durationSeconds': '18', 'durationNSeconds': '127000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.25567245 14.07158279  0.          0.25554657  0.          0.
+ 11.66084671 11.66084671  0.25554657  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  20483677
+flow_byte_count =  383072
+flow_byte_count =  20483677
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '7068', 'byteCount': '20483677', 'durationSeconds': '20', 'durationNSeconds': '297000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  383072
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '5804', 'byteCount': '383072', 'durationSeconds': '20', 'durationNSeconds': '147000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.25567245 14.07158279  0.          0.25554657  0.          0.
+ 11.66084671 11.66084671  0.25554657  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  23839891
+flow_byte_count =  437216
+flow_byte_count =  23839891
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '8227', 'byteCount': '23839891', 'durationSeconds': '22', 'durationNSeconds': '315000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  437216
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '6624', 'byteCount': '437216', 'durationSeconds': '22', 'durationNSeconds': '165000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.21288681 12.16423035  0.          0.21284485  0.          0.
+  9.33309555  9.33530521  0.21284485  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  25951349
+flow_byte_count =  515760
+flow_byte_count =  25951349
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '9372', 'byteCount': '25951349', 'durationSeconds': '24', 'durationNSeconds': '331000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  515760
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '7460', 'byteCount': '515760', 'durationSeconds': '24', 'durationNSeconds': '181000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.21288681 12.16423035  0.          0.21284485  0.          0.
+  9.33309555  9.33530521  0.21284485  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  29635227
+flow_byte_count =  640028
+flow_byte_count =  29635227
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '11371', 'byteCount': '29635227', 'durationSeconds': '26', 'durationNSeconds': '348000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  640028
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '8782', 'byteCount': '640028', 'durationSeconds': '26', 'durationNSeconds': '198000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [5.31539917e-01 1.42492733e+01 1.43051147e-04 5.31381607e-01
+ 1.43051147e-04 1.43051147e-04 1.17769070e+01 1.17714157e+01
+ 5.31381607e-01 1.14440918e-04 1.43051147e-04 1.43051147e-04
+ 1.43051147e-04 1.43051147e-04 1.43051147e-04 1.43051147e-04]
+flow_byte_count =  31662113
+flow_byte_count =  764672
+flow_byte_count =  31662113
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '12394', 'byteCount': '31662113', 'durationSeconds': '28', 'durationNSeconds': '369000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  764672
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '10108', 'byteCount': '764672', 'durationSeconds': '28', 'durationNSeconds': '219000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [5.31539917e-01 1.42492733e+01 1.43051147e-04 5.31381607e-01
+ 1.43051147e-04 1.43051147e-04 1.17769070e+01 1.17714157e+01
+ 5.31381607e-01 1.14440918e-04 1.43051147e-04 1.43051147e-04
+ 1.43051147e-04 1.43051147e-04 1.43051147e-04 1.43051147e-04]
+flow_byte_count =  31727215
+flow_byte_count =  825960
+flow_byte_count =  31727215
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '12437', 'byteCount': '31727215', 'durationSeconds': '30', 'durationNSeconds': '386000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  825960
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '10760', 'byteCount': '825960', 'durationSeconds': '30', 'durationNSeconds': '236000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [5.31539917e-01 1.42492733e+01 1.43051147e-04 5.31381607e-01
+ 1.43051147e-04 1.43051147e-04 1.17769070e+01 1.17714157e+01
+ 5.31381607e-01 1.14440918e-04 1.43051147e-04 1.43051147e-04
+ 1.43051147e-04 1.43051147e-04 1.43051147e-04 1.43051147e-04]
+flow_byte_count =  36150609
+flow_byte_count =  830516
+flow_byte_count =  36150609
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '12678', 'byteCount': '36150609', 'durationSeconds': '32', 'durationNSeconds': '402000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  830516
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '10824', 'byteCount': '830516', 'durationSeconds': '32', 'durationNSeconds': '252000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.15765953 7.56731796 0.         0.15780258 0.         0.
+ 6.15338993 6.16022015 0.15780258 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  38703511
+flow_byte_count =  837842
+flow_byte_count =  38703511
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '13469', 'byteCount': '38703511', 'durationSeconds': '34', 'durationNSeconds': '422000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  837842
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '10935', 'byteCount': '837842', 'durationSeconds': '34', 'durationNSeconds': '272000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.15765953 7.56731796 0.         0.15780258 0.         0.
+ 6.15338993 6.16022015 0.15780258 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  41269857
+flow_byte_count =  878960
+flow_byte_count =  41269857
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '14354', 'byteCount': '41269857', 'durationSeconds': '36', 'durationNSeconds': '441000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  878960
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '11558', 'byteCount': '878960', 'durationSeconds': '36', 'durationNSeconds': '291000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.13066673 9.63471603 0.         0.13052368 0.         0.
+ 9.23344421 9.23344421 0.13052368 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  43453807
+flow_byte_count =  944418
+flow_byte_count =  43453807
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '15281', 'byteCount': '43453807', 'durationSeconds': '38', 'durationNSeconds': '462000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  944418
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '12383', 'byteCount': '944418', 'durationSeconds': '38', 'durationNSeconds': '312000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.13066673 9.63471603 0.         0.13052368 0.         0.
+ 9.23344421 9.23344421 0.13052368 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  45705511
+flow_byte_count =  1036632
+flow_byte_count =  45705511
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '16357', 'byteCount': '45705511', 'durationSeconds': '40', 'durationNSeconds': '481000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1036632
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '13364', 'byteCount': '1036632', 'durationSeconds': '40', 'durationNSeconds': '331000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.13066673 9.63471603 0.         0.13052368 0.         0.
+ 9.23344421 9.23344421 0.13052368 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  48385805
+flow_byte_count =  1148116
+flow_byte_count =  48385805
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '17696', 'byteCount': '48385805', 'durationSeconds': '42', 'durationNSeconds': '499000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1148116
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '14550', 'byteCount': '1148116', 'durationSeconds': '42', 'durationNSeconds': '349000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [4.76318359e-01 1.11383953e+01 1.43051147e-04 4.76339340e-01
+ 1.43051147e-04 1.43051147e-04 1.17270870e+01 1.17272453e+01
+ 4.76339340e-01 1.43051147e-04 1.43051147e-04 1.43051147e-04
+ 1.43051147e-04 1.43051147e-04 1.43051147e-04 1.43051147e-04]
+flow_byte_count =  49023123
+flow_byte_count =  1267478
+flow_byte_count =  49023123
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '18071', 'byteCount': '49023123', 'durationSeconds': '44', 'durationNSeconds': '516000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1267478
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '15821', 'byteCount': '1267478', 'durationSeconds': '44', 'durationNSeconds': '366000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [4.76318359e-01 1.11383953e+01 1.43051147e-04 4.76339340e-01
+ 1.43051147e-04 1.43051147e-04 1.17270870e+01 1.17272453e+01
+ 4.76339340e-01 1.43051147e-04 1.43051147e-04 1.43051147e-04
+ 1.43051147e-04 1.43051147e-04 1.43051147e-04 1.43051147e-04]
+flow_byte_count =  54255695
+flow_byte_count =  1314412
+flow_byte_count =  54255695
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '19293', 'byteCount': '54255695', 'durationSeconds': '46', 'durationNSeconds': '533000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1314412
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '16502', 'byteCount': '1314412', 'durationSeconds': '46', 'durationNSeconds': '383000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.23786259 9.07272911 0.         0.23786259 0.         0.
+ 9.28885174 9.28885174 0.23786259 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  56807231
+flow_byte_count =  1367740
+flow_byte_count =  56807231
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '20173', 'byteCount': '56807231', 'durationSeconds': '48', 'durationNSeconds': '557000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1367740
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '17310', 'byteCount': '1367740', 'durationSeconds': '48', 'durationNSeconds': '407000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.23786259 9.07272911 0.         0.23786259 0.         0.
+ 9.28885174 9.28885174 0.23786259 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  59309861
+flow_byte_count =  1420804
+flow_byte_count =  59309861
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '21036', 'byteCount': '59309861', 'durationSeconds': '50', 'durationNSeconds': '573000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1420804
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '18114', 'byteCount': '1420804', 'durationSeconds': '50', 'durationNSeconds': '423000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.23786259 9.07272911 0.         0.23786259 0.         0.
+ 9.28885174 9.28885174 0.23786259 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  61773985
+flow_byte_count =  1474066
+flow_byte_count =  61773985
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '21886', 'byteCount': '61773985', 'durationSeconds': '52', 'durationNSeconds': '594000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1474066
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '18921', 'byteCount': '1474066', 'durationSeconds': '52', 'durationNSeconds': '444000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.20282555 9.56379986 0.         0.20282555 0.         0.
+ 9.33319664 9.33319664 0.20282555 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  64235147
+flow_byte_count =  1527460
+flow_byte_count =  64235147
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '22735', 'byteCount': '64235147', 'durationSeconds': '54', 'durationNSeconds': '612000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1527460
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '19730', 'byteCount': '1527460', 'durationSeconds': '54', 'durationNSeconds': '462000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.20282555 9.56379986 0.         0.20282555 0.         0.
+ 9.33319664 9.33319664 0.20282555 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  66705195
+flow_byte_count =  1580590
+flow_byte_count =  66705195
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '23587', 'byteCount': '66705195', 'durationSeconds': '56', 'durationNSeconds': '633000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1580590
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '20535', 'byteCount': '1580590', 'durationSeconds': '56', 'durationNSeconds': '483000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [2.03496933e-01 9.40354443e+00 1.14440918e-04 2.03370094e-01
+ 1.14440918e-04 1.14440918e-04 9.33106518e+00 9.33119202e+00
+ 2.03370094e-01 1.14440918e-04 1.14440918e-04 1.14440918e-04
+ 1.14440918e-04 1.14440918e-04 1.14440918e-04 1.14440918e-04]
+flow_byte_count =  69218225
+flow_byte_count =  1633720
+flow_byte_count =  69218225
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '24454', 'byteCount': '69218225', 'durationSeconds': '58', 'durationNSeconds': '650000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1633720
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '21340', 'byteCount': '1633720', 'durationSeconds': '58', 'durationNSeconds': '500000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [2.03496933e-01 9.40354443e+00 1.14440918e-04 2.03370094e-01
+ 1.14440918e-04 1.14440918e-04 9.33106518e+00 9.33119202e+00
+ 2.03370094e-01 1.14440918e-04 1.14440918e-04 1.14440918e-04
+ 1.14440918e-04 1.14440918e-04 1.14440918e-04 1.14440918e-04]
+flow_byte_count =  71797933
+flow_byte_count =  1686850
+flow_byte_count =  71797933
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '25344', 'byteCount': '71797933', 'durationSeconds': '60', 'durationNSeconds': '671000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1686850
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '22145', 'byteCount': '1686850', 'durationSeconds': '60', 'durationNSeconds': '521000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [2.03496933e-01 9.40354443e+00 1.14440918e-04 2.03370094e-01
+ 1.14440918e-04 1.14440918e-04 9.33106518e+00 9.33119202e+00
+ 2.03370094e-01 1.14440918e-04 1.14440918e-04 1.14440918e-04
+ 1.14440918e-04 1.14440918e-04 1.14440918e-04 1.14440918e-04]
+flow_byte_count =  74473939
+flow_byte_count =  1740178
+flow_byte_count =  74473939
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '26267', 'byteCount': '74473939', 'durationSeconds': '62', 'durationNSeconds': '687000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1740178
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '22953', 'byteCount': '1740178', 'durationSeconds': '62', 'durationNSeconds': '537000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.20282555 9.83507919 0.         0.20282555 0.         0.
+ 9.33326054 9.33326054 0.20282555 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  77256643
+flow_byte_count =  1793440
+flow_byte_count =  77256643
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '27227', 'byteCount': '77256643', 'durationSeconds': '64', 'durationNSeconds': '705000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1793440
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '23760', 'byteCount': '1793440', 'durationSeconds': '64', 'durationNSeconds': '555000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.20282555 9.83507919 0.         0.20282555 0.         0.
+ 9.33326054 9.33326054 0.20282555 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  80162303
+flow_byte_count =  1846768
+flow_byte_count =  80162303
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '28229', 'byteCount': '80162303', 'durationSeconds': '66', 'durationNSeconds': '725000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1846768
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '24568', 'byteCount': '1846768', 'durationSeconds': '66', 'durationNSeconds': '575000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.203228   10.80057907  0.          0.20312786  0.          0.
+  9.3377161   9.33319664  0.20312786  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  82707217
+flow_byte_count =  1909712
+flow_byte_count =  82707217
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '29250', 'byteCount': '82707217', 'durationSeconds': '68', 'durationNSeconds': '748000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1909712
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '25388', 'byteCount': '1909712', 'durationSeconds': '68', 'durationNSeconds': '598000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.203228   10.80057907  0.          0.20312786  0.          0.
+  9.3377161   9.33319664  0.20312786  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  85076819
+flow_byte_count =  1997602
+flow_byte_count =  85076819
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '30423', 'byteCount': '85076819', 'durationSeconds': '70', 'durationNSeconds': '767000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  1997602
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '26323', 'byteCount': '1997602', 'durationSeconds': '70', 'durationNSeconds': '617000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [4.17953491e-01 1.25755329e+01 1.43051147e-04 4.17921066e-01
+ 1.43051147e-04 1.43051147e-04 1.17027912e+01 1.17057114e+01
+ 4.17921066e-01 1.43051147e-04 1.43051147e-04 1.43051147e-04
+ 1.43051147e-04 1.43051147e-04 1.43051147e-04 1.43051147e-04]
+flow_byte_count =  88250499
+flow_byte_count =  2121588
+flow_byte_count =  88250499
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '32195', 'byteCount': '88250499', 'durationSeconds': '72', 'durationNSeconds': '788000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  2121588
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '27642', 'byteCount': '2121588', 'durationSeconds': '72', 'durationNSeconds': '638000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [4.17953491e-01 1.25755329e+01 1.43051147e-04 4.17921066e-01
+ 1.43051147e-04 1.43051147e-04 1.17027912e+01 1.17057114e+01
+ 4.17921066e-01 1.43051147e-04 1.43051147e-04 1.43051147e-04
+ 1.43051147e-04 1.43051147e-04 1.43051147e-04 1.43051147e-04]
+flow_byte_count =  91173403
+flow_byte_count =  2255914
+flow_byte_count =  91173403
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '33919', 'byteCount': '91173403', 'durationSeconds': '74', 'durationNSeconds': '807000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  2255914
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '29071', 'byteCount': '2255914', 'durationSeconds': '74', 'durationNSeconds': '657000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [4.17953491e-01 1.25755329e+01 1.43051147e-04 4.17921066e-01
+ 1.43051147e-04 1.43051147e-04 1.17027912e+01 1.17057114e+01
+ 4.17921066e-01 1.43051147e-04 1.43051147e-04 1.43051147e-04
+ 1.43051147e-04 1.43051147e-04 1.43051147e-04 1.43051147e-04]
+flow_byte_count =  92831679
+flow_byte_count =  2401614
+flow_byte_count =  92831679
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '34933', 'byteCount': '92831679', 'durationSeconds': '76', 'durationNSeconds': '829000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  2401614
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '30621', 'byteCount': '2401614', 'durationSeconds': '76', 'durationNSeconds': '679000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.53012657 8.61596966 0.         0.53012657 0.         0.
+ 9.49291992 9.49291992 0.53012657 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  95796087
+flow_byte_count =  2451838
+flow_byte_count =  95796087
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '35421', 'byteCount': '95796087', 'durationSeconds': '78', 'durationNSeconds': '845000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  2451838
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '31187', 'byteCount': '2451838', 'durationSeconds': '78', 'durationNSeconds': '695000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [0.53012657 8.61596966 0.         0.53012657 0.         0.
+ 9.49291992 9.49291992 0.53012657 0.         0.         0.
+ 0.         0.         0.         0.        ]
+flow_byte_count =  98353547
+flow_byte_count =  2498566
+flow_byte_count =  98353547
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '36303', 'byteCount': '98353547', 'durationSeconds': '80', 'durationNSeconds': '867000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  2498566
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '31895', 'byteCount': '2498566', 'durationSeconds': '80', 'durationNSeconds': '717000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.17049789 10.87877178  0.          0.17049789  0.          0.
+  9.28656864  9.28435898  0.17049789  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  100863615
+flow_byte_count =  2551828
+flow_byte_count =  100863615
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '37169', 'byteCount': '100863615', 'durationSeconds': '82', 'durationNSeconds': '884000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  2551828
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '32702', 'byteCount': '2551828', 'durationSeconds': '82', 'durationNSeconds': '734000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.17049789 10.87877178  0.          0.17049789  0.          0.
+  9.28656864  9.28435898  0.17049789  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  103311415
+flow_byte_count =  134
+flow_byte_count =  67
+flow_byte_count =  2604496
+flow_byte_count =  103311415
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '38013', 'byteCount': '103311415', 'durationSeconds': '84', 'durationNSeconds': '904000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  134
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '2', 'byteCount': '134', 'durationSeconds': '1', 'durationNSeconds': '594000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '40676', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = False
+flow_byte_count =  67
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '1', 'byteCount': '67', 'durationSeconds': '0', 'durationNSeconds': '364000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '40676'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+flow_byte_count =  2604496
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '33500', 'byteCount': '2604496', 'durationSeconds': '84', 'durationNSeconds': '754000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [ 0.17049789 10.87877178  0.          0.17049789  0.          0.
+  9.28656864  9.28435898  0.17049789  0.          0.          0.
+  0.          0.          0.          0.        ]
+flow_byte_count =  103416731
+flow_byte_count =  955
+flow_byte_count =  954
+flow_byte_count =  2634238
+flow_byte_count =  103416731
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '38051', 'byteCount': '103416731', 'durationSeconds': '86', 'durationNSeconds': '924000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  955
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '11', 'byteCount': '955', 'durationSeconds': '3', 'durationNSeconds': '614000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '40676', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = False
+flow_byte_count =  954
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '11', 'byteCount': '954', 'durationSeconds': '2', 'durationNSeconds': '384000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '40676'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+flow_byte_count =  2634238
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '34043', 'byteCount': '2634238', 'durationSeconds': '86', 'durationNSeconds': '774000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [1.56749725e-01 5.27209854e+00 1.14440918e-04 1.56623840e-01
+ 1.14440918e-04 1.14440918e-04 7.43581009e+00 7.44045639e+00
+ 1.56623840e-01 1.14440918e-04 1.14440918e-04 1.14440918e-04
+ 1.14440918e-04 1.14440918e-04 1.14440918e-04 1.14440918e-04]
+flow_byte_count =  103416731
+flow_byte_count =  955
+flow_byte_count =  954
+flow_byte_count =  2634238
+flow_byte_count =  103416731
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '38051', 'byteCount': '103416731', 'durationSeconds': '88', 'durationNSeconds': '942000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '46122', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = True
+flow_byte_count =  955
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '11', 'byteCount': '955', 'durationSeconds': '5', 'durationNSeconds': '632000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '40676', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = False
+flow_byte_count =  954
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '11', 'byteCount': '954', 'durationSeconds': '4', 'durationNSeconds': '402000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '40676'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+flow_byte_count =  2634238
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '34043', 'byteCount': '2634238', 'durationSeconds': '88', 'durationNSeconds': '792000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+> State:  [1.56749725e-01 5.27209854e+00 1.14440918e-04 1.56623840e-01
+ 1.14440918e-04 1.14440918e-04 7.43581009e+00 7.44045639e+00
+ 1.56623840e-01 1.14440918e-04 1.14440918e-04 1.14440918e-04
+ 1.14440918e-04 1.14440918e-04 1.14440918e-04 1.14440918e-04]
+flow_byte_count =  955
+flow_byte_count =  954
+flow_byte_count =  2634238
+flow_byte_count =  955
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '11', 'byteCount': '955', 'durationSeconds': '7', 'durationNSeconds': '657000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '1', 'eth_dst': '00:00:00:00:00:02', 'eth_src': '00:00:00:00:00:01', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.1', 'ipv4_dst': '10.0.0.2', 'tcp_src': '40676', 'tcp_dst': '5202'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=2'}}} - isEF = False
+flow_byte_count =  954
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '11', 'byteCount': '954', 'durationSeconds': '6', 'durationNSeconds': '427000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '40676'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+flow_byte_count =  2634238
+>> Flow {
+  'version': 'OF_13',
+  'cookie': '9007199254740992', 'tableId': '0x0', 'packetCount': '34043', 'byteCount': '2634238', 'durationSeconds': '90', 'durationNSeconds': '817000000', 'priority': '1', 'idleTimeoutSec': '5', 'hardTimeoutSec': '0', 'flags': '0', 'match': {'in_port': '2', 'eth_dst': '00:00:00:00:00:01', 'eth_src': '00:00:00:00:00:02', 'eth_type': '0x0x800', 'ip_proto': '0x6', 'ipv4_src': '10.0.0.2', 'ipv4_dst': '10.0.0.1', 'tcp_src': '5202', 'tcp_dst': '46122'}, 'instructions': {'instruction_apply_actions': {'actions': 'output=1'}}} - isEF = False
+
+--------------------------------------------------------------------------------
+> State:  [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]

@@ -92,14 +92,7 @@ def trainAgent(env, agent):
     print('Modelo treinado e salvo: ', agent)
 
 
-def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
-    num_steps = int(timesteps)
-
-    if '_LA' in agent :
-        num_steps = num_steps * 3
-    if agent == 'B_LA_v2':
-        agent = 'B_LA'
-
+def testLookAheadAgent(env, original_env, agent):
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
@@ -107,58 +100,26 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
 
     writeLineToFile('Step; State; Reward', csv_output_filename)
 
-    for step in range(num_steps):
-        print('Step ', step)
-        action, _ = model.predict(state, deterministic=False)
+    time.sleep(5) # pra dar tempo de iniciar os fluxos e não ficar com active_flows vazio
 
-        # O trecho abaixo poderia estar dentro da env...
-        contains_elephant_flow = original_env.existsElephantFlow()
-        print('contains_elephant_flow: ', contains_elephant_flow)
-        if not contains_elephant_flow:
-            action = numpy.array([33]) # void
-
-        state, reward, done, info = env.step(action)
-
-        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-        writeLineToFile(output_data_line, csv_output_filename)
-        step += 1
-
-
-def testLookAheadAgent(env, original_env, agent, num_flows, timesteps):
-    num_steps = int(timesteps)
-
-    if '_LA' in agent :
-        num_steps = num_steps * 3
-    if agent == 'B_LA_v2':
-        agent = 'B_LA'
-
-    agent_path = 'trained-agents/{0}'.format(agent)
-    model = DQN.load(load_path=agent_path, env=env)
-
-    state = env.reset()
-
-    for step in range(num_steps):
-        print('Step ', step)
+    while True:
         active_flows = original_env.getActiveFlows()
-        print('active_flows ', active_flows)
 
         for flow in active_flows:
-            action = numpy.array([33]) # void
-
             if original_env.isElephantFlow(flow):
-                print("It's an elephant flow.")
+                state = original_env.getState()
                 action, _ = model.predict(state, deterministic=False)
+                state, reward, done, info = env.step(action, flow)
 
-            state, reward, done, info = env.step(action)
+                output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+                writeLineToFile(output_data_line, csv_output_filename)
 
-            output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-            print(output_data_line + '\n')
-            step += 1
-
+        print()
+        time.sleep(1)
 
 
 def main(argv):
-    # global csv_output_filename
+    global csv_output_filename
     # start1 = datetime.datetime.now()
     #
     # try:
@@ -167,7 +128,7 @@ def main(argv):
     #     print ('test-env.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
     #     sys.exit(2)
     #
-    # agent = None
+    agent = 'B'
     # num_flows = None
     # flows_size = None
     # timesteps = None
@@ -189,9 +150,9 @@ def main(argv):
     #         iter = arg
     #
     #
-    # print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
-    #     agent, num_flows, flows_size, timesteps, iter
-    # ))
+    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
+        agent, num_flows=2, flows_size='ALL', timesteps='LA', iter=12
+    ))
 
     # if agent == 'F' or agent == 'F2':
     #     flow_size_bits = int(flows_size.strip('M')) * 8
@@ -200,21 +161,7 @@ def main(argv):
     #     time.sleep(wait_time)
     # else:
     env, original_env = createVectorizedEnv()
-
-    # trainAgent(env, agent)
-    while True:
-        print('> State: ', original_env.getState())
-        active_flows = original_env.getActiveFlows()
-
-        for flow in active_flows:
-            isEF = original_env.isElephantFlow(flow)
-            print('>> Flow {0} - isEF = {1}'.format(flow, isEF))
-
-        print()
-        time.sleep(2)
-
-
-        # testLookAheadAgent(env, original_env, agent, num_flows, timesteps)
+    testLookAheadAgent(env, original_env, agent)
 
 
 

@@ -124,14 +124,7 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
         step += 1
 
 
-def testAgent2(env, original_env, agent, num_flows, timesteps):
-    num_steps = int(timesteps)
-
-    if '_LA' in agent :
-        num_steps = num_steps * 3
-    if agent == 'B_LA_v2':
-        agent = 'B_LA'
-
+def testLookAheadAgent(env, original_env, agent):
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
@@ -139,24 +132,22 @@ def testAgent2(env, original_env, agent, num_flows, timesteps):
 
     writeLineToFile('Step; State; Reward', csv_output_filename)
 
-    for step in range(num_steps):
-        print('Step ', step)
-        active_flows = original_env.getActiveFlows()
-        print('active_flows ', active_flows)
+    time.sleep(5) # pra dar tempo de iniciar os fluxos e não ficar com active_flows vazio
 
+    while True:
+        active_flows = original_env.getActiveFlows()
 
         for flow in active_flows:
-            action = numpy.array([33]) # void
-
             if original_env.isElephantFlow(flow):
-                print("It's an elephant flow.")
+                state = original_env.getState()
                 action, _ = model.predict(state, deterministic=False)
+                state, reward, done, info = env.step(action, flow)
 
-            state, reward, done, info = env.step(action)
+                output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+                writeLineToFile(output_data_line, csv_output_filename)
 
-            output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-            writeLineToFile(output_data_line, csv_output_filename)
-            step += 1
+        print()
+        time.sleep(1)
 
 
 def writeLineToFile(line, filename):
@@ -245,8 +236,8 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        # trainAgent(env, agent)
-        testAgent2(env, original_env, agent, num_flows, timesteps)
+        trainAgent(env, agent)
+        # testAgent2(env, original_env, agent, num_flows, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

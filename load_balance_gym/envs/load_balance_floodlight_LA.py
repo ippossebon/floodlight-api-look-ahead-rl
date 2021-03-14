@@ -27,7 +27,7 @@ class LoadBalanceEnvLA(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, source_port_index, source_switch_index, target_port_index, target_switch_index):
-        super(LoadBalanceEnvDiscAction, self).__init__()
+        super(LoadBalanceEnvLA, self).__init__()
 
         self.src_switch_index = source_switch_index
         self.src_port_index = source_port_index

@@ -236,8 +236,8 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        trainAgent(env, agent)
-        # testAgent2(env, original_env, agent, num_flows, timesteps)
+        # trainAgent(env, agent)
+        testLookAheadAgent(env, original_env, agent)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

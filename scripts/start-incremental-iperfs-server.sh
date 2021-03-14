@@ -9,7 +9,7 @@ fi
 agent=$1
 iter=$2
 
-flows_sizes=("25M" "50M" "100M" "200M" "400M" "800M" "1600M")
+flows_sizes=("25M" "50M" "80M" "100M" "200M" "400M" "800M" "1600M")
 
 for j in ${!flows_sizes[@]}; do
   flow_size=${flows_sizes[$j]}

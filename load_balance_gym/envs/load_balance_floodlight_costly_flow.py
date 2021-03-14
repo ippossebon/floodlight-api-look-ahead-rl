@@ -530,7 +530,12 @@ class LoadBalanceEnvDiscAction(gym.Env):
         s1_1_tx_mbps = state[0]
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
 
-        hmean = len(state) / numpy.sum(1.0/state)
+
+        if numpy.sum(state) < EPSILON:
+            hmean = len(state) / numpy.sum(1.0/EPSILON)
+        else:
+            hmean = len(state) / numpy.sum(1.0/state)
+        
         # std = numpy.std(state)
 
         reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))

@@ -73,23 +73,32 @@ def validateEnvOpenAI():
 
 
 def trainAgent(env, agent):
-    model = DQN(
+    # model = DQN(
+    #     env=env,
+    #     policy=MlpPolicy,
+    #     verbose=1,
+    #     learning_rate=0.1, # alpha: If your learning rate is set too low, training will progress very slowly as you are making very tiny updates to the weights in your network. However, if your learning rate is set too high, it can cause undesirable divergent behavior in your loss function.
+    #     gamma=0.95, # It controls the importance of the future rewards versus the immediate ones.
+    #     exploration_initial_eps=1.0,
+    #     exploration_fraction=0.8,
+    #     exploration_final_eps=0.1,
+    #     buffer_size=56,
+    #     batch_size=50
+    # )
+
+    model = PPO2(
         env=env,
         policy=MlpPolicy,
         verbose=1,
         learning_rate=0.1, # alpha: If your learning rate is set too low, training will progress very slowly as you are making very tiny updates to the weights in your network. However, if your learning rate is set too high, it can cause undesirable divergent behavior in your loss function.
-        gamma=0.95, # It controls the importance of the future rewards versus the immediate ones.
-        exploration_initial_eps=1.0,
-        exploration_fraction=0.8,
-        exploration_final_eps=0.1,
-        buffer_size=56,
-        batch_size=50
+        gamma=0.95 # It controls the importance of the future rewards versus the immediate ones.
     )
 
     # treinamento com 5 fluxos de 300M
+    agent_string = 'PPO2' + agent
     model.learn(total_timesteps=700)
-    model.save('./trained-agents/' + agent)
-    print('Modelo treinado e salvo: ', agent)
+    model.save('./trained-agents/' + agent_string)
+    print('Modelo treinado e salvo: ', agent_string)
 
 
 def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
@@ -97,11 +106,9 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
 
     if '_LA' in agent :
         num_steps = num_steps * 3
-    if agent == 'B_LA_v2':
-        agent = 'B_LA'
 
     agent_path = 'trained-agents/{0}'.format(agent)
-    model = DQN.load(load_path=agent_path, env=env)
+    model = PPO2.load(load_path=agent_path, env=env)
 
     state = env.reset()
 
@@ -126,7 +133,7 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
 
 def testLookAheadAgent(env, original_env, agent):
     agent_path = 'trained-agents/{0}'.format(agent)
-    model = DQN.load(load_path=agent_path, env=env)
+    model = PPO2.load(load_path=agent_path, env=env)
 
     state = env.reset()
 

@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_costly_flow import LoadBalanceEnvDiscAction
+from load_balance_gym.envs.load_balance_floodlight_LA import LoadBalanceEnvLA
 
 from stable_baselines.common.env_checker import check_env
 from stable_baselines.deepq.policies import MlpPolicy

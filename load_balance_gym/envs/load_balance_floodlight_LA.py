@@ -21,7 +21,7 @@ MAX_PRIORITY = 32760
 
 EPSILON = 0.001
 
-ELEPHANT_FLOW_THRESHOLD = 50 * 1024 * 1024 # 5MBytes
+ELEPHANT_FLOW_THRESHOLD = 100 * 1024 * 1024 # 5MBytes
 
 class LoadBalanceEnvLA(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -470,6 +470,8 @@ class LoadBalanceEnvLA(gym.Env):
         #         forwarding_avg_time = item['average']
         #         break
 
+        """ Agente A """
+
         total_usage_links = 0
         for i in range(len(state)):
             if state[i] > 1:
@@ -481,15 +483,23 @@ class LoadBalanceEnvLA(gym.Env):
         s1_1_tx_mbps = state[0]
         s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
 
-
-        if numpy.sum(state) < EPSILON:
-            hmean = len(state) / numpy.sum(1.0/EPSILON)
-        else:
-            hmean = len(state) / numpy.sum(1.0/state)
-
-        # std = numpy.std(state)
-
         reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
+
+
+        """ Agente B """
+        # hmean = EPSILON
+        # if numpy.sum(state) < EPSILON:
+        #     hmean = len(state) / numpy.sum(1.0/EPSILON)
+        # else:
+        #     hmean = len(state) / numpy.sum(1.0/state)
+
+        # Agente B
+        # reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
+
+
+        """ Agente C """
+        # std = numpy.std(state)
+        # reward = float(std * (s3_1_tx_mbps + s1_1_tx_mbps))
 
         return reward
 

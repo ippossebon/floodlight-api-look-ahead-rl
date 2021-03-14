@@ -138,13 +138,18 @@ def testLookAheadAgent(env, original_env, agent):
         active_flows = original_env.getActiveFlows()
 
         for flow in active_flows:
+
             if original_env.isElephantFlow(flow):
+                print('EF')
                 state = original_env.getState()
                 action, _ = model.predict(state, deterministic=False)
                 state, reward, done, info = env.step(action, flow)
 
                 output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
                 writeLineToFile(output_data_line, csv_output_filename)
+            else:
+                print('Nao EF')
+
 
         print()
         time.sleep(1)
@@ -236,8 +241,8 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        # trainAgent(env, agent)
-        testLookAheadAgent(env, original_env, agent)
+        trainAgent(env, agent)
+        # testLookAheadAgent(env, original_env, agent)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

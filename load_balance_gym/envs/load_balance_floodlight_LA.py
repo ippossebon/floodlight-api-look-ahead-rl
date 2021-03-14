@@ -3,6 +3,8 @@ from gym import spaces, utils
 from gym.utils import seeding
 
 from .action_rules_map import actionMap
+from .flow_match_map import flowMap
+
 
 import json
 import numpy
@@ -21,7 +23,7 @@ EPSILON = 0.001
 
 ELEPHANT_FLOW_THRESHOLD = 50 * 1024 * 1024 # 5MBytes
 
-class LoadBalanceEnvDiscAction(gym.Env):
+class LoadBalanceEnvLA(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, source_port_index, source_switch_index, target_port_index, target_switch_index):
@@ -50,11 +52,15 @@ class LoadBalanceEnvDiscAction(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Discrete(34)
+        self.action_space = spaces.Box(
+            low=(0,0),
+            high=(33,15), # 34 ações diferentes, máximo de 8 fluxos na rede (16, considerando ida e volta)
+            shape=(2,), # 2 dimensões: regra, fluxo
+            dtype=numpy.int16
+        )
+
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
-        self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, 320000) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = None
@@ -390,51 +396,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
        return None
 
-    def existsElephantFlow(self):
-         response = requests.get('{host}/wm/core/switch/00:00:00:00:00:00:00:01/flow/json'.format(host=CONTROLLER_HOST))
-         response_data = response.json()
 
-         for flow_obj in response_data['flows']:
-             flow_match = None
-
-             try:
-                 flow_match = flow_obj['match']['tcp_src']
-             except:
-                 flow_match = None
-
-             if flow_match != None:
-                 flow_byte_count = int(flow_obj['byteCount'])
-                 print('flow_byte_count = ', flow_byte_count)
-                 if flow_byte_count >= ELEPHANT_FLOW_THRESHOLD:
-                     return True
-
-         return False
-
-    def getMostCostlyFlow(self, switch_id):
-        # Retorna o fluxo que exige mais do switch
-        response = requests.get('{host}/wm/core/switch/{switch_id}/flow/json'.format(host=CONTROLLER_HOST, switch_id=switch_id))
-        response_data = response.json()
-
-        max_byte_count = -1
-        max_usage_flow_match = None
-
-        for flow_obj in response_data['flows']:
-            flow_match = None
-
-            try:
-                flow_match = flow_obj['match']['tcp_src']
-            except:
-                flow_match = None
-
-            if flow_match != None:
-                flow_byte_count = int(flow_obj['byteCount'])
-                if flow_byte_count > max_byte_count:
-                    max_byte_count = flow_byte_count
-                    max_usage_flow_match = flow_obj['match']
-
-        # print('[getMostCostlyFlow] max_usage_flow_match: {0} - max_byte_count: {1}'.format(max_usage_flow_match, max_byte_count))
-
-        return max_usage_flow_match
 
     def step(self, action):
         print('...........')
@@ -445,7 +407,10 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
         print('Action =', action)
 
-        if action == 33:
+        rule = action[0]
+        flow_index = action[1]
+
+        if rule == 33:
             next_state = self.getState()
             reward = 0
 
@@ -455,7 +420,7 @@ class LoadBalanceEnvDiscAction(gym.Env):
 
             return next_state, reward, done, info
         else:
-            action_vec = actionMap(action)
+            action_vec = actionMap(rule)
 
             switch_index = action_vec[0]
             in_port_index = action_vec[1]
@@ -464,49 +429,35 @@ class LoadBalanceEnvDiscAction(gym.Env):
             switch_id = self.switch_ids[switch_index]
             in_port = in_port_index + 1
             out_port = out_port_index + 1
-            flow_match = self.getMostCostlyFlow(switch_id) # em caso de agentes normais
-            # flow_match = flow['match'] # em caso de agentes Look Ahead
 
+            flow_match = flowMap(flow_index)
 
-            if flow_match:
-                rule = self.actionToRule(switch_id, in_port, out_port, flow_match)
-                # print('Regra a ser instalada: ', rule)
+            rule_to_install = self.actionToRule(switch_id, in_port, out_port, flow_match)
+            # print('Regra a ser instalada: ', rule)
 
-                existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
+            existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
 
-                # acho que nao pode ter... posso querer mexer em um fluxo que antes era grande e agora tem um maior
-                if existing_rule_name:
-                    # Desintala regra para não haver conflito
-                    response_uninstall = self.uninstallRule(existing_rule_name)
-                    # print('Resposta desinstalação: ', response_uninstall.json())
+            # acho que nao pode ter... posso querer mexer em um fluxo que antes era grande e agora tem um maior
+            if existing_rule_name:
+                # Desintala regra para não haver conflito
+                response_uninstall = self.uninstallRule(existing_rule_name)
+                # print('Resposta desinstalação: ', response_uninstall.json())
 
-                response_install = self.installRule(rule)
-                # print('Resposta instalação: ', response_install.json())
+            response_install = self.installRule(rule_to_install)
+            # print('Resposta instalação: ', response_install.json())
 
-                time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
+            time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
 
-                next_state = self.getState()
-                reward = self.calculateReward(next_state)
-                self.state = next_state
+            next_state = self.getState()
+            reward = self.calculateReward(next_state)
+            self.state = next_state
 
-                print('State: {0} -- Reward = {1}'.format(self.state, reward))
-                print('...........')
-                print()
+            print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            print('...........')
+            print()
 
-                return next_state, reward, done, info
-            else:
-                # Não ha fluxo onerando o switch escolhido
-                # O estado não será alterado e a recompensa é zero
-                # print('Sem regra a ser instalada.')
+            return next_state, reward, done, info
 
-                next_state = self.getState()
-                reward = 0
-
-                print('State: {0} -- Reward = {1}'.format(self.state, reward))
-                print('...........')
-                print()
-
-                return next_state, reward, done, info
 
 
     def calculateReward(self, state):

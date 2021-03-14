@@ -17,7 +17,7 @@ sleep 10
 for j in ${!flows_sizes[@]}; do
   server_port=$(($j+5201))
   client_port=$(($j*2+46110))
-  flow_size=${allThreads[$j]}
+  flow_size=${flows_sizes[$j]}
 
   # ssh mininet@192.168.68.250 "ssh -f 10.0.0.1 iperf3 -c 10.0.0.2 -B 10.0.0.1 --cport $client_port -p $server_port -n $flow_size > ~/floodlight-api-look-ahead-rl/output-experiments-iperfs/$agent-client-$client_port-$flow_size-v$iter.log &"
   ssh mininet@192.168.68.250 "ssh 10.0.0.1 iperf3 -c 10.0.0.2 -B 10.0.0.1 --cport $client_port -p $server_port -n $flow_size > ~/floodlight-api-look-ahead-rl/output-experiments-iperfs/$agent-client-$client_port-$flow_size-v$iter.log" &

@@ -61,7 +61,7 @@ csv_output_filename = None
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
     # Fluxo sai de H1 e vai para H2
-    original_env = LoadBalanceEnvDiscAction(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
+    original_env = LoadBalanceEnvLA(source_port_index=0, source_switch_index=0, target_port_index=0, target_switch_index=2)
     env = make_vec_env(lambda: original_env, n_envs=1)
 
     return env, original_env

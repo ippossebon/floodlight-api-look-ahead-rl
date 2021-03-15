@@ -1,7 +1,6 @@
-B_LA_v1,5,500M,25000,1
 
 
-B_LA, 5
 
 
 agent, num_flows, initial_flow_size, num_steps, iter
+B_LA_v1,5,500M,25000,1

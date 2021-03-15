@@ -125,24 +125,29 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
         writeLineToFile(output_data_line, csv_output_filename)
         step += 1
 
-
-def isActionForElephantFlow(action):
+def getFlowInfo(original_env, action):
     action_vec = actionWithFlowMap(action)
     flow_index = action_vec[3]
     flow_match = flowMap(flow_index)
 
-    if original_env.isElephantFlow(flow_match):
+    flow = original_env.getFlowInfo(flow_match)
+
+    return flow
+
+
+
+def isActionForElephantFlow(original_env, action):
+    flow = getFlowInfo(original_env, action)
+
+    if flow and original_env.isElephantFlow(flow_match):
         return True
     return False
 
 
-
 def testLookAheadAgent(env, original_env, agent, timesteps):
     agent_string = None
-    if agent == 'B_LA_v1':
-        agent_string = 'B_LA'
 
-    agent_path = 'trained-agents/{0}'.format(agent_string)
+    agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
@@ -153,9 +158,16 @@ def testLookAheadAgent(env, original_env, agent, timesteps):
         print('Step ', step)
         action, _ = model.predict(state, deterministic=False)
 
+        # Pegar o fluxo com as infos dele
+
+
         # Se a ação escolhida for para um fluxo que não é EF, desconsidera e aplica a 33
-        if not isActionForElephantFlow(action):
+        if not isActionForElephantFlow(original_env, int(action)):
             action = numpy.array([33]) # void
+            print('nao EF')
+
+        else:
+            print('EF')
 
         state, reward, done, info = env.step(action)
 
@@ -213,7 +225,7 @@ def main(argv):
     agent = None
     num_flows = None
     flows_size = None
-    timesteps = None
+    timesteps = 5000
     iter = None
 
     for opt, arg in opts:
@@ -250,8 +262,8 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        trainAgent(env, agent)
-        # testLookAheadAgent(env, original_env, agent)
+        # trainAgent(env, agent)
+        testLookAheadAgent(env, original_env, agent, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

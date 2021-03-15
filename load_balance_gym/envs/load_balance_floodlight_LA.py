@@ -199,6 +199,22 @@ class LoadBalanceEnvLA(gym.Env):
 
         return False
 
+    def getFlowInfo(self, flow_to_get):
+        active_flows = self.getActiveFlows()
+
+        for flow in active_flows:
+            flow_match_tcp_src = flow['match']['tcp_src']
+            flow_match_tcp_dst = flow['match']['tcp_dst']
+
+            flow_to_get_tcp_src = flow_to_get['match']['tcp_src']
+            flow_to_get_tcp_dst = flow_to_get['match']['tcp_dst']
+
+            if flow_match_tcp_src == flow_to_get_tcp_src and flow_match_tcp_dst == flow_to_get_tcp_dst:
+                return flow
+
+        return None
+
+
 
     def getStatisticsBandwidth(self):
         response = requests.get('{host}/wm/statistics/bandwidth/all/all/json'.format(host=CONTROLLER_HOST))

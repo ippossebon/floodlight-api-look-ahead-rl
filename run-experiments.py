@@ -1,7 +1,9 @@
 from load_balance_gym.envs.load_balance_floodlight_LA import LoadBalanceEnvLA
+from load_balance_gym.envs.action_with_flow_rules_map import actionWithFlowMap
+from load_balance_gym.envs.flow_match_map import flowMap
 
 from stable_baselines.common.env_checker import check_env
-from stable_baselines.deepq.policies import MlpPolicy
+from stable_baselines.deepq.policies import MlpPolicy, ActorCriticPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines import PPO2, A2C, DQN
 from stable_baselines.common.evaluation import evaluate_policy
@@ -73,30 +75,22 @@ def validateEnvOpenAI():
 
 
 def trainAgent(env, agent):
-    # model = DQN(
-    #     env=env,
-    #     policy=MlpPolicy,
-    #     verbose=1,
-    #     learning_rate=0.1, # alpha: If your learning rate is set too low, training will progress very slowly as you are making very tiny updates to the weights in your network. However, if your learning rate is set too high, it can cause undesirable divergent behavior in your loss function.
-    #     gamma=0.95, # It controls the importance of the future rewards versus the immediate ones.
-    #     exploration_initial_eps=1.0,
-    #     exploration_fraction=0.8,
-    #     exploration_final_eps=0.1,
-    #     buffer_size=56,
-    #     batch_size=50
-    # )
-
-    model = PPO2(
+    model = DQN(
         env=env,
         policy=MlpPolicy,
         verbose=1,
         learning_rate=0.1, # alpha: If your learning rate is set too low, training will progress very slowly as you are making very tiny updates to the weights in your network. However, if your learning rate is set too high, it can cause undesirable divergent behavior in your loss function.
-        gamma=0.95 # It controls the importance of the future rewards versus the immediate ones.
+        gamma=0.95, # It controls the importance of the future rewards versus the immediate ones.
+        exploration_initial_eps=1.0,
+        exploration_fraction=0.8,
+        exploration_final_eps=0.1,
+        buffer_size=56,
+        batch_size=50
     )
 
     # treinamento com 5 fluxos de 300M
-    agent_string = 'PPO2' + agent
-    model.learn(total_timesteps=700)
+    agent_string = 'DQN' + agent
+    model.learn(total_timesteps=25000) #25000
     model.save('./trained-agents/' + agent_string)
     print('Modelo treinado e salvo: ', agent_string)
 
@@ -104,11 +98,12 @@ def trainAgent(env, agent):
 def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
     num_steps = int(timesteps)
 
-    if '_LA' in agent :
-        num_steps = num_steps * 3
+    agent_string = None
+    if agent == 'B_LA-V1:
+        agent_string = 'B_LA'
 
-    agent_path = 'trained-agents/{0}'.format(agent)
-    model = PPO2.load(load_path=agent_path, env=env)
+    agent_path = 'trained-agents/{0}'.format(agent_string)
+    model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
 
@@ -131,35 +126,42 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
         step += 1
 
 
-def testLookAheadAgent(env, original_env, agent):
-    agent_path = 'trained-agents/{0}'.format(agent)
-    model = PPO2.load(load_path=agent_path, env=env)
+def isActionForElephantFlow(action):
+    action_vec = actionWithFlowMap(action)
+    flow_index = action_vec[3]
+    flow_match = flowMap(flow_index)
+
+    if original_env.isElephantFlow(flow_match):
+        return True
+    return False
+
+
+
+def testLookAheadAgent(env, original_env, agent, timesteps):
+    agent_string = None
+    if agent == 'B_LA-V1:
+        agent_string = 'B_LA'
+
+    agent_path = 'trained-agents/{0}'.format(agent_string)
+    model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
 
     writeLineToFile('Step; State; Reward', csv_output_filename)
 
-    time.sleep(5) # pra dar tempo de iniciar os fluxos e não ficar com active_flows vazio
+    for step in range(int(timesteps)):
+        print('Step ', step)
+        action, _ = model.predict(state, deterministic=False)
 
-    while True:
-        active_flows = original_env.getActiveFlows()
+        # Se a ação escolhida for para um fluxo que não é EF, desconsidera e aplica a 33
+        if not isActionForElephantFlow(action):
+            action = numpy.array([33]) # void
 
-        for flow in active_flows:
+        state, reward, done, info = env.step(action)
 
-            if original_env.isElephantFlow(flow):
-                print('EF')
-                state = original_env.getState()
-                action, _ = model.predict(state, deterministic=False)
-                state, reward, done, info = env.step(action, flow)
-
-                output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-                writeLineToFile(output_data_line, csv_output_filename)
-            else:
-                print('Nao EF')
-
-
-        print()
-        time.sleep(1)
+        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+        writeLineToFile(output_data_line, csv_output_filename)
+        step += 1
 
 
 def writeLineToFile(line, filename):

@@ -90,7 +90,7 @@ def trainAgent(env, agent):
 
     # treinamento com 5 fluxos de 300M
     agent_string = 'DQN' + agent
-    model.learn(total_timesteps=25000) #25000
+    model.learn(total_timesteps=5000) #5000
     model.save('./trained-agents/' + agent_string)
     print('Modelo treinado e salvo: ', agent_string)
 

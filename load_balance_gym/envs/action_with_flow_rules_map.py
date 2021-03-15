@@ -34,7 +34,7 @@ rule_with_flow = [
     numpy.array([2, -1, -1, 0]),
     numpy.array([3, -1, -1, 0]),
     numpy.array([4, -1, -1, 0]),
-    numpy.array([-1, -1, -1, -1])
+    numpy.array([-1, -1, -1, -1]),
     numpy.array([0, 0, 1, 1]),
     numpy.array([0, 0, 2, 1]),
     numpy.array([1, 0, 1, 1]),

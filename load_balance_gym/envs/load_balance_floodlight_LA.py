@@ -206,8 +206,8 @@ class LoadBalanceEnvLA(gym.Env):
             flow_match_tcp_src = flow['match']['tcp_src']
             flow_match_tcp_dst = flow['match']['tcp_dst']
 
-            flow_to_get_tcp_src = flow_to_get['match']['tcp_src']
-            flow_to_get_tcp_dst = flow_to_get['match']['tcp_dst']
+            flow_to_get_tcp_src = flow_to_get['tcp_src']
+            flow_to_get_tcp_dst = flow_to_get['tcp_dst']
 
             if flow_match_tcp_src == flow_to_get_tcp_src and flow_match_tcp_dst == flow_to_get_tcp_dst:
                 return flow

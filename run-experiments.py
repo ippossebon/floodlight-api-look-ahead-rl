@@ -3,7 +3,7 @@ from load_balance_gym.envs.action_with_flow_rules_map import actionWithFlowMap
 from load_balance_gym.envs.flow_match_map import flowMap
 
 from stable_baselines.common.env_checker import check_env
-from stable_baselines.deepq.policies import MlpPolicy, ActorCriticPolicy
+from stable_baselines.deepq.policies import MlpPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines import PPO2, A2C, DQN
 from stable_baselines.common.evaluation import evaluate_policy

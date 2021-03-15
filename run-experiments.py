@@ -99,7 +99,7 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
     num_steps = int(timesteps)
 
     agent_string = None
-    if agent == 'B_LA-V1:
+    if 'B_LA_v1' in agent:
         agent_string = 'B_LA'
 
     agent_path = 'trained-agents/{0}'.format(agent_string)
@@ -139,7 +139,7 @@ def isActionForElephantFlow(action):
 
 def testLookAheadAgent(env, original_env, agent, timesteps):
     agent_string = None
-    if agent == 'B_LA-V1:
+    if agent == 'B_LA_v1':
         agent_string = 'B_LA'
 
     agent_path = 'trained-agents/{0}'.format(agent_string)

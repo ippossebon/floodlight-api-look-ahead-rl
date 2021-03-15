@@ -52,13 +52,7 @@ class LoadBalanceEnvLA(gym.Env):
             dtype=numpy.float16
         )
 
-        self.action_space = spaces.Box(
-            low=numpy.array([0,0]),
-            high=numpy.array([33,15]), # 34 ações diferentes, máximo de 8 fluxos na rede (16, considerando ida e volta)
-            shape=(2,), # 2 dimensões: regra, fluxo
-            dtype=numpy.int16
-        )
-
+        self.action_space = spaces.Discrete(34)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
 

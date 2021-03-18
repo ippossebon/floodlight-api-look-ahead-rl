@@ -174,20 +174,23 @@ class LoadBalanceEnvLA(gym.Env):
 
         active_flows = []
 
-        for flow_obj in response_data['flows']:
-            flow_match = None
-
-            try:
-                flow_match = flow_obj['match']['tcp_src']
-            except:
+        try:
+            for flow_obj in response_data['flows']:
                 flow_match = None
 
-            if flow_match != None:
-                flow_byte_count = int(flow_obj['byteCount'])
-                print('flow_byte_count = ', flow_byte_count)
-                active_flows.append(flow_obj)
+                try:
+                    flow_match = flow_obj['match']['tcp_src']
+                except:
+                    flow_match = None
 
-        return active_flows
+                if flow_match != None:
+                    flow_byte_count = int(flow_obj['byteCount'])
+                    print('flow_byte_count = ', flow_byte_count)
+                    active_flows.append(flow_obj)
+
+            return active_flows
+        except:
+            return []
 
 
     def isElephantFlow(self, flow_obj):

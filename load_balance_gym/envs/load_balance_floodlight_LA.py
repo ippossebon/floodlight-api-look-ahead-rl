@@ -205,15 +205,16 @@ class LoadBalanceEnvLA(gym.Env):
     def getFlowInfo(self, flow_to_get):
         active_flows = self.getActiveFlows()
 
-        for flow in active_flows:
-            flow_match_tcp_src = flow['match']['tcp_src']
-            flow_match_tcp_dst = flow['match']['tcp_dst']
+        if flow_to_get:
+            for flow in active_flows:
+                flow_match_tcp_src = flow['match']['tcp_src']
+                flow_match_tcp_dst = flow['match']['tcp_dst']
 
-            flow_to_get_tcp_src = flow_to_get['tcp_src']
-            flow_to_get_tcp_dst = flow_to_get['tcp_dst']
+                flow_to_get_tcp_src = flow_to_get['tcp_src']
+                flow_to_get_tcp_dst = flow_to_get['tcp_dst']
 
-            if flow_match_tcp_src == flow_to_get_tcp_src and flow_match_tcp_dst == flow_to_get_tcp_dst:
-                return flow
+                if flow_match_tcp_src == flow_to_get_tcp_src and flow_match_tcp_dst == flow_to_get_tcp_dst:
+                    return flow
 
         return None
 

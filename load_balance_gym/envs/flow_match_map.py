@@ -153,3 +153,6 @@ def flowMap(flow_index):
             'tcp_src': '5208',
             'tcp_dst': '46124'
         }
+
+    else:
+        return None

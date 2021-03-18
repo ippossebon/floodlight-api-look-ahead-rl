@@ -138,7 +138,6 @@ def getFlowInfo(original_env, action):
 
 def isActionForElephantFlow(original_env, action):
     flow = getFlowInfo(original_env, action)
-
     if flow and original_env.isElephantFlow(flow):
         return True
     return False

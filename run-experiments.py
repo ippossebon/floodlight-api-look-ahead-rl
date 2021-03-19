@@ -166,7 +166,7 @@ def testLookAheadAgent(env, original_env, agent, timesteps):
             print('nao EF')
 
         else:
-            print('EF')
+            print('sim EF')
 
         state, reward, done, info = env.step(action)
 

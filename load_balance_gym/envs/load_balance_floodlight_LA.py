@@ -22,6 +22,7 @@ MAX_PRIORITY = 32760
 EPSILON = 0.001
 
 ELEPHANT_FLOW_THRESHOLD = 100 * 1024 * 1024 # 5MBytes
+# 213574015
 # rodar depois com if de 50
 
 class LoadBalanceEnvLA(gym.Env):
@@ -197,7 +198,7 @@ class LoadBalanceEnvLA(gym.Env):
     def isElephantFlow(self, flow_obj):
         try:
             flow_byte_count = int(flow_obj['byteCount'])
-            print('flow_byte_count = ', flow_byte_count)
+            print('flow_byte_count = {0}; threshold = {1}; EF = {2}'.format(flow_byte_count, ELEPHANT_FLOW_THRESHOLD, flow_byte_count >= ELEPHANT_FLOW_THRESHOLD))
 
             if flow_byte_count >= ELEPHANT_FLOW_THRESHOLD:
                 return True

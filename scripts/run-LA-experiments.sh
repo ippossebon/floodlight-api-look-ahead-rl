@@ -15,7 +15,7 @@ chmod +x ./delayed-start-incremental-iperfs-client.sh
 while read agent iter
 do
 	# for (( i=0; i < $iter; i++ )); do
-	for (( i=1; i < 2; i++ )); do
+	for (( i=2; i < 3; i++ )); do
     echo "Iniciando experimento: $agent - iteração $i"
 
 	    ./add-initial-flow-entries.sh

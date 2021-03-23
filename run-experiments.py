@@ -174,6 +174,39 @@ def testLookAheadAgent(env, original_env, agent, timesteps):
         writeLineToFile(output_data_line, csv_output_filename)
         step += 1
 
+# e se eu olhar para o state para idneitifcar EF?
+
+def teste():
+    state = env.reset()
+
+    for step in range(int(timesteps)):
+        print('Step ', step)
+
+        for flow_index in range(0,15):
+            flow_byte_count = state[1][i]
+
+            if isElephantFlow(flow_byte_count):
+                action, _ = model.predict(state, deterministic=False)
+                state, reward, done, info = env.step(action)
+                output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+                writeLineToFile(output_data_line, csv_output_filename)
+
+            step += 1
+
+
+
+    #
+    # while True:
+    #     net_usage = state[0]
+    #     active_flows_byte_count = state[1] # [f1_size, f2_size, f3_size, f4_size, f5_size, f6_size] = [100, 0, 0, 100, 0, 0]
+    #     # A função step vai passar, fluxo por fluxo. Para não EF, não faz nada. Para EF, instala uma das regras. Ou seja, cada fluxo vai ter uma ação associada.
+    #
+    #
+    #     active_flows = getActiveFlows()
+    #     for flow in active_flows:
+    #         if isElephantFlow(flow):
+
+
 
 def writeLineToFile(line, filename):
     print(csv_output_filename)

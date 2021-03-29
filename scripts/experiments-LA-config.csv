@@ -1,6 +1,6 @@
-DQN_B_LA_v2,8,ALL,10000,5
+B-LookAhead,8,ALL,10000,1
 
-DQN_B_LA_v2, 5
+B-LookAhead,8,ALL,10000,5
 
 
 B,2,10M,20,5,

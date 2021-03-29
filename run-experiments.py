@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_LA_v2 import LoadBalanceEnvLA
+from load_balance_gym.envs.load_balance_floodlight_LA_com_flow_count import LoadBalanceEnvLA
 from load_balance_gym.envs.action_with_flow_rules_map import actionWithFlowMap
 from load_balance_gym.envs.flow_match_map import flowMap
 
@@ -92,8 +92,8 @@ def trainAgent(env, agent):
     )
 
     # treinamento com 5 fluxos de 300M
-    agent_string = 'DQN' + agent
-    model.learn(total_timesteps=5000) #5000
+    agent_string = 'DQN-flow-byte-count-' + agent
+    model.learn(total_timesteps=10000) #5000
     model.save('./trained-agents/' + agent_string)
     print('Modelo treinado e salvo: ', agent_string)
 
@@ -316,8 +316,8 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        # trainAgent(env, agent)
-        testLookAheadAgentV2(env, original_env, agent, timesteps)
+        trainAgent(env, agent)
+        # testLookAheadAgentV2(env, original_env, agent, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

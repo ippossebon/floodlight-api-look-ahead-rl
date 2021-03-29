@@ -1,4 +1,4 @@
-from load_balance_gym.envs.load_balance_floodlight_LA import LoadBalanceEnvLA
+from load_balance_gym.envs.load_balance_floodlight_LA_v2 import LoadBalanceEnvLA
 from load_balance_gym.envs.action_with_flow_rules_map import actionWithFlowMap
 from load_balance_gym.envs.flow_match_map import flowMap
 
@@ -59,6 +59,9 @@ CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 rewards = []
 
 csv_output_filename = None
+
+ELEPHANT_FLOW_THRESHOLD = 100 * 1024 * 1024 # 100 MBytes
+
 
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
@@ -157,10 +160,8 @@ def testLookAheadAgent(env, original_env, agent, timesteps):
         print('Step ', step)
         action, _ = model.predict(state, deterministic=False)
 
-        # Pegar o fluxo com as infos dele
-
-
         # Se a ação escolhida for para um fluxo que não é EF, desconsidera e aplica a 33
+        # Problema: preciso "dar a sorte" do fluxo escolhido ser um EF
         if not isActionForElephantFlow(original_env, int(action)):
             action = numpy.array([33]) # void
             print('nao EF')
@@ -174,9 +175,42 @@ def testLookAheadAgent(env, original_env, agent, timesteps):
         writeLineToFile(output_data_line, csv_output_filename)
         step += 1
 
-# e se eu olhar para o state para idneitifcar EF?
 
-def teste():
+def testLookAheadAgent(env, original_env, agent, timesteps):
+    agent_string = None
+
+    agent_path = 'trained-agents/{0}'.format(agent)
+    model = DQN.load(load_path=agent_path, env=env)
+
+    state = env.reset()
+
+    writeLineToFile('Step; State; Reward', csv_output_filename)
+
+    for step in range(int(timesteps)):
+        print('Step ', step)
+        action, _ = model.predict(state, deterministic=False)
+
+        # Se a ação escolhida for para um fluxo que não é EF, desconsidera e aplica a 33
+        # Problema: preciso "dar a sorte" do fluxo escolhido ser um EF
+        if not isActionForElephantFlow(original_env, int(action)):
+            action = numpy.array([33]) # void
+            print('nao EF')
+
+        else:
+            print('sim EF')
+
+        state, reward, done, info = env.step(action)
+
+        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+        writeLineToFile(output_data_line, csv_output_filename)
+        step += 1
+
+
+def isElephantFlowByThreshold(flow_byte_count):
+    return flow_byte_count >= ELEPHANT_FLOW_THRESHOLD
+
+
+def testLookAheadAgentV2():
     state = env.reset()
 
     for step in range(int(timesteps)):
@@ -185,26 +219,14 @@ def teste():
         for flow_index in range(0,15):
             flow_byte_count = state[1][i]
 
-            if isElephantFlow(flow_byte_count):
+            if isElephantFlowByThreshold(flow_byte_count):
                 action, _ = model.predict(state, deterministic=False)
+
                 state, reward, done, info = env.step(action)
                 output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
                 writeLineToFile(output_data_line, csv_output_filename)
 
             step += 1
-
-
-
-    #
-    # while True:
-    #     net_usage = state[0]
-    #     active_flows_byte_count = state[1] # [f1_size, f2_size, f3_size, f4_size, f5_size, f6_size] = [100, 0, 0, 100, 0, 0]
-    #     # A função step vai passar, fluxo por fluxo. Para não EF, não faz nada. Para EF, instala uma das regras. Ou seja, cada fluxo vai ter uma ação associada.
-    #
-    #
-    #     active_flows = getActiveFlows()
-    #     for flow in active_flows:
-    #         if isElephantFlow(flow):
 
 
 
@@ -295,7 +317,7 @@ def main(argv):
         env, original_env = createVectorizedEnv()
 
         # trainAgent(env, agent)
-        testLookAheadAgent(env, original_env, agent, timesteps)
+        testLookAheadAgentV2(env, original_env, agent, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

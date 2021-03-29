@@ -20,13 +20,12 @@ CONTROLLER_HOST = '{host}:8080'.format(host=CONTROLLER_IP)
 MAX_PRIORITY = 32760
 
 EPSILON = 0.001
-
 MEGA_BYTE_COUNT = 1 * 1024 * 1024
 GIGA_BYTE_COUNT = MEGA_BYTE_COUNT * 1024
 
 ELEPHANT_FLOW_THRESHOLD = 100 * 1024 * 1024 # 5MBytes
-
 # 213574015
+# rodar depois com if de 50
 
 class LoadBalanceEnvLA(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -53,30 +52,9 @@ class LoadBalanceEnvLA(gym.Env):
         self.observation_space = spaces.Box(
             low=(0,0),
             high=(10 * MEGA_BYTE_COUNT, GIGA_BYTE_COUNT), # maximo = 10Mbps = 10 * 1024 * 1024
-            shape=(16,2), # array com o RX de cada porta = 16 portas. No max, 8 fluxos simultaneos
-            dtype=numpy.float32
+            shape=(16,2), # array com o RX de cada porta = 16 portas ---> a primeira linha é o estado, a segunda é o byte count de cada fluxo
+            dtype=numpy.float16
         )
-        """
-        Fluxos que podemos considerar ativos (máximo de 8 simultaneos)
-        state[1][0] = 46110 -> 5201
-        state[1][1] = 46112 -> 5202
-        state[1][2] = 46114 -> 5203
-        state[1][3] = 46116 -> 5204
-        state[1][4] = 46118 -> 5205
-        state[1][5] = 46120 -> 5206
-        state[1][6] = 46122 -> 5207
-        state[1][7] = 46124 -> 5208
-
-        state[1][8] = 5201 -> 46110
-        state[1][9] = 5202 -> 46112
-        state[1][10] = 5203 -> 46114
-        state[1][11] = 5204 -> 46116
-        state[1][12] = 5205 -> 46118
-        state[1][13] = 5206 -> 46120
-        state[1][14] = 5207 -> 46122
-        state[1][15] = 5208 -> 46124
-
-        """
 
         self.action_space = spaces.Discrete(34)
 
@@ -84,6 +62,13 @@ class LoadBalanceEnvLA(gym.Env):
 
         self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
         self.previous_timestamp = None
+        self.initializeState()
+
+    def initializeState(self):
+        statistics_tx, timestamp = self.getStatisticsBandwidth()
+
+        self.previous_tx = statistics_tx
+        self.previous_timestamp = timestamp
 
 
     def saveItemLinks(self, item):
@@ -204,7 +189,7 @@ class LoadBalanceEnvLA(gym.Env):
 
                 if flow_match != None:
                     flow_byte_count = int(flow_obj['byteCount'])
-                    # print('flow_byte_count = ', flow_byte_count)
+                    print('flow_byte_count = ', flow_byte_count)
                     active_flows.append(flow_obj)
 
             return active_flows
@@ -338,79 +323,14 @@ class LoadBalanceEnvLA(gym.Env):
 
 
     def getState(self):
-        state = []
-        net_usage = numpy.zeros(shape=self.observation_space.shape)
+        state = numpy.zeros(shape=self.observation_space.shape)
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()
 
-        # Coleta utilização da rede
+
         for i in range(len(statistics_tx)):
-            net_usage[i] = statistics_tx[i]  / (1024 * 1024) # valor em Mbits
+            state[i] = statistics_tx[i]  / (1024 * 1024) # valor em Mbits
 
-        # Coleta fluxos e seus byte counts
-        flows_byte_count = []
-        active_flows_objs = self.getActiveFlows()
-
-        """
-        Fluxos que podemos considerar ativos (máximo de 8 simultaneos)
-        state[1][0] = 46110 -> 5201
-        state[1][1] = 46112 -> 5202
-        state[1][2] = 46114 -> 5203
-        state[1][3] = 46116 -> 5204
-        state[1][4] = 46118 -> 5205
-        state[1][5] = 46120 -> 5206
-        state[1][6] = 46122 -> 5207
-        state[1][7] = 46124 -> 5208
-
-        state[1][8] = 5201 -> 46110
-        state[1][9] = 5202 -> 46112
-        state[1][10] = 5203 -> 46114
-        state[1][11] = 5204 -> 46116
-        state[1][12] = 5205 -> 46118
-        state[1][13] = 5206 -> 46120
-        state[1][14] = 5207 -> 46122
-        state[1][15] = 5208 -> 46124
-
-        """
-
-        for flow in active_flows_objs:
-            flow_byte_count = int(flow['byteCount'])
-
-            if flow['match']['tcp_src'] == '46110':
-                flows_byte_count[0] = flow_byte_count
-            elif flow['match']['tcp_src'] == '46112':
-                flows_byte_count[1] = flow_byte_count
-            elif flow['match']['tcp_src'] == '46114':
-                flows_byte_count[2] = flow_byte_count
-            elif flow['match']['tcp_src'] == '46116':
-                flows_byte_count[3] = flow_byte_count
-            elif flow['match']['tcp_src'] == '46118':
-                flows_byte_count[4] = flow_byte_count
-            elif flow['match']['tcp_src'] == '46120':
-                flows_byte_count[5] = flow_byte_count
-            elif flow['match']['tcp_src'] == '46122':
-                flows_byte_count[6] = flow_byte_count
-            elif flow['match']['tcp_src'] == '46124':
-                flows_byte_count[7] = flow_byte_count
-            elif flow['match']['tcp_src'] == '5201':
-                flows_byte_count[8] = flow_byte_count
-            elif flow['match']['tcp_src'] == '5202':
-                flows_byte_count[9] = flow_byte_count
-            elif flow['match']['tcp_src'] == '5203':
-                flows_byte_count[10] = flow_byte_count
-            elif flow['match']['tcp_src'] == '5204':
-                flows_byte_count[11] = flow_byte_count
-            elif flow['match']['tcp_src'] == '5205':
-                flows_byte_count[12] = flow_byte_count
-            elif flow['match']['tcp_src'] == '5206':
-                flows_byte_count[13] = flow_byte_count
-            elif flow['match']['tcp_src'] == '5207':
-                flows_byte_count[14] = flow_byte_count
-            elif flow['match']['tcp_src'] == '5208':
-                flows_byte_count[15] = flow_byte_count
-
-        state[0] = net_usage
-        state[1] = flows_byte_count
         # state = state.flatten()
         # self.prev_state = state
 
@@ -500,10 +420,6 @@ class LoadBalanceEnvLA(gym.Env):
 
 
     def step(self, action):
-        # Action indica uma ação para cada fluxo.
-        # state[0] = net_usage
-        # state[1] = flows_byte_count
-
         print('...........')
         done = False # Aprendizado continuado
         next_state = []

@@ -61,7 +61,7 @@ class LoadBalanceEnvLA(gym.Env):
             low=0,
             high=(50*MEGA_BYTE_COUNT),
             shape=(16,), # array com o RX de cada porta = 16 portas
-            dtype=numpy.float16
+            dtype=numpy.uint32
         )
 
         self.action_space = spaces.Discrete(529)

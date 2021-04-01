@@ -203,7 +203,7 @@ class LoadBalanceEnvLA(gym.Env):
         try:
             flow_byte_count_arr = numpy.fromstring(flow_obj['byteCount'], dtype=numpy.uint32)
             flow_byte_count = flow_byte_count_arr[0]
-            print('flow_byte_count = {0}; threshold = {1}; EF = {2}'.format(flow_byte_count, ELEPHANT_FLOW_THRESHOLD, flow_byte_count >= ELEPHANT_FLOW_THRESHOLD))
+            # print('flow_byte_count = {0}; threshold = {1}; EF = {2}'.format(flow_byte_count, ELEPHANT_FLOW_THRESHOLD, flow_byte_count >= ELEPHANT_FLOW_THRESHOLD))
 
             if flow_byte_count >= ELEPHANT_FLOW_THRESHOLD:
                 return True
@@ -679,6 +679,10 @@ class LoadBalanceEnvLA(gym.Env):
         # pois qualquer ação que não envolva um EF, independente de qual seja, não será escolhida
         # pelo agente por conta da recompensa.
         elephant_flows = self.getElephantFlows()
+        print('elephant_flows = ', elephant_flows)
+        print('flow_for_action tcp_src = ', flow_for_action['tcp_src'])
+        print('chosen_flow_is_elephant = ', chosen_flow_is_elephant)
+
         chosen_flow_is_elephant = flow_for_action in elephant_flows
 
         if flow_for_action == None or not chosen_flow_is_elephant:

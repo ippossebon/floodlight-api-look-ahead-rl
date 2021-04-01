@@ -2,7 +2,7 @@ import gym
 from gym import spaces, utils
 from gym.utils import seeding
 
-from .actionWithFlowMap import actionFlowMap
+from .action_with_flow_rules_map import actionFlowMap
 from .flow_match_map import flowMap
 
 

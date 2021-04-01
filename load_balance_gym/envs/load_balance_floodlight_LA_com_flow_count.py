@@ -649,7 +649,7 @@ class LoadBalanceEnvLA(gym.Env):
         elephant_flows = []
 
         for flow in active_flows:
-            if isElephantFlow(flow):
+            if self.isElephantFlow(flow):
                 elephant_flows.append(flow)
 
         return elephant_flows

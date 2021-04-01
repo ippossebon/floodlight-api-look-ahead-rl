@@ -201,7 +201,8 @@ class LoadBalanceEnvLA(gym.Env):
 
     def isElephantFlow(self, flow_obj):
         try:
-            flow_byte_count = int(flow_obj['byteCount'])
+            flow_byte_count_arr = numpy.fromstring(flow_obj['byteCount'], dtype=numpy.uint32)
+            flow_byte_count = flow_byte_count_arr[0]
             print('flow_byte_count = {0}; threshold = {1}; EF = {2}'.format(flow_byte_count, ELEPHANT_FLOW_THRESHOLD, flow_byte_count >= ELEPHANT_FLOW_THRESHOLD))
 
             if flow_byte_count >= ELEPHANT_FLOW_THRESHOLD:

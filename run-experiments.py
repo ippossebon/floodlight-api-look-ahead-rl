@@ -60,8 +60,6 @@ rewards = []
 
 csv_output_filename = None
 
-ELEPHANT_FLOW_THRESHOLD = 100 * 1024 * 1024 # 100 MBytes
-
 
 def createVectorizedEnv():
     # Aguarda scripts iniciarem.
@@ -94,6 +92,27 @@ def trainAgent(env, agent):
     # treinamento com 5 fluxos de 300M
     agent_string = 'DQN-flow-byte-count-' + agent
     model.learn(total_timesteps=10000) #5000
+    model.save('./trained-agents/' + agent_string)
+    print('Modelo treinado e salvo: ', agent_string)
+
+
+def trainLookAheadAgent(env, agent):
+    model = DQN(
+        env=env,
+        policy=MlpPolicy,
+        verbose=1,
+        learning_rate=0.1, # alpha: If your learning rate is set too low, training will progress very slowly as you are making very tiny updates to the weights in your network. However, if your learning rate is set too high, it can cause undesirable divergent behavior in your loss function.
+        gamma=0.95, # It controls the importance of the future rewards versus the immediate ones.
+        exploration_initial_eps=1.0,
+        exploration_fraction=0.8,
+        exploration_final_eps=0.1,
+        buffer_size=56,
+        batch_size=50
+    )
+
+    # treinamento com 8 fluxos diversos
+    agent_string = 'DQN-7000_' + agent
+    model.learn(total_timesteps=7000) #5000
     model.save('./trained-agents/' + agent_string)
     print('Modelo treinado e salvo: ', agent_string)
 
@@ -176,9 +195,7 @@ def testLookAheadAgent(env, original_env, agent, timesteps):
         step += 1
 
 
-def testLookAheadAgent(env, original_env, agent, timesteps):
-    agent_string = None
-
+def testLookAheadAgentV2(env, original_env, agent, timesteps):
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
@@ -188,43 +205,24 @@ def testLookAheadAgent(env, original_env, agent, timesteps):
 
     for step in range(int(timesteps)):
         print('Step ', step)
-        action, _ = model.predict(state, deterministic=False)
-
-        # Se a ação escolhida for para um fluxo que não é EF, desconsidera e aplica a 33
-        # Problema: preciso "dar a sorte" do fluxo escolhido ser um EF
-        if not isActionForElephantFlow(original_env, int(action)):
-            action = numpy.array([33]) # void
-            print('nao EF')
-
-        else:
-            print('sim EF')
-
-        state, reward, done, info = env.step(action)
-
-        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-        writeLineToFile(output_data_line, csv_output_filename)
-        step += 1
-
-
-def isElephantFlowByThreshold(flow_byte_count):
-    return flow_byte_count >= ELEPHANT_FLOW_THRESHOLD
-
-
-def testLookAheadAgentV2():
-    state = env.reset()
-
-    for step in range(int(timesteps)):
-        print('Step ', step)
 
         for flow_index in range(0,15):
-            flow_byte_count = state[1][i]
+            if original_env.isElephantFlowByIndex(flow_index):
+                writeLineToFile('EF')
+                print('EF')
 
-            if isElephantFlowByThreshold(flow_byte_count):
-                action, _ = model.predict(state, deterministic=False)
+                state_with_flow = [state, flow_index]
+
+                action, _ = model.predict(state_with_flow, deterministic=False)
 
                 state, reward, done, info = env.step(action)
+                # step vai olhar para state para ver em qual fluxo aplicar a ação
+
                 output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
                 writeLineToFile(output_data_line, csv_output_filename)
+            else:
+                writeLineToFile('MF')
+                print('MF')
 
             step += 1
 
@@ -316,7 +314,7 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        trainAgent(env, agent)
+        trainLookAheadAgent(env, agent)
         # testLookAheadAgentV2(env, original_env, agent, timesteps)
 
         time_interval = datetime.datetime.now() - start_time

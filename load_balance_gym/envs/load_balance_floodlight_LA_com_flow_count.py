@@ -2,7 +2,7 @@ import gym
 from gym import spaces, utils
 from gym.utils import seeding
 
-from .action_with_flow_rules_map import actionWithFlowMap
+from .actionWithFlowMap import actionFlowMap
 from .flow_match_map import flowMap
 
 
@@ -25,6 +25,13 @@ MEGA_BYTE_COUNT = 1 * 1024 * 1024
 GIGA_BYTE_COUNT = MEGA_BYTE_COUNT * 1024
 
 ELEPHANT_FLOW_THRESHOLD = 100 * 1024 * 1024 # 5MBytes
+ELEPHANT_FLOW_REWARD_FACTOR = 100
+
+MAX_HMEAN_REWARD = 5.29
+MIN_HMEAN_REWARD = EPSILON
+
+MAX_LA_REWARD = ELEPHANT_FLOW_REWARD_FACTOR + MAX_HMEAN_REWARD
+MIN_LA_REWARD = -1 * MAX_LA_REWARD
 
 # 213574015
 
@@ -51,39 +58,19 @@ class LoadBalanceEnvLA(gym.Env):
         self.switch_possible_ports[self.switch_ids[target_switch_index]].append(str(target_port_index + 1))
 
         self.observation_space = spaces.Box(
-            low=(0,0),
-            high=(10 * MEGA_BYTE_COUNT, GIGA_BYTE_COUNT), # maximo = 10Mbps = 10 * 1024 * 1024
-            shape=(16,2), # array com o RX de cada porta = 16 portas. No max, 8 fluxos simultaneos
-            dtype=numpy.float32
+            low=0,
+            high=(50*MEGA_BYTE_COUNT),
+            shape=(16,), # array com o RX de cada porta = 16 portas
+            dtype=numpy.float16
         )
-        """
-        Fluxos que podemos considerar ativos (máximo de 8 simultaneos)
-        state[1][0] = 46110 -> 5201
-        state[1][1] = 46112 -> 5202
-        state[1][2] = 46114 -> 5203
-        state[1][3] = 46116 -> 5204
-        state[1][4] = 46118 -> 5205
-        state[1][5] = 46120 -> 5206
-        state[1][6] = 46122 -> 5207
-        state[1][7] = 46124 -> 5208
 
-        state[1][8] = 5201 -> 46110
-        state[1][9] = 5202 -> 46112
-        state[1][10] = 5203 -> 46114
-        state[1][11] = 5204 -> 46116
-        state[1][12] = 5205 -> 46118
-        state[1][13] = 5206 -> 46120
-        state[1][14] = 5207 -> 46122
-        state[1][15] = 5208 -> 46124
-
-        """
-
-        self.action_space = spaces.Discrete(34)
+        self.action_space = spaces.Discrete(529)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
+        self.prev_state = numpy.zeros(shape=self.observation_space.shape)
+        self.reward_range = (0, MAX_HMEAN_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
 
-        self.previous_tx = numpy.zeros(shape=self.observation_space.shape)
-        self.previous_timestamp = None
+        self.state = numpy.zeros(shape=self.observation_space.shape)
 
 
     def saveItemLinks(self, item):
@@ -336,8 +323,21 @@ class LoadBalanceEnvLA(gym.Env):
 
         return statistics_tx, timestamp
 
-
     def getState(self):
+        state = numpy.zeros(shape=self.observation_space.shape)
+
+        statistics_tx, timestamp = self.getStatisticsBandwidth()
+
+
+        for i in range(len(statistics_tx)):
+            state[i] = statistics_tx[i]  / (1024 * 1024) # valor em Mbits
+
+        # state = state.flatten()
+        # self.prev_state = state
+
+        return state
+
+    def getState2(self):
         state = []
         net_usage = numpy.zeros(shape=self.observation_space.shape)
 
@@ -498,8 +498,7 @@ class LoadBalanceEnvLA(gym.Env):
        return None
 
 
-
-    def step(self, action):
+    def step0(self, action):
         # Action indica uma ação para cada fluxo.
         # state[0] = net_usage
         # state[1] = flows_byte_count
@@ -510,9 +509,12 @@ class LoadBalanceEnvLA(gym.Env):
         reward = 0
         info = {}
 
+        action_rule = action[0]
+        action_flow = action[1]
+
         print('Action =', action)
 
-        if action == 33:
+        if action_rule == 33:
             next_state = self.getState()
             reward = 0
 
@@ -522,7 +524,7 @@ class LoadBalanceEnvLA(gym.Env):
 
             return next_state, reward, done, info
         else:
-            action_vec = actionWithFlowMap(action)
+            action_vec = actionFlowMap(action_rule)
 
             switch_index = action_vec[0]
             in_port_index = action_vec[1]
@@ -532,8 +534,9 @@ class LoadBalanceEnvLA(gym.Env):
             switch_id = self.switch_ids[switch_index]
             in_port = in_port_index + 1
             out_port = out_port_index + 1
+            # flow_match = self.getMostCostlyFlow(switch_id) # em caso de agentes normais
 
-            flow_match = flowMap(flow_index)
+            flow_match = flowMap(action_flow)
 
             rule_to_install = self.actionToRule(switch_id, in_port, out_port, flow_match)
             # print('Regra a ser instalada: ', rule)
@@ -562,19 +565,41 @@ class LoadBalanceEnvLA(gym.Env):
             return next_state, reward, done, info
 
 
+    def step(self, action):
+        print('...........')
+        done = False # Aprendizado continuado
+        next_state = []
+        reward = 0
+        info = {}
 
-    def calculateReward(self, state):
-        # Pega métricas de performance do controlador
-        # response = requests.get('{host}/wm/performance/data/json'.format(host=CONTROLLER_HOST))
-        # response_data = response.json()
-        #
-        # for item in response_data['modules']:
-        #     if item['module-name'] == "net.floodlightcontroller.forwarding.Forwarding":
-        #         forwarding_avg_time = item['average']
-        #         break
+        action_vec = actionFlowMap(action)
 
-        """ Agente A """
+        switch_index = action_vec[0]
+        in_port_index = action_vec[1]
+        out_port_index = action_vec[2]
+        flow_index = action_vec[3]
 
+        switch_id = self.switch_ids[switch_index]
+        in_port = in_port_index + 1
+        out_port = out_port_index + 1
+        flow_match = flowMap(flow_index)
+
+        rule_to_install = self.actionToRule(switch_id, in_port, out_port, flow_match)
+
+        existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
+
+        if existing_rule_name:
+            response_uninstall = self.uninstallRule(existing_rule_name)
+
+        response_install = self.installRule(rule_to_install)
+
+        time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
+
+        next_state = self.getState()
+        reward = self.calculateReward(next_state, action, flow_match)
+
+
+    def getNetworkUsageReward(self, state):
         total_usage_links = 0
         for i in range(len(state)):
             if state[i] > 1:
@@ -588,21 +613,81 @@ class LoadBalanceEnvLA(gym.Env):
 
         reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
 
+    def getHMeanReward(self, state):
+        hmean = EPSILON
+        if numpy.sum(state) < EPSILON:
+            hmean = len(state) / numpy.sum(1.0/EPSILON)
+        else:
+            # soma máxima = 1/170 = 0.00588
+            # hmean máxima = 9/0.00588 = 0,05292
+            hmean = len(state) / numpy.sum(1.0/state)
+
+        s1_1_tx_mbps = state[0]
+        s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
+
+
+        # valor máximo considerando topologia 1 = 0,05292 * (50+50) = 5.29
+        reward = float(hmean * (s3_1_tx_mbps + s1_1_tx_mbps))
+
+        if reward < EPSILON
+            return EPSILON
+
+        return reward
+
+    def getSTDReward(self, state):
+        std = numpy.std(state)
+        reward = float(std * (s3_1_tx_mbps + s1_1_tx_mbps))
+
+        return reward
+
+    def getElephantFlows(self):
+        active_flows = self.getActiveFlows()
+        elephant_flows = []
+
+        for flow in active_flows:
+            if isElephantFlow(flow):
+                elephant_flows.append(flow)
+
+        return elephant_flows
+
+
+    def getLookAheadReward(self, state, flow_for_action):
+        # Como olhar para o meu estado e penalizar decisões que mexem em fluxos que não são EF?
+        # Com a equação aqui descrita, não precisaria de um IF EF pré agente,
+        # pois qualquer ação que não envolva um EF, independente de qual seja, não será escolhida
+        # pelo agente por conta da recompensa.
+        elephant_flows = self.getElephantFlows()
+        if flow_for_action not in elephant_flows:
+            # recompensa deve ser muito baixa
+            return
+        else:
+            # escolheu EF para action
+            return self.getHMeanReward(state) + ELEPHANT_FLOW_REWARD_FACTOR
+
+        # se o agente escolher um fluxo que já terminou, o estado se mantem o mesmo
+
+
+    def calculateReward(self, state, flow_for_action):
+        # Pega métricas de performance do controlador
+        # response = requests.get('{host}/wm/performance/data/json'.format(host=CONTROLLER_HOST))
+        # response_data = response.json()
+        #
+        # for item in response_data['modules']:
+        #     if item['module-name'] == "net.floodlightcontroller.forwarding.Forwarding":
+        #         forwarding_avg_time = item['average']
+        #         break
+
+        """ Agente A """
+        # reward = self.getNetworkUsageReward(state)
 
         """ Agente B """
-        # hmean = EPSILON
-        # if numpy.sum(state) < EPSILON:
-        #     hmean = len(state) / numpy.sum(1.0/EPSILON)
-        # else:
-        #     hmean = len(state) / numpy.sum(1.0/state)
-
-        # Agente B
-        # reward = float(total_usage_links * (s3_1_tx_mbps + s1_1_tx_mbps))
-
+        # reward = self.getHMeanReward(state)
 
         """ Agente C """
-        # std = numpy.std(state)
-        # reward = float(std * (s3_1_tx_mbps + s1_1_tx_mbps))
+        # reward = self.getSTDReward(state)
+
+        """ Agente Look Ahead """
+        reward = self.getLookAheadReward(state, flow_for_action)
 
         return reward
 

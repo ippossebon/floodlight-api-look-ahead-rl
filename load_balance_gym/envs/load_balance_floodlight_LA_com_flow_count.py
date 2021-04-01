@@ -596,7 +596,7 @@ class LoadBalanceEnvLA(gym.Env):
         time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
 
         next_state = self.getState()
-        reward = self.calculateReward(next_state, action, flow_match)
+        reward = self.calculateReward(next_state, flow_match)
 
 
     def getNetworkUsageReward(self, state):
@@ -636,6 +636,10 @@ class LoadBalanceEnvLA(gym.Env):
 
     def getSTDReward(self, state):
         std = numpy.std(state)
+
+        s1_1_tx_mbps = state[0]
+        s3_1_tx_mbps = state[7] # usado para detectar potencial estado de loop
+
         reward = float(std * (s3_1_tx_mbps + s1_1_tx_mbps))
 
         return reward
@@ -659,7 +663,7 @@ class LoadBalanceEnvLA(gym.Env):
         elephant_flows = self.getElephantFlows()
         if flow_for_action not in elephant_flows:
             # recompensa deve ser muito baixa
-            return
+            return MIN_LA_REWARD
         else:
             # escolheu EF para action
             return self.getHMeanReward(state) + ELEPHANT_FLOW_REWARD_FACTOR

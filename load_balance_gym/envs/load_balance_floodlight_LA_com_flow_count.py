@@ -2,7 +2,7 @@ import gym
 from gym import spaces, utils
 from gym.utils import seeding
 
-from .action_with_flow_rules_map import actionFlowMap
+from .action_with_flow_rules_map import actionWithFlowMap
 from .flow_match_map import flowMap
 
 
@@ -524,7 +524,7 @@ class LoadBalanceEnvLA(gym.Env):
 
             return next_state, reward, done, info
         else:
-            action_vec = actionFlowMap(action_rule)
+            action_vec = actionWithFlowMap(action_rule)
 
             switch_index = action_vec[0]
             in_port_index = action_vec[1]
@@ -572,7 +572,7 @@ class LoadBalanceEnvLA(gym.Env):
         reward = 0
         info = {}
 
-        action_vec = actionFlowMap(action)
+        action_vec = actionWithFlowMap(action)
 
         switch_index = action_vec[0]
         in_port_index = action_vec[1]

@@ -681,9 +681,10 @@ class LoadBalanceEnvLA(gym.Env):
         elephant_flows = self.getElephantFlows()
         print('elephant_flows = ', elephant_flows)
         print('flow_for_action tcp_src = ', flow_for_action['tcp_src'])
-        print('chosen_flow_is_elephant = ', chosen_flow_is_elephant)
 
         chosen_flow_is_elephant = flow_for_action in elephant_flows
+        print('chosen_flow_is_elephant = ', chosen_flow_is_elephant)
+        
 
         if flow_for_action == None or not chosen_flow_is_elephant:
             # recompensa deve ser muito baixa

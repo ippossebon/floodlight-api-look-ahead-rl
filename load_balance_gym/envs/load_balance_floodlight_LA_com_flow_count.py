@@ -572,31 +572,48 @@ class LoadBalanceEnvLA(gym.Env):
         reward = 0
         info = {}
 
-        action_vec = actionWithFlowMap(action)
+        if action == 33:
+            next_state = self.getState()
+            reward = 0
 
-        switch_index = action_vec[0]
-        in_port_index = action_vec[1]
-        out_port_index = action_vec[2]
-        flow_index = action_vec[3]
+            print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            print('...........')
+            print()
 
-        switch_id = self.switch_ids[switch_index]
-        in_port = in_port_index + 1
-        out_port = out_port_index + 1
-        flow_match = flowMap(flow_index)
+            return next_state, reward, done, info
+        else:
+            action_vec = actionWithFlowMap(action)
 
-        rule_to_install = self.actionToRule(switch_id, in_port, out_port, flow_match)
+            switch_index = action_vec[0]
+            in_port_index = action_vec[1]
+            out_port_index = action_vec[2]
+            flow_index = action_vec[3]
 
-        existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
+            switch_id = self.switch_ids[switch_index]
+            in_port = in_port_index + 1
+            out_port = out_port_index + 1
+            flow_match = flowMap(flow_index)
 
-        if existing_rule_name:
-            response_uninstall = self.uninstallRule(existing_rule_name)
+            rule_to_install = self.actionToRule(switch_id, in_port, out_port, flow_match)
 
-        response_install = self.installRule(rule_to_install)
+            existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
 
-        time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
+            if existing_rule_name:
+                response_uninstall = self.uninstallRule(existing_rule_name)
 
-        next_state = self.getState()
-        reward = self.calculateReward(next_state, flow_match)
+            response_install = self.installRule(rule_to_install)
+
+            time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
+
+            next_state = self.getState()
+            reward = self.calculateReward(next_state, flow_match)
+            self.state = next_state
+
+            print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            print('...........')
+            print()
+
+            return next_state, reward, done, info
 
 
     def getNetworkUsageReward(self, state):
@@ -661,12 +678,16 @@ class LoadBalanceEnvLA(gym.Env):
         # pois qualquer ação que não envolva um EF, independente de qual seja, não será escolhida
         # pelo agente por conta da recompensa.
         elephant_flows = self.getElephantFlows()
-        if flow_for_action not in elephant_flows:
+        chosen_flow_is_elephant = flow_for_action in elephant_flows
+
+        if flow_for_action == None or not chosen_flow_is_elephant:
             # recompensa deve ser muito baixa
             return MIN_LA_REWARD
         else:
             # escolheu EF para action
-            return self.getHMeanReward(state) + ELEPHANT_FLOW_REWARD_FACTOR
+            hmean = self.getHMeanReward(state)
+            reward = hmean + ELEPHANT_FLOW_REWARD_FACTOR
+            return  reward
 
         # se o agente escolher um fluxo que já terminou, o estado se mantem o mesmo
 

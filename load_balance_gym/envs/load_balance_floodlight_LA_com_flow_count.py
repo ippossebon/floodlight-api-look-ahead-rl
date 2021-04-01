@@ -679,6 +679,7 @@ class LoadBalanceEnvLA(gym.Env):
         # pois qualquer ação que não envolva um EF, independente de qual seja, não será escolhida
         # pelo agente por conta da recompensa.
         elephant_flows = self.getElephantFlows()
+        chosen_flow_is_elephant = False
 
         for ef in elephant_flows:
             if ef['match']['tcp_src'] == flow_for_action['tcp_src']:

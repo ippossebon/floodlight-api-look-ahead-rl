@@ -629,7 +629,7 @@ class LoadBalanceEnvLA(gym.Env):
         # valor máximo considerando topologia 1 = 0,05292 * (50+50) = 5.29
         reward = float(hmean * (s3_1_tx_mbps + s1_1_tx_mbps))
 
-        if reward < EPSILON
+        if reward < EPSILON:
             return EPSILON
 
         return reward

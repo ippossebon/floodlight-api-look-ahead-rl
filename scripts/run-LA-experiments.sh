@@ -23,7 +23,7 @@ do
 
 	    ./delayed-start-incremental-iperfs-client.sh $agent $i &
 
-	    docker run -v $PWD/../:/app --network="bridge" lookahead python run-experiments.py -a $agent -n 8 -s ALL_FLOWS -t 5000 -i $i
+	    docker run -v $PWD/../:/app --network="bridge" lookahead python run-experiments.py -a $agent -n 8 -s ALL_FLOWS -t 3000 -i $i
 
 	    echo "Removendo todas as entradas estáticas..."
 

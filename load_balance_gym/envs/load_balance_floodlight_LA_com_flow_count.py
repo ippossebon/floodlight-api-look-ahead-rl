@@ -567,7 +567,6 @@ class LoadBalanceEnvLA(gym.Env):
 
 
     def step(self, action):
-        print('...........')
         done = False # Aprendizado continuado
         next_state = []
         reward = 0

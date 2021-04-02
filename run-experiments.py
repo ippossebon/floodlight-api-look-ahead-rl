@@ -156,36 +156,6 @@ def isActionForElephantFlow(original_env, action):
 
 
 def testLookAheadAgent(env, original_env, agent, timesteps):
-    agent_string = None
-
-    agent_path = 'trained-agents/{0}'.format(agent)
-    model = DQN.load(load_path=agent_path, env=env)
-
-    state = env.reset()
-
-    writeLineToFile('Step; State; Reward', csv_output_filename)
-
-    for step in range(int(timesteps)):
-        print('Step ', step)
-        action, _ = model.predict(state, deterministic=False)
-
-        # Se a ação escolhida for para um fluxo que não é EF, desconsidera e aplica a 33
-        # Problema: preciso "dar a sorte" do fluxo escolhido ser um EF
-        if not isActionForElephantFlow(original_env, int(action)):
-            action = numpy.array([33]) # void
-            print('nao EF')
-
-        else:
-            print('sim EF')
-
-        state, reward, done, info = env.step(action)
-
-        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-        writeLineToFile(output_data_line, csv_output_filename)
-        step += 1
-
-
-def testLookAheadAgentV2(env, original_env, agent, timesteps):
     agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 

@@ -217,7 +217,6 @@ def testLookAheadAgentV2(env, original_env, agent, timesteps):
 
 
 def writeLineToFile(line, filename):
-    print(csv_output_filename)
     with open(filename, 'a') as file:
         file.write("%s\n" % line)
 

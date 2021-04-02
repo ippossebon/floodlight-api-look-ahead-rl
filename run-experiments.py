@@ -196,25 +196,24 @@ def testLookAheadAgentV2(env, original_env, agent, timesteps):
     for step in range(int(timesteps)):
         print('Step ', step)
 
-            if original_env.isElephantFlowByIndex(flow_index):
-                writeLineToFile('EF')
-                print('EF')
+        if original_env.isElephantFlowByIndex(flow_index):
+            writeLineToFile('EF')
+            print('EF')
 
-                state_with_flow = [state, flow_index]
+            state_with_flow = [state, flow_index]
 
-                action, _ = model.predict(state_with_flow, deterministic=False)
+            action, _ = model.predict(state_with_flow, deterministic=False)
 
-                state, reward, done, info = env.step(action)
-                # step vai olhar para state para ver em qual fluxo aplicar a ação
+            state, reward, done, info = env.step(action)
+            # step vai olhar para state para ver em qual fluxo aplicar a ação
 
-                output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-                writeLineToFile(output_data_line, csv_output_filename)
-            else:
-                writeLineToFile('MF')
-                print('MF')
+            output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+            writeLineToFile(output_data_line, csv_output_filename)
+        else:
+            writeLineToFile('MF')
+            print('MF')
 
-            step += 1
-
+        step += 1
 
 
 def writeLineToFile(line, filename):

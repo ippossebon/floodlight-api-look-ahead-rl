@@ -61,16 +61,14 @@ class LoadBalanceEnvLA(gym.Env):
             low=0,
             high=(50*MEGA_BYTE_COUNT),
             shape=(16,), # array com o RX de cada porta = 16 portas
-            dtype=numpy.uint32
+            dtype=numpy.float64
         )
 
         self.action_space = spaces.Discrete(529)
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (0, MAX_HMEAN_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
-
-        self.state = numpy.zeros(shape=self.observation_space.shape)
+        self.reward_range = (MIN_LA_REWARD, MAX_LA_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
 
 
     def saveItemLinks(self, item):
@@ -499,73 +497,6 @@ class LoadBalanceEnvLA(gym.Env):
        return None
 
 
-    def step0(self, action):
-        # Action indica uma ação para cada fluxo.
-        # state[0] = net_usage
-        # state[1] = flows_byte_count
-
-        print('...........')
-        done = False # Aprendizado continuado
-        next_state = []
-        reward = 0
-        info = {}
-
-        action_rule = action[0]
-        action_flow = action[1]
-
-        print('Action =', action)
-
-        if action_rule == 33:
-            next_state = self.getState()
-            reward = 0
-
-            print('State: {0} -- Reward = {1}'.format(self.state, reward))
-            print('...........')
-            print()
-
-            return next_state, reward, done, info
-        else:
-            action_vec = actionWithFlowMap(action_rule)
-
-            switch_index = action_vec[0]
-            in_port_index = action_vec[1]
-            out_port_index = action_vec[2]
-            flow_index = action_vec[3]
-
-            switch_id = self.switch_ids[switch_index]
-            in_port = in_port_index + 1
-            out_port = out_port_index + 1
-            # flow_match = self.getMostCostlyFlow(switch_id) # em caso de agentes normais
-
-            flow_match = flowMap(action_flow)
-
-            rule_to_install = self.actionToRule(switch_id, in_port, out_port, flow_match)
-            # print('Regra a ser instalada: ', rule)
-
-            existing_rule_name = self.existsRuleWithAction(switch_id, in_port, out_port, flow_match)
-
-            # acho que nao pode ter... posso querer mexer em um fluxo que antes era grande e agora tem um maior
-            if existing_rule_name:
-                # Desintala regra para não haver conflito
-                response_uninstall = self.uninstallRule(existing_rule_name)
-                # print('Resposta desinstalação: ', response_uninstall.json())
-
-            response_install = self.installRule(rule_to_install)
-            # print('Resposta instalação: ', response_install.json())
-
-            time.sleep(7) # aguarda regras refletirem e pacotes serem enviados novamente
-
-            next_state = self.getState()
-            reward = self.calculateReward(next_state)
-            self.state = next_state
-
-            print('State: {0} -- Reward = {1}'.format(self.state, reward))
-            print('...........')
-            print()
-
-            return next_state, reward, done, info
-
-
     def step(self, action):
         done = False # Aprendizado continuado
         next_state = []
@@ -694,7 +625,7 @@ class LoadBalanceEnvLA(gym.Env):
             # escolheu EF para action
             hmean = self.getHMeanReward(state)
             reward = hmean + ELEPHANT_FLOW_REWARD_FACTOR
-            return  reward
+            return reward
 
         # se o agente escolher um fluxo que já terminou, o estado se mantem o mesmo
 

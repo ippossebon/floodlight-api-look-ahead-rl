@@ -59,7 +59,7 @@ class LoadBalanceEnvLA(gym.Env):
 
         self.observation_space = spaces.Box(
             low=0,
-            high=(50*MEGA_BYTE_COUNT),
+            high=(60), # 50MB + 10 de threshold
             shape=(16,), # array com o RX de cada porta = 16 portas
             dtype=numpy.float64
         )
@@ -327,7 +327,7 @@ class LoadBalanceEnvLA(gym.Env):
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()
 
-
+        print('statistics_tx[i] = ', statistics_tx[i])
         for i in range(len(statistics_tx)):
             state[i] = statistics_tx[i]  / (1024 * 1024) # valor em Mbits
 

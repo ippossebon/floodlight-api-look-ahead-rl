@@ -117,14 +117,10 @@ def trainLookAheadAgent(env, agent):
     print('Modelo treinado e salvo: ', agent_string)
 
 
-def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
+def testAgent(env, original_env, agent, timesteps):
     num_steps = int(timesteps)
 
-    agent_string = None
-    if 'B_LA_v1' in agent:
-        agent_string = 'B_LA'
-
-    agent_path = 'trained-agents/{0}'.format(agent_string)
+    agent_path = 'trained-agents/{0}'.format(agent)
     model = DQN.load(load_path=agent_path, env=env)
 
     state = env.reset()
@@ -134,12 +130,6 @@ def testAgent(env, original_env, agent, num_flows, flows_size, timesteps):
     for step in range(num_steps):
         print('Step ', step)
         action, _ = model.predict(state, deterministic=False)
-
-        # O trecho abaixo poderia estar dentro da env...
-        contains_elephant_flow = original_env.existsElephantFlow()
-        print('contains_elephant_flow: ', contains_elephant_flow)
-        if not contains_elephant_flow:
-            action = numpy.array([33]) # void
 
         state, reward, done, info = env.step(action)
 
@@ -206,7 +196,6 @@ def testLookAheadAgentV2(env, original_env, agent, timesteps):
     for step in range(int(timesteps)):
         print('Step ', step)
 
-        for flow_index in range(0,15):
             if original_env.isElephantFlowByIndex(flow_index):
                 writeLineToFile('EF')
                 print('EF')
@@ -277,7 +266,7 @@ def main(argv):
     agent = None
     num_flows = None
     flows_size = None
-    timesteps = 5000
+    timesteps = None
     iter = None
 
     for opt, arg in opts:
@@ -314,8 +303,7 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        trainLookAheadAgent(env, agent)
-        # testLookAheadAgentV2(env, original_env, agent, timesteps)
+        testAgent(env, original_env, agent, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

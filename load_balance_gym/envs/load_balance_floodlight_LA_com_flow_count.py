@@ -327,7 +327,6 @@ class LoadBalanceEnvLA(gym.Env):
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()
 
-        print('statistics_tx = ', statistics_tx)
         for i in range(len(statistics_tx)):
             state[i] = statistics_tx[i]  / (1024 * 1024) # valor em Mbits
 

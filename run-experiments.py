@@ -96,8 +96,8 @@ def trainAgent(env, agent):
     print('Modelo treinado e salvo: ', agent_string)
 
 
-# def trainLookAheadAgent(env, agent):
-    # model = DQN(
+def trainLookAheadAgent(env, agent):
+    model = DQN(
         env=env,
         policy=MlpPolicy,
         verbose=1,

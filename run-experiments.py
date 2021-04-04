@@ -96,8 +96,8 @@ def trainAgent(env, agent):
     print('Modelo treinado e salvo: ', agent_string)
 
 
-def trainLookAheadAgent(env, agent):
-    model = DQN(
+# def trainLookAheadAgent(env, agent):
+    # model = DQN(
         env=env,
         policy=MlpPolicy,
         verbose=1,
@@ -135,7 +135,6 @@ def testAgent(env, original_env, agent, timesteps):
         print('Action: ', action)
 
         state, reward, done, info = env.step(action)
-        print('New state: ', state)
 
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         writeLineToFile(output_data_line, csv_output_filename)
@@ -276,8 +275,8 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        # trainLookAheadAgent(env, agent)
-        testAgent(env, original_env, agent, timesteps)
+        trainLookAheadAgent(env, agent)
+        # testAgent(env, original_env, agent, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

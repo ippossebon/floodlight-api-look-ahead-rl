@@ -505,7 +505,7 @@ class LoadBalanceEnvLA(gym.Env):
 
         if action == 33:
             next_state = self.getState()
-            reward = 0
+            reward = MIN_LA_REWARD
 
             # print('State: {0} -- Reward = {1}'.format(self.state, reward))
             print('Reward = ', reward)

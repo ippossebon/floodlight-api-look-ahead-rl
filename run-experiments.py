@@ -136,6 +136,7 @@ def testAgent(env, original_env, agent, timesteps):
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         writeLineToFile(output_data_line, csv_output_filename)
         step += 1
+        time.sleep(1)
 
 def getFlowInfo(original_env, action):
     action_vec = actionWithFlowMap(action)

@@ -129,9 +129,13 @@ def testAgent(env, original_env, agent, timesteps):
 
     for step in range(num_steps):
         print('Step ', step)
+        print('State ', state)
+
         action, _ = model.predict(state, deterministic=False)
+        print('Action: ', action)
 
         state, reward, done, info = env.step(action)
+        print('New state: ', state)
 
         output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
         writeLineToFile(output_data_line, csv_output_filename)

@@ -14,7 +14,9 @@ chmod +x ./delayed-start-incremental-iperfs-client.sh
 
 while read agent iter
 do
-	for (( i=0; i < $iter; i++ )); do
+	# for (( i=0; i < $iter; i++ )); do
+	for (( i=90; i < 91; i++ )); do
+
     echo "*** Iniciando experimento: $agent - iteração $i"
 
 	    ./add-initial-flow-entries.sh
@@ -23,7 +25,7 @@ do
 
 	    ./delayed-start-incremental-iperfs-client.sh $agent $i &
 
-	    docker run -v $PWD/../:/app --network="bridge" lookahead python run-experiments.py -a $agent -n 8 -s ALL_FLOWS -t 5000 -i $i
+	    docker run -v $PWD/../:/app --network="bridge" lookahead python run-experiments.py -a $agent -n 8 -s ALL_FLOWS -t 7000 -i $i
 
 	    echo "*** Removendo todas as entradas estáticas..."
 

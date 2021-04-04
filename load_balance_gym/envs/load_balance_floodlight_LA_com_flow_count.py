@@ -327,6 +327,7 @@ class LoadBalanceEnvLA(gym.Env):
 
         statistics_tx, timestamp = self.getStatisticsBandwidth()
 
+        print('# len de statistics', len(statistics_tx))
         for i in range(len(statistics_tx)):
             state[i] = statistics_tx[i]  / (1024 * 1024) # valor em Mbits
 
@@ -506,7 +507,8 @@ class LoadBalanceEnvLA(gym.Env):
             next_state = self.getState()
             reward = 0
 
-            print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            # print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            print('Reward = ', reward)
             print('...........')
             print()
 
@@ -539,7 +541,8 @@ class LoadBalanceEnvLA(gym.Env):
             reward = self.calculateReward(next_state, flow_match)
             self.state = next_state
 
-            print('State: {0} -- Reward = {1}'.format(self.state, reward))
+            print('Reward = ', reward)
+            # print('State: {0} -- Reward = {1}'.format(self.state, reward))
             print('...........')
             print()
 

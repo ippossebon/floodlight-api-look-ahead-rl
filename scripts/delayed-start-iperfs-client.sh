@@ -18,6 +18,7 @@ for (( i=0; i < $num_iperfs; i++ )); do
   client_port=$(($i*2+46110))
 
   ssh mininet@192.168.68.250 "ssh -f 10.0.0.1 iperf3 -c 10.0.0.2 -B 10.0.0.1 --cport $client_port -p $server_port -n $flow_size > ~/floodlight-api-look-ahead-rl/output-experiments-iperfs/$agent-client-$client_port-$num_iperfs-flows-$flow_size-v$iter.log &"
+  sleep 5
   # ssh mininet@192.168.68.250 "ssh 10.0.0.1 iperf3 -c 10.0.0.2 -B 10.0.0.1 --cport $client_port -p $server_port -n $flow_size > ~/floodlight-api-look-ahead-rl/output-experiments-iperfs/$agent-client-$client_port-$num_iperfs-flows-$flow_size-v$iter.log" &
 done
 wait

@@ -1,6 +1,6 @@
 library(tidyverse)
 
-csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/outputs-consolidated/data/best-reward/iperfs-A-B-C-F.csv'
+csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/outputs-consolidated/data/teste-look-ahead/B_LA_HET-B_HET-teste.csv'
 
 data <- read_csv(csvPath, col_types = cols(
   agent = col_character(),
@@ -15,7 +15,7 @@ data <- read_csv(csvPath, col_types = cols(
 )) %>%
   mutate(original_size = as_factor(original_size)) %>%
   print
-  View
+View
 
 
 ## Considera flow completion time de CADA fluxo.
@@ -48,16 +48,6 @@ facet_labels <- c(
   `8` = "8 flows"
 )
 
-agent_labels <- c(
-  "A" = "Usage heuristics",
-  "B" = "Harmonic Mean", 
-  "C" = "Standard Deviation",
-  "F" = "Baseline",
-  "A2" = "Usage heuristic",
-  "B2" = "Harmonic Mean",
-  "F2" = "Baseline"
-)
-
 data1 %>%
   ggplot(aes(x = original_size, y = average_completion_time, fill = agent)) +
   geom_col(position = position_dodge()) +
@@ -77,7 +67,6 @@ data1 %>%
     labels = waiver(), 
     limits = c(0, NA)
   ) +
-  scale_fill_discrete(name = 'Reward function', label=as_labeller(agent_labels)) +
-  xlab('Flow size (Mbytes)') +
-  theme(legend.position="bottom")
+  scale_fill_discrete(name = 'Agent') +
+  xlab('Flow size (Mbytes)')
 

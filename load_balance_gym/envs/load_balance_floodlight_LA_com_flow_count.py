@@ -646,13 +646,13 @@ class LoadBalanceEnvLA(gym.Env):
         # reward = self.getNetworkUsageReward(state)
 
         """ Agente B """
-        # reward = self.getHMeanReward(state)
+        reward = self.getHMeanReward(state)
 
         """ Agente C """
         # reward = self.getSTDReward(state)
 
         """ Agente Look Ahead """
-        reward = self.getLookAheadReward(state, flow_for_action)
+        # reward = self.getLookAheadReward(state, flow_for_action)
 
         return reward
 

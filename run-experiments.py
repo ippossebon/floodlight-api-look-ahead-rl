@@ -111,8 +111,8 @@ def trainLookAheadAgent(env, agent):
     )
 
     # treinamento com 8 fluxos diversos
-    agent_string = 'DQN-' + agent
-    model.learn(total_timesteps=7000)
+    agent_string = 'HET-' + agent
+    model.learn(total_timesteps=2000)
     model.save('./trained-agents/' + agent_string)
     print('Modelo treinado e salvo: ', agent_string)
 
@@ -275,8 +275,8 @@ def main(argv):
     else:
         env, original_env = createVectorizedEnv()
 
-        # trainLookAheadAgent(env, agent)
-        testAgent(env, original_env, agent, timesteps)
+        trainLookAheadAgent(env, agent)
+        # testAgent(env, original_env, agent, timesteps)
 
         time_interval = datetime.datetime.now() - start_time
         snapshot = tracemalloc.take_snapshot()

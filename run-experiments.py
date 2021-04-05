@@ -141,7 +141,7 @@ def testAgent(env, original_env, agent, timesteps):
 
         print('Flow: ', flow_label)
 
-        output_data_line = '{0}; {1}; {2}; {3}'.format(step, state, reward; flow_label)
+        output_data_line = '{0}; {1}; {2}; {3}'.format(step, state, reward, flow_label)
         writeLineToFile(output_data_line, csv_output_filename)
         step += 1
 

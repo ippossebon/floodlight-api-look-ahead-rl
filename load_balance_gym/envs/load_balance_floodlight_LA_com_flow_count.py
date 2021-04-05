@@ -68,7 +68,8 @@ class LoadBalanceEnvLA(gym.Env):
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        self.reward_range = (MIN_LA_REWARD, MAX_LA_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
+        # self.reward_range = (MIN_LA_REWARD, MAX_LA_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
+        self.reward_range = (MIN_HMEAN_REWARD, MAX_HMEAN_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
 
 
     def saveItemLinks(self, item):

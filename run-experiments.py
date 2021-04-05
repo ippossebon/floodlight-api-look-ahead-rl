@@ -266,7 +266,7 @@ def main(argv):
         elif opt in ("-i", "--iter"):
             iter = arg
         elif opt in ("-v", "--interval"):
-            iter = arg
+            interval = arg
         elif opt in ("-p", "--proportion"):
             proportion = arg
 

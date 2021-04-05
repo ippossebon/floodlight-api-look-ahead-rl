@@ -235,9 +235,9 @@ def main(argv):
     start1 = datetime.datetime.now()
 
     try:
-        opts, args = getopt.getopt(argv, "ha:n:s:t:v:p:i:", ["agent=", "numflows=", "flowsize=", "timesteps=", "interval=", "propotion=","iter="])
+        opts, args = getopt.getopt(argv, "ha:n:s:t:v:p:i:", ["agent=", "numflows=", "flowsize=", "timesteps=", "interval=", "proportion=","iter="])
     except getopt.GetoptError:
-        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -v <interval> -p <propotion> -i <iter>')
+        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -v <interval> -p <proportion> -i <iter>')
         sys.exit(2)
 
     agent = None
@@ -246,11 +246,11 @@ def main(argv):
     timesteps = None
     interval = None
     iter = None
-    propotion = None
+    proportion = None
 
     for opt, arg in opts:
         if opt == '-h':
-            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -v <interval> -p <propotion> -i <iter>')
+            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -v <interval> -p <proportion> -i <iter>')
             sys.exit()
         elif opt in ("-a", "--agent"):
             agent = arg
@@ -265,7 +265,7 @@ def main(argv):
         elif opt in ("-v", "--interval"):
             iter = arg
         elif opt in ("-p", "--proportion"):
-            propotion = arg
+            proportion = arg
 
     csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-{4}_sec-prop_{5}-v_{6}.csv'.format(
         agent, num_flows, flows_size, timesteps, interval, proportion, iter

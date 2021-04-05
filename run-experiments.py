@@ -135,13 +135,11 @@ def testAgent(env, original_env, agent, timesteps):
         print('Action: ', action)
 
         state, reward, done, info = env.step(action)
-        print('info = ', info)
-        print('Flow: ', flow_label)
-        
+        extra_info = info[0]
 
-        is_action_for_elephant_flow = info['is_action_for_elephant_flow']
+        is_action_for_elephant_flow = extra_info['is_action_for_elephant_flow']
         flow_label = 'EF' if is_action_for_elephant_flow else 'MF'
-
+        print('Flow: ', flow_label)
 
         output_data_line = '{0}; {1}; {2}; {3}'.format(step, state, reward, flow_label)
         writeLineToFile(output_data_line, csv_output_filename)

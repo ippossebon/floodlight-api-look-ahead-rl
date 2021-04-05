@@ -136,10 +136,15 @@ def testAgent(env, original_env, agent, timesteps):
 
         state, reward, done, info = env.step(action)
 
-        output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
+        is_action_for_elephant_flow = info['is_action_for_elephant_flow']
+        flow_label = 'EF' if is_action_for_elephant_flow else 'MF'
+
+        print('Flow: ', flow_label)
+
+        output_data_line = '{0}; {1}; {2}; {3}'.format(step, state, reward; flow_label)
         writeLineToFile(output_data_line, csv_output_filename)
         step += 1
-        time.sleep(1)
+
 
 def getFlowInfo(original_env, action):
     action_vec = actionWithFlowMap(action)
@@ -230,20 +235,22 @@ def main(argv):
     start1 = datetime.datetime.now()
 
     try:
-        opts, args = getopt.getopt(argv, "ha:n:s:t:i:", ["agent=", "numflows=", "flowsize=", "timesteps=", "iter="])
+        opts, args = getopt.getopt(argv, "ha:n:s:t:v:p:i:", ["agent=", "numflows=", "flowsize=", "timesteps=", "interval=", "propotion=","iter="])
     except getopt.GetoptError:
-        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
+        print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -v <interval> -p <propotion> -i <iter>')
         sys.exit(2)
 
     agent = None
     num_flows = None
     flows_size = None
     timesteps = None
+    interval = None
     iter = None
+    propotion = None
 
     for opt, arg in opts:
         if opt == '-h':
-            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -i <iter>')
+            print ('run-experiments.py -a <agent> -n <numflows> -s <flowsize> -t <timesteps> -v <interval> -p <propotion> -i <iter>')
             sys.exit()
         elif opt in ("-a", "--agent"):
             agent = arg
@@ -255,13 +262,17 @@ def main(argv):
             timesteps = arg
         elif opt in ("-i", "--iter"):
             iter = arg
+        elif opt in ("-v", "--interval"):
+            iter = arg
+        elif opt in ("-p", "--proportion"):
+            propotion = arg
 
-    csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}.csv'.format(
-        agent, num_flows, flows_size, timesteps, iter
+    csv_output_filename = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-{4}_sec-prop_{5}-v_{6}.csv'.format(
+        agent, num_flows, flows_size, timesteps, interval, proportion, iter
     )
 
-    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, iter = {4}'.format(
-        agent, num_flows, flows_size, timesteps, iter
+    print('Running: agent = {0}, number of flows = {1}, flows size = {2}, timesteps = {3}, interval = {4}, proportion = {5}, iter = {6}'.format(
+        agent, num_flows, flows_size, timesteps, interval, proportion, iter
     ))
 
     tracemalloc.start()
@@ -282,8 +293,8 @@ def main(argv):
         snapshot = tracemalloc.take_snapshot()
         memory_usage = getTopMemoryUsage(snapshot)
 
-        output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}_steps-v_{4}-compcosts.txt'.format(
-            agent, num_flows, flows_size, timesteps, iter
+        output_filename_compcosts = './output-experiments-app/{0}-{1}_flows-{2}-{3}steps-{4}_sec-prop_{5}-v_{6}-compcosts.txt'.format(
+            agent, num_flows, flows_size, timesteps, interval, proportion, iter
         )
 
         with open(output_filename_compcosts, 'w+') as output_file:

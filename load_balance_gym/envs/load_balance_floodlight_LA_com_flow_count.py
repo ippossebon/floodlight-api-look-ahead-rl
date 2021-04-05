@@ -24,7 +24,7 @@ EPSILON = 0.001
 MEGA_BYTE_COUNT = 1 * 1024 * 1024
 GIGA_BYTE_COUNT = MEGA_BYTE_COUNT * 1024
 
-ELEPHANT_FLOW_THRESHOLD = 100 * 1024 * 1024 # 5MBytes
+ELEPHANT_FLOW_THRESHOLD = 100 * 1024 * 1024 # 100 MBytes
 ELEPHANT_FLOW_REWARD_FACTOR = 100
 
 MAX_HMEAN_REWARD = 5.29
@@ -546,6 +546,8 @@ class LoadBalanceEnvLA(gym.Env):
             # print('State: {0} -- Reward = {1}'.format(self.state, reward))
             print('...........')
             print()
+            is_action_for_elephant_flow = self.isActionForElephantFlow(flow_match)
+            info['is_action_for_elephant_flow'] = is_action_for_elephant_flow
 
             return next_state, reward, done, info
 
@@ -605,23 +607,28 @@ class LoadBalanceEnvLA(gym.Env):
 
         return elephant_flows
 
+    def isActionForElephantFlow(self, flow_for_action):
+        elephant_flows = self.getElephantFlows()
+        chosen_flow_is_elephant = False
+
+        if flow_for_action == None:
+            return False
+
+        for ef in elephant_flows:
+            if ef['match']['tcp_src'] == flow_for_action['tcp_src']:
+                chosen_flow_is_elephant = True
+
+        return chosen_flow_is_elephant
+
 
     def getLookAheadReward(self, state, flow_for_action):
         # Como olhar para o meu estado e penalizar decisões que mexem em fluxos que não são EF?
         # Com a equação aqui descrita, não precisaria de um IF EF pré agente,
         # pois qualquer ação que não envolva um EF, independente de qual seja, não será escolhida
         # pelo agente por conta da recompensa.
-        elephant_flows = self.getElephantFlows()
-        chosen_flow_is_elephant = False
+        is_action_for_elephant_flow = self.isActionForElephantFlow(flow_for_action)
 
-        for ef in elephant_flows:
-            if ef['match']['tcp_src'] == flow_for_action['tcp_src']:
-                chosen_flow_is_elephant = True
-
-        print('chosen_flow_is_elephant = ', chosen_flow_is_elephant)
-
-
-        if flow_for_action == None or not chosen_flow_is_elephant:
+        if not is_action_for_elephant_flow:
             # recompensa deve ser muito baixa
             return MIN_LA_REWARD
         else:

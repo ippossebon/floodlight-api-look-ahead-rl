@@ -1,1 +1,9 @@
-DQN-5000_B-LookAhead,2
+B-HET-LA,1000,5,1
+B-HET-LA,1500,10,1
+B-HET-LA,2000,15,1
+B-HET,1200,5,1
+B-HET,1700,10,1
+B-HET,2200,15,1
+
+//
+agent,timesteps,interval,iter

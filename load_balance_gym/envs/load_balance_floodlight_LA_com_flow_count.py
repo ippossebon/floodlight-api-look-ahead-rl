@@ -512,6 +512,7 @@ class LoadBalanceEnvLA(gym.Env):
             print('Reward = ', reward)
             print('...........')
             print()
+            info['is_action_for_elephant_flow'] = False
 
             return next_state, reward, done, info
         else:

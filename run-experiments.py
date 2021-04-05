@@ -136,7 +136,7 @@ def testAgent(env, original_env, agent, timesteps):
 
         state, reward, done, info = env.step(action)
 
-        is_action_for_elephant_flow = info['is_action_for_elephant_flow']
+        is_action_for_elephant_flow = info[0]
         flow_label = 'EF' if is_action_for_elephant_flow else 'MF'
 
         print('Flow: ', flow_label)
@@ -184,6 +184,9 @@ def testLookAheadAgent(env, original_env, agent, timesteps):
             action, _ = model.predict(state_with_flow, deterministic=False)
 
             state, reward, done, info = env.step(action)
+            print('info -', info)
+            print('type info -', type(info))
+
             # step vai olhar para state para ver em qual fluxo aplicar a ação
 
             output_data_line = '{0}; {1}; {2}'.format(step, state, reward)

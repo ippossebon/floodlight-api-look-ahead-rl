@@ -12,10 +12,11 @@ proportion=$3
 iter=$4
 
 
+# MiceFlows / EF
 case $proportion in
   0) flows_sizes=("50M" "80M" "100M" "200M" "300M" "400M" "800M" "1024M") ;; # 25/75
   1) flows_sizes=("50M" "60M" "80M" "90M" "100M" "400M" "800M" "1024M") ;; # 50/50
-  2) flows_sizes=("50M" "60M" "100M" "200M" "300M" "400M" "800M" "1024M") ;; # 25/75
+  2) flows_sizes=("50M" "60M" "70M" "80M" "90M" "95M" "100M" "1024M") ;; # 75/25
 esac
 
 

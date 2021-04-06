@@ -164,39 +164,6 @@ def isActionForElephantFlow(original_env, action):
     return False
 
 
-def testLookAheadAgent(env, original_env, agent, timesteps):
-    agent_path = 'trained-agents/{0}'.format(agent)
-    model = DQN.load(load_path=agent_path, env=env)
-
-    state = env.reset()
-
-    writeLineToFile('Step; State; Reward', csv_output_filename)
-
-    for step in range(int(timesteps)):
-        print('Step ', step)
-
-        if original_env.isElephantFlowByIndex(flow_index):
-            writeLineToFile('EF')
-            print('EF')
-
-            state_with_flow = [state, flow_index]
-
-            action, _ = model.predict(state_with_flow, deterministic=False)
-
-            state, reward, done, info = env.step(action)
-            print('info -', info)
-            print('type info -', type(info))
-
-            # step vai olhar para state para ver em qual fluxo aplicar a ação
-
-            output_data_line = '{0}; {1}; {2}'.format(step, state, reward)
-            writeLineToFile(output_data_line, csv_output_filename)
-        else:
-            writeLineToFile('MF')
-            print('MF')
-
-        step += 1
-
 
 def writeLineToFile(line, filename):
     with open(filename, 'a') as file:

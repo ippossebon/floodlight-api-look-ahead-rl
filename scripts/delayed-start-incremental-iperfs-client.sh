@@ -23,7 +23,7 @@ esac
 
 sleep 10
 
-for j in ${!flows_sizes[@]}; do
+for (( j=0; j < 8; j++ )); do
   server_port=$(($j+5201))
   client_port=$(($j*2+46110))
   flow_size=${flows_sizes[$j]}

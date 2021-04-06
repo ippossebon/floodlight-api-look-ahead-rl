@@ -22,9 +22,8 @@ case $proportion in
 esac
 
 
-for j in ${!flows_sizes[@]}; do
+for (( j=0; j < 8; j++ )); do
   flow_size=${flows_sizes[$j]}
-  echo "$flow_size"
 
   port=$(($j+5201))
   filename="~/floodlight-api-look-ahead-rl/output-experiments-iperfs/$agent-server-$port-$flow_size-$interval-proportion_$proportion-v$iter.log"

@@ -248,7 +248,11 @@ def main(argv):
     tracemalloc.start()
     start_time = datetime.datetime.now()
 
-    if agent == 'F' or agent == 'F2':
+    if agent == 'F-HET':
+        wait_time = int(timesteps) * 2
+        print('wait_time = ', wait_time)
+        time.sleep(wait_time)
+    elif agent == 'F' or agent == 'F2':
         flow_size_bits = int(flows_size.strip('M')) * 8
         wait_time = (int(num_flows) * flow_size_bits/10 ) * 4
         print('wait_time = ', wait_time)

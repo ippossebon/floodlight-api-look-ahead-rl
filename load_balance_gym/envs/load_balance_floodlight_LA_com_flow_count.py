@@ -68,8 +68,8 @@ class LoadBalanceEnvLA(gym.Env):
 
         self.state = numpy.zeros(shape=self.observation_space.shape)
         self.prev_state = numpy.zeros(shape=self.observation_space.shape)
-        # self.reward_range = (MIN_LA_REWARD, MAX_LA_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
-        self.reward_range = (MIN_HMEAN_REWARD, MAX_HMEAN_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
+        self.reward_range = (MIN_LA_REWARD, MAX_LA_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
+        # self.reward_range = (MIN_HMEAN_REWARD, MAX_HMEAN_REWARD) # max = 3200 * (50 + 50) (50 é capacidade do link S3.1)
 
 
     def saveItemLinks(self, item):
@@ -655,13 +655,13 @@ class LoadBalanceEnvLA(gym.Env):
         # reward = self.getNetworkUsageReward(state)
 
         """ Agente B """
-        reward = self.getHMeanReward(state)
+        # reward = self.getHMeanReward(state)
 
         """ Agente C """
         # reward = self.getSTDReward(state)
 
         """ Agente Look Ahead """
-        # reward = self.getLookAheadReward(state, flow_for_action)
+        reward = self.getLookAheadReward(state, flow_for_action)
 
         return reward
 

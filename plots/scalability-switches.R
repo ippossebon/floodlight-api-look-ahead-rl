@@ -6,13 +6,14 @@ csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodl
 
 data <- read_csv(csvPath, col_types = cols(
   agent = col_character(),
-  num_iperfs = col_integer(),
+  num_iperfs = col_character(),
   flow_size = col_character(),
   time = col_double(),
   memory = col_double(),
   iter = col_integer()
 )) %>%
   mutate(flow_size = as_factor(flow_size)) %>%
+  mutate(num_iperfs = as_factor(num_iperfs)) %>%
   print
 View
 
@@ -39,7 +40,8 @@ data1 <- data %>%
     sd_memory = sd(memory_usage_mb)
   ) %>%
   ungroup %>%
-  print
+  mutate(group=paste(agent, num_iperfs, sep='_')) %>%
+  print 
 
 
 facet_labels <- c(
@@ -50,9 +52,10 @@ facet_labels <- c(
 
 
 data1 %>%
-  ggplot(aes(x=flow_size, y=average_memory, group=agent)) +
-  geom_line(aes(linetype=agent))+
-  geom_point()+
-  scale_color_brewer(palette="Dark2")+
-  theme(legend.position="bottom")
+  ggplot(aes(x=flow_size, y=average_memory)) +
+  geom_line(aes(group=group, col=agent, linetype=num_iperfs))+
+  # sgeom_line(aes(linetype=num_iperfs, group=num_iperfs), orientation='x')+
+  geom_point(aes(col=agent))+
+  theme(legend.position="bottom")+
+  theme_bw()
 

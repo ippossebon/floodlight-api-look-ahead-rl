@@ -52,9 +52,9 @@ agent_labels <- c(
   "B" = "Harmonic mean", 
   "C" = "Standard deviation",
   "F" = "Baseline",
-  "A2" = "Usage heuristic",
-  "B2" = "Harmonic mean",
-  "F2" = "Baseline"
+  "A2" = "Usage heuristic - S2",
+  "B2" = "Harmonic mean - S2",
+  "F2" = "Baseline - S2"
 )
 
 data1 %>%

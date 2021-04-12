@@ -43,18 +43,18 @@ data1 <- data %>%
 
 
 facet_labels <- c(
-  `2` = "2 flows",
-  `4` = "4 flows",
-  `8` = "8 flows"
+  `2` = "4 flows",
+  `4` = "8 flows",
+  `8` = "16 flows"
 )
 
 agent_labels <- c(
   "A" = "Usage heuristics",
-  "B" = "Harmonic Mean", 
-  "C" = "Standard Deviation",
+  "B" = "Harmonic mean", 
+  "C" = "Standard deviation",
   "F" = "Baseline",
   "A2" = "Usage heuristic",
-  "B2" = "Harmonic Mean",
+  "B2" = "Harmonic mean",
   "F2" = "Baseline"
 )
 
@@ -78,6 +78,6 @@ data1 %>%
     limits = c(0, NA)
   ) +
   scale_fill_discrete(name = 'Reward function', label=as_labeller(agent_labels)) +
-  xlab('Flow size (Mbytes)') +
+  xlab('Flow size (MBytes)') +
   theme(legend.position="bottom")
 

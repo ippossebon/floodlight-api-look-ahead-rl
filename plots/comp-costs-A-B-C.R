@@ -1,6 +1,6 @@
 library(tidyverse)
 
-csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/outputs-consolidated/data/best-reward/comp-costs-A-B-C.csv'
+csvPath = '/Users/isadorapedrinipossebon/Documents/UFRGS/Mestrado/projeto/floodlight-api-look-ahead-rl/outputs-consolidated/data/best-reward/comp-costs-A-B-C-As2-Bs2.csv'
 
 # agent, num_iperfs, flow_size, time, memory, iter
 
@@ -27,24 +27,34 @@ data1 <- data %>%
   group_by(agent, num_iperfs, flow_size, iter) %>%
   # Total flow completion time = tempo para terminar todos os fluxos
   summarize(
-    memory_usage = sum(memory)
+    memory_usage_mb = sum(memory)/1024
   ) %>%
   ungroup %>%
   # Agrupamento sem considerar iterações, para plot
   group_by(agent, num_iperfs, flow_size) %>%
   # Média/desvio padrão dos grupos
   summarize(
-    average_memory = mean(memory_usage),
-    sd_memory = sd(memory_usage)
+    average_memory = mean(memory_usage_mb),
+    sd_memory = sd(memory_usage_mb)
   ) %>%
   ungroup %>%
   print
 
 
 facet_labels <- c(
-  `2` = "2 flows",
-  `4` = "4 flows",
-  `8` = "8 flows"
+  `2` = "4 flows",
+  `4` = "8 flows",
+  `8` = "16 flows"
+)
+
+agent_labels <- c(
+  "A" = "Usage heuristics",
+  "B" = "Harmonic mean", 
+  "C" = "Standard deviation",
+  "F" = "Baseline",
+  "A2" = "Usage heuristic",
+  "B2" = "Harmonic mean",
+  "F2" = "Baseline"
 )
 
 data1 %>%
@@ -59,14 +69,15 @@ data1 %>%
     position = position_dodge(.9)
   ) +
   facet_wrap(~num_iperfs, labeller=as_labeller(facet_labels)) +
-  theme_bw(base_size = 12) +
+  theme_bw(base_size = 10) +
   scale_y_continuous(
-    'Average memory usage (KB)',
+    'Average memory usage (KBytes)',
     #seq(0, 40000, 1000),
     labels = waiver(), 
     limits = c(0, NA)
   ) +
-  scale_fill_discrete(name = 'Agent') +
-  xlab('Flow size (Mbytes)') +
-  scale_fill_brewer(palette="Accent")
+  #scale_fill_brewer() +
+  scale_fill_brewer(name = 'Reward function', label=as_labeller(agent_labels), palette="Pastel1") +
+  xlab('Flow size (MBytes)') +
+  theme(legend.position = c(0.86, 0.2))
 

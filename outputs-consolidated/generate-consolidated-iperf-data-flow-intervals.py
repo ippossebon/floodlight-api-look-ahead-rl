@@ -45,7 +45,10 @@ def parseClient(file_path):
                 transferred_count = float(splitted_line[3])
                 transferred_unity = splitted_line[4]
                 transferred_mbytes = None
-                if transferred_unity == 'MBytes':
+
+                if transferred_unity == 'GBytes':
+                    transferred_mbytes = transferred_count * 1024
+                elif transferred_unity == 'MBytes':
                     transferred_mbytes = transferred_count
                 elif transferred_unity == 'KBytes':
                     transferred_mbytes = transferred_count/1024
@@ -66,12 +69,13 @@ def parseClient(file_path):
     return flow_completion_time, transferred_mbytes, bandwidth_mbits, retries
 
 
-def generateIperfCSVFile(agent, num_iperfs, flow_size):
-    dir_path = OUTPUT_IPERFS_DIR_NAME + '{0}-{1}iperfs-{2}/'.format(agent, num_iperfs, flow_size)
+def generateIperfCSVFile(agent, interval, workload, num_iperfs):
+    dir_name = '{0}-{1}-{2}/'.format(agent, interval, workload)
+    dir_path = OUTPUT_IPERFS_DIR_NAME + dir_name
     files_in_dir = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
 
     for filename in files_in_dir:
-        # Formato filename: A1-client-46112-2-flows-50M-v3.log
+        # Formato filename: B-HET-LA-client-46110-50M-5-proportion_2-v0
         if filename != '.DS_Store':
             file_port = None
             file_iter = None
@@ -83,22 +87,25 @@ def generateIperfCSVFile(agent, num_iperfs, flow_size):
                 flow_completion_time, transferred_mbytes, bandwidth_mbits, retries = parseClient(file_path)
 
                 filename_splitted = filename.split('-')
-                port = filename_splitted[2]
-                num_iperfs = filename_splitted[3]
+                port = filename_splitted[4]
                 original_size = filename_splitted[5]
                 file_iter_string = filename_splitted[len(filename_splitted)-1].replace('.log', '')
-                num_iters = int(file_iter_string.replace('v', ''))
+                num_iter = int(file_iter_string.replace('v', ''))
+                interval_splitted = interval.split('_')
+                interval_sec = interval_splitted[0]
 
-                line = '{0},{1},{2},{3},{4},{5},{6},{7},{8}'.format(
-                    agent,
-                    num_iperfs,
-                    port,
-                    original_size,
-                    transferred_mbytes,
-                    retries,
-                    flow_completion_time,
-                    bandwidth_mbits,
-                    num_iters
+                line = '{agent},{num_iperfs},{port},{original_size},{transferred_mbytes},{retries},{flow_completion_time},{bandwidth_mbits},{interval_sec},{workload},{num_iter}'.format(
+                    agent=agent,
+                    num_iperfs=num_iperfs,
+                    port=port,
+                    original_size=original_size,
+                    transferred_mbytes=transferred_mbytes,
+                    retries=retries,
+                    flow_completion_time=flow_completion_time,
+                    bandwidth_mbits=bandwidth_mbits,
+                    interval_sec=interval_sec,
+                    workload=workload,
+                    num_iter=num_iter
                 )
 
                 print('{0} --- {1}'.format(filename, line))
@@ -111,12 +118,16 @@ def writeLineToFile(line, filename):
         file.write("%s\n" % line)
 
 def main():
-    experiments_config_file = './experiments-to-consolidate.csv'
+    experiments_config_file = './experiments-to-consolidate-LA.csv'
+    # Possible workloads:
+    # 25_75 = 25/75 (MF/EF)
+    # 50_50 = 50/50 (MF/EF)
+    # 75_25 = 75/25 (MF/EF)
 
-    # agent, num_iperfs, port_number, original_size (MB), transferred (MB), retries, flow_completion_time (sec), bandwidth (Mbps), iter
-    header = 'agent, num_iperfs, port_number, original_size, transferred, retries, flow_completion_time, bandwidth, iter'
+    num_iperfs = 8
+    # agent, num_iperfs, port_number, original_size (MB), transferred (MB), retries, flow_completion_time (sec), bandwidth (Mbps), interval (sec), workload, iter
+    header = 'agent, num_iperfs, port_number, original_size, transferred, retries, flow_completion_time, bandwidth, interval, workload, iter'
     writeLineToFile(header, OUTPUT_FILENAME)
-
 
     with open(experiments_config_file) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
@@ -125,10 +136,9 @@ def main():
         for row in csv_reader:
             if line_count > 0:
                 agent = row[0]
-                iperfs = row[1]
-                size = row[2]
-                iter = row[3]
-                generateIperfCSVFile(agent, iperfs, size)
+                interval = row[1]
+                workload = row[2]
+                generateIperfCSVFile(agent, interval, workload, num_iperfs)
 
             line_count = line_count + 1
 

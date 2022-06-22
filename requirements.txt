@@ -1,5 +1,5 @@
 gym==0.17.3
-numpy==1.19.2
+numpy==1.22.0
 scipy==1.5.2
 pyglet==1.5.0
 cloudpickle==1.6.0
